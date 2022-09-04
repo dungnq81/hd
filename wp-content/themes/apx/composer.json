@@ -1,0 +1,22 @@
+{
+    "name": "wordpress/apx",
+    "description": "APX Wordpress Theme",
+    "authors": [
+        {
+            "name": "APX"
+        }
+    ],
+    "autoload": {
+        "files": [],
+        "psr-4": {
+            "APX\\Helpers\\": "inc/Helpers",
+            "APX\\Themes\\": "inc/Themes",
+            "APX\\Walkers\\": "inc/Walkers"
+        },
+        "exclude-from-classmap": []
+    },
+    "require": {
+        "symfony/var-dumper": "^v5.4.9",
+        "vectorface/whip": "^v0.4.0"
+    }
+}
