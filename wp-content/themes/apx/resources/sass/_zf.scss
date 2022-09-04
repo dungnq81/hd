@@ -119,97 +119,32 @@ $input-error-font-weight: $global-weight-normal;
 // 7. Accordion
 // ------------
 
-$accordion-background: $white;
-$accordion-plusminus: true;
-$accordion-plus-content: "\002B";
-$accordion-minus-content: "\2013";
-$accordion-title-font-size: rem-calc(12);
-$accordion-item-color: get-color(primary);
-$accordion-item-background-hover: $light-gray;
 $accordion-item-padding: 1.25rem rem-calc(15);
-$accordion-content-background: $white;
-$accordion-content-border: 1px solid $light-gray;
-$accordion-content-color: $body-font-color;
 $accordion-content-padding: rem-calc(15);
 
 // 8. Accordion Menu
 // -----------------
 
-$accordionmenu-padding: $global-menu-padding;
-$accordionmenu-nested-margin: $global-menu-nested-margin;
-$accordionmenu-submenu-padding: $accordionmenu-padding;
-$accordionmenu-arrows: true;
-$accordionmenu-arrow-color: get-color(primary);
-$accordionmenu-item-background: null;
-$accordionmenu-border: null;
-$accordionmenu-submenu-toggle-background: null;
-$accordion-submenu-toggle-border: $accordionmenu-border;
-$accordionmenu-submenu-toggle-width: 40px;
-$accordionmenu-submenu-toggle-height: $accordionmenu-submenu-toggle-width;
-$accordionmenu-arrow-size: 6px;
-
 // 9. Badge
 // --------
-
-$badge-background: $background-color;
-$badge-color: $white;
-$badge-color-alt: $black;
-$badge-palette: $foundation-palette;
-$badge-padding: 0.3em;
-$badge-minwidth: 2.1em;
-$badge-font-size: 0.6rem;
 
 // 10. Breadcrumbs
 // ---------------
 
-$breadcrumbs-margin: 0 0 $global-margin 0;
 $breadcrumbs-item-font-size: rem-calc(12);
-$breadcrumbs-item-color: get-color(primary);
-$breadcrumbs-item-color-current: $black;
-$breadcrumbs-item-color-disabled: $medium-gray;
-$breadcrumbs-item-margin: 0.75rem;
-$breadcrumbs-item-uppercase: true;
-$breadcrumbs-item-separator: true;
-$breadcrumbs-item-separator-item: "/";
-$breadcrumbs-item-separator-item-rtl: "\\";
-$breadcrumbs-item-separator-color: $medium-gray;
+$breadcrumbs-item-margin: 0.5rem;
+$breadcrumbs-item-uppercase: false;
 
 // 11. Button
 // ----------
 
-$button-font-family: inherit;
-$button-font-weight: null;
-$button-padding: 0.85em 1em;
-$button-margin: 0 0 $global-margin 0;
-$button-fill: solid;
-$button-background: get-color(secondary);
-$button-background-hover: scale-color($button-background, $lightness: -15%);
-$button-color: $white;
-$button-color-alt: $black;
-$button-radius: $global-radius;
-$button-border: 1px solid transparent;
-$button-hollow-border-width: 1px;
-$button-sizes: (
-    tiny: 0.6rem,
-    small: 0.8rem,
-    default: 0.925rem,
-    large: 1.25rem,
-);
-$button-palette: $foundation-palette;
-$button-opacity-disabled: 0.25;
-$button-background-hover-lightness: -20%;
-$button-hollow-hover-lightness: -50%;
-$button-transition: background-color 0.25s ease-out, color 0.25s ease-out;
-$button-responsive-expanded: false;
+$button-padding: 0 rem-calc(15);
+$button-opacity-disabled: 0.3;
 
 // 12. Button Group
 // ----------------
 
 $buttongroup-margin: rem-calc(15);
-$buttongroup-spacing: 1px;
-$buttongroup-child-selector: ".button";
-$buttongroup-expand-max: 6;
-$buttongroup-radius-on-each: true;
 
 // 13. Callout
 // -----------
