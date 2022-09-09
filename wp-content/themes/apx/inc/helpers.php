@@ -20,7 +20,7 @@ if ( ! function_exists( 'json_encode_prettify' ) ) {
      *
      * @return false|string
      */
-    function json_encode_prettify( $data ): bool|string {
+    function json_encode_prettify( $data ) {
         return json_encode( $data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
     }
 }

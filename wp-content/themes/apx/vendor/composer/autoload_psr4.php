@@ -11,7 +11,10 @@ return array(
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
+    'APX\\Widgets\\' => array($baseDir . '/inc/Widgets'),
     'APX\\Walkers\\' => array($baseDir . '/inc/Walkers'),
     'APX\\Themes\\' => array($baseDir . '/inc/Themes'),
+    'APX\\PostTypes\\' => array($baseDir . '/inc/PostTypes'),
+    'APX\\Plugins\\' => array($baseDir . '/inc/Plugins'),
     'APX\\Helpers\\' => array($baseDir . '/inc/Helpers'),
 );

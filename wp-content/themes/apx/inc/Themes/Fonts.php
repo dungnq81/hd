@@ -21,14 +21,14 @@ if ( ! class_exists( 'Fonts' ) ) {
         /**
          * @return void
          */
-        public function pre_connect(): void {
+        public function pre_connect() {
             echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
             echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
         }
 
 		/** ---------------------------------------- */
 
-		public function enqueue_scripts(): void {
+		public function enqueue_scripts() {
 
 			wp_enqueue_style("fonts-style", get_template_directory_uri() . '/assets/css/fonts.css', [], APX_THEME_VERSION);
 

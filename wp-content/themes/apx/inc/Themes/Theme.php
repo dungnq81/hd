@@ -23,7 +23,7 @@ if ( ! class_exists( 'Theme' ) ) {
          *
          * @return void
          */
-        public function init(): void {
+        public function init() {
 
             if ( is_admin() ) {
                 ( new Admin );
@@ -41,7 +41,7 @@ if ( ! class_exists( 'Theme' ) ) {
          * runs before the init hook. The init hook is too late for some features, such
          * as indicating support for post thumbnails.
          */
-        public function after_setup_theme(): void {
+        public function after_setup_theme() {
 
             /**
              * Make theme available for translation.
@@ -86,7 +86,7 @@ if ( ! class_exists( 'Theme' ) ) {
             // Enable excerpt to page
             add_post_type_support( 'page', 'excerpt' );
 
-            if ( apply_filters( 'fullwidth_oembed', true ) ) {
+            if ( apply_filters( 'responsive_oembed', true ) ) {
 
                 // Filters the oEmbed process to run the responsive_oembed_wrapper() function.
                 add_filter( 'embed_oembed_html', [ &$this, 'responsive_oembed_wrapper' ], 10, 3 );

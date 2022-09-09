@@ -203,7 +203,7 @@ if ( ! class_exists( 'Func' ) ) {
          *
          * @return bool|WP_Query
          */
-        public static function queryByTerms($term_ids = [], string $taxonomy = 'category', string $post_type = 'any', bool $include_children = true, int $posts_per_page = 10){
+        public static function queryByTerms($term_ids = [], string $taxonomy = 'category', string $post_type = 'any', bool $include_children = true, int $posts_per_page = 10) {
             if (!$term_ids) {
                 return false;
             }
@@ -454,7 +454,7 @@ if ( ! class_exists( 'Func' ) ) {
          * @param string|null $class
          * @return string
          */
-        function siteLogo(string $theme = 'default', ?string $class = '' ): string {
+        function siteLogo(string $theme = 'default', ?string $class = '' ) {
 
             $html = '';
             $custom_logo_id = null;
@@ -507,7 +507,7 @@ if ( ! class_exists( 'Func' ) ) {
          *
          * @return string|null
          */
-        public static function loopExcerpt($post = null, ?string $class = 'excerpt' ): ?string {
+        public static function loopExcerpt($post = null, ?string $class = 'excerpt' ) {
             $excerpt = get_the_excerpt( $post );
             if ( ! Str::stripSpace( $excerpt ) ) {
                 return null;
@@ -529,7 +529,7 @@ if ( ! class_exists( 'Func' ) ) {
          * @param bool $glyph_icon
          * @return string|null
          */
-        public static function postExcerpt($post = null, ?string $class = 'excerpt', bool $glyph_icon = false ): ?string {
+        public static function postExcerpt($post = null, ?string $class = 'excerpt', bool $glyph_icon = false ) {
             $post = get_post($post);
             if ( ! Str::stripSpace( $post->post_excerpt ) ) {
                 return null;
@@ -557,7 +557,7 @@ if ( ! class_exists( 'Func' ) ) {
          *
          * @return string|null
          */
-        public static function termExcerpt($term = 0, ?string $class = 'excerpt' ): ?string {
+        public static function termExcerpt($term = 0, ?string $class = 'excerpt' ) {
             $description = term_description( $term );
             if ( ! Str::stripSpace( $description ) ) {
                 return null;
@@ -725,33 +725,24 @@ if ( ! class_exists( 'Func' ) ) {
          * @param string $size
          *
          * @return string|null
+         * @deprecated use get_the_post_thumbnail_url( $post, $size )
          */
         public static function postImageSrc( $post = null, string $size = 'thumbnail' ) {
-            $thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post ), $size );
-            if ( $thumbnail ) {
-                //[$src, $width, $height] = $thumbnail;
-                return $thumbnail[0];
-            }
-
-            return null;
+            return get_the_post_thumbnail_url( $post, $size );
         }
 
         // -------------------------------------------------------------
 
         /**
+         *
          * @param $attachment_id
          * @param string $size
          *
          * @return string|null
+         * @deprecated use wp_get_attachment_image_url( $attachment_id, $size )
          */
         public static function attachmentImageSrc( $attachment_id, string $size = 'thumbnail' ) {
-            $image = wp_get_attachment_image_src( $attachment_id, $size );
-            if ( $image ) {
-                //[$src, $width, $height] = $image;
-                return $image[0];
-            }
-
-            return null;
+            return wp_get_attachment_image_url( $attachment_id, $size );
         }
 
         // -------------------------------------------------------------
@@ -788,7 +779,7 @@ if ( ! class_exists( 'Func' ) ) {
             }
 
             if ( class_exists('\ACF') && $attach_id = get_field( $acf_field_name, $term ) ) {
-                $img_src = self::attachmentImageSrc( $attach_id, $size );
+                $img_src = wp_get_attachment_image_url( $attach_id, $size );
                 if ($img_wrap) {
                     $img_src = wp_get_attachment_image( $attach_id, $size );
                 }
@@ -857,7 +848,7 @@ if ( ! class_exists( 'Func' ) ) {
          * Breadcrumbs
          * return void
          */
-        public static function breadcrumbs(): void {
+        public static function breadcrumbs() {
             global $post, $wp_query;
 
             $before = '<li class="current">';
@@ -1010,7 +1001,7 @@ if ( ! class_exists( 'Func' ) ) {
         /**
          * @param mixed|null $id The ID, to load a single record;
          */
-        public static function postComment(mixed $id = null ): void {
+        public static function postComment(mixed $id = null ) {
             if ( !$id ) {
                 if (get_post_type() === 'product') {
                     global $product;
@@ -1068,7 +1059,7 @@ if ( ! class_exists( 'Func' ) ) {
          * @param string|null $container
          * @return void
          */
-        public static function menu_fallback(?string $container = 'grid-container' ): void {
+        public static function menu_fallback(?string $container = 'grid-container' ) {
             echo '<div class="menu-fallback">';
             if ( $container ) {
                 echo '<div class="' . $container . '">';

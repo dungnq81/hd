@@ -65,7 +65,7 @@ if ( ! class_exists( 'Admin' ) ) {
 		/**
 		 * Add admin column
 		 */
-		public function admin_init(): void {
+		public function admin_init() {
 
             // Hide menu
             $hide_menu = Func::getThemeMod('remove_menu_setting');
@@ -288,7 +288,7 @@ if ( ! class_exists( 'Admin' ) ) {
 		/**
 		 * @return void
 		 */
-		public function admin_enqueue_scripts(): void {
+		public function admin_enqueue_scripts() {
 			wp_enqueue_style( "admin-style", get_template_directory_uri() . "/assets/css/admin.css", [], APX_THEME_VERSION );
 			wp_enqueue_script( "admin", get_template_directory_uri() . "/assets/js/admin.js", [ "jquery" ], APX_THEME_VERSION, true );
 		}

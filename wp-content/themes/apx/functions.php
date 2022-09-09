@@ -14,8 +14,8 @@ if (version_compare($GLOBALS['wp_version'], '5.3', '<')) {
     require __DIR__ . 'inc/back-compat.php';
 }
 
-$theme_version = ($theme_version = wp_get_theme()->get('Version')) ? $theme_version : false;
-$theme_author = ($theme_author = wp_get_theme()->get('Author')) ? $theme_author : 'APX Team';
+$theme_version = (wp_get_theme()->get('Version')) ?: false;
+$theme_author = (wp_get_theme()->get('Author')) ?: 'X Team';
 
 defined('APX_THEME_VERSION') || define('APX_THEME_VERSION', $theme_version);
 defined('APX_AUTHOR') || define('APX_AUTHOR', $theme_author);

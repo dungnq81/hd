@@ -23,7 +23,7 @@ if ( ! class_exists( 'ScriptLoader' ) ) {
 		 *
 		 * @return string Script HTML string.
 		 */
-		public function filterScriptTag( $tag, $handle, $src ): string {
+		public function filterScriptTag( $tag, $handle, $src ) {
 
 			// async/defer
 			foreach ( [ 'async', 'defer' ] as $attr ) {
@@ -44,6 +44,9 @@ if ( ! class_exists( 'ScriptLoader' ) ) {
 			if ( ( 'fontawesome-kit' == $handle ) && ! preg_match( ":\scrossorigin(=|>|\s):", $tag ) ) {
 				$tag = preg_replace( ':(?=></script>):', " crossorigin='anonymous'", $tag, 1 );
 			}
+
+            //...
+            // Add...
 
 			return $tag;
 		}

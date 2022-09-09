@@ -63,7 +63,7 @@ if ( ! function_exists( '__remove_thumbnail_dimensions' ) ) {
 	 *
 	 * @return string|string[]|null
 	 */
-	function __remove_thumbnail_dimensions( $html ): array|string|null {
+	function __remove_thumbnail_dimensions( $html ) {
 		return preg_replace( '/(<img[^>]+)(style=\"[^\"]+\")([^>]+)(>)/', '${1}${3}${4}', $html );
 	}
 }

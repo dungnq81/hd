@@ -7,11 +7,18 @@
         }
     ],
     "autoload": {
-        "files": [],
+        "files": [
+            "inc/helpers.php",
+            "inc/hooks.php",
+            "inc/image-sizes.php"
+        ],
         "psr-4": {
             "APX\\Helpers\\": "inc/Helpers",
+            "APX\\Plugins\\": "inc/Plugins",
+            "APX\\PostTypes\\": "inc/PostTypes",
             "APX\\Themes\\": "inc/Themes",
-            "APX\\Walkers\\": "inc/Walkers"
+            "APX\\Walkers\\": "inc/Walkers",
+            "APX\\Widgets\\": "inc/Widgets"
         },
         "exclude-from-classmap": []
     },

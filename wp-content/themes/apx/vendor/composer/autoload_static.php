@@ -10,6 +10,9 @@ class ComposerStaticInit3071c25f4b943624603903ae538ce490
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
+        '4a7d1a7c8afa1c10f595a5ef374430f7' => __DIR__ . '/../..' . '/inc/helpers.php',
+        'daf4424d1b0a6ec36b8cb86f49d6fd99' => __DIR__ . '/../..' . '/inc/hooks.php',
+        '069970afa82e51893c32f0690911b24f' => __DIR__ . '/../..' . '/inc/image-sizes.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -29,8 +32,11 @@ class ComposerStaticInit3071c25f4b943624603903ae538ce490
         ),
         'A' => 
         array (
+            'APX\\Widgets\\' => 12,
             'APX\\Walkers\\' => 12,
             'APX\\Themes\\' => 11,
+            'APX\\PostTypes\\' => 14,
+            'APX\\Plugins\\' => 12,
             'APX\\Helpers\\' => 12,
         ),
     );
@@ -56,6 +62,10 @@ class ComposerStaticInit3071c25f4b943624603903ae538ce490
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
+        'APX\\Widgets\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/inc/Widgets',
+        ),
         'APX\\Walkers\\' => 
         array (
             0 => __DIR__ . '/../..' . '/inc/Walkers',
@@ -63,6 +73,14 @@ class ComposerStaticInit3071c25f4b943624603903ae538ce490
         'APX\\Themes\\' => 
         array (
             0 => __DIR__ . '/../..' . '/inc/Themes',
+        ),
+        'APX\\PostTypes\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/inc/PostTypes',
+        ),
+        'APX\\Plugins\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/inc/Plugins',
         ),
         'APX\\Helpers\\' => 
         array (

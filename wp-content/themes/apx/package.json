@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@fancyapps/ui": "^4.0.31",
-    "@formkit/auto-animate": "^1.0.0-beta.3",
     "aos": "^2.3.4",
     "axios": "^0.27.2",
     "current-device": "^0.10.2",
@@ -27,14 +26,13 @@
     "jquery": "^3.6.0",
     "jquery.marquee": "^1.6.0",
     "lodash": "^4.17.21",
+    "motion-ui": "^2.0.4",
     "nanoid": "^4.0.0",
     "perfect-scrollbar": "^1.5.5",
     "sanitize-html": "^2.7.1",
+    "slugify": "^1.6.5",
     "swiper": "^8.3.2",
     "video.js": "^7.20.2",
     "what-input": "^5.2.12"
-  },
-  "peerDependencies": {
-    "motion-ui": "latest"
   }
 }
