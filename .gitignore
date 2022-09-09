@@ -140,10 +140,8 @@ fabric.properties
 #
 #
 # Project exclude paths
-/wp-content/themes/hd/node_modules/
-/wp-content/themes/hd/vendor/
-/wp-content/themes/hd/composer.lock
-/wp-content/themes/hd/package-lock.json
-/wp-content/themes/hd/yarn.lock
-# Project exclude paths
 /wp-content/themes/apx/node_modules/
+/wp-content/themes/apx/vendor/
+/wp-content/themes/apx/composer.lock
+/wp-content/themes/apx/package-lock.json
+/wp-content/themes/apx/yarn.lock
