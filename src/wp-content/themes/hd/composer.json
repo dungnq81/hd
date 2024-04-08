@@ -1,0 +1,31 @@
+{
+	"name": "wordpress/hd",
+	"description": "HD Wordpress Theme",
+	"authors": [
+		{
+			"name": "WEBHD Team"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"HD_Cores\\": "inc/src/Cores",
+			"HD_Libs\\": "inc/src/Libs",
+			"HD_Plugins\\": "inc/src/Plugins",
+			"HD_Themes\\": "inc/src/Themes",
+			"HD_Widgets\\": "inc/src/Widgets"
+		},
+		"files": [
+			"inc/Tgmpa/tgmpa-config.php"
+		]
+	},
+	"require": {
+		"php": ">=8.2",
+		"symfony/var-dumper": "^v7.0.6",
+		"matthiasmullie/minify": "^1.3.72",
+		"mobiledetect/mobiledetectlib": "^4.8.06",
+		"vectorface/whip": "^v0.5.0",
+		"phpgangsta/googleauthenticator": "dev-master",
+		"pragmarx/recovery": "^v0.2.1",
+		"guzzlehttp/guzzle": "^7.8.0"
+	}
+}

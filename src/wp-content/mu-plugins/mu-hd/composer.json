@@ -1,0 +1,18 @@
+{
+	"name": "mu-plugins/mu-hd",
+	"description": "HD mu-plugins",
+	"authors": [
+		{
+			"name": "WEBHD Team"
+		}
+	],
+	"autoload": {
+		"psr-4": {},
+		"exclude-from-classmap": [],
+		"files": []
+	},
+	"require": {
+		"php": ">=7.4",
+		"roots/wp-password-bcrypt": "^1.1.0"
+	}
+}

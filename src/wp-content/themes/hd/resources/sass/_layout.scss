@@ -1,0 +1,579 @@
+//
+// mixins
+//
+
+@import "flex_mixins";
+@import "grid_mixins";
+
+:root {
+    --black: #{map-get($colors, "black")};
+    --white: #{map-get($colors, "white")};
+    --gray: #{map-get($colors, "gray")};
+    --gray-dark: #{map-get($colors, "gray-dark")};
+    --blue: #{map-get($colors, "blue")};
+    --indigo: #{map-get($colors, "indigo")};
+    --purple: #{map-get($colors, "purple")};
+    --pink: #{map-get($colors, "pink")};
+    --red: #{map-get($colors, "red")};
+    --orange: #{map-get($colors, "orange")};
+    --yellow: #{map-get($colors, "yellow")};
+    --green: #{map-get($colors, "green")};
+    --teal: #{map-get($colors, "teal")};
+    --cyan: #{map-get($colors, "cyan")};
+
+    --primary: #{map-get($theme-colors, "primary")};
+    --secondary: #{map-get($theme-colors, "secondary")};
+    --success: #{map-get($theme-colors, "success")};
+    --info: #{map-get($theme-colors, "info")};
+    --warning: #{map-get($theme-colors, "warning")};
+    --alert: #{map-get($theme-colors, "alert")};
+    --light: #{map-get($theme-colors, "light")};
+    --dark: #{map-get($theme-colors, "dark")};
+
+    --body-color: #{$body-color};
+    --body-bg: #{$body-bg};
+
+    --link-color: #{$link-color};
+    --link-hover-color: #{$link-hover-color};
+
+    --gutter: #{map-get($spacers, "gutter")};
+    --gutter-xs: #{map-get($spacers, "gutter-xs")};
+    --gap: #{map-get($spacers, "gap")};
+    --gap-xs: #{map-get($spacers, "gap-xs")};
+
+    --line-height-header: $line-height-header;
+    --line-height-paragraph: $line-height-paragraph;
+}
+
+@include mq-min(desktop) {
+    ::-webkit-scrollbar-track {
+        background-color: $gray-200;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: $gray-500;
+    }
+
+    ::-webkit-scrollbar {
+        @include box($scrollbar-w, $scrollbar-h);
+    }
+}
+
+html {
+    font-family: sans-serif;
+    font-variant-ligatures: no-common-ligatures;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-touch-callout: none;
+}
+
+body {
+    background: $body-bg;
+    font-size: $body-size;
+    font-weight: 400;
+}
+
+:is(input, textarea, button, main) {
+    &:focus {
+        outline: none;
+    }
+}
+
+:is(a, area, button, [role='button'], input, label, select, summary, textarea) {
+    touch-action: manipulation;
+}
+
+* > p:last-child {
+    margin-bottom: 0;
+}
+
+:is(h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6) {
+    a {
+        display: block;
+    }
+
+    p {
+        color: currentColor;
+        line-height: inherit;
+        margin-bottom: 0;
+    }
+}
+
+a {
+    display: inline-block;
+
+    :where(h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6) {
+        font-size: inherit;
+        color: currentColor;
+    }
+}
+
+img {
+    display: inline-block;
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+
+    &:where(.aligncenter, .align-center) {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+:is([type="submit"], [type="reset"], [type="button"]) {
+    cursor: pointer;
+}
+
+figure {
+    &:where(.wp-caption, .caption) {
+        max-width: 100% !important;
+        display: block;
+
+        img {
+            display: inline-block;
+        }
+
+        &:where(.wp-caption-text, .caption-text) {
+            padding-top: 10px;
+            color: #454545;
+        }
+
+        &:where(.aligncenter, .align-center) {
+            margin-bottom: 15px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+    }
+}
+
+:is(.screen-reader-text, .submenu-toggle-text, .hidden-text, .sr-only) {
+    @include hidden-text;
+}
+
+.clearfix {
+    @include clearfix;
+}
+
+[data-glyph]::before {
+    content: attr(data-glyph);
+    font-family: $awesome-font;
+}
+
+[data-glyph-after]::after {
+    content: attr(data-glyph-after);
+    font-family: $awesome-font;
+}
+
+// settings
+.flex {
+    display: flex;
+}
+
+.\!flex {
+    display: flex !important;
+}
+
+.grid {
+    display: grid;
+}
+
+.\!grid {
+    display: grid !important;
+}
+
+.block {
+    display: block;
+}
+
+.\!block {
+    display: block !important;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.\!inline-block {
+    display: inline-block !important;
+}
+
+.relative {
+    position: relative;
+}
+
+.\!relative {
+    position: relative !important;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.\!absolute {
+    position: absolute !important;
+}
+
+//...
+.hidden {
+    display: none;
+}
+
+.md\:hidden {
+    @include mq-min(tablet) {
+        display: none;
+    }
+}
+
+.lg\:hidden {
+    @include mq-min(desktop) {
+        display: none;
+    }
+}
+
+.\!hidden {
+    display: none !important;
+}
+
+.\!md\:hidden {
+    @include mq-min(tablet) {
+        display: none !important;
+    }
+}
+
+.\!lg\:hidden {
+    @include mq-min(desktop) {
+        display: none !important;
+    }
+}
+
+/** @todo flexbox & grid */
+.flex-x {
+    @include flex-x();
+
+    & > :where(.auto, .shrink) {
+        width: auto;
+    }
+
+    @include mq-min(tablet) {
+        & > :where(.t-auto, .t-shrink) {
+            width: auto;
+        }
+    }
+
+    @include mq-min(desktop) {
+        & > :where(.d-auto, .d-shrink) {
+            width: auto;
+        }
+    }
+}
+
+.flex-y {
+    @include flex-y;
+
+    & > .cell {
+        height: auto;
+        max-height: none;
+    }
+}
+
+.grid-x {
+    @include grid-x;
+}
+
+.grid-y {
+    @include grid-y;
+}
+
+.cell {
+    @include cell();
+
+    &.auto {
+        @include flex-auto;
+    }
+
+    &.shrink {
+        @include flex-shrink;
+    }
+
+    @include mq-min(tablet) {
+        &.t-auto {
+            @include flex-auto;
+        }
+
+        &.t-shrink {
+            @include flex-shrink;
+        }
+    }
+
+    @include mq-min(desktop) {
+        &.d-auto {
+            @include flex-auto;
+        }
+
+        &.d-shrink {
+            @include flex-shrink;
+        }
+    }
+}
+
+:is(.grid-gap, .flex-gap) {
+    @include media-gap($gap-xs, $gap, false);
+}
+
+.flex-padding-x {
+    @include flex-padding-x($gutter-xs, $gutter);
+}
+
+.flex-padding-y {
+    @include flex-padding-y($gutter-xs, $gutter);
+}
+
+// layout container
+:is(.layout-container, .flex-container, .grid-container) {
+    @include layout-container($gutter-xs, $gutter, false, false);
+
+    &:not(.full) {
+        &.xxl {
+            @include mq-min(xxl) {
+                max-width: map-get($container-max-widths, xxl);
+            }
+        }
+
+        &.xxxl {
+            @include mq-min(xxxl) {
+                max-width: map-get($container-max-widths, xxxl);
+            }
+        }
+    }
+
+    &.full {
+        max-width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    &.fluid {
+        max-width: 100%;
+    }
+}
+
+/** @todo layout */
+@for $i from 1 through 12 {
+
+    .flex {
+        &.m-up-#{$i} > .cell, & > .cell.m-#{$i} {
+            @include flex-self($i, 1, false);
+        }
+
+        &.flex-gap {
+            &.m-up-#{$i} > .cell, & > .cell.m-#{$i} {
+                @include flex-self($i, 1, $gap-xs);
+            }
+        }
+    }
+
+    .grid {
+        &.m-up-#{$i} {
+            @include grid-template($i, true);
+        }
+    }
+}
+
+@include mq-min(tablet) {
+    @for $i from 1 through 12 {
+
+        .flex {
+            &.t-up-#{$i} > .cell, & > .cell.t-#{$i} {
+                @include flex-self($i, 1, false);
+            }
+
+            &.flex-gap {
+                &.t-up-#{$i} > .cell, & > .cell.t-#{$i} {
+                    @include flex-self($i, 1, $gap);
+                }
+            }
+        }
+
+        .grid {
+            &.t-up-#{$i} {
+                @include grid-template($i, true);
+            }
+        }
+    }
+}
+
+@include mq-min(desktop) {
+    @for $i from 1 through 12 {
+
+        .flex {
+            &.d-up-#{$i} > .cell, & > .cell.d-#{$i} {
+                @include flex-self($i, 1, false);
+            }
+
+            &.flex-gap {
+                &.d-up-#{$i} > .cell, & > .cell.d-#{$i} {
+                    @include flex-self($i, 1, $gap);
+                }
+            }
+        }
+
+        .grid {
+            &.d-up-#{$i} {
+                @include grid-template($i, true);
+            }
+        }
+    }
+}
+
+/** @todo responsive viewport */
+.overlay {
+    position: relative;
+
+    .overlay-bg {
+        @include absolute-full;
+        background: transparent;
+    }
+}
+
+.cover {
+    display: block;
+    overflow: hidden;
+    position: relative;
+
+    .cover-bg {
+        @include absolute-full;
+        background: transparent;
+    }
+}
+
+.res {
+    @include responsive-wrapper();
+
+    &.auto {
+        & > img {
+            @include responsive-image-auto;
+        }
+    }
+
+    &.scale {
+        @include responsive-scale();
+    }
+
+    :where(iframe, embed, object, video) {
+        @include absolute-full;
+        border: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+/** @todo aspect ratio */
+.ar-1, .ar-1-1 {
+    @include responsive-ratio(1, 1);
+}
+
+.ar-3-2 {
+    @include responsive-ratio(3, 2);
+}
+
+.ar-4-3 {
+    @include responsive-ratio(4, 3);
+}
+
+.ar-16-9 {
+    @include responsive-ratio(16, 9);
+}
+
+/** @todo gutter */
+$count: 0;
+$count_max: 30;
+
+@while $count <= $count_max {
+    .mt-#{$count} {
+        margin-top: fs($count);
+    }
+
+    .\!mt-#{$count} {
+        margin-top: fs($count) !important;
+    }
+
+    .mb-#{$count} {
+        margin-bottom: fs($count);
+    }
+
+    .\!mb-#{$count} {
+        margin-bottom: fs($count) !important;
+    }
+
+    .pt-#{$count} {
+        padding-top: fs($count);
+    }
+
+    .\!pt-#{$count} {
+        padding-top: fs($count) !important;
+    }
+
+    .pb-#{$count} {
+        padding-bottom: fs($count);
+    }
+
+    .\!pb-#{$count} {
+        padding-bottom: fs($count) !important;
+    }
+
+    $count: $count + 5;
+}
+
+/** @todo font weight */
+$fw: 200;
+$fw_max: 900;
+
+@while $fw <= $fw_max {
+    .fw-#{$fw} {
+        font-weight: $fw;
+    }
+
+    .\!fw-#{$fw} {
+        font-weight: $fw !important;
+    }
+
+    $fw: $fw + 100;
+}
+
+/** @todo gallery */
+[id^=gallery-] {
+    $gap: 10;
+    @include flex-x;
+    @include gap($gap);
+
+    & > .gallery-item {
+        @include cell();
+
+        //a {
+        //    @include responsive-wrapper();
+        //    @include responsive-ratio(4, 3);
+        //}
+    }
+
+    @for $i from 1 through 9 {
+        &.gallery-columns-#{$i} {
+            & > .gallery-item {
+                @include flex-self($i, 1, $gap);
+            }
+        }
+    }
+}
+
+//...
+.ajax-loading {
+    @include animation-loading();
+}
+
+@include keyframes(spin) {
+    100% {
+        transform: rotate(360deg);
+    }
+}
