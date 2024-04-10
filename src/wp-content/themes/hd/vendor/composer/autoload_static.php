@@ -7,18 +7,23 @@ namespace Composer\Autoload;
 class ComposerStaticInitaa5d2d434f9f8d32c649008de18a5fd5
 {
     public static $files = array (
-        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
-        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'e990cb5c1215e143ad9ff1cced58be3f' => __DIR__ . '/../..' . '/inc/Tgmpa/tgmpa-config.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'W' => 
+        array (
+            'Widgets\\' => 8,
+        ),
         'V' => 
         array (
             'Vectorface\\Whip\\' => 16,
+        ),
+        'T' => 
+        array (
+            'Themes\\' => 7,
         ),
         'S' => 
         array (
@@ -29,39 +34,39 @@ class ComposerStaticInitaa5d2d434f9f8d32c649008de18a5fd5
         array (
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Http\\Message\\' => 17,
-            'Psr\\Http\\Client\\' => 16,
-            'PragmaRX\\Recovery\\' => 18,
-            'PragmaRX\\Random\\' => 16,
+            'Plugins\\' => 8,
         ),
         'M' => 
         array (
             'MatthiasMullie\\PathConverter\\' => 29,
             'MatthiasMullie\\Minify\\' => 22,
         ),
-        'H' => 
+        'L' => 
         array (
-            'HD_Widgets\\' => 11,
-            'HD_Themes\\' => 10,
-            'HD_Plugins\\' => 11,
-            'HD_Libs\\' => 8,
-            'HD_Cores\\' => 9,
-        ),
-        'G' => 
-        array (
-            'GuzzleHttp\\Psr7\\' => 16,
-            'GuzzleHttp\\Promise\\' => 19,
-            'GuzzleHttp\\' => 11,
+            'Libs\\' => 5,
         ),
         'D' => 
         array (
             'Detection\\' => 10,
         ),
+        'C' => 
+        array (
+            'Cores\\' => 6,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Widgets\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/inc/src/Widgets',
+        ),
         'Vectorface\\Whip\\' => 
         array (
             0 => __DIR__ . '/..' . '/vectorface/whip/src',
+        ),
+        'Themes\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/inc/src/Themes',
         ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
@@ -77,20 +82,11 @@ class ComposerStaticInitaa5d2d434f9f8d32c649008de18a5fd5
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'Psr\\Http\\Client\\' => 
+        'Plugins\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-client/src',
-        ),
-        'PragmaRX\\Recovery\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/pragmarx/recovery/src',
-        ),
-        'PragmaRX\\Random\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/pragmarx/random/src',
+            0 => __DIR__ . '/../..' . '/inc/src/Plugins',
         ),
         'MatthiasMullie\\PathConverter\\' => 
         array (
@@ -100,47 +96,22 @@ class ComposerStaticInitaa5d2d434f9f8d32c649008de18a5fd5
         array (
             0 => __DIR__ . '/..' . '/matthiasmullie/minify/src',
         ),
-        'HD_Widgets\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/inc/src/Widgets',
-        ),
-        'HD_Themes\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/inc/src/Themes',
-        ),
-        'HD_Plugins\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/inc/src/Plugins',
-        ),
-        'HD_Libs\\' => 
+        'Libs\\' => 
         array (
             0 => __DIR__ . '/../..' . '/inc/src/Libs',
-        ),
-        'HD_Cores\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/inc/src/Cores',
-        ),
-        'GuzzleHttp\\Psr7\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
-        ),
-        'GuzzleHttp\\Promise\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
-        ),
-        'GuzzleHttp\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
         'Detection\\' => 
         array (
             0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/src',
         ),
+        'Cores\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/inc/src/Cores',
+        ),
     );
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'PHPGangsta_GoogleAuthenticator' => __DIR__ . '/..' . '/phpgangsta/googleauthenticator/PHPGangsta/GoogleAuthenticator.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

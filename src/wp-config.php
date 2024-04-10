@@ -23,12 +23,12 @@ if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PRO
     $_SERVER['HTTPS'] = 'on';
 }
 
-//const TRACKING = false;
-//if ( ! defined( 'FS_METHOD' ) ) define( 'FS_METHOD', 'direct' );
+const TRACKING = false;
+if ( ! defined( 'FS_METHOD' ) ) define( 'FS_METHOD', 'direct' );
 
 /** PHP Memory */
-//const WP_MEMORY_LIMIT = '512M';
-//const WP_MAX_MEMORY_LIMIT = '512M';
+const WP_MEMORY_LIMIT = '512M';
+const WP_MAX_MEMORY_LIMIT = '512M';
 
 const DISALLOW_FILE_EDIT = true;
 const DISALLOW_FILE_MODS = false;

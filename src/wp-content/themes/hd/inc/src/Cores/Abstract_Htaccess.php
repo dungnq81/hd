@@ -1,6 +1,6 @@
 <?php
 
-namespace HD_Cores;
+namespace Cores;
 
 /**
  * Htaccess Class

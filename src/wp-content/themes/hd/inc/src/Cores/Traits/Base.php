@@ -1,6 +1,6 @@
 <?php
 
-namespace HD_Cores\Traits;
+namespace Cores\Traits;
 
 \defined( 'ABSPATH' ) || die;
 

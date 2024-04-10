@@ -1061,10 +1061,10 @@
   dependencies:
     "@easepick/base-plugin" "^1.1.0"
 
-"@fancyapps/ui@^5.0.33":
-  version "5.0.35"
-  resolved "https://registry.yarnpkg.com/@fancyapps/ui/-/ui-5.0.35.tgz#30cf838ee562c13c01614409998b7f227c0c6b9b"
-  integrity sha512-2aTAksmugIDmadEEgK41i3RyNGE2zK7liOSXC41Oh7Lh1RBHpNyz97vbzKfuik9Pwx5B8hGGd8DEPcjyXbS3NQ==
+"@fancyapps/ui@^5.0.36":
+  version "5.0.36"
+  resolved "https://registry.yarnpkg.com/@fancyapps/ui/-/ui-5.0.36.tgz#dd5117cb579e9fc85c06dc32c947be6105724fb2"
+  integrity sha512-GMygQzp1MBTFNTT6AzpbL6pXTD6bTxwjmmpI1fe8Ozmmiseu8/g82Sudl1YhcbZmS4bJgaBOF5THDFGpXQ1fDw==
 
 "@fullhuman/postcss-purgecss@^6.0.0":
   version "6.0.0"
@@ -1369,9 +1369,9 @@
     "@types/node" "*"
 
 "@types/node@*":
-  version "20.12.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.12.5.tgz#74c4f31ab17955d0b5808cdc8fd2839526ad00b3"
-  integrity sha512-BD+BjQ9LS/D8ST9p5uqBxghlN+S42iuNxjsUGjeZobe/ciXzk2qb1B6IXc6AnRLS+yFJRpN2IPEHMzwspfDJNw==
+  version "20.12.7"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.12.7.tgz#04080362fa3dd6c5822061aa3124f5c152cff384"
+  integrity sha512-wq0cICSkRLVaf3UGLMGItu/PtdY7oaXaI/RVU+xliKVOtRna3PRY57ZDfztpDL0n11vfymMUnXv8QwYCO7L1wg==
   dependencies:
     undici-types "~5.26.4"
 
@@ -1743,7 +1743,7 @@ autoprefixer@^10.4.0, autoprefixer@^10.4.19:
     picocolors "^1.0.0"
     postcss-value-parser "^4.2.0"
 
-axios@^1.6.7:
+axios@^1.6.8:
   version "1.6.8"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.8.tgz#66d294951f5d988a00e87a0ffb955316a619ea66"
   integrity sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==
@@ -2030,9 +2030,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001587, caniuse-lite@^1.0.30001599:
-  version "1.0.30001606"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001606.tgz#b4d5f67ab0746a3b8b5b6d1f06e39c51beb39a9e"
-  integrity sha512-LPbwnW4vfpJId225pwjZJOgX1m9sGfbw/RKJvw/t0QhYOOaTXHvkjVGFGPpvwEzufrjvTlsULnVTxdy4/6cqkg==
+  version "1.0.30001608"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001608.tgz#7ae6e92ffb300e4b4ec2f795e0abab456ec06cc0"
+  integrity sha512-cjUJTQkk9fQlJR2s4HMuPMvTiRggl0rAVMtthQuyOlDWuqHXqN8azLq+pi8B2TjwKJ32diHjUqRIKeFX4z1FoA==
 
 chalk@^2.4.2:
   version "2.4.2"
@@ -2403,10 +2403,10 @@ css-loader@^5.2.6:
     schema-utils "^3.0.0"
     semver "^7.3.5"
 
-css-loader@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-7.0.0.tgz#3456a621ce51f9dfd12b9674bfc7527c5e1821db"
-  integrity sha512-WrO4FVoamxt5zY9CauZjoJgXRi/LZKIk+Ta7YvpSGr5r/eMYPNp5/T9ODlMe4/1rF5DYlycG1avhV4g3A/tiAw==
+css-loader@^7.1.1:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-7.1.1.tgz#de4163c0cb765c03d7957eb9e0a49c7f354948c7"
+  integrity sha512-OxIR5P2mjO1PSXk44bWuQ8XtMK4dpEqpIyERCx3ewOo3I8EmbcxMPUc5ScLtQfgXtOojoMv57So4V/C02HQLsw==
   dependencies:
     icss-utils "^5.1.0"
     postcss "^8.4.33"
@@ -2708,9 +2708,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.4.668:
-  version "1.4.729"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.729.tgz#8477d21e2a50993781950885b2731d92ad532c00"
-  integrity sha512-bx7+5Saea/qu14kmPTDHQxkp2UnziG3iajUQu3BxFvCOnpAJdDbMV4rSl+EqFDkkpNNVUFlR1kDfpL59xfy1HA==
+  version "1.4.731"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.731.tgz#d3dc19f359045b750a1fb0bc42315a502d950187"
+  integrity sha512-+TqVfZjpRz2V/5SPpmJxq9qK620SC5SqCnxQIOi7i/U08ZDcTpKbT7Xjj9FU5CbXTMUb4fywbIr8C7cGv4hcjw==
 
 elliptic@^6.5.3, elliptic@^6.5.5:
   version "6.5.5"
@@ -3979,7 +3979,7 @@ mini-css-extract-plugin@^1.6.2:
     schema-utils "^3.0.0"
     webpack-sources "^1.1.0"
 
-minify@^11.0.1:
+minify@^11.1.1:
   version "11.1.1"
   resolved "https://registry.yarnpkg.com/minify/-/minify-11.1.1.tgz#0ad96fae06f7211d537075ad635866c446e3bae2"
   integrity sha512-uxU7kBTvZE4Vnqaa00pV1/p5CpDH0Nu43hPhScATbgde41B7XNlQfax2kaYoxwQpZKJjGz86+16/2rlZXhIz5g==
@@ -4064,9 +4064,9 @@ nanoid@^3.3.7:
   integrity sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==
 
 nanoid@^5.0.4:
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.0.6.tgz#7f99a033aa843e4dcf9778bdaec5eb02f4dc44d5"
-  integrity sha512-rRq0eMHoGZxlvaFOUdK1Ev83Bd1IgzzR+WJ3IbDJ7QOSdAxYjlurSPqFs9s4lJg29RT6nPwizFtJhQS6V5xgiA==
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.0.7.tgz#6452e8c5a816861fd9d2b898399f7e5fd6944cc6"
+  integrity sha512-oLxFY2gd2IqnjcYyOXD8XGCftpGtZP2AbHbOkthDkvRywH5ayNtPVy9YlOPcHckXzbLTCHpkb7FB+yuxKV13pQ==
 
 negotiator@0.6.3:
   version "0.6.3"
@@ -4986,7 +4986,7 @@ safe-buffer@5.2.1, safe-buffer@>=5.1.0, safe-buffer@^5.0.1, safe-buffer@^5.1.0, 
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-sanitize-html@^2.11.0:
+sanitize-html@^2.13.0:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/sanitize-html/-/sanitize-html-2.13.0.tgz#71aedcdb777897985a4ea1877bf4f895a1170dae"
   integrity sha512-Xff91Z+4Mz5QiNSLdLWwjgBDm5b1RU6xBT0+12rapjiaR7SwfRdjw8f+6Rir2MXKLrDicRFHdb51hGOAxmsUIA==
@@ -5436,10 +5436,10 @@ svgo@^2.7.0:
     picocolors "^1.0.0"
     stable "^0.1.8"
 
-swiper@^11.1.0:
-  version "11.1.0"
-  resolved "https://registry.yarnpkg.com/swiper/-/swiper-11.1.0.tgz#3497b60d65d1320e427cdf11dfaad5c555283826"
-  integrity sha512-Pm78CgU7Wvg+w/MgIL/1NwMSLgx0XqFof25EnVyX8iZFCYJv5CppH7LHkBj43qW2k5Cp3Iz7FcdBxrox7XX2AQ==
+swiper@^11.1.1:
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-11.1.1.tgz#5efaa222d4a47a3ac75090cfc2fda6e53e564982"
+  integrity sha512-jGmEA/fNz1lACIcY4/40ggm1Gcyv+EUivmgV/Jd2WFPsEJhbWXnRAwzZR8OPjkBLtDxmzcoYG/iiAMWfRs0YKQ==
 
 tapable@^2.1.1, tapable@^2.2.0:
   version "2.2.1"

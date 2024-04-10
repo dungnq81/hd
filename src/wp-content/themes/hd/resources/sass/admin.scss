@@ -374,12 +374,9 @@ table.wp-list-table .column-handle, table.wp-list-table tbody td.column-handle {
 
 /** */
 input[value="advanced-custom-fields-pro/acf.php"],
-input[value="ehd-core/ehd-core.php"] {
-    display: none !important;
-}
 
 /** */
-body.toplevel_page_ehd-settings {
+body.toplevel_page_hd-settings {
     #wpbody-content {
         .notice {
             margin-left: 2px;
@@ -388,7 +385,7 @@ body.toplevel_page_ehd-settings {
 }
 
 /** */
-#ehd_container {
+#hd_container {
     margin: 0;
     width: 100%;
     position: relative;
@@ -399,7 +396,7 @@ body.toplevel_page_ehd-settings {
         vertical-align: top;
         margin-left: -20px;
 
-        #ehd_nav {
+        #hd_nav {
             display: table-cell;
             z-index: 99;
             min-width: 200px;
@@ -458,7 +455,7 @@ body.toplevel_page_ehd-settings {
             }
         }
 
-        #ehd_content {
+        #hd_content {
             border-left: 1px solid #ddd;
             display: table-cell;
             min-height: 100%;
@@ -617,7 +614,7 @@ body.toplevel_page_ehd-settings {
     }
 }
 
-.ehd-settings_page_server-info {
+.hd-settings_page_server-info {
     #wpcontent {
         padding-left: 0;
     }
@@ -655,13 +652,13 @@ body.toplevel_page_ehd-settings {
 }
 
 /** Checkbox Toggle UI */
-.acf-field.ehd-checkbox {
+.acf-field.hd-checkbox {
     .acf-label {
         display: none !important;
     }
 }
 
-:is(input[type="checkbox"].ehd-checkbox, .acf-field.ehd-checkbox > .acf-input input[type="checkbox"], .menu-item-settings .field-link-target input[type="checkbox"]) {
+:is(input[type="checkbox"].hd-checkbox, .acf-field.hd-checkbox > .acf-input input[type="checkbox"], .menu-item-settings .field-link-target input[type="checkbox"]) {
     appearance: none;
     -webkit-tap-highlight-color: transparent;
     width: auto;

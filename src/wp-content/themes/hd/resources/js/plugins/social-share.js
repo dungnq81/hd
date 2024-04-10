@@ -1,1 +1,1 @@
-import { SocialShare } from "ensemble-social-share/src/js/SocialShare";
+import { SocialShare } from "ensemble-social-share/dist/js/ensemble-social-share.min";

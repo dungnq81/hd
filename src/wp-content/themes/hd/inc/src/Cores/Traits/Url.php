@@ -1,6 +1,6 @@
 <?php
 
-namespace HD_Cores\Traits;
+namespace Cores\Traits;
 
 use Vectorface\Whip\Whip;
 

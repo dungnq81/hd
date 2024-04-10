@@ -10,7 +10,7 @@
  *
  * @package    TGM-Plugin-Activation
  * @subpackage Example
- * @version    2.6.1 for parent theme eHD for publication on WordPress.org
+ * @version    2.6.1 for parent theme HD for publication on WordPress.org
  * @author     Thomas Griffin, Gary Jones, Juliette Reinders Folmer
  * @copyright  Copyright (c) 2011, Thomas Griffin
  * @license    http://opensource.org/licenses/gpl-2.0.php GPL v2 or later
@@ -19,12 +19,12 @@
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'TGM_Plugin_Activation.php';
 
-add_action( 'tgmpa_register', 'ehd_register_required_plugins' );
+add_action( 'tgmpa_register', 'hd_register_required_plugins' );
 
 /**
  * @return void
  */
-function ehd_register_required_plugins(): void {
+function hd_register_required_plugins(): void {
 
 	/*
 	 * Array of plugin arrays. Required keys are name and slug.

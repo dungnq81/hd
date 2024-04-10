@@ -1,11 +1,10 @@
 <?php
 
-namespace HD_Cores\Traits;
+namespace Cores\Traits;
 
-use HD_Cores\Helper;
-use HD_Libs\CSS;
-use HD_Libs\Horizontal_Nav_Walker;
-use HD_Libs\Vertical_Nav_Walker;
+use Libs\CSS;
+use Libs\Horizontal_Nav_Walker;
+use Libs\Vertical_Nav_Walker;
 
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -415,10 +414,11 @@ trait Wp {
 		}
 
 		// woocommerce_hide_out_of_stock_items
-		if ( 'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items', false, true ) && class_exists( '\WooCommerce' ) && 'product' == $post_type ) {
-
-			$product_visibility_term_ids = wc_get_product_visibility_term_ids();
-
+		if ( 'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items', false, true ) &&
+		     self::is_woocommerce_active() &&
+		     'product' == $post_type
+		) {
+			$product_visibility_term_ids = \wc_get_product_visibility_term_ids();
 			$_args['tax_query'][] = [
 				[
 					'taxonomy' => 'product_visibility',
@@ -519,10 +519,11 @@ trait Wp {
 		}
 
 		// woocommerce_hide_out_of_stock_items
-		if ( 'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items', false, true ) && class_exists( '\WooCommerce' ) && 'product' == $post_type ) {
-
+		if ( 'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items', false, true ) &&
+		     self::is_woocommerce_active() &&
+		     'product' == $post_type
+		) {
 			$product_visibility_term_ids = wc_get_product_visibility_term_ids();
-
 			$_args['tax_query'][] = [
 				[
 					'taxonomy' => 'product_visibility',
@@ -1039,7 +1040,7 @@ trait Wp {
 			echo '<li><a class="home" href="' . self::home() . '">' . __( 'Home', HD_TEXT_DOMAIN ) . '</a></li>';
 
 			//...
-			if ( class_exists( '\WooCommerce' ) && @is_shop() ) {
+			if ( self::is_woocommerce_active() && @is_shop() ) {
 				$shop_page_title = get_the_title( self::getOption( 'woocommerce_shop_page_id' ) );
 				echo $before . $shop_page_title . $after;
 			} elseif ( $wp_query->is_posts_page ) {
@@ -2082,5 +2083,45 @@ trait Wp {
 			echo '</div>';
 		}
 		echo '</div>';
+	}
+
+	// -------------------------------------------------------------
+
+	/**
+	 * Check if plugin is installed by getting all plugins from the plugins dir
+	 *
+	 * @param $plugin_slug
+	 *
+	 * @return bool
+	 */
+	public static function check_plugin_installed( $plugin_slug ): bool {
+
+		// Check if needed functions exist - if not, require them
+		if ( ! function_exists( 'get_plugins' ) || ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		$installed_plugins = get_plugins();
+
+		return array_key_exists( $plugin_slug, $installed_plugins ) || in_array( $plugin_slug, $installed_plugins, true );
+	}
+
+	// -------------------------------------------------------------
+
+	/**
+	 * Check if the plugin is installed
+	 *
+	 * @param $plugin_slug
+	 *
+	 * @return bool
+	 */
+	public static function check_plugin_active( $plugin_slug ): bool {
+		if ( self::check_plugin_installed( $plugin_slug ) ) {
+			if ( is_plugin_active( $plugin_slug ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

@@ -6,8 +6,8 @@
  * @package HD
  */
 
-use HD_Cores\Helper;
-use HD_Themes\Theme;
+use Cores\Helper;
+use Themes\Theme;
 
 $theme_version = ( wp_get_theme()->get( 'Version' ) ) ?: false;
 $theme_author  = ( wp_get_theme()->get( 'Author' ) ) ?: 'HD Team';
@@ -28,9 +28,8 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-require_once __DIR__ . '/inc/themes.php';
 require_once __DIR__ . '/inc/helpers.php';
-require_once __DIR__ . '/inc/ajax.php';
+require_once __DIR__ . '/inc/themes.php';
 require_once __DIR__ . '/inc/css-output.php';
 
 // Initialize theme settings.

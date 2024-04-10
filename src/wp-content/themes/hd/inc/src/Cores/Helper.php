@@ -1,12 +1,12 @@
 <?php
 
-namespace HD_Cores;
+namespace Cores;
 
 use DirectoryIterator;
 use MatthiasMullie\Minify;
 
-use HD_Cores\Traits\WooCommerce;
-use HD_Cores\Traits\Wp;
+use Cores\Traits\WooCommerce;
+use Cores\Traits\Wp;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -125,7 +125,7 @@ final class Helper {
 	 *
 	 * @return string
 	 */
-	public static function ACF_Link_Wrapper( $content, $link, string $class = '', string $label = '' ): string {
+	public static function ACF_Link_Wrap( $content, $link, string $class = '', string $label = '' ): string {
 		$link_return = '';
 
 		if ( is_string( $link ) ) {
@@ -249,7 +249,7 @@ final class Helper {
 	 * @return mixed|object
 	 */
 	public static function acfFields( $id ): mixed {
-		if ( ! class_exists( '\ACF' ) ) {
+		if ( ! self::is_acf_pro_active() && ! self::is_acf_active() ) {
 			return (object) [];
 		}
 
@@ -344,9 +344,7 @@ final class Helper {
 		}
 
 		if ( ! headers_sent() ) {
-
 			wp_redirect( $uri, $status);
-
 		} else {
 			echo '<script>';
 			echo 'window.location.href="' . $uri . '";';
@@ -377,5 +375,32 @@ final class Helper {
 		}
 
 		return $src;
+	}
+
+	// -------------------------------------------------------------
+
+	/**
+	 * @return bool
+	 */
+	public static function is_woocommerce_active(): bool {
+		return self::check_plugin_active( 'woocommerce/woocommerce.php' );
+	}
+
+	// -------------------------------------------------------------
+
+	/**
+	 * @return bool
+	 */
+	public static function is_acf_pro_active(): bool {
+		return self::check_plugin_active( 'advanced-custom-fields-pro/acf.php' );
+	}
+
+	// -------------------------------------------------------------
+
+	/**
+	 * @return bool
+	 */
+	public static function is_acf_active(): bool {
+		return self::check_plugin_active( 'advanced-custom-fields/acf.php' );
 	}
 }
