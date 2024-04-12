@@ -145,7 +145,7 @@ final class Optimizer {
 //			echo '</script>';
 //		}
 
-		if ( file_exists( $skip_link = HD_THEME_PATH . 'assets/js/plugins/skip-link-focus-fix.js' ) ) {
+		if ( file_exists( $skip_link = HD_THEME_PATH . 'assets/js/plugins/skip-link-focus.js' ) ) {
 			echo '<script>';
 			include $skip_link;
 			echo '</script>';

@@ -20,17 +20,24 @@ use Libs\Security\Xmlrpc;
 
 final class Admin {
 	public function __construct() {
-		add_action( 'admin_notices', [ &$this, 'options_admin_notice' ] );
 
-		add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 31 );
-		add_action( 'admin_enqueue_scripts', [ &$this, 'options_enqueue_assets' ], 32 );
-
+        // editor-style.css
 		add_action( 'enqueue_block_editor_assets', [ &$this, 'enqueue_block_editor_assets' ] );
 
-		add_filter( 'menu_order', [ &$this, 'options_reorder_submenu' ] );
+        // admin.js & admin.css
+		add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 31 );
+
+        // codemirror_settings
+		add_action( 'admin_enqueue_scripts', [ &$this, 'options_enqueue_assets' ], 32 );
+
+        // SMTP alert
+		add_action( 'admin_notices', [ &$this, 'options_admin_notice' ] );
 
 		add_action( 'admin_init', [ &$this, 'admin_init' ], 11 );
 		add_action( 'admin_menu', [ &$this, 'admin_menu' ] );
+
+		add_filter( 'custom_menu_order', '__return_true' );
+		add_filter( 'menu_order', [ &$this, 'options_reorder_submenu' ] );
 	}
 
 	/** ---------------------------------------- */
@@ -57,23 +64,32 @@ final class Admin {
 	/** ---------------------------------------- */
 
 	/**
+	 * @param $hook
+	 *
+	 * @return void
+	 */
+	public function options_enqueue_assets( $hook ): void {
+		$allowed_pages = [
+			'toplevel_page_hd-settings',
+		];
+
+		if ( in_array( $hook, $allowed_pages ) ) {
+			$codemirror_settings = [
+				'codemirror_css'  => wp_enqueue_code_editor( [ 'type' => 'text/css' ] ),
+				'codemirror_html' => wp_enqueue_code_editor( [ 'type' => 'text/html' ] ),
+			];
+
+			wp_enqueue_style( 'wp-codemirror' );
+			wp_localize_script( 'admin', 'codemirror_settings', $codemirror_settings );
+		}
+	}
+
+	/** ---------------------------------------- */
+
+	/**
 	 * @return void
 	 */
 	public function admin_init(): void {
-
-		//global $menu;
-		//dump($menu);
-
-		// Hide menu
-		$hide_menu = Helper::getThemeMod( 'remove_menu_setting' );
-		if ( $hide_menu ) {
-			$array_hide_menu = explode( "\n", $hide_menu );
-			foreach ( $array_hide_menu as $menu_slug ) {
-				if ( $menu_slug ) {
-					remove_menu_page( $menu_slug );
-				}
-			}
-		}
 
 		// https://wordpress.stackexchange.com/questions/77532/how-to-add-the-category-id-to-admin-page
 		$taxonomy_arr = [
@@ -135,19 +151,34 @@ final class Admin {
 	 */
 	public function admin_menu(): void {
 
-		// submenu
-		global $submenu;
+		global $menu, $submenu;
+		//dump($menu);
+		//dump($submenu);
+
+		// Hide menu
+		$hide_menu = Helper::getThemeMod( 'remove_menu_setting' );
+		if ( $hide_menu ) {
+			$array_hide_menu = explode( "\n", $hide_menu );
+			foreach ( $array_hide_menu as $menu_slug ) {
+				if ( $menu_slug ) {
+					remove_menu_page( $menu_slug );
+				}
+			}
+		}
 
         // themes.php
-        foreach ( $submenu['themes.php'] as $menu_key =>  $themes_menu ) {
-            if ( 'themes.php' == $themes_menu[2] ||
-                'edit.php?post_type=wp_block' == $themes_menu[2]
-            ) {
-                unset( $submenu['themes.php'][$menu_key] );
-            }
-        }
+//		if ( ! empty( $submenu['themes.php'] ) ) {
+//            foreach ( $submenu['themes.php'] as $menu_key =>  $themes_menu ) {
+//                if ( 'themes.php' == $themes_menu[2] ||
+//                    'edit.php?post_type=wp_block' == $themes_menu[2]
+//                ) {
+//                    unset( $submenu['themes.php'][$menu_key] );
+//                }
+//            }
+//		}
 
-		//unset($submenu['themes.php'][5]); // Themes
+		/** ---------------------------------------- */
+		/** ---------------------------------------- */
 
 		remove_meta_box('dashboard_site_health',     'dashboard', 'normal');
 		remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'normal' );
@@ -181,6 +212,7 @@ final class Admin {
 	 * @param array $menu_order The WP menu order.
 	 */
 	public function options_reorder_submenu( array $menu_order ): array {
+
 		// Load the global submenu.
 		global $submenu;
 
@@ -188,32 +220,10 @@ final class Admin {
 			return $menu_order;
 		}
 
+        // Change menu title
 		$submenu['hd-settings'][0][0] = __( 'Settings', HD_TEXT_DOMAIN );
 
 		return $menu_order;
-	}
-
-	/** ---------------------------------------- */
-
-	/**
-	 * @param $hook
-	 *
-	 * @return void
-	 */
-	public function options_enqueue_assets( $hook ): void {
-		$allowed_pages = [
-			'toplevel_page_hd-settings',
-		];
-
-		if ( in_array( $hook, $allowed_pages ) ) {
-			$codemirror_settings = [
-				'codemirror_css'  => wp_enqueue_code_editor( [ 'type' => 'text/css' ] ),
-				'codemirror_html' => wp_enqueue_code_editor( [ 'type' => 'text/html' ] ),
-			];
-
-			wp_enqueue_style( 'wp-codemirror' );
-			wp_localize_script( 'admin', 'codemirror_settings', $codemirror_settings );
-		}
 	}
 
 	/** ---------------------------------------- */
@@ -658,7 +668,7 @@ final class Admin {
 			$class   = 'notice notice-error';
 			$message = __( 'You need to configure your SMTP credentials in the settings to send emails.', HD_TEXT_DOMAIN );
 
-			//printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), $message );
+			printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), $message );
 		}
 
 	}

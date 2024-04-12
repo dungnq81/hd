@@ -1,8 +1,7 @@
+const { globSync } = require('glob');
 const mix = require('laravel-mix');
-const {glob, globSync} = require('glob');
 
-mix
-    .webpackConfig({
+mix.webpackConfig({
         stats: {
             children: true,
         },
@@ -15,7 +14,7 @@ mix
         processCssUrls: false,
         clearConsole: true,
         terser: {
-            extractComments: false,
+            extractComments: true,
         },
         autoprefixer: {
             remove: false
@@ -23,10 +22,8 @@ mix
     });
 
 // Source maps when not in production.
-if (!mix.inProduction()) {
-    mix
-        //.webpackConfig({devtool: 'source-map'})
-        .sourceMaps(false, 'source-map');
+if ( !mix.inProduction() ) {
+    mix.sourceMaps(false, 'source-map');
 }
 
 // Run only for a plugin.
