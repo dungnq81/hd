@@ -138,11 +138,25 @@ final class Theme {
 
 		( new Shortcode() )::init();
 
-		// template-structures
-		$structures_dir = HD_THEME_PATH . 'template-structures';
+		// folders
+		$dirs = [
+			'template_structures' => HD_THEME_PATH . 'template-structures',
+			'templates' => HD_THEME_PATH . 'templates',
+			'template_parts' => HD_THEME_PATH . 'template-parts',
+			'storage' => HD_THEME_PATH . 'storage',
+			'languages' => HD_THEME_PATH . 'languages',
 
-        wp_mkdir_p( $structures_dir );
-		Helper::FQN_Load( $structures_dir, true );
+			'inc_tpl' => HD_THEME_PATH . 'inc/tpl',
+			'inc_ajax' => HD_THEME_PATH . 'inc/ajax',
+		];
+
+		foreach ( $dirs as $dir => $path ) {
+			wp_mkdir_p( $path );
+
+			if ( 'template_structures' == $dir ) {
+				Helper::FQN_Load( $path, true );
+			}
+		}
 	}
 
 	/** ---------------------------------------- */
@@ -239,7 +253,6 @@ final class Theme {
 		/** Extra */
 		wp_enqueue_style( "fonts-style", get_template_directory_uri() . "/assets/css/fonts.css", [], HD_THEME_VERSION );
 
-		wp_register_script( "lazysizes", get_template_directory_uri() . "assets/js/plugins/lazysizes.js", [ "jquery-core" ], HD_THEME_VERSION, true );
 		wp_enqueue_script( "back-to-top", get_template_directory_uri() . "/assets/js/plugins/back-to-top.js", [], HD_THEME_VERSION, true );
 		wp_enqueue_script( "social-share", get_template_directory_uri() . "/assets/js/plugins/social-share.js", [], '0.0.2', true );
 

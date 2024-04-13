@@ -115,6 +115,10 @@ img {
     width: auto;
     height: auto;
 
+    &:not([src]) {
+        visibility: hidden;
+    }
+
     &:where(.aligncenter, .align-center) {
         display: block;
         margin-left: auto;

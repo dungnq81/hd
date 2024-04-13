@@ -2,9 +2,39 @@
 
 namespace Cores\Traits;
 
+use Exception;
+
 \defined( 'ABSPATH' ) || die;
 
 trait Base {
+
+	// --------------------------------------------------
+
+	/**
+	 * @param string $date_time_1
+	 * @param string $date_time_2
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	function iso_duration_time( string $date_time_1, string $date_time_2 ): string {
+
+		$date_time_1 = new \DateTime( $date_time_1 );
+		$date_time_2 = new \DateTime( $date_time_2 );
+
+		$interval = $date_time_1->diff( $date_time_2 );
+
+		$isoDuration = 'P';
+		$isoDuration .= ($interval->y > 0) ? $interval->y . 'Y' : '';
+		$isoDuration .= ($interval->m > 0) ? $interval->m . 'M' : '';
+		$isoDuration .= ($interval->d > 0) ? $interval->d . 'D' : '';
+		$isoDuration .= 'T';
+		$isoDuration .= ($interval->h > 0) ? $interval->h . 'H' : '';
+		$isoDuration .= ($interval->i > 0) ? $interval->i . 'M' : '';
+		$isoDuration .= ($interval->s > 0) ? $interval->s . 'S' : '';
+
+		return $isoDuration;
+	}
 
 	// --------------------------------------------------
 

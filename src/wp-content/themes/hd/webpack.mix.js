@@ -13,6 +13,7 @@ mix
     .disableNotifications()
 
     .copyDirectory(storage + '/fonts/fontawesome/webfonts', assets + '/webfonts')
+    .copyDirectory(resources + '/img', assets + '/img')
 
     .sass(resources + '/sass/editor-style.scss', assets + '/css')
     .sass(resources + '/sass/admin.scss', assets + '/css')

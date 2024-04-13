@@ -742,7 +742,7 @@
     }
 }
 
-@mixin animation-loading( $c1: $body-color, $c2: #f3f3f3 ) {
+@mixin animation-loading( $size: 30, $c1: $body-color, $c2: #f3f3f3 ) {
     position: relative;
 
     &::before {
@@ -754,7 +754,7 @@
 
     &::after {
         content: '';
-        @include centering-self(30);
+        @include centering-self($size);
         z-index: 9999;
         border: 3px solid;
         border-color: $c1 $c2 $c1 $c2; // top right bottom left
