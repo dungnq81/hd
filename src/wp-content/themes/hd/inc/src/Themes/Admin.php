@@ -496,9 +496,17 @@ final class Admin {
                             <li class="smtp-settings">
                                 <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', HD_TEXT_DOMAIN ); ?></a>
                             </li>
+
+                            <?php
+                            $hd_email_list = apply_filters( 'hd_email_list', [] );
+		                    if ( ! empty( $hd_email_list ) ) :
+
+                            ?>
                             <li class="email-settings">
                                 <a title="EMAIL" href="#email_settings"><?php _e( 'Email', HD_TEXT_DOMAIN ); ?></a>
                             </li>
+                            <?php endif; ?>
+
                             <li class="contact-info-settings hide">
                                 <a title="Contact Info" href="#contact_info_settings"><?php _e( 'Contact Info', HD_TEXT_DOMAIN ); ?></a>
                             </li>

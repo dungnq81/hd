@@ -10,13 +10,15 @@ $emails_options = Helper::getOption( 'emails__options' );
 <?php
 
 $hd_email_list = apply_filters( 'hd_email_list', [] );
-foreach ( $hd_email_list as $key => $ar ) :
-	$title = Helper::mbUcFirst( $ar );
-	$emails_list = $emails_options[$key] ?? '';
+if ( ! empty( $hd_email_list ) ) :
 
-	if ( ! $title ) {
-		break;
-	}
+    foreach ( $hd_email_list as $key => $ar ) :
+        $title = Helper::mbUcFirst( $ar );
+        $emails_list = $emails_options[$key] ?? '';
+
+        if ( ! $title ) {
+            break;
+        }
 ?>
 <div class="section section-text" id="section_emails">
 	<label class="heading" for="<?=$key?>"><?php _e( $title, HD_TEXT_DOMAIN ); ?></label>
@@ -28,4 +30,4 @@ foreach ( $hd_email_list as $key => $ar ) :
 	</div>
 </div>
 <?php
-endforeach;
+endforeach; endif;

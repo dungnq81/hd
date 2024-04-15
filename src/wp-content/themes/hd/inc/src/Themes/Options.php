@@ -154,7 +154,7 @@ final class Options {
 			wp_dequeue_style( 'wp-block-library-theme' );
 
 			// Remove WooCommerce block CSS
-			if ( class_exists( '\WooCommerce' ) ) {
+			if ( Helper::is_woocommerce_active() ) {
 				wp_deregister_style( 'wc-blocks-vendors-style' );
 				wp_deregister_style( 'wc-block-style' );
 			}

@@ -153,7 +153,8 @@ final class Theme {
 		foreach ( $dirs as $dir => $path ) {
 			wp_mkdir_p( $path );
 
-			if ( 'template_structures' == $dir ) {
+			// autoload template_structures & ajax files
+			if ( in_array( $dir, [ 'template_structures', 'inc_ajax' ] ) ) {
 				Helper::FQN_Load( $path, true );
 			}
 		}
@@ -254,7 +255,7 @@ final class Theme {
 		wp_enqueue_style( "fonts-style", get_template_directory_uri() . "/assets/css/fonts.css", [], HD_THEME_VERSION );
 
 		wp_enqueue_script( "back-to-top", get_template_directory_uri() . "/assets/js/plugins/back-to-top.js", [], HD_THEME_VERSION, true );
-		wp_enqueue_script( "social-share", get_template_directory_uri() . "/assets/js/plugins/social-share.js", [], '0.0.2', true );
+		wp_enqueue_script( "social-share", get_template_directory_uri() . "/assets/js/plugins/social-share.js", [], '0.0.3', true );
 
 		/** Inline Js */
 		$l10n = [
@@ -354,7 +355,6 @@ final class Theme {
 
 		/** Disable unwanted image sizes */
 		add_filter( 'intermediate_image_sizes_advanced', function ( $sizes ) {
-
 			unset( $sizes['medium_large'] );
 
 			unset( $sizes['1536x1536'] ); // disable 2x medium-large size
@@ -387,5 +387,3 @@ final class Theme {
 		}, 10, 1 );
 	}
 }
-
-
