@@ -558,7 +558,7 @@ trait Wp {
 
 		if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
 			$logo = get_custom_logo();
-			$html = $is_home_or_front_page ? '<div id="logo" class="' . $class . '">' . $logo . '</div>' : $logo;
+			$html = '<div id="logo" class="' . $class . '">' . $logo . '</div>';
 		} else {
 			$html = '<div class="' . $class . '"><a title href="' . self::home() . '" rel="home">' . esc_html( get_bloginfo( 'name' ) ) . '</a></div>';
 			if ( '' !== get_bloginfo( 'description' ) ) {
@@ -1855,6 +1855,7 @@ trait Wp {
 	 *
 	 * @return void
 	 * @throws Exception
+	 * @deprecated
 	 */
 	public static function PHPMailerInit( $phpmailer, ?string $option_name = null ): void {
 		// (Re)create it if it's gone missing.

@@ -28,6 +28,7 @@ mix
     .js(resources + '/js/plugins/skip-link-focus.js', assets + '/js/plugins')
     .js(resources + '/js/plugins/flex-gap.js', assets + '/js/plugins')
     .js(resources + '/js/plugins/load-scripts.js', assets + '/js/plugins')
+    .js(resources + '/js/plugins/passive-events.js', assets + '/js/plugins')
 
     .js(resources + '/js/login.js', assets + '/js')
     .js(resources + '/js/admin.js', assets + '/js')

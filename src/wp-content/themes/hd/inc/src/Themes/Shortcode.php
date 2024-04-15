@@ -27,9 +27,6 @@ final class Shortcode {
 			'vertical_menu'   => __CLASS__ . '::vertical_menu',
 
 			'posts' => __CLASS__ . '::posts',
-
-			'main_nav' => __CLASS__ . '::main_nav',
-			'menu_top' => __CLASS__ . '::menu_top',
 		];
 
 		foreach ( $shortcodes as $shortcode => $function ) {
@@ -77,7 +74,7 @@ final class Shortcode {
 		$term_ids         = $atts['term_ids'] ?: [];
 		$posts_per_page   = $atts['posts_per_page'] ? absint( $atts['posts_per_page'] ) : 12;
 		$include_children = Helper::toBool( $atts['include_children'] );
-		$orderby = [ 'date' => 'DESC' ];
+		$orderby          = [ 'date' => 'DESC' ];
 		$strtotime_str    = $atts['limit_time'] ? Helper::toString( $atts['limit_time'] ) : false;
 
 		$r = Helper::queryByTerms( $term_ids, $atts['post_type'], $atts['taxonomy'], $include_children, $posts_per_page, $orderby, [], $strtotime_str );
@@ -116,7 +113,7 @@ final class Shortcode {
 				$ratio_obj   = Helper::getAspectRatioClass( 'post', 'aspect_ratio__options' );
 				$ratio_class = $ratio_obj->class ?? '';
 
-				echo '<a class="d-block cover" href="' . get_permalink( $post->ID ) . '" aria-label="' . esc_attr( $title ) . '" tabindex="0">';
+				echo '<a class="block cover" href="' . get_permalink( $post->ID ) . '" aria-label="' . esc_attr( $title ) . '" tabindex="0">';
 				echo '<span class="' . $scale_class . 'after-overlay res ' . $ratio_class . '">' . $post_thumbnail . '</span>';
 				echo '</a>';
 
@@ -236,7 +233,7 @@ final class Shortcode {
 			[
 				'title'           => '',
 				'hide_if_desktop' => true,
-                'class' => '',
+				'class'           => '',
 			],
 			$atts,
 			'off_canvas_button'
@@ -332,14 +329,15 @@ final class Shortcode {
 		ob_start();
 
 		?>
-        <form role="search" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
+        <form role="search" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8"
+              data-abide novalidate>
             <label for="<?= $id; ?>" class="screen-reader-text"><?= esc_attr( $title_for ); ?></label>
             <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" autocomplete="off" name="s" value="<?= get_search_query(); ?>" placeholder="<?= esc_attr( $placeholder_title ); ?>">
             <button type="submit" data-glyph="">
                 <span><?= $title; ?></span>
             </button>
 			<?php if ( class_exists( '\WooCommerce' ) ) : ?>
-            <input type="hidden" name="post_type" value="product">
+                <input type="hidden" name="post_type" value="product">
 			<?php endif; ?>
         </form>
 		<?php
@@ -398,97 +396,4 @@ final class Shortcode {
 	}
 
 	// ------------------------------------------------------
-
-	/**
-	 * @param array $atts
-	 *
-	 * @return string
-	 */
-	public static function main_nav( array $atts = [] ): string {
-		$atts = shortcode_atts(
-			[
-				'location' => 'main-nav',
-				'class'    => 'flex items-start lg:items-center lg:justify-center flex-col lg:flex-row gap-1 lg:gap-0',
-				'id'       => esc_attr( uniqid( 'menu-' ) ),
-				'depth'    => 4,
-				'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>',
-				'li_class'   => 'group items-center lg:items-center lg:px-4 py-2 lg:py-0 text-[var(--Gray-01)] hover:text-[var(--Primary-02)] relative first:pl-0 justify-between',
-				'link_class'   => 'flex items-center gap-2 leading-[30px] justify-between',
-
-				'li_class_depth' => 'border-b border-[var(--Gray-03)] text-[var(--Gray-01)] py-1 first:pt-0 last:border-none last:pb-0',
-				'link_class_depth' => 'flex items-center gap-1 lg:p-2 hover:bg-[var(--Primary-04)] hover:text-[var(--Primary-02)] rounded-lg py-2 px-2',
-			],
-			$atts,
-			'main_nav'
-		);
-
-		$location = $atts['location'] ?: 'main-nav';
-		$class    = $atts['class'] ?: '';
-
-		$li_class    = $atts['li_class'] ?: '';
-		$link_class    = $atts['link_class'] ?: '';
-
-		$li_class_depth    = $atts['li_class_depth'] ?: '';
-		$link_class_depth    = $atts['link_class_depth'] ?: '';
-
-		$depth    = $atts['depth'] ? absint( $atts['depth'] ) : 1;
-		$id       = $atts['id'] ?: esc_attr( uniqid( 'menu-' ) );
-		$items_wrap = $atts['items_wrap'] ?: '<ul id="%1$s" class="%2$s">%3$s</ul>';
-
-		return Helper::horizontalNav( [
-			'menu_id'        => $id,
-			'menu_class'     => $class,
-			'theme_location' => $location,
-			'depth'          => $depth,
-			'items_wrap' => $items_wrap,
-			'li_class' => $li_class,
-			'link_class' => $link_class,
-			'li_class_depth' => $li_class_depth,
-			'link_class_depth' => $link_class_depth,
-			'echo'           => false,
-		] );
-	}
-
-	// ------------------------------------------------------
-
-
-	/**
-	 * @param array $atts
-	 *
-	 * @return string
-	 */
-	public static function menu_top( array $atts = [] ): string {
-		$atts = shortcode_atts(
-			[
-				'location' => 'menu-top',
-				'class'    => 'topnav flex items-center justify-start gap-4',
-				'id'       => esc_attr( uniqid( 'menu-' ) ),
-				'depth'    => 4,
-				'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>',
-				'link_class'   => 'flex items-center gap-1 text-white text-xs whitespace-nowrap capitalize hover:underline',
-				'li_class' => '',
-			],
-			$atts,
-			'menu_top'
-		);
-
-		$location = $atts['location'] ?: 'menu-top';
-		$class    = $atts['class'] ?: '';
-		$link_class    = $atts['link_class'] ?: '';
-		$li_class    = $atts['li_class'] ?: '';
-		$depth    = $atts['depth'] ? absint( $atts['depth'] ) : 1;
-		$id       = $atts['id'] ?: esc_attr( uniqid( 'menu-' ) );
-		$items_wrap = $atts['items_wrap'] ?: '<ul role="menubar" id="%1$s" class="%2$s">%3$s</ul>';
-
-		return Helper::horizontalNav( [
-			'menu_id'        => $id,
-			'menu_class'     => $class,
-			'theme_location' => $location,
-			'depth'          => $depth,
-			'items_wrap' => $items_wrap,
-			'link_class' => $link_class,
-			'li_class' => $li_class,
-			'echo'           => false,
-		] );
-	}
 }

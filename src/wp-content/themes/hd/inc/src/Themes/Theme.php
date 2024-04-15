@@ -32,8 +32,8 @@ final class Theme {
 
 		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 91 );
 
-        // Prevent Specific Plugins from deactivation, delete, v.v...
-        add_filter( 'plugin_action_links', [ &$this, 'plugin_action_links' ], 11, 4 );
+		// Prevent Specific Plugins from deactivation, delete, v.v...
+		add_filter( 'plugin_action_links', [ &$this, 'plugin_action_links' ], 11, 4 );
 	}
 
 	/** ---------------------------------------- */
@@ -141,12 +141,12 @@ final class Theme {
 		// folders
 		$dirs = [
 			'template_structures' => HD_THEME_PATH . 'template-structures',
-			'templates' => HD_THEME_PATH . 'templates',
-			'template_parts' => HD_THEME_PATH . 'template-parts',
-			'storage' => HD_THEME_PATH . 'storage',
-			'languages' => HD_THEME_PATH . 'languages',
+			'templates'           => HD_THEME_PATH . 'templates',
+			'template_parts'      => HD_THEME_PATH . 'template-parts',
+			'storage'             => HD_THEME_PATH . 'storage',
+			'languages'           => HD_THEME_PATH . 'languages',
 
-			'inc_tpl' => HD_THEME_PATH . 'inc/tpl',
+			'inc_tpl'  => HD_THEME_PATH . 'inc/tpl',
 			'inc_ajax' => HD_THEME_PATH . 'inc/ajax',
 		];
 
@@ -168,9 +168,9 @@ final class Theme {
 	 */
 	public function register_widgets(): void {
 		$widgets_dir = HD_THEME_PATH . 'inc/src/Widgets';
-		$FQN = '\\Widgets\\';
+		$FQN         = '\\Widgets\\';
 
-        wp_mkdir_p( $widgets_dir );
+		wp_mkdir_p( $widgets_dir );
 		Helper::FQN_Load( $widgets_dir, false, true, $FQN, true );
 	}
 
@@ -247,7 +247,7 @@ final class Theme {
 		wp_enqueue_style( "app-style", get_template_directory_uri() . "/assets/css/app.css", [ "plugins-style" ], HD_THEME_VERSION );
 
 		/** Scripts */
-        wp_enqueue_script( "app", get_template_directory_uri() . "/assets/js/app.js", [ "jquery-core" ], HD_THEME_VERSION, true );
+		wp_enqueue_script( "app", get_template_directory_uri() . "/assets/js/app.js", [ "jquery-core" ], HD_THEME_VERSION, true );
 		wp_script_add_data( "app", "defer", true );
 
 		/** Extra */
@@ -262,7 +262,7 @@ final class Theme {
 			'baseUrl'      => trailingslashit( site_url() ),
 			'themeUrl'     => trailingslashit( get_template_directory_uri() ),
 			'smoothScroll' => ! 0,
-            'tracking' => ( defined( 'TRACKING' ) && TRACKING ) ? 1 : 0,
+			'tracking'     => ( defined( 'TRACKING' ) && TRACKING ) ? 1 : 0,
 			'locale'       => get_locale(),
 			'lang'         => Helper::getLang(),
 			'lg'           => [
@@ -280,36 +280,36 @@ final class Theme {
 		}
 	}
 
-    /** ---------------------------------------- */
+	/** ---------------------------------------- */
 
-    /**
-     * @param $actions
-     * @param $plugin_file
-     * @param $plugin_data
-     * @param $context
-     *
-     * @return mixed
-     */
-    public function plugin_action_links( $actions, $plugin_file, $plugin_data, $context ): mixed {
-        $keys = [
-            'deactivate',
-            'delete'
-        ];
+	/**
+	 * @param $actions
+	 * @param $plugin_file
+	 * @param $plugin_data
+	 * @param $context
+	 *
+	 * @return mixed
+	 */
+	public function plugin_action_links( $actions, $plugin_file, $plugin_data, $context ): mixed {
+		$keys = [
+			'deactivate',
+			'delete'
+		];
 
-        foreach ( $keys as $key ) {
-            if ( array_key_exists( $key, $actions )
-                && in_array(
-                    $plugin_file,
-                    [
-                        //'advanced-custom-fields-pro/acf.php',
-                    ] )
-            ) {
-                unset( $actions[ $key ] );
-            }
-        }
+		foreach ( $keys as $key ) {
+			if ( array_key_exists( $key, $actions )
+			     && in_array(
+				     $plugin_file,
+				     [
+					     //'advanced-custom-fields-pro/acf.php',
+				     ] )
+			) {
+				unset( $actions[ $key ] );
+			}
+		}
 
-        return $actions;
-    }
+		return $actions;
+	}
 
 	/** ---------------------------------------- */
 

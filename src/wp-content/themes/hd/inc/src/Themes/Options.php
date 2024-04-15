@@ -17,9 +17,6 @@ final class Options {
 
 		add_action( 'wp_enqueue_scripts', [ &$this, 'aspect_ratio_enqueue_scripts' ], 11 );
 
-		/** Aspect Ratio */
-		add_filter( 'hd_aspect_ratio_post_type', [ &$this, 'aspect_ratio_post_type_default' ], 98, 1 );
-
 		/** SMTP Settings */
 		if ( Helper::smtpConfigured() ) {
 			//add_action( 'phpmailer_init', [ &$this, 'setup_phpmailer_init' ], 11 );
@@ -62,7 +59,7 @@ final class Options {
 			wp_die( esc_html__( 'Lỗi CAPTCHA. Vui lòng thử lại.', HD_TEXT_DOMAIN ) );
 		}
 
-		$input = intval( $_POST['antispam_input'] );
+		$input  = intval( $_POST['antispam_input'] );
 		$result = intval( $_POST['antispam_result'] );
 
 		if ( $input !== $result ) {
@@ -86,7 +83,7 @@ final class Options {
 			$num1     = rand( 1, 10 );
 			$num2     = rand( 1, 10 );
 			$operator = rand( 0, 1 ) ? '+' : '-';
-			$result = $operator === '+' ? $num1 + $num2 : $num1 - $num2;
+			$result   = $operator === '+' ? $num1 + $num2 : $num1 - $num2;
 
 			echo '<p class="comment-form-antispam">' . sprintf( esc_html__( 'Để xác minh bạn không phải là robot spam comment, Hãy tính: %1$d %2$s %3$d = ?', HD_TEXT_DOMAIN ), $num1, $operator, $num2 ) . '</p>';
 			echo '<input type="hidden" name="antispam_result" value="' . $result . '" />';
@@ -147,7 +144,7 @@ final class Options {
 	public function editor_enqueue_scripts(): void {
 
 		$block_editor_options = Helper::getOption( 'block_editor__options', false, false );
-		$block_style_off = $block_editor_options['block_style_off'] ?? '';
+		$block_style_off      = $block_editor_options['block_style_off'] ?? '';
 
 		/** Remove block CSS */
 		if ( $block_style_off ) {
@@ -191,21 +188,6 @@ final class Options {
 		}
 	}
 
-	/**
-	 * @param array $arr
-	 *
-	 * @return array
-	 */
-	public function aspect_ratio_post_type_default( array $arr ): array {
-		$new_arr = array_merge( $arr, [ 'post' ] );
-
-		if ( class_exists( '\WooCommerce' ) ) {
-			$new_arr = array_merge( $new_arr, [ 'product' ] );
-		}
-
-		return $new_arr;
-	}
-
 	// ------------------------------------------------------
 
 	/**
@@ -227,7 +209,7 @@ final class Options {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function smtp_mailer_pre_wp_mail( $null, $atts ) {
+	public function smtp_mailer_pre_wp_mail( $null, $atts ): void {
 		Helper::smtp_mailer_pre_wp_mail( $null, $atts, 'smtp__options' );
 	}
 

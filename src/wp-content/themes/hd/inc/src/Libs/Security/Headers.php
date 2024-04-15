@@ -69,7 +69,7 @@ class Headers extends Abstract_Htaccess {
 			$headers[ $header_key ] = $header_value;
 		}
 
-		// Return the headers array.
+		// Return the header array.
 		return $headers;
 	}
 

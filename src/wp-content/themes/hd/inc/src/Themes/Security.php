@@ -102,7 +102,7 @@ final class Security {
 	// ------------------------------------------------------
 
 	/**
-	 * Remove the WordPress version meta tag and parameter.
+	 * Remove the WordPress version meta-tag and parameter.
 	 *
 	 * @return void
 	 */

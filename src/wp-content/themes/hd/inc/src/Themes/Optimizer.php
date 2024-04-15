@@ -42,7 +42,7 @@ final class Optimizer {
 
 		// wp_head
 		remove_action( 'wp_head', 'rsd_link' );                        // Remove the EditURI/RSD link
-		remove_action( 'wp_head', 'wlwmanifest_link' );                // Remove Windows Live Writer Manifest link
+		remove_action( 'wp_head', 'wlwmanifest_link' );                // Remove a Windows Live Writer Manifest link
 		remove_action( 'wp_head', 'wp_generator' );                    // remove WordPress Generator
 		remove_action( 'wp_head', 'print_emoji_detection_script', 7 ); // Emoji detection script.
 
@@ -74,44 +74,52 @@ final class Optimizer {
 	/**
 	 * @return void
 	 */
-    private function _optimizer(): void {
+	private function _optimizer(): void {
 
-        // Filters the rel values that are added to links with `target` attribute.
-	    add_filter( 'wp_targeted_link_rel', [ &$this, 'targeted_link_rel' ], 999, 2 );
+		// Filters the rel values that are added to links with `target` attribute.
+		add_filter( 'wp_targeted_link_rel', [ &$this, 'targeted_link_rel' ], 999, 2 );
 
-	    // fixed canonical
-	    add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ] );
+		// fixed canonical
+		//add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ] );
 
-	    // only front-end
-	    if ( ! is_admin() && ! Helper::is_login() ) {
-		    add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 12, 3 );
-		    add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
+		// hide admin-bar default
+		add_action( "user_register", [ &$this, 'user_register' ], 10, 1 );
 
-		    add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 99 );
-	    }
+		// if not admin page
+		if ( ! is_admin() ) {
+			add_action( 'pre_get_posts', [ &$this, 'set_posts_per_page' ] );
+		}
 
-	    add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 ); // filter post search only by title
-	    // add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 ); // custom posts where, filter post search only by title
+		// only front-end
+		if ( ! is_admin() && ! Helper::is_login() ) {
+			add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 12, 3 );
+			add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
 
-	    add_filter( 'excerpt_more', function () {
-		    return ' ' . '&hellip;';
-	    } );
+			add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 99 );
+		}
 
-	    // Remove admin bar
-	    add_action( 'wp_before_admin_bar_render', function () {
-		    global $wp_admin_bar;
-		    $wp_admin_bar->remove_menu( 'wp-logo' );
-	    } );
+		add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 ); // filter post search only by title
+		// add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 ); // custom posts where, filter post search only by title
 
-	    // Adding Shortcode in WordPress Using Custom HTML Widget
-	    add_filter( 'widget_text', 'do_shortcode' );
-	    add_filter( 'widget_text', 'shortcode_unautop' );
+		add_filter( 'excerpt_more', function () {
+			return ' ' . '&hellip;';
+		} );
 
-	    // Normalize upload filename
-	    add_filter( 'sanitize_file_name', function ( $filename ) {
-		    return remove_accents( $filename );
-	    }, 10, 1 );
-    }
+		// Remove admin bar
+		add_action( 'wp_before_admin_bar_render', function () {
+			global $wp_admin_bar;
+			$wp_admin_bar->remove_menu( 'wp-logo' );
+		} );
+
+		// Adding Shortcode in WordPress Using Custom HTML Widget
+		add_filter( 'widget_text', 'do_shortcode' );
+		add_filter( 'widget_text', 'shortcode_unautop' );
+
+		// Normalize upload filename
+		add_filter( 'sanitize_file_name', function ( $filename ) {
+			return remove_accents( $filename );
+		}, 10, 1 );
+	}
 
 	// ------------------------------------------------------
 
@@ -121,10 +129,11 @@ final class Optimizer {
 	 *
 	 * @return string
 	 */
-    public function targeted_link_rel( $rel, $link_target ): string {
-	    $rel .= ' nofollow';
-	    return $rel;
-    }
+	public function targeted_link_rel( $rel, $link_target ): string {
+		$rel .= ' nofollow';
+
+		return $rel;
+	}
 
 	// ------------------------------------------------------
 
@@ -139,7 +148,7 @@ final class Optimizer {
             }</script>
 		<?php
 
-//		if ( file_exists( $passive_events = HD_THEME_PATH . 'assets/js/plugins/passive-events-fix.js' ) ) {
+//		if ( file_exists( $passive_events = HD_THEME_PATH . 'assets/js/plugins/passive-events.js' ) ) {
 //			echo '<script>';
 //			include $passive_events;
 //			echo '</script>';
@@ -169,11 +178,11 @@ final class Optimizer {
 	/**
 	 * @return void
 	 */
-	public function fixed_archive_canonical(): void {
-		if ( is_archive() ) {
-			echo '<link rel="canonical" href="' . get_pagenum_link() . '" />';
-		}
-	}
+//	public function fixed_archive_canonical(): void {
+//		if ( is_archive() ) {
+//			echo '<link rel="canonical" href="' . get_pagenum_link() . '" />';
+//		}
+//	}
 
 	// ------------------------------------------------------
 
@@ -233,6 +242,37 @@ final class Optimizer {
 	// ------------------------------------------------------
 
 	/**
+	 * @param $query
+	 */
+	public function set_posts_per_page( $query ): void {
+		if ( ! is_admin() ) {
+
+			// get default value
+			$posts_per_page = Helper::getOption( 'posts_per_page' );
+			$posts_per_page_x2 = $posts_per_page * 2;
+			$posts_per_page_x3 = $posts_per_page * 3;
+
+			$hd_posts_num_per_page_arr = apply_filters( 'hd_posts_num_per_page', [ $posts_per_page, $posts_per_page_x2, $posts_per_page_x3 ] );
+			if ( isset( $_GET['pagenum'] ) ) {
+
+				$pagenum = esc_sql( $_GET['pagenum'] );
+				if ( in_array( $pagenum, $hd_posts_num_per_page_arr ) ) {
+					$posts_per_page = $pagenum;
+				}
+
+				if ( $pagenum > max( $hd_posts_num_per_page_arr ) ) {
+					$posts_per_page = max( $hd_posts_num_per_page_arr );
+				}
+			}
+
+			$query->set( 'posts_per_page', $posts_per_page );
+
+		}
+	}
+
+	// ------------------------------------------------------
+
+	/**
 	 * Search only in post title or excerpt
 	 *
 	 * @param $search
@@ -255,12 +295,12 @@ final class Optimizer {
 
 		$search_terms = Helper::toArray( $q['search_terms'] );
 		foreach ( $search_terms as $term ) {
-			$term       = esc_sql( $wpdb->esc_like( $term ) );
+			$term = esc_sql( $wpdb->esc_like( $term ) );
 			$term = mb_strtolower( $term );
 
-			$like = "LIKE CONCAT('{$n}', CONVERT('{$term}', BINARY), '{$n}')";
+			$like       = "LIKE CONCAT('{$n}', CONVERT('{$term}', BINARY), '{$n}')";
 			$like_first = "LIKE CONCAT(CONVERT('{$term}', BINARY), '{$n}')";
-			$like_last = "LIKE CONCAT('{$n}', CONVERT('{$term}', BINARY))";
+			$like_last  = "LIKE CONCAT('{$n}', CONVERT('{$term}', BINARY))";
 
 			$search     .= "{$search_and}(LOWER($wpdb->posts.post_title) {$like} OR LOWER($wpdb->posts.post_title) {$like_first} OR LOWER($wpdb->posts.post_title) {$like_last} OR LOWER($wpdb->posts.post_excerpt) {$like} OR LOWER($wpdb->posts.post_excerpt) {$like_first} OR LOWER($wpdb->posts.post_excerpt) {$like_last})";
 			$search_and = " AND ";
@@ -279,7 +319,7 @@ final class Optimizer {
 	// ------------------------------------------------------
 
 	/**
-	 * Search only in post title - wp_query
+	 * Search only in post-title - wp_query
 	 *
 	 * @param $where
 	 * @param $wp_query
@@ -296,4 +336,16 @@ final class Optimizer {
 //
 //		return $where;
 //	}
+
+    // ------------------------------------------------------
+
+	/**
+	 * @param $user_id
+	 *
+	 * @return void
+	 */
+	public function user_register( $user_id ): void {
+		update_user_meta( $user_id, 'show_admin_bar_front', false );
+		update_user_meta( $user_id, 'show_admin_bar_admin', true );
+	}
 }

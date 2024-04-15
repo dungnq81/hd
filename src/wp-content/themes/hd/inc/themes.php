@@ -273,16 +273,19 @@ if ( ! function_exists( '__post_classes' ) ) {
 
 /** ---------------------------------------- */
 
+// add class to li in wp_nav_menu
 if ( ! function_exists( '__nav_menu_css_classes' ) ) {
-	add_filter( 'nav_menu_css_class', '__nav_menu_css_classes', 11, 2 );
+	add_filter( 'nav_menu_css_class', '__nav_menu_css_classes', 11, 4 );
 
 	/**
 	 * @param $classes
-	 * @param $item
+	 * @param $menu_item
+	 * @param $args
+	 * @param $depth
 	 *
 	 * @return array
 	 */
-	function __nav_menu_css_classes( $classes, $item ): array {
+	function __nav_menu_css_classes( $classes, $menu_item, $args, $depth ): array {
 
 		if ( ! is_array( $classes ) ) {
 			$classes = [];
@@ -297,14 +300,63 @@ if ( ! function_exists( '__nav_menu_css_classes' ) ) {
 			}
 		}
 
-		if ( 1 == $item->current
-		     || $item->current_item_ancestor
-		     || $item->current_item_parent
+		if ( 1 == $menu_item->current
+		     || $menu_item->current_item_ancestor
+		     || $menu_item->current_item_parent
 		) {
 			$classes[] = 'active';
 		}
 
+		// li_class
+		// li_depth_class
+
+		if ( $depth == 0 ) {
+			if ( isset( $args->li_class ) ) {
+				$classes[] = $args->li_class;
+			}
+
+			return $classes;
+		}
+
+		if ( isset( $args->li_depth_class ) ) {
+			$classes[] = $args->li_depth_class;
+		}
+
 		return $classes;
+	}
+}
+
+/** ---------------------------------------- */
+
+// add class to link in wp_nav_menu
+if ( ! function_exists( '__nav_menu_link_attributes' ) ) {
+	add_filter( 'nav_menu_link_attributes', '__nav_menu_link_attributes', 11, 4 );
+
+	/**
+	 * @param $atts
+	 * @param $menu_item
+	 * @param $args
+	 * @param $depth
+	 *
+	 * @return array
+	 */
+	function __nav_menu_link_attributes( $atts, $menu_item, $args, $depth ): array {
+		// link_class
+		// link_depth_class
+
+		if ( $depth == 0 ) {
+			if ( property_exists( $args, 'link_class' ) ) {
+				$atts['class'] = $args->link_class;
+			}
+
+			return $atts;
+		}
+
+		if ( property_exists( $args, 'link_depth_class' ) ) {
+			$atts['class'] = $args->link_depth_class;
+		}
+
+		return $atts;
 	}
 }
 
@@ -386,10 +438,15 @@ add_filter( 'hd_aspect_ratio_default_list', function ( array $arr ) {
 /** Aspect Ratio - custom */
 add_filter( 'hd_aspect_ratio_post_type', function ( array $arr ) {
 	$update_arr = [
-		//'video',
+		'post',
 	];
 
-	return array_merge( $arr, $update_arr );
+	$new_arr = array_merge( $arr, $update_arr );
+	if ( Helper::is_woocommerce_active() ) {
+		$new_arr = array_merge( $new_arr, [ 'product' ] );
+	}
+
+	return $new_arr;
 }, 99, 1 );
 
 /** ---------------------------------------- */
@@ -403,7 +460,7 @@ add_filter( 'hd_term_row_actions', function ( array $arr ) {
 	];
 
 	$new_arr = array_merge( $arr, $update_arr );
-	if ( class_exists( '\WooCommerce' ) ) {
+	if ( Helper::is_woocommerce_active() ) {
 		$new_arr = array_merge( $new_arr, [ 'product_cat' ] );
 	}
 
@@ -444,11 +501,11 @@ add_filter( 'hd_post_exclude_columns', function ( array $arr ) {
 	];
 
 	$new_arr = array_merge( $arr, $update_arr );
-	if ( class_exists( '\WooCommerce' ) ) {
+	if ( Helper::is_woocommerce_active() ) {
 		$new_arr = array_merge( $new_arr, [ 'product' ] );
 	}
 
-	if ( class_exists( '\WPCF7' ) ) {
+	if ( Helper::is_contact_form_7_active() ) {
 		$new_arr = array_merge( $new_arr, [ 'wpcf7_contact_form' ] );
 	}
 
@@ -482,7 +539,8 @@ add_filter( 'hd_location_mega_menu', function ( array $arr ) {
 /** ---------------------------------------- */
 
 add_filter( 'hd_posts_num_per_page', function ( array $arr ) {
-	$update_arr = [ 12, 24, 36 ];
+	//$update_arr = [ 12, 24, 36 ];
+	$update_arr = [];
 
 	return array_merge( $arr, $update_arr );
 }, 99, 1 );
@@ -494,5 +552,5 @@ add_filter( 'hd_email_list', function ( array $arr ) {
 		//'lien_he'     => 'Liên hệ',
 	];
 
-	return array_merge($arr, $update_arr);
-}, 99, 1);
+	return array_merge( $arr, $update_arr );
+}, 99, 1 );
