@@ -1,5 +1,6 @@
 /*jshint esversion: 6 */
-Object.assign(window, { $: jQuery, jQuery });
+window.$ = window.jQuery = $;
+Object.assign(window, { $, jQuery: $ });
 
 'use strict';
 $(() => {

@@ -183,6 +183,8 @@ final class Theme {
 	 * @return void
 	 */
 	public function unregister_widgets(): void {
+		unregister_widget( 'WP_Widget_Search' );
+		unregister_widget( 'WP_Widget_Recent_Posts' );
 
 		// Removes the styling added to the header for recent comments
 		global $wp_widget_factory;
@@ -252,6 +254,9 @@ final class Theme {
 		wp_script_add_data( "app", "defer", true );
 
 		/** Extra */
+		wp_register_style( "swiper-style", get_template_directory_uri() . "/assets/css/plugins/swiper.css", [], HD_THEME_VERSION );
+		wp_register_script( "swiper", get_template_directory_uri() . "/assets/js/plugins/swiper.js", [], HD_THEME_VERSION, true );
+
 		wp_enqueue_style( "fonts-style", get_template_directory_uri() . "/assets/css/fonts.css", [], HD_THEME_VERSION );
 
 		wp_enqueue_script( "back-to-top", get_template_directory_uri() . "/assets/js/plugins/back-to-top.js", [], HD_THEME_VERSION, true );
@@ -262,6 +267,7 @@ final class Theme {
 			'ajaxUrl'      => esc_url( admin_url( 'admin-ajax.php' ) ),
 			'baseUrl'      => trailingslashit( site_url() ),
 			'themeUrl'     => trailingslashit( get_template_directory_uri() ),
+			'_wpnonce'     => wp_create_nonce( '_wpnonce_ajax_csrf' ),
 			'smoothScroll' => ! 0,
 			'tracking'     => ( defined( 'TRACKING' ) && TRACKING ) ? 1 : 0,
 			'locale'       => get_locale(),

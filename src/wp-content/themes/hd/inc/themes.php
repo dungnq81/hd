@@ -482,7 +482,7 @@ add_filter( 'hd_post_row_actions', function ( array $arr ) {
 
 /** ---------------------------------------- */
 
-// Terms thumbnail ( term_thumb )
+// Terms thumbnail (term_thumb)
 add_filter( 'hd_term_columns', function ( array $arr ) {
 	$update_arr = [
 		'category',
@@ -549,7 +549,7 @@ add_filter( 'hd_posts_num_per_page', function ( array $arr ) {
 
 add_filter( 'hd_email_list', function ( array $arr ) {
 	$update_arr = [
-		//'lien_he'     => 'Liên hệ',
+		//'lien_he' => 'Liên hệ',
 	];
 
 	return array_merge( $arr, $update_arr );
