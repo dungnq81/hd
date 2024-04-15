@@ -2,6 +2,7 @@
 
 namespace Cores\Traits;
 
+use Cores\Helper;
 use Libs\CSS;
 use Libs\Horizontal_Nav_Walker;
 use Libs\Vertical_Nav_Walker;
@@ -23,6 +24,31 @@ trait Wp {
 	use File;
 	use Str;
 	use Url;
+
+	// -------------------------------------------------------------
+
+	/**
+	 * @param $action
+	 * @param $name
+	 * @param $referer
+	 * @param $display
+	 *
+	 * @return string
+	 */
+	public static function csrf_token( $action = - 1, $name = '_csrf_token', $referer = false, $display = true ) {
+		$name        = esc_attr( $name );
+		$nonce_field = '<input type="hidden" id="' . Helper::random( 6 ) . '" name="' . $name . '" value="' . wp_create_nonce( $action ) . '" />';
+
+		if ( $referer ) {
+			$nonce_field .= wp_referer_field( false );
+		}
+
+		if ( $display ) {
+			echo $nonce_field;
+		}
+
+		return $nonce_field;
+	}
 
 	// -------------------------------------------------------------
 

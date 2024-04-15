@@ -21,7 +21,7 @@ final class ACF {
 		// Auto required fields
 		$fields_dir = __DIR__ . DIRECTORY_SEPARATOR . 'fields';
 
-		wp_mkdir_p( $fields_dir );
+		Helper::createDirectory( $fields_dir );
 		Helper::FQN_Load( $fields_dir, true );
 
 		add_action( 'wp_loaded', [ &$this, 'widget_css_classes_frontend' ] );

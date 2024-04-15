@@ -101,6 +101,7 @@ final class Optimizer {
 		add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 ); // filter post search only by title
 		// add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 ); // custom posts where, filter post search only by title
 
+        // excerpt_more
 		add_filter( 'excerpt_more', function () {
 			return ' ' . '&hellip;';
 		} );
@@ -119,6 +120,14 @@ final class Optimizer {
 		add_filter( 'sanitize_file_name', function ( $filename ) {
 			return remove_accents( $filename );
 		}, 10, 1 );
+
+        // query_vars
+		add_filter( 'query_vars', function ( $vars ) {
+			$vars[] = 'page';
+			$vars[] = 'paged';
+
+			return $vars;
+		} );
 	}
 
 	// ------------------------------------------------------
@@ -140,8 +149,7 @@ final class Optimizer {
 	/**
 	 * @return void
 	 */
-	public function print_footer_scripts(): void {
-		?>
+	public function print_footer_scripts(): void { ?>
         <script>document.documentElement.classList.remove("no-js");
             if (-1 !== navigator.userAgent.toLowerCase().indexOf('msie') || -1 !== navigator.userAgent.toLowerCase().indexOf('trident/')) {
                 document.documentElement.classList.add('is-IE');
@@ -281,11 +289,10 @@ final class Optimizer {
 	 * @return mixed|string
 	 */
 	public function post_search_by_title( $search, $wp_query ): mixed {
-
 		global $wpdb;
 
 		if ( empty( $search ) ) {
-			return $search; // skip processing – no search term in query
+			return $search; // skip processing – no search term in a query
 		}
 
 		$q = $wp_query->query_vars;

@@ -207,4 +207,23 @@ trait File {
 
 		return true;
 	}
+
+	/**
+	 * @param $directory
+	 *
+	 * @return bool|mixed
+	 */
+	public static function createDirectory( $directory ): mixed {
+
+		// Create the directory and return the result.
+		$is_directory_created = wp_mkdir_p( $directory );
+
+		// Bail if cannot create temp dir.
+		if ( false === $is_directory_created ) {
+			// translators: `$directory` is the name of directory that should be created.
+			error_log( sprintf( 'Cannot create directory: %s.', $directory ) );
+		}
+
+		return $is_directory_created;
+	}
 }

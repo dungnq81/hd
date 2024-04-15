@@ -3,7 +3,7 @@
 /**
  * The template for displaying sidebar.
  *
- * @package eHD
+ * @package HD
  * @since 1.0.0
  */
 

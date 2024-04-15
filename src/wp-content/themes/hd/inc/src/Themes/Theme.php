@@ -151,7 +151,7 @@ final class Theme {
 		];
 
 		foreach ( $dirs as $dir => $path ) {
-			wp_mkdir_p( $path );
+			Helper::createDirectory( $path );
 
 			// autoload template_structures & ajax files
 			if ( in_array( $dir, [ 'template_structures', 'inc_ajax' ] ) ) {
@@ -171,7 +171,7 @@ final class Theme {
 		$widgets_dir = HD_THEME_PATH . 'inc/src/Widgets';
 		$FQN         = '\\Widgets\\';
 
-		wp_mkdir_p( $widgets_dir );
+		Helper::createDirectory( $widgets_dir );
 		Helper::FQN_Load( $widgets_dir, false, true, $FQN, true );
 	}
 
