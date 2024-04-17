@@ -1,3 +1,4 @@
+@import "functions";
 $body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Arial, sans-serif;
 
 @mixin hide-text {
@@ -14,7 +15,7 @@ $body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Aria
 }
 
 /** */
-.hide-text, .hidden-text {
+.hide-text, .hidden-text, .sr-only {
     @include hide-text;
 }
 
@@ -23,8 +24,84 @@ $body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Aria
     margin-top: 5px;
 }
 
+.flex {
+    display: flex;
+}
+
+.\!flex {
+    display: flex !important;
+}
+
+.block {
+    display: block;
+}
+
+.\!block {
+    display: block !important;
+}
+
 .hide, .hidden {
+    display: none;
+}
+
+.\!hide, .\!hidden {
     display: none !important;
+}
+
+/** @todo gutter */
+$count: 0;
+$count_max: 30;
+
+@while $count <= $count_max {
+    .mt-#{$count} {
+        margin-top: fs($count);
+    }
+
+    .\!mt-#{$count} {
+        margin-top: fs($count) !important;
+    }
+
+    .mb-#{$count} {
+        margin-bottom: fs($count);
+    }
+
+    .\!mb-#{$count} {
+        margin-bottom: fs($count) !important;
+    }
+
+    .pt-#{$count} {
+        padding-top: fs($count);
+    }
+
+    .\!pt-#{$count} {
+        padding-top: fs($count) !important;
+    }
+
+    .pb-#{$count} {
+        padding-bottom: fs($count);
+    }
+
+    .\!pb-#{$count} {
+        padding-bottom: fs($count) !important;
+    }
+
+    $count: $count + 5;
+}
+
+/** @todo font weight */
+$fw: 200;
+$fw_max: 900;
+
+@while $fw <= $fw_max {
+    .fw-#{$fw} {
+        font-weight: $fw;
+    }
+
+    .\!fw-#{$fw} {
+        font-weight: $fw !important;
+    }
+
+    $fw: $fw + 100;
 }
 
 #error-page {
@@ -500,6 +577,7 @@ body.toplevel_page_hd-settings {
 
                         .explain {
                             font-weight: 500;
+                            font-size: 14px;
                         }
                     }
                 }
@@ -518,7 +596,7 @@ body.toplevel_page_hd-settings {
                     font-size: 14px;
                     text-transform: uppercase;
                     margin: 25px 0 0 0;
-                    padding: 20px 0 15px 0;
+                    padding: 25px 0 20px 0;
                     border-top: 1px solid #ddd;
                     display: block;
                     width: 600px;
@@ -534,7 +612,7 @@ body.toplevel_page_hd-settings {
                 .option {
                     .controls {
                         position: relative;
-                        margin: 0 15px 10px 0;
+                        margin: 0 10px 10px 0;
                         width: 600px;
                         max-width: calc(100% - 15px);
 
@@ -658,7 +736,9 @@ body.toplevel_page_hd-settings {
     }
 }
 
-:is(input[type="checkbox"].hd-checkbox, .acf-field.hd-checkbox > .acf-input input[type="checkbox"], .menu-item-settings .field-link-target input[type="checkbox"]) {
+:is(input[type="checkbox"].hd-checkbox,
+.acf-field.hd-checkbox > .acf-input input[type="checkbox"],
+.menu-item-settings .field-link-target input[type="checkbox"]) {
     appearance: none;
     -webkit-tap-highlight-color: transparent;
     width: auto;
@@ -668,7 +748,7 @@ body.toplevel_page_hd-settings {
     border: 0;
     outline: 0;
     cursor: pointer;
-    margin: -3px 5px 0 0;
+    margin: -5px 5px 0 0;
     background: none;
     box-shadow: none;
     transition: ease .15s;
@@ -681,26 +761,26 @@ body.toplevel_page_hd-settings {
         content: '';
         /*font-size: 8px;*/
         font-weight: 400;
-        line-height: 19px;
+        line-height: 20px;
         text-indent: -15px;
         color: #ffffff;
-        width: 37px;
-        height: 19px;
+        width: 40px;
+        height: 20px;
         display: inline-block;
         background-color: rgb(167 170 173 / 60%);
-        border-radius: 74px;
+        border-radius: 80px;
         box-shadow: 0 0 12px rgb(0 0 0 / 15%) inset;
         transition: ease .15s;
     }
 
     &::before {
         content: '';
-        width: 15px;
-        height: 15px;
+        width: 14px;
+        height: 14px;
         display: block;
         position: absolute;
-        top: 2px;
-        left: 2px;
+        top: 3px;
+        left: 3px;
         margin: 0;
         border-radius: 50%;
         background-color: #ffffff;
@@ -709,7 +789,7 @@ body.toplevel_page_hd-settings {
 
     &:checked {
         &::before {
-            left: 20px;
+            left: 23px;
             margin: 0;
             background-color: #ffffff;
             transition: ease .15s;

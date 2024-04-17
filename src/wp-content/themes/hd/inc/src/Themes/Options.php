@@ -3,6 +3,7 @@
 namespace Themes;
 
 use Cores\Helper;
+use Libs\Optimizer\Custom_Order;
 use PHPMailer\PHPMailer\Exception;
 
 \defined( 'ABSPATH' ) || die;
@@ -17,17 +18,20 @@ final class Options {
 
 		add_action( 'wp_enqueue_scripts', [ &$this, 'aspect_ratio_enqueue_scripts' ], 11 );
 
-		/** SMTP Settings */
+		/** SMTP */
 		if ( Helper::smtpConfigured() ) {
 			//add_action( 'phpmailer_init', [ &$this, 'setup_phpmailer_init' ], 11 );
 			add_filter( 'pre_wp_mail', [ &$this, 'smtp_mailer_pre_wp_mail' ], 10, 2 );
 		}
 
-		/** Contact info */
+		/** Custom Order */
+		( new Custom_Order() );
+
+		/** Contact Info */
 
 		/** Contact Button */
 
-		/** Block editor */
+		/** Block Editor */
 		add_action( 'admin_init', [ &$this, 'editor_admin_init' ], 10 );
 		add_action( 'wp_enqueue_scripts', [ &$this, 'editor_enqueue_scripts' ], 98 );
 

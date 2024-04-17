@@ -191,7 +191,7 @@ trait Wp {
 		];
 
 		if ( true === $return_object ) {
-			$_return = self::toObject( $_return );
+			return self::toObject( $_return );
 		}
 
 		return $_return;
@@ -1333,8 +1333,8 @@ trait Wp {
 			'posts_per_page'         => 1,
 			'no_found_rows'          => true,
 			'cache_results'          => true,
-			//'update_post_meta_cache' => false,
-			//'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
 			'lazy_load_term_meta'    => false,
 		];
 

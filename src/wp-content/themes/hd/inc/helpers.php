@@ -11,6 +11,32 @@ use Cores\Helper;
 
 /** ----------------------------------------------- */
 
+if ( ! function_exists( 'in_array_checked' ) ) {
+	/**
+	 * @param array $checked_arr
+	 * @param $current
+	 * @param bool $display
+	 * @param string $type
+	 *
+	 * @return string
+	 */
+	function in_array_checked( array $checked_arr, $current, bool $display = true, string $type = 'checked' ): string {
+		if ( in_array( $current, $checked_arr ) ) {
+			$result = " $type='$type'";
+		} else {
+			$result = '';
+		}
+
+		if ( $display ) {
+			echo $result;
+		}
+
+		return $result;
+	}
+}
+
+/** ----------------------------------------------- */
+
 if ( ! function_exists( 'sanitize_checkbox' ) ) {
 
 	/**
@@ -188,7 +214,7 @@ if ( ! function_exists( 'hd_post_comment' ) ) {
 	 */
 	function hd_post_comment( mixed $id = null ): void {
 		if ( ! $id ) {
-			if ( get_post_type() === 'product' ) {
+			if ( 'product' === get_post_type() ) {
 				global $product;
 				$id = $product->get_id();
 			} else {

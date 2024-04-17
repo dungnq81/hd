@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
-window.$ = window.jQuery = $;
-Object.assign(window, { $, jQuery: $ });
+window.jQuery = window.$ = jQuery;
+Object.assign(window, { $: jQuery, jQuery });
 
 import { nanoid } from 'nanoid';
 import Cookies from 'js-cookie';

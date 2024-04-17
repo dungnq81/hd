@@ -5,6 +5,7 @@ namespace Themes;
 use Cores\Helper;
 
 use Libs\Optimizer\Ssl;
+
 use Libs\Security\Dir;
 use Libs\Security\Headers;
 use Libs\Security\Readme;
@@ -24,11 +25,8 @@ final class Admin {
         // editor-style.css
 		add_action( 'enqueue_block_editor_assets', [ &$this, 'enqueue_block_editor_assets' ] );
 
-        // admin.js & admin.css
-		add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 31 );
-
-        // codemirror_settings
-		add_action( 'admin_enqueue_scripts', [ &$this, 'options_enqueue_assets' ], 32 );
+        // admin.js, admin.css & codemirror_settings, v.v...
+		add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 9999, 1 );
 
         // SMTP alert
 		add_action( 'admin_notices', [ &$this, 'options_admin_notice' ] );
@@ -54,21 +52,15 @@ final class Admin {
 	/** ---------------------------------------- */
 
 	/**
+	 * @param $hook
+	 * 
 	 * @return void
 	 */
-	public function admin_enqueue_scripts(): void {
+	public function admin_enqueue_scripts( $hook ): void {
 		wp_enqueue_style( "admin-style", HD_THEME_URL . "assets/css/admin.css", [], HD_THEME_VERSION );
 		wp_enqueue_script( "admin", HD_THEME_URL . "assets/js/admin.js", [ "jquery" ], HD_THEME_VERSION, true );
-	}
 
-	/** ---------------------------------------- */
-
-	/**
-	 * @param $hook
-	 *
-	 * @return void
-	 */
-	public function options_enqueue_assets( $hook ): void {
+		// options_enqueue_assets
 		$allowed_pages = [
 			'toplevel_page_hd-settings',
 		];
@@ -150,6 +142,10 @@ final class Admin {
 	 * @return void
 	 */
 	public function admin_menu(): void {
+		remove_meta_box('dashboard_site_health',     'dashboard', 'normal');
+		remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'normal' );
+		remove_meta_box( 'dashboard_primary', 'dashboard', 'normal' );
+		remove_meta_box( 'dashboard_secondary',      'dashboard', 'side' );
 
 		global $menu, $submenu;
 		//dump($menu);
@@ -179,11 +175,6 @@ final class Admin {
 
 		/** ---------------------------------------- */
 		/** ---------------------------------------- */
-
-		remove_meta_box('dashboard_site_health',     'dashboard', 'normal');
-		remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'normal' );
-		remove_meta_box( 'dashboard_primary', 'dashboard', 'normal' );
-		remove_meta_box( 'dashboard_secondary',      'dashboard', 'side' );
 
 		// menu page
 		add_menu_page(
@@ -236,9 +227,8 @@ final class Admin {
 
 		if ( isset( $_POST['hd_update_settings'] ) ) {
 
-			$nonce = $_REQUEST['_wpnonce'];
-
-			if ( ! wp_verify_nonce( $nonce, 'hd_settings' ) ) {
+			$_nonce = $_REQUEST['_wpnonce'];
+			if ( ! wp_verify_nonce( $_nonce, '_wpnonce_hd_settings' ) ) {
 				wp_die( __( 'Error! Nonce Security Check Failed! please save the settings again.', HD_TEXT_DOMAIN ) );
 			}
 
@@ -320,6 +310,17 @@ final class Admin {
 
 			$html_contact_info_others = $_POST['contact_info_others'] ?? '';
 			Helper::updateCustomPost( $html_contact_info_others, 'html_others', 'text/html', false );
+
+			// ------------------------------------------------------
+
+			/** Custom Order */
+
+			$custom_order_options = [
+                'order_post_type' => array_map( 'sanitize_text_field', $_POST['order_post_type'] ),
+                'order_taxonomy' => array_map( 'sanitize_text_field', $_POST['order_taxonomy'] ),
+            ];
+
+			Helper::updateOption( 'custom_order__options', $custom_order_options, true );
 
 			// ------------------------------------------------------
 
@@ -477,12 +478,14 @@ final class Admin {
 		?>
         <div class="wrap" id="hd_container">
             <form id="hd_form" method="post" enctype="multipart/form-data">
-				<?php wp_nonce_field( 'hd_settings' ); ?>
+
+				<?php wp_nonce_field( '_wpnonce_hd_settings' ); ?>
+
                 <div id="main" class="filter-tabs clearfix">
                     <div id="hd_nav" class="tabs-nav">
                         <div class="logo-title">
                             <h3>
-								<?php _e( 'MNMN Settings', HD_TEXT_DOMAIN ); ?>
+								<?php _e( 'HD Settings', HD_TEXT_DOMAIN ); ?>
                                 <span>Version: <?php echo HD_THEME_VERSION; ?></span>
                             </h3>
                         </div>
@@ -493,6 +496,7 @@ final class Admin {
                             <li class="aspect-ratio-settings">
                                 <a class="current" title="Aspect ratio" href="#aspect_ratio_settings"><?php _e( 'Aspect Ratio', HD_TEXT_DOMAIN ); ?></a>
                             </li>
+
                             <li class="smtp-settings">
                                 <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', HD_TEXT_DOMAIN ); ?></a>
                             </li>
@@ -503,14 +507,18 @@ final class Admin {
 
                             ?>
                             <li class="email-settings">
-                                <a title="EMAIL" href="#email_settings"><?php _e( 'Email', HD_TEXT_DOMAIN ); ?></a>
+                                <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', HD_TEXT_DOMAIN ); ?></a>
                             </li>
                             <?php endif; ?>
 
-                            <li class="contact-info-settings hide">
+                            <li class="order-settings">
+                                <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', HD_TEXT_DOMAIN ); ?></a>
+                            </li>
+
+                            <li class="contact-info-settings">
                                 <a title="Contact Info" href="#contact_info_settings"><?php _e( 'Contact Info', HD_TEXT_DOMAIN ); ?></a>
                             </li>
-                            <li class="contact-button-settings hide">
+                            <li class="contact-button-settings">
                                 <a title="Contact Button" href="#contact_button_settings"><?php _e( 'Contact Button', HD_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="gutenberg-settings">
@@ -529,7 +537,7 @@ final class Admin {
                             </li>
 							<?php endif; ?>
 
-                            <li class="comments-settings hide">
+                            <li class="comments-settings !hidden">
                                 <a title="Comments" href="#comments_settings"><?php _e( 'Comments', HD_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="custom-script-settings">
@@ -540,30 +548,42 @@ final class Admin {
                             </li>
                         </ul>
                     </div>
+
                     <div id="hd_content" class="tabs-content">
                         <h2 class="hidden-text"></h2>
 
                         <div id="aspect_ratio_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/aspect_ratio.php'; ?>
                         </div>
+
                         <div id="smtp_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/smtp.php'; ?>
                         </div>
+
                         <div id="email_settings" class="group tabs-panel">
-		                    <?php require __DIR__ . '/options/emails.php'; ?>
+		                    <?php require __DIR__ . '/options/custom_email.php'; ?>
                         </div>
+
+                        <div id="custom_order_settings" class="group tabs-panel">
+		                    <?php require __DIR__ . '/options/custom_order.php'; ?>
+                        </div>
+
                         <div id="contact_info_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/contact_info.php'; ?>
                         </div>
+
                         <div id="contact_button_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/contact_button.php'; ?>
                         </div>
+
                         <div id="block_editor_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/block_editor.php'; ?>
                         </div>
+
                         <div id="optimizer_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/optimizer.php'; ?>
                         </div>
+
                         <div id="security_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/security.php'; ?>
                         </div>
@@ -577,9 +597,11 @@ final class Admin {
                         <div id="comments_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/comments.php'; ?>
                         </div>
+
                         <div id="custom_script_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/custom_script.php'; ?>
                         </div>
+
                         <div id="custom_css_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/custom_css.php'; ?>
                         </div>

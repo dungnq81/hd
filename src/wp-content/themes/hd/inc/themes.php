@@ -549,7 +549,7 @@ add_filter( 'hd_posts_num_per_page', function ( array $arr ) {
 
 add_filter( 'hd_email_list', function ( array $arr ) {
 	$update_arr = [
-		//'lien_he' => 'Liên hệ',
+		'lien_he' => 'Liên hệ',
 	];
 
 	return array_merge( $arr, $update_arr );
