@@ -4,6 +4,7 @@ namespace Themes;
 
 use Cores\Helper;
 
+use Libs\Optimizer\Custom_Order;
 use Libs\Optimizer\Ssl;
 
 use Libs\Security\Dir;
@@ -225,12 +226,9 @@ final class Admin {
 	public function options_page(): void {
 		global $wpdb;
 
-		if ( isset( $_POST['hd_update_settings'] ) ) {
+		if ( isset( $_POST['hd_submit_settings'] ) ) {
 
-			$_nonce = $_REQUEST['_wpnonce'];
-			if ( ! wp_verify_nonce( $_nonce, '_wpnonce_hd_settings' ) ) {
-				wp_die( __( 'Error! Nonce Security Check Failed! please save the settings again.', HD_TEXT_DOMAIN ) );
-			}
+			check_admin_referer( '_wpnonce_hd_settings' );
 
 			// ------------------------------------------------------
 
@@ -287,10 +285,10 @@ final class Admin {
 			/** Emails list */
 
 			$email_options = [];
-			$hd_email_list    = apply_filters( 'hd_email_list', [] );
+			$hd_email_list = apply_filters( 'hd_email_list', [] );
 
 			foreach ( $hd_email_list as $i => $ar ) {
-				$email_options[$i] = ! empty( $_POST[ $i . '_email' ] ) ? sanitize_text_field( $_POST[ $i . '_email' ] ) : '';
+				$email_options[ $i ] = ! empty( $_POST[ $i . '_email' ] ) ? sanitize_text_field( $_POST[ $i . '_email' ] ) : '';
 			}
 
 			Helper::updateOption( 'emails__options', $email_options );
@@ -309,18 +307,26 @@ final class Admin {
 			Helper::updateOption( 'contact_info__options', $contact_info_options, true );
 
 			$html_contact_info_others = $_POST['contact_info_others'] ?? '';
-			Helper::updateCustomPost( $html_contact_info_others, 'html_others', 'text/html', false );
+			Helper::updateCustomPost( $html_contact_info_others, 'html_others', 'text/html' );
 
 			// ------------------------------------------------------
 
 			/** Custom Order */
 
-			$custom_order_options = [
-                'order_post_type' => array_map( 'sanitize_text_field', $_POST['order_post_type'] ),
-                'order_taxonomy' => array_map( 'sanitize_text_field', $_POST['order_taxonomy'] ),
-            ];
+			$order_reset = ! empty( $_POST['order_reset'] ) ? sanitize_text_field( $_POST['order_reset'] ) : '';
 
-			Helper::updateOption( 'custom_order__options', $custom_order_options, true );
+			if ( empty( $order_reset ) ) {
+				$custom_order_options = [
+					'order_post_type' => ! empty( $_POST['order_post_type'] ) ? array_map( 'sanitize_text_field', $_POST['order_post_type'] ) : [],
+					'order_taxonomy'  => ! empty( $_POST['order_taxonomy'] ) ? array_map( 'sanitize_text_field', $_POST['order_taxonomy'] ) : [],
+				];
+
+				Helper::updateOption( 'custom_order__options', $custom_order_options );
+
+			} else {
+
+				( new Custom_Order() )->reset_all();
+			}
 
 			// ------------------------------------------------------
 
@@ -337,7 +343,7 @@ final class Admin {
 			Helper::updateOption( 'contact_btn__options', $contact_btn_options, true );
 
 			$html_contact_popup_content = $_POST['contact_popup_content'] ?? '';
-			Helper::updateCustomPost( $html_contact_popup_content, 'html_contact', 'text/html', false );
+			Helper::updateCustomPost( $html_contact_popup_content, 'html_contact', 'text/html' );
 
 			// ------------------------------------------------------
 
@@ -469,7 +475,7 @@ final class Admin {
 				\LiteSpeed\Purge::purge_all();
 			}
 
-            // Clear wp-rocket cache
+			// Clear wp-rocket cache
 			if ( \defined( 'WP_ROCKET_VERSION' ) && \function_exists( 'rocket_clean_domain' ) ) {
 				rocket_clean_domain();
 			}
@@ -489,9 +495,11 @@ final class Admin {
                                 <span>Version: <?php echo HD_THEME_VERSION; ?></span>
                             </h3>
                         </div>
+
                         <div class="save-bar">
-                            <button type="submit" name="hd_update_settings" class="button button-primary"><?php _e( 'Save Changes', HD_TEXT_DOMAIN ); ?></button>
+                            <button type="submit" name="hd_submit_settings" class="button button-primary"><?php _e( 'Save Changes', HD_TEXT_DOMAIN ); ?></button>
                         </div>
+
                         <ul class="ul-menu-list">
                             <li class="aspect-ratio-settings">
                                 <a class="current" title="Aspect ratio" href="#aspect_ratio_settings"><?php _e( 'Aspect Ratio', HD_TEXT_DOMAIN ); ?></a>
@@ -607,7 +615,7 @@ final class Admin {
                         </div>
 
                         <div class="save-bar">
-                            <button type="submit" name="hd_update_settings" class="button button-primary"><?php _e( 'Save Changes', HD_TEXT_DOMAIN ) ?></button>
+                            <button type="submit" name="hd_submit_settings" class="button button-primary"><?php _e( 'Save Changes', HD_TEXT_DOMAIN ) ?></button>
                         </div>
                     </div>
                 </div>

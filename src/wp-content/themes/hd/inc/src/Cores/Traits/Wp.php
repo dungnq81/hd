@@ -1397,7 +1397,6 @@ trait Wp {
 			$mixed = self::stripAllTags( $mixed, ' ', true, false );
 		}
 
-		// encode
 		if ( $encode ) {
 			$mixed = base64_encode( $mixed );
 		}

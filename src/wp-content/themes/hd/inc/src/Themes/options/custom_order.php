@@ -55,4 +55,13 @@ $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
         <div class="explain"><?php echo $taxonomy->label; ?></div>
     </div>
     <?php endforeach; ?>
+
+    <span class="heading block !fw-700"><?php _e( 'Check to reset order', HD_TEXT_DOMAIN ); ?></span>
+
+    <div class="option mb-15">
+        <label class="controls">
+            <input type="checkbox" class="hd-checkbox hd-control" name="order_reset" id="order_reset" value="1">
+        </label>
+        <div class="explain"><?php _e( 'Reset all', HD_TEXT_DOMAIN ); ?></div>
+    </div>
 </div>

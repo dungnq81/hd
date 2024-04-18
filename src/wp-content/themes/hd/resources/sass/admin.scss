@@ -450,9 +450,6 @@ table.wp-list-table .column-handle, table.wp-list-table tbody td.column-handle {
 }
 
 /** */
-input[value="advanced-custom-fields-pro/acf.php"],
-
-/** */
 body.toplevel_page_hd-settings {
     #wpbody-content {
         .notice {
@@ -875,4 +872,22 @@ body.toplevel_page_hd-settings {
 
 .acf-flexible-content .layout .acf-fc-layout-handle {
     font-weight: 700;
+}
+
+/** */
+.ui-sortable {
+    tr {
+        &:hover {
+            cursor : move;
+        }
+
+        &.alternate {
+            background-color : #F9F9F9;
+        }
+
+        &.ui-sortable-helper {
+            background-color : #F9F9F9;
+            border-top       : 1px solid #DFDFDF;
+        }
+    }
 }

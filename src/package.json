@@ -28,7 +28,8 @@
     "sass": "^1.75.0",
     "sass-loader": "^12.1.0",
     "sharp": "^0.33.3",
-    "svgo": "^3.2.0"
+    "svgo": "^3.2.0",
+    "webpack": "^5.91.0"
   },
   "dependencies": {
     "@easepick/bundle": "^1.2.1",

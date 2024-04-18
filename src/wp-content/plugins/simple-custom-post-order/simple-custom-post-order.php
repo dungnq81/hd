@@ -572,6 +572,11 @@ class SCPO_Engine {
 		return $orderby;
 	}
 
+	/**
+	 * @param $wp_query
+	 *
+	 * @return false|void
+	 */
 	public function scporder_pre_get_posts( $wp_query ) {
 		$objects = $this->get_scporder_options_objects();
 
@@ -644,11 +649,7 @@ class SCPO_Engine {
 		}
 
 		if ( is_array( $args['taxonomy'] ) ) {
-			if ( isset( $args['taxonomy'][0] ) ) {
-				$taxonomy = $args['taxonomy'][0];
-			} else {
-				$taxonomy = false;
-			}
+			$taxonomy = $args['taxonomy'][0] ?? false;
 		} else {
 			$taxonomy = $args['taxonomy'];
 		}
@@ -657,8 +658,7 @@ class SCPO_Engine {
 			return $orderby;
 		}
 
-		$orderby = 't.term_order';
-		return $orderby;
+		return 't.term_order';
 	}
 
 	public function scporder_get_object_terms( $terms ) {

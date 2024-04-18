@@ -264,14 +264,14 @@ final class Theme {
 
 		/** Inline Js */
 		$l10n = [
-			'ajaxUrl'      => esc_url( admin_url( 'admin-ajax.php' ) ),
-			'baseUrl'      => trailingslashit( site_url() ),
-			'themeUrl'     => trailingslashit( get_template_directory_uri() ),
+			'ajaxUrl'      => esc_js( admin_url( 'admin-ajax.php', 'relative' ) ),
+			'baseUrl'      => esc_js( trailingslashit( site_url() ) ),
+			'themeUrl'     => esc_js( trailingslashit( get_template_directory_uri() ) ),
 			'_wpnonce'     => wp_create_nonce( '_wpnonce_ajax_csrf' ),
 			'smoothScroll' => ! 0,
 			'tracking'     => ( defined( 'TRACKING' ) && TRACKING ) ? 1 : 0,
-			'locale'       => get_locale(),
-			'lang'         => Helper::getLang(),
+			'locale'       => esc_js( get_locale() ),
+			'lang'         => esc_js( Helper::getLang() ),
 			'lg'           => [
 				'view_more'   => __( 'View more', HD_TEXT_DOMAIN ),
 				'view_detail' => __( 'Detail', HD_TEXT_DOMAIN ),

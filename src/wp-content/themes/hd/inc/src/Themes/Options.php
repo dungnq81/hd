@@ -199,6 +199,7 @@ final class Options {
 	 *
 	 * @return void
 	 * @throws Exception
+	 * @deprecated
 	 */
 //	public function setup_phpmailer_init( $phpmailer ): void {
 //		Helper::PHPMailerInit( $phpmailer, 'smtp__options' );
