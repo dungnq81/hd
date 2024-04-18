@@ -3,7 +3,7 @@
         'name' => 'mu-plugins/mu-hd',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'bcd0b0a864211c20e1c80cde4d1d53d2c95c646e',
+        'reference' => '926000365623a76ac004b4867dd7d98e5fe4bfe9',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'mu-plugins/mu-hd' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'bcd0b0a864211c20e1c80cde4d1d53d2c95c646e',
+            'reference' => '926000365623a76ac004b4867dd7d98e5fe4bfe9',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
