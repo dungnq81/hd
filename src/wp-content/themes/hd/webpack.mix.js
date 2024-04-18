@@ -31,9 +31,9 @@ mix
     .js(resources + '/js/plugins/load-scripts.js', assets + '/js/plugins')
     .js(resources + '/js/plugins/passive-events.js', assets + '/js/plugins')
 
+    .js(resources + '/js/plugins/swiper.js', assets + '/js/plugins')
+    .js(resources + '/js/plugins/admin_custom_order.js', assets + '/js/plugins')
+
     .js(resources + '/js/login.js', assets + '/js')
     .js(resources + '/js/admin.js', assets + '/js')
-
-    .js(resources + '/js/plugins/swiper.js', assets + '/js/plugins')
-
     .js(resources + '/js/app.js', assets + '/js');

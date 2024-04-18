@@ -28,16 +28,16 @@ trait Wp {
 	// -------------------------------------------------------------
 
 	/**
-	 * @param $action
-	 * @param $name
-	 * @param $referer
-	 * @param $display
+	 * @param mixed $action
+	 * @param string $name
+	 * @param bool $referer
+	 * @param bool $display
 	 *
 	 * @return string
 	 */
-	public static function csrf_token( $action = - 1, $name = '_csrf_token', $referer = false, $display = true ) {
+	public static function csrf_token( mixed $action = - 1, string $name = '_csrf_token', bool $referer = false, bool $display = true ): string {
 		$name        = esc_attr( $name );
-		$nonce_field = '<input type="hidden" id="' . Helper::random( 6 ) . '" name="' . $name . '" value="' . wp_create_nonce( $action ) . '" />';
+		$nonce_field = '<input type="hidden" id="' . Helper::random( 9 ) . '" name="' . $name . '" value="' . wp_create_nonce( $action ) . '" />';
 
 		if ( $referer ) {
 			$nonce_field .= wp_referer_field( false );

@@ -82,8 +82,9 @@ final class Theme {
 		/** Remove Template Editor support until WP 5.9 since more Theme Blocks are going to be introduced. */
 		remove_theme_support( 'block-templates' );
 
-		/** Enable excerpt to page */
-		add_post_type_support( 'page', 'excerpt' );
+		/** Enable excerpt to page, page-attributes to post */
+		add_post_type_support( 'page', [ 'excerpt' ] );
+		add_post_type_support( 'post', [ 'page-attributes' ] );
 
 		/** Set default values for the upload media box */
 		update_option( 'image_default_align', 'center' );
@@ -94,7 +95,7 @@ final class Theme {
 		 *
 		 * @link https://codex.wordpress.org/Theme_Logo
 		 */
-		$logo_height = 120;
+		$logo_height = 240;
 		$logo_width  = 240;
 
 		add_theme_support(
@@ -245,28 +246,28 @@ final class Theme {
 	 */
 	public function wp_enqueue_scripts(): void {
 
+		/** Extra */
+		wp_register_style( "swiper-style", HD_THEME_URL . "assets/css/plugins/swiper.css", [], HD_THEME_VERSION );
+		wp_register_script( "swiper", HD_THEME_URL . "assets/js/plugins/swiper.js", [], HD_THEME_VERSION, true );
+
 		/** Stylesheet */
-		wp_register_style( "plugins-style", get_template_directory_uri() . "/assets/css/plugins.css", [], HD_THEME_VERSION );
-		wp_enqueue_style( "app-style", get_template_directory_uri() . "/assets/css/app.css", [ "plugins-style" ], HD_THEME_VERSION );
+		wp_register_style( "plugins-style", HD_THEME_URL . "assets/css/plugins.css", [], HD_THEME_VERSION );
+		wp_enqueue_style( "app-style", HD_THEME_URL . "assets/css/app.css", [ "plugins-style" ], HD_THEME_VERSION );
 
 		/** Scripts */
-		wp_enqueue_script( "app", get_template_directory_uri() . "/assets/js/app.js", [ "jquery-core" ], HD_THEME_VERSION, true );
+		wp_enqueue_script( "app", HD_THEME_URL . "assets/js/app.js", [ "jquery-core" ], HD_THEME_VERSION, true );
 		wp_script_add_data( "app", "defer", true );
 
-		/** Extra */
-		wp_register_style( "swiper-style", get_template_directory_uri() . "/assets/css/plugins/swiper.css", [], HD_THEME_VERSION );
-		wp_register_script( "swiper", get_template_directory_uri() . "/assets/js/plugins/swiper.js", [], HD_THEME_VERSION, true );
+		wp_enqueue_style( "fonts-style", HD_THEME_URL . "assets/css/fonts.css", [], HD_THEME_VERSION );
 
-		wp_enqueue_style( "fonts-style", get_template_directory_uri() . "/assets/css/fonts.css", [], HD_THEME_VERSION );
-
-		wp_enqueue_script( "back-to-top", get_template_directory_uri() . "/assets/js/plugins/back-to-top.js", [], HD_THEME_VERSION, true );
-		wp_enqueue_script( "social-share", get_template_directory_uri() . "/assets/js/plugins/social-share.js", [], '0.0.3', true );
+		wp_enqueue_script( "back-to-top", HD_THEME_URL . "assets/js/plugins/back-to-top.js", [], HD_THEME_VERSION, true );
+		wp_enqueue_script( "social-share", HD_THEME_URL . "assets/js/plugins/social-share.js", [], '0.0.3', true );
 
 		/** Inline Js */
 		$l10n = [
 			'ajaxUrl'      => esc_js( admin_url( 'admin-ajax.php', 'relative' ) ),
-			'baseUrl'      => esc_js( trailingslashit( site_url() ) ),
-			'themeUrl'     => esc_js( trailingslashit( get_template_directory_uri() ) ),
+			'baseUrl'      => esc_js( untrailingslashit( site_url() ) . '/' ),
+			'themeUrl'     => esc_js( HD_THEME_URL ),
 			'_wpnonce'     => wp_create_nonce( '_wpnonce_ajax_csrf' ),
 			'smoothScroll' => ! 0,
 			'tracking'     => ( defined( 'TRACKING' ) && TRACKING ) ? 1 : 0,

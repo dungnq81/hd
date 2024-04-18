@@ -323,8 +323,12 @@ final class Admin {
 
 				Helper::updateOption( 'custom_order__options', $custom_order_options );
 
+                // update options
+				( new Custom_Order() )->update_options();
+
 			} else {
 
+                // reset order
 				( new Custom_Order() )->reset_all();
 			}
 

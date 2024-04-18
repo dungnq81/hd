@@ -1,12 +1,8 @@
-/*jshint esversion: 6 */
-window.jQuery = window.$ = jQuery;
-Object.assign(window, { $: jQuery, jQuery });
-
 import { nanoid } from 'nanoid';
 import Cookies from 'js-cookie';
 
 'use strict';
-$(function () {
+(function ($) {
 
     /**
      * @param el
@@ -102,4 +98,5 @@ $(function () {
     // user
     const create_user = $("#createuser");
     create_user.find("#send_user_notification").removeAttr("checked").attr("disabled", true);
-});
+
+})(jQuery)

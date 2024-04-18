@@ -89,7 +89,7 @@ final class Customizer {
 			[
 				'priority'       => 140,
 				'theme_supports' => '',
-				'title'          => __( 'MNMN', HD_TEXT_DOMAIN ),
+				'title'          => __( 'HD', HD_TEXT_DOMAIN ),
 				'description'    => __( 'Controls the add-on menu', HD_TEXT_DOMAIN ),
 			]
 		);

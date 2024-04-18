@@ -15,7 +15,6 @@ use Cores\Helper;
  * @copyright 2013-2017 Sameer Humagain im@hsameer.com.np
  * @copyright 2017-2023 Colorlib support@colorlib.com
  */
-
 final class Custom_Order {
 
 	private mixed $order_post_type;
@@ -58,15 +57,16 @@ final class Custom_Order {
 
 	private function _init_run(): void {
 		add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 33, 1 );
+		add_action( 'admin_init', [ &$this, 'refresh' ] );
 
 		// posts
 		add_action( 'pre_get_posts', [ &$this, 'custom_order_pre_get_posts' ] );
 
-		// Dynamic hook get_(adjacent)_post_sort
+		// dynamic hook get_(adjacent)_post_sort
 		add_filter( 'get_previous_post_sort', [ &$this, 'custom_order_previous_post_sort' ] );
 		add_filter( 'get_next_post_sort', [ &$this, 'custom_order_next_post_sort' ] );
 
-		// Dynamic hook get_(adjacent)_post_where
+		// dynamic hook get_(adjacent)_post_where
 		add_filter( 'get_previous_post_where', [ &$this, 'custom_order_previous_post_where' ] );
 		add_filter( 'get_next_post_where', [ &$this, 'custom_order_next_post_where' ] );
 
@@ -74,6 +74,192 @@ final class Custom_Order {
 		add_filter( 'get_terms_orderby', [ &$this, 'custom_order_get_terms_orderby' ], 10, 2 );
 		add_filter( 'wp_get_object_terms', [ &$this, 'custom_order_get_object_terms' ] );
 		add_filter( 'get_terms', [ &$this, 'custom_order_get_object_terms' ] );
+
+		// ajax
+		add_action( 'wp_ajax_update-menu-order', [ &$this, 'update_menu_order_ajax' ] );
+		add_action( 'wp_ajax_update-menu-order-tags', [ &$this, 'update_menu_order_tags_ajax' ] );
+	}
+
+	// ------------------------------------------------------
+
+	public function refresh() {
+		if ( wp_doing_ajax() ) {
+			return;
+		}
+
+		global $wpdb;
+		$objects = $this->order_post_type;
+		$tags    = $this->order_taxonomy;
+
+		if ( ! empty( $objects ) ) {
+			foreach ( $objects as $object ) {
+
+				$result = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT COUNT(*) AS `cnt`, MAX(menu_order) AS `max`, MIN(menu_order) AS `min`
+						FROM $wpdb->posts
+						WHERE `post_type` = %s AND `post_status` IN ('publish', 'pending', 'draft', 'private', 'future')",
+						$object
+					)
+				);
+
+				if ( $result[0]->cnt == 0 || $result[0]->cnt == $result[0]->max ) {
+					continue;
+				}
+
+				$wpdb->query( 'SET @row_number = 0;' );
+				$wpdb->query(
+					"UPDATE {$wpdb->posts} as `pt` JOIN (
+						SELECT `ID`, (@row_number:=@row_number + 1) AS `rank`
+                        FROM {$wpdb->posts}
+                        WHERE `post_type` = '$object' AND `post_status` IN ( 'publish', 'pending', 'draft', 'private', 'future' )
+                        ORDER BY `menu_order` ASC
+                    ) as `pt2`
+                	ON pt.`id` = pt2.`id`
+                	SET pt.`menu_order` = pt2.`rank`;"
+				);
+			}
+		}
+
+		if ( ! empty( $tags ) ) {
+			foreach ( $tags as $taxonomy ) {
+
+				$result = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT COUNT(*) AS `cnt`, MAX(`term_order`) AS `max`, MIN(`term_order`) AS `min`
+						FROM {$wpdb->terms} AS `terms`
+						INNER JOIN {$wpdb->term_taxonomy} AS `term_taxonomy` ON ( terms.`term_id` = term_taxonomy.`term_id` )
+						WHERE term_taxonomy.`taxonomy` = %s",
+						$taxonomy
+					)
+				);
+
+				if ( $result[0]->cnt == 0 || $result[0]->cnt == $result[0]->max ) {
+					continue;
+				}
+
+				$results = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT terms.`term_id`
+						FROM {$wpdb->terms} AS `terms`
+						INNER JOIN {$wpdb->term_taxonomy} AS `term_taxonomy` ON ( terms.`term_id` = term_taxonomy.`term_id` )
+						WHERE term_taxonomy.`taxonomy` = %s
+						ORDER BY `term_order` ASC",
+						$taxonomy
+					)
+				);
+
+				foreach ( $results as $key => $result ) {
+					$wpdb->update( $wpdb->terms, array( 'term_order' => $key + 1 ), array( 'term_id' => $result->term_id ) );
+				}
+			}
+		}
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @return false|void
+	 */
+	public function update_menu_order_ajax() {
+		global $wpdb;
+
+		if ( ! wp_doing_ajax() ) {
+			return false;
+		}
+
+		parse_str( $_POST['order'], $data );
+
+		if ( ! is_array( $data ) ) {
+			return false;
+		}
+
+		$id_arr = [];
+		foreach ( $data as $values ) {
+			foreach ( $values as $id ) {
+				$id_arr[] = $id;
+			}
+		}
+
+		$menu_order_arr = [];
+		foreach ( $id_arr as $id ) {
+			$id = intval( $id );
+
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT `menu_order` FROM {$wpdb->posts} WHERE `ID` = %d", $id ) );
+			foreach ( $results as $result ) {
+				$menu_order_arr[] = $result->menu_order;
+			}
+		}
+
+		sort( $menu_order_arr );
+
+		foreach ( $data as $values ) {
+			foreach ( $values as $position => $id ) {
+				$id = intval( $id );
+				$wpdb->update(
+					$wpdb->posts,
+					[ 'menu_order' => $menu_order_arr[ $position ] ],
+					[ 'ID' => $id ],
+					[ '%d' ],
+					[ '%d' ]
+				);
+			}
+		}
+
+		do_action( 'hd_update_menu_order_post_type' );
+
+		die();
+	}
+
+	// ------------------------------------------------------
+
+	public function update_menu_order_tags_ajax() {
+		global $wpdb;
+
+		if ( ! wp_doing_ajax() ) {
+			return false;
+		}
+
+		parse_str( $_POST['order'], $data );
+
+		if ( ! is_array( $data ) ) {
+			return false;
+		}
+
+		$id_arr = [];
+		foreach ( $data as $values ) {
+			foreach ( $values as $id ) {
+				$id_arr[] = $id;
+			}
+		}
+
+		$menu_order_arr = [];
+		foreach ( $id_arr as $id ) {
+			$id      = intval( $id );
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT `term_order` FROM {$wpdb->terms} WHERE `term_id` = %d", $id ) );
+			foreach ( $results as $result ) {
+				$menu_order_arr[] = $result->term_order;
+			}
+		}
+
+		sort( $menu_order_arr );
+
+		foreach ( $data as $values ) {
+			foreach ( $values as $position => $id ) {
+				$id = intval( $id );
+				$wpdb->update(
+					$wpdb->terms,
+					[ 'term_order' => $menu_order_arr[ $position ] ],
+					[ 'term_id' => $id ],
+					[ '%d' ],
+					[ '%d' ]
+				);
+			}
+		}
+
+		do_action( 'hd_update_menu_order_taxonomy' );
+
+		die();
 	}
 
 	// ------------------------------------------------------
@@ -94,6 +280,7 @@ final class Custom_Order {
 		if ( isset( $post->post_type ) && in_array( $post->post_type, $objects ) ) {
 			$where = preg_replace( "/p.post_date < \'[0-9\-\s\:]+\'/i", "p.menu_order > '" . $post->menu_order . "'", $where );
 		}
+
 		return $where;
 	}
 
@@ -115,6 +302,7 @@ final class Custom_Order {
 		if ( isset( $post->post_type ) && in_array( $post->post_type, $objects ) ) {
 			$where = preg_replace( "/p.post_date > \'[0-9\-\s\:]+\'/i", "p.menu_order < '" . $post->menu_order . "'", $where );
 		}
+
 		return $where;
 	}
 
@@ -173,6 +361,10 @@ final class Custom_Order {
 		if ( $this->_check_custom_order_script() ) {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-sortable' );
+			wp_enqueue_script( 'custom_order', HD_THEME_URL . 'assets/js/plugins/admin_custom_order.js', [
+				'jquery',
+				'jquery-ui-sortable'
+			], HD_THEME_VERSION, true );
 		}
 	}
 
@@ -287,7 +479,7 @@ final class Custom_Order {
 
 		$tags = $this->order_taxonomy;
 
-		foreach ( $terms as $key => $term ) {
+		foreach ( $terms as $term ) {
 			if ( is_object( $term ) && isset( $term->taxonomy ) ) {
 				$taxonomy = $term->taxonomy;
 				if ( ! in_array( $taxonomy, $tags, true ) ) {
@@ -353,6 +545,99 @@ final class Custom_Order {
 		}
 
 		return $active;
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @return void
+	 */
+	public function update_options(): void {
+		global $wpdb;
+
+		$objects = $this->order_post_type;
+		$tags    = $this->order_taxonomy;
+
+		if ( ! empty( $objects ) ) {
+			foreach ( $objects as $object ) {
+
+				$object = sanitize_text_field( $object );
+
+				$result = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT count(*) as `cnt`, max(`menu_order`) as `max`, min(`menu_order`) as `min`
+						FROM {$wpdb->posts}
+						WHERE `post_type` = %s AND `post_status` IN ('publish', 'pending', 'draft', 'private', 'future')",
+						$object
+					)
+				);
+
+				if ( $result[0]->cnt == 0 || $result[0]->cnt == $result[0]->max ) {
+					continue;
+				}
+
+				if ( $object == 'page' ) {
+					$results = $wpdb->get_results(
+						$wpdb->prepare(
+							"SELECT `ID`
+							FROM {$wpdb->posts}
+							WHERE `post_type` = %s AND `post_status` IN ('publish', 'pending', 'draft', 'private', 'future')
+							ORDER BY `post_title` ASC",
+							$object
+						)
+					);
+				} else {
+					$results = $wpdb->get_results(
+						$wpdb->prepare(
+							"SELECT `ID`
+							FROM {$wpdb->posts}
+							WHERE `post_type` = %s AND `post_status` IN ('publish', 'pending', 'draft', 'private', 'future')
+							ORDER BY `post_date` DESC",
+							$object
+						)
+					);
+				}
+
+				foreach ( $results as $key => $result ) {
+					$wpdb->update( $wpdb->posts, [ 'menu_order' => $key + 1 ], [ 'ID' => $result->ID ] );
+				}
+			}
+		}
+
+		if ( ! empty( $tags ) ) {
+			foreach ( $tags as $taxonomy ) {
+
+				$taxonomy = sanitize_text_field( $taxonomy );
+
+				$result = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT count(*) as cnt, max(`term_order`) as `max`, min(`term_order`) as `min` FROM {$wpdb->terms} AS `terms`
+						INNER JOIN {$wpdb->term_taxonomy} AS `term_taxonomy` ON ( terms.`term_id` = term_taxonomy.`term_id` )
+						WHERE term_taxonomy.`taxonomy` = %s",
+						$taxonomy
+					)
+				);
+
+				if ( $result[0]->cnt == 0 || $result[0]->cnt == $result[0]->max ) {
+					continue;
+				}
+
+				$results = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT terms.`term_id`
+						FROM {$wpdb->terms} AS `terms`
+						INNER JOIN {$wpdb->term_taxonomy} AS `term_taxonomy` ON ( terms.`term_id` = term_taxonomy.`term_id` )
+						WHERE term_taxonomy.`taxonomy` = %s
+						ORDER BY `name` ASC",
+						$taxonomy
+					)
+				);
+
+				foreach ( $results as $key => $result ) {
+					$wpdb->update( $wpdb->terms, [ 'term_order' => $key + 1 ], [ 'term_id' => $result->term_id ] );
+				}
+			}
+		}
 	}
 
 	// ------------------------------------------------------
