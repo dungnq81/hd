@@ -82,9 +82,12 @@ final class Custom_Order {
 
 	// ------------------------------------------------------
 
+	/**
+	 * @return false|void
+	 */
 	public function refresh() {
 		if ( wp_doing_ajax() ) {
-			return;
+			return false;
 		}
 
 		global $wpdb;
@@ -659,8 +662,7 @@ final class Custom_Order {
 
 		// taxonomy
 		if ( ! empty( $this->order_taxonomy ) ) {
-			$prep_taxonomy_query = $wpdb->prepare( "UPDATE {$wpdb->terms} SET `term_order` = 0" );
-			$wpdb->query( $prep_taxonomy_query );
+			$wpdb->query( "UPDATE {$wpdb->terms} SET `term_order` = 0" );
 		}
 
 		// reset
@@ -670,5 +672,6 @@ final class Custom_Order {
 		];
 
 		Helper::updateOption( 'custom_order__options', $custom_order_options );
+		set_theme_mod( '_custom_order_', 0 );
 	}
 }
