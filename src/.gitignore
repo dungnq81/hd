@@ -47,8 +47,6 @@ Thumbs.db
 
 # WordPress template
 wp-content/uploads/
-#wp-content/upgrade-temp-backup/
-#wp-content/upgrade/
 
 # ignore these plugins
 wp-content/plugins/hello.php
@@ -58,3 +56,5 @@ wp-content/themes/twenty*/
 
 # Project exclude paths
 wp-content/themes/hd/assets/
+wp-content/plugins/remove-cpt-base/
+wp-content/plugins/simple-custom-post-order/
