@@ -15,18 +15,18 @@ $smtp_from_name                = $smtp_options['smtp_from_name'] ?? '';
 $smtp_disable_ssl_verification = $smtp_options['smtp_disable_ssl_verification'] ?? '';
 
 ?>
-<h2><?php _e( 'SMTP Settings', HD_TEXT_DOMAIN ); ?></h2>
+<h2><?php _e( 'SMTP Settings', TEXT_DOMAIN ); ?></h2>
 <div class="section section-text" id="section_smtp_host">
-    <label class="heading" for="smtp_host"><?php _e( 'SMTP Host', HD_TEXT_DOMAIN ); ?></label>
+    <label class="heading" for="smtp_host"><?php _e( 'SMTP Host', TEXT_DOMAIN ); ?></label>
     <div class="option">
         <div class="controls">
             <input value="<?php echo esc_attr( $smtp_host ); ?>" class="hd-input hd-control" type="text" id="smtp_host" name="smtp_host">
         </div>
-        <div class="explain"><?php _e( 'The SMTP server which will be used to send email. For example: smtp.gmail.com', HD_TEXT_DOMAIN ); ?></div>
+        <div class="explain"><?php _e( 'The SMTP server which will be used to send email. For example: smtp.gmail.com', TEXT_DOMAIN ); ?></div>
     </div>
 </div>
 <div class="section section-select" id="section_smtp_auth">
-    <label class="heading" for="smtp_auth"><?php _e( 'SMTP Authentication', HD_TEXT_DOMAIN ); ?></label>
+    <label class="heading" for="smtp_auth"><?php _e( 'SMTP Authentication', TEXT_DOMAIN ); ?></label>
     <div class="option">
         <div class="controls">
             <div class="select_wrapper">
@@ -36,29 +36,29 @@ $smtp_disable_ssl_verification = $smtp_options['smtp_disable_ssl_verification'] 
                 </select>
             </div>
         </div>
-        <div class="explain"><?php _e( 'Whether to use SMTP Authentication when sending an email (recommended: True).', HD_TEXT_DOMAIN ); ?></div>
+        <div class="explain"><?php _e( 'Whether to use SMTP Authentication when sending an email (recommended: True).', TEXT_DOMAIN ); ?></div>
     </div>
 </div>
 <div class="section section-text" id="section_smtp_username">
-    <label class="heading" for="smtp_username"><?php _e( 'SMTP Username', HD_TEXT_DOMAIN ); ?></label>
+    <label class="heading" for="smtp_username"><?php _e( 'SMTP Username', TEXT_DOMAIN ); ?></label>
     <div class="option">
         <div class="controls">
             <input value="<?php echo esc_attr( $smtp_username ); ?>" class="hd-input hd-control" type="text" id="smtp_username" name="smtp_username">
         </div>
-        <div class="explain"><?php _e( 'Your SMTP Username. For example: abc@gmail.com', HD_TEXT_DOMAIN ); ?></div>
+        <div class="explain"><?php _e( 'Your SMTP Username. For example: abc@gmail.com', TEXT_DOMAIN ); ?></div>
     </div>
 </div>
 <div class="section section-password" id="section_smtp_password">
-    <label class="heading" for="smtp_password"><?php _e( 'SMTP Password', HD_TEXT_DOMAIN ); ?></label>
+    <label class="heading" for="smtp_password"><?php _e( 'SMTP Password', TEXT_DOMAIN ); ?></label>
     <div class="option">
         <div class="controls">
             <input value="" class="hd-input hd-control" type="password" id="smtp_password" name="smtp_password">
         </div>
-        <div class="explain"><?php _e( 'Your SMTP Password (The saved password is not shown for security reasons. If you do not want to update the saved password, you can leave this field empty when updating other options).', HD_TEXT_DOMAIN );?></div>
+        <div class="explain"><?php _e( 'Your SMTP Password (The saved password is not shown for security reasons. If you do not want to update the saved password, you can leave this field empty when updating other options).', TEXT_DOMAIN );?></div>
     </div>
 </div>
 <div class="section section-select" id="section_smtp_encryption">
-    <label class="heading" for="smtp_encryption"><?php _e( 'Type of Encryption', HD_TEXT_DOMAIN ); ?></label>
+    <label class="heading" for="smtp_encryption"><?php _e( 'Type of Encryption', TEXT_DOMAIN ); ?></label>
     <div class="option">
         <div class="controls">
             <div class="select_wrapper">
@@ -69,42 +69,42 @@ $smtp_disable_ssl_verification = $smtp_options['smtp_disable_ssl_verification'] 
                 </select>
             </div>
         </div>
-        <div class="explain"><?php _e( 'The encryption which will be used when sending an email (recommended: TLS).', HD_TEXT_DOMAIN ); ?></div>
+        <div class="explain"><?php _e( 'The encryption which will be used when sending an email (recommended: TLS).', TEXT_DOMAIN ); ?></div>
     </div>
 </div>
 <div class="section section-text" id="section_smtp_port">
-    <label class="heading" for="smtp_port"><?php _e( 'SMTP Port', HD_TEXT_DOMAIN ); ?></label>
+    <label class="heading" for="smtp_port"><?php _e( 'SMTP Port', TEXT_DOMAIN ); ?></label>
     <div class="option">
         <div class="controls">
             <input value="<?php echo esc_attr( $smtp_port ); ?>" class="hd-input hd-control" type="text" id="smtp_port" name="smtp_port">
         </div>
-        <div class="explain"><?php _e( 'The port which will be used when sending an email (587/465/25). If you choose TLS it should be set to 587. For SSL use port 465 instead.', HD_TEXT_DOMAIN ); ?></div>
+        <div class="explain"><?php _e( 'The port which will be used when sending an email (587/465/25). If you choose TLS it should be set to 587. For SSL use port 465 instead.', TEXT_DOMAIN ); ?></div>
     </div>
 </div>
 <div class="section section-text" id="section_smtp_from_email">
-    <label class="heading" for="smtp_from_email"><?php _e('From Email Address', HD_TEXT_DOMAIN); ?></label>
+    <label class="heading" for="smtp_from_email"><?php _e('From Email Address', TEXT_DOMAIN); ?></label>
     <div class="option">
         <div class="controls">
             <input value="<?php echo esc_attr( $smtp_from_email ); ?>" class="hd-input hd-control" type="text" id="smtp_from_email" name="smtp_from_email">
         </div>
-        <div class="explain"><?php _e( 'The email address which will be used as the From Address if it is not supplied to the mail function.', HD_TEXT_DOMAIN );?></div>
+        <div class="explain"><?php _e( 'The email address which will be used as the From Address if it is not supplied to the mail function.', TEXT_DOMAIN );?></div>
     </div>
 </div>
 <div class="section section-text" id="section_smtp_from_name">
-    <label class="heading" for="smtp_from_name"><?php _e('From Name', HD_TEXT_DOMAIN); ?></label>
+    <label class="heading" for="smtp_from_name"><?php _e('From Name', TEXT_DOMAIN); ?></label>
     <div class="option">
         <div class="controls">
             <input value="<?php echo esc_attr( $smtp_from_name ); ?>" class="hd-input hd-control" type="text" id="smtp_from_name" name="smtp_from_name">
         </div>
-        <div class="explain"><?php _e( 'The name which will be used as the From Name if it is not supplied to the mail function.', HD_TEXT_DOMAIN ); ?></div>
+        <div class="explain"><?php _e( 'The name which will be used as the From Name if it is not supplied to the mail function.', TEXT_DOMAIN ); ?></div>
     </div>
 </div>
 <div class="section section-checkbox" id="section_smtp_disable_ssl_verification">
-    <label class="heading" for="smtp_disable_ssl_verification"><?php _e( 'Disable SSL Certificate Verification', HD_TEXT_DOMAIN ); ?></label>
+    <label class="heading" for="smtp_disable_ssl_verification"><?php _e( 'Disable SSL Certificate Verification', TEXT_DOMAIN ); ?></label>
     <div class="option">
         <div class="controls">
             <input type="checkbox" class="hd-checkbox hd-control" name="smtp_disable_ssl_verification" id="smtp_disable_ssl_verification" <?php checked( $smtp_disable_ssl_verification, 1 ); ?> value="1">
         </div>
-        <div class="explain"><?php _e( 'You should get your host to fix the SSL configurations instead of bypassing it.', HD_TEXT_DOMAIN ); ?></div>
+        <div class="explain"><?php _e( 'You should get your host to fix the SSL configurations instead of bypassing it.', TEXT_DOMAIN ); ?></div>
     </div>
 </div>

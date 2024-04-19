@@ -5,7 +5,7 @@ use Cores\Helper;
 $emails_options = Helper::getOption( 'emails__options' );
 
 ?>
-<h2><?php _e( 'Email Settings', HD_TEXT_DOMAIN ); ?></h2>
+<h2><?php _e( 'Email Settings', TEXT_DOMAIN ); ?></h2>
 
 <?php
 
@@ -21,7 +21,7 @@ if ( ! empty( $hd_email_list ) ) :
         }
 ?>
 <div class="section section-text" id="section_emails">
-	<label class="heading" for="<?=$key?>"><?php _e( $title, HD_TEXT_DOMAIN ); ?></label>
+	<label class="heading" for="<?=$key?>"><?php _e( $title, TEXT_DOMAIN ); ?></label>
 	<div class="option">
 		<div class="controls">
 			<input value="<?=$emails_list?>" class="hd-input hd-control" type="text" id="<?=$key?>" name="<?=$key?>_email">

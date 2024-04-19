@@ -22,11 +22,11 @@ if ( ! function_exists( '__after_setup_theme' ) ) {
 	function __after_setup_theme(): void {
 		register_nav_menus(
 			[
-				'main-nav'   => __( 'Primary Menu', HD_TEXT_DOMAIN ),
-				//'second-nav' => __( 'Secondary Menu', HD_TEXT_DOMAIN ),
-				//'mobile-nav' => __( 'Handheld Menu', HD_TEXT_DOMAIN ),
-				'social-nav' => __( 'Social menu', HD_TEXT_DOMAIN ),
-				//'policy-nav' => __( 'Term menu', HD_TEXT_DOMAIN ),
+				'main-nav'   => __( 'Primary Menu', TEXT_DOMAIN ),
+				//'second-nav' => __( 'Secondary Menu', TEXT_DOMAIN ),
+				//'mobile-nav' => __( 'Handheld Menu', TEXT_DOMAIN ),
+				'social-nav' => __( 'Social menu', TEXT_DOMAIN ),
+				//'policy-nav' => __( 'Term menu', TEXT_DOMAIN ),
 			]
 		);
 	}
@@ -52,8 +52,8 @@ if ( ! function_exists( '__register_sidebars' ) ) {
 			[
 				'container'     => false,
 				'id'            => 'hd-home-sidebar',
-				'name'          => __( 'Homepage', HD_TEXT_DOMAIN ),
-				'description'   => __( 'Widgets added here will appear in homepage.', HD_TEXT_DOMAIN ),
+				'name'          => __( 'Homepage', TEXT_DOMAIN ),
+				'description'   => __( 'Widgets added here will appear in homepage.', TEXT_DOMAIN ),
 				'before_widget' => '<div class="%2$s">',
 				'after_widget'  => '</div>',
 				'before_title'  => '<span>',
@@ -71,13 +71,13 @@ if ( ! function_exists( '__register_sidebars' ) ) {
 
 		if ( $top_header_cols > 0 ) {
 			for ( $i = 1; $i <= $top_header_cols; $i ++ ) {
-				$_name = sprintf( __( 'Top-Header %d', HD_TEXT_DOMAIN ), $i );
+				$_name = sprintf( __( 'Top-Header %d', TEXT_DOMAIN ), $i );
 				register_sidebar(
 					[
 						'container'     => false,
 						'id'            => 'hd-top-header-' . $i . '-sidebar',
 						'name'          => $_name,
-						'description'   => __( 'Widgets added here will appear in top header.', HD_TEXT_DOMAIN ),
+						'description'   => __( 'Widgets added here will appear in top header.', TEXT_DOMAIN ),
 						'before_widget' => '<div class="header-widgets %2$s">',
 						'after_widget'  => '</div>',
 						'before_title'  => '<span>',
@@ -89,13 +89,13 @@ if ( ! function_exists( '__register_sidebars' ) ) {
 
 		if ( $header_cols > 0 ) {
 			for ( $i = 1; $i <= $header_cols; $i ++ ) {
-				$_name = sprintf( __( 'Header %d', HD_TEXT_DOMAIN ), $i );
+				$_name = sprintf( __( 'Header %d', TEXT_DOMAIN ), $i );
 				register_sidebar(
 					[
 						'container'     => false,
 						'id'            => 'hd-header-' . $i . '-sidebar',
 						'name'          => $_name,
-						'description'   => __( 'Widgets added here will appear in header.', HD_TEXT_DOMAIN ),
+						'description'   => __( 'Widgets added here will appear in header.', TEXT_DOMAIN ),
 						'before_widget' => '<div class="header-widgets %2$s">',
 						'after_widget'  => '</div>',
 						'before_title'  => '<span>',
@@ -107,13 +107,13 @@ if ( ! function_exists( '__register_sidebars' ) ) {
 
 		if ( $bottom_header_cols > 0 ) {
 			for ( $i = 1; $i <= $bottom_header_cols; $i ++ ) {
-				$_name = sprintf( __( 'Bottom-Header %d', HD_TEXT_DOMAIN ), $i );
+				$_name = sprintf( __( 'Bottom-Header %d', TEXT_DOMAIN ), $i );
 				register_sidebar(
 					[
 						'container'     => false,
 						'id'            => 'hd-bottom-header-' . $i . '-sidebar',
 						'name'          => $_name,
-						'description'   => __( 'Widgets added here will appear in bottom header.', HD_TEXT_DOMAIN ),
+						'description'   => __( 'Widgets added here will appear in bottom header.', TEXT_DOMAIN ),
 						'before_widget' => '<div class="header-widgets %2$s">',
 						'after_widget'  => '</div>',
 						'before_title'  => '<span>',
@@ -139,11 +139,11 @@ if ( ! function_exists( '__register_sidebars' ) ) {
 				$footer   = sprintf( 'footer_%d', $footer_n );
 
 				if ( 1 === $rows ) {
-					$footer_region_name        = sprintf( __( 'Footer-Column %1$d', HD_TEXT_DOMAIN ), $region );
-					$footer_region_description = sprintf( __( 'Widgets added here will appear in column %1$d of the footer.', HD_TEXT_DOMAIN ), $region );
+					$footer_region_name        = sprintf( __( 'Footer-Column %1$d', TEXT_DOMAIN ), $region );
+					$footer_region_description = sprintf( __( 'Widgets added here will appear in column %1$d of the footer.', TEXT_DOMAIN ), $region );
 				} else {
-					$footer_region_name        = sprintf( __( 'Footer-Row %1$d - Column %2$d', HD_TEXT_DOMAIN ), $row, $region );
-					$footer_region_description = sprintf( __( 'Widgets added here will appear in column %1$d of footer row %2$d.', HD_TEXT_DOMAIN ), $region, $row );
+					$footer_region_name        = sprintf( __( 'Footer-Row %1$d - Column %2$d', TEXT_DOMAIN ), $row, $region );
+					$footer_region_description = sprintf( __( 'Widgets added here will appear in column %1$d of footer row %2$d.', TEXT_DOMAIN ), $region, $row );
 				}
 
 				$footer_args[ $footer ] = [

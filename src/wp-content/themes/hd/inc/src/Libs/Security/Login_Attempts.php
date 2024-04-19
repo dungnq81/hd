@@ -59,8 +59,8 @@ class Login_Attempts
             Helper::updateOption('hd_security_total_blocked_logins', Helper::getOption('hd_security_total_blocked_logins', 0) + 1);
 
             wp_die(
-                esc_html__('You don’t have access to this page. Please contact the administrator of this website for further assistance.', HD_TEXT_DOMAIN),
-                esc_html__('The access to that page has been restricted by the administrator of this website', HD_TEXT_DOMAIN),
+                esc_html__('You don’t have access to this page. Please contact the administrator of this website for further assistance.', TEXT_DOMAIN),
+                esc_html__('The access to that page has been restricted by the administrator of this website', TEXT_DOMAIN),
                 [
                     'hd_error' => true,
                     'response' => 403,
@@ -118,7 +118,7 @@ class Login_Attempts
         // Increase the attempt count.
         $login_attempts[$user_ip]['attempts']++;
         if ($login_attempts[$user_ip]['attempts'] > 0) {
-            $errors->add('login_attempts', __(sprintf('<strong>Alert:</strong> You have entered the wrong credentials <strong>%s</strong> times.', $login_attempts[$user_ip]['attempts']), HD_TEXT_DOMAIN));
+            $errors->add('login_attempts', __(sprintf('<strong>Alert:</strong> You have entered the wrong credentials <strong>%s</strong> times.', $login_attempts[$user_ip]['attempts']), TEXT_DOMAIN));
 
             if (
                 in_array('incorrect_password', $errors->get_error_codes()) &&

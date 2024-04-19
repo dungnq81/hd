@@ -47,7 +47,7 @@ final class Admin {
 	 * @return void
 	 */
 	public function enqueue_block_editor_assets(): void {
-		wp_enqueue_style( 'editor-style', HD_THEME_URL . "assets/css/editor-style.css" );
+		wp_enqueue_style( 'editor-style', THEME_URL . "assets/css/editor-style.css" );
 	}
 
 	/** ---------------------------------------- */
@@ -58,8 +58,8 @@ final class Admin {
 	 * @return void
 	 */
 	public function admin_enqueue_scripts( $hook ): void {
-		wp_enqueue_style( "admin-style", HD_THEME_URL . "assets/css/admin.css", [], HD_THEME_VERSION );
-		wp_enqueue_script( "admin", HD_THEME_URL . "assets/js/admin.js", [ "jquery" ], HD_THEME_VERSION, true );
+		wp_enqueue_style( "admin-style", THEME_URL . "assets/css/admin.css", [], THEME_VERSION );
+		wp_enqueue_script( "admin", THEME_URL . "assets/js/admin.js", [ "jquery" ], THEME_VERSION, true );
 
 		// options_enqueue_assets
 		$allowed_pages = [
@@ -179,8 +179,8 @@ final class Admin {
 
 		// menu page
 		add_menu_page(
-			__( 'HD Settings', HD_TEXT_DOMAIN ),
-			__( 'HD', HD_TEXT_DOMAIN ),
+			__( 'HD Settings', TEXT_DOMAIN ),
+			__( 'HD', TEXT_DOMAIN ),
 			'manage_options',
 			'hd-settings',
 			[ &$this, 'options_page' ],
@@ -189,8 +189,8 @@ final class Admin {
 		);
 
 		// submenu page
-		add_submenu_page( 'hd-settings', __( 'Advanced', HD_TEXT_DOMAIN ), __( 'Advanced', HD_TEXT_DOMAIN ), 'manage_options', 'customize.php' );
-		add_submenu_page( 'hd-settings', __( 'Server Info', HD_TEXT_DOMAIN ), __( 'Server Info', HD_TEXT_DOMAIN ), 'manage_options', 'server-info', [
+		add_submenu_page( 'hd-settings', __( 'Advanced', TEXT_DOMAIN ), __( 'Advanced', TEXT_DOMAIN ), 'manage_options', 'customize.php' );
+		add_submenu_page( 'hd-settings', __( 'Server Info', TEXT_DOMAIN ), __( 'Server Info', TEXT_DOMAIN ), 'manage_options', 'server-info', [
 			&$this,
 			'server_info'
 		] );
@@ -213,7 +213,7 @@ final class Admin {
 		}
 
         // Change menu title
-		$submenu['hd-settings'][0][0] = __( 'Settings', HD_TEXT_DOMAIN );
+		$submenu['hd-settings'][0][0] = __( 'Settings', TEXT_DOMAIN );
 
 		return $menu_order;
 	}
@@ -495,22 +495,22 @@ final class Admin {
                     <div id="hd_nav" class="tabs-nav">
                         <div class="logo-title">
                             <h3>
-								<?php _e( 'HD Settings', HD_TEXT_DOMAIN ); ?>
-                                <span>Version: <?php echo HD_THEME_VERSION; ?></span>
+								<?php _e( 'HD Settings', TEXT_DOMAIN ); ?>
+                                <span>Version: <?php echo THEME_VERSION; ?></span>
                             </h3>
                         </div>
 
                         <div class="save-bar">
-                            <button type="submit" name="hd_submit_settings" class="button button-primary"><?php _e( 'Save Changes', HD_TEXT_DOMAIN ); ?></button>
+                            <button type="submit" name="hd_submit_settings" class="button button-primary"><?php _e( 'Save Changes', TEXT_DOMAIN ); ?></button>
                         </div>
 
                         <ul class="ul-menu-list">
                             <li class="aspect-ratio-settings">
-                                <a class="current" title="Aspect ratio" href="#aspect_ratio_settings"><?php _e( 'Aspect Ratio', HD_TEXT_DOMAIN ); ?></a>
+                                <a class="current" title="Aspect ratio" href="#aspect_ratio_settings"><?php _e( 'Aspect Ratio', TEXT_DOMAIN ); ?></a>
                             </li>
 
                             <li class="smtp-settings">
-                                <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', HD_TEXT_DOMAIN ); ?></a>
+                                <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', TEXT_DOMAIN ); ?></a>
                             </li>
 
                             <?php
@@ -519,44 +519,44 @@ final class Admin {
 
                             ?>
                             <li class="email-settings">
-                                <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', HD_TEXT_DOMAIN ); ?></a>
+                                <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', TEXT_DOMAIN ); ?></a>
                             </li>
                             <?php endif; ?>
 
                             <li class="order-settings">
-                                <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', HD_TEXT_DOMAIN ); ?></a>
+                                <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', TEXT_DOMAIN ); ?></a>
                             </li>
 
                             <li class="contact-info-settings">
-                                <a title="Contact Info" href="#contact_info_settings"><?php _e( 'Contact Info', HD_TEXT_DOMAIN ); ?></a>
+                                <a title="Contact Info" href="#contact_info_settings"><?php _e( 'Contact Info', TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="contact-button-settings">
-                                <a title="Contact Button" href="#contact_button_settings"><?php _e( 'Contact Button', HD_TEXT_DOMAIN ); ?></a>
+                                <a title="Contact Button" href="#contact_button_settings"><?php _e( 'Contact Button', TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="gutenberg-settings">
-                                <a title="Block Editor" href="#block_editor_settings"><?php _e( 'Block Editor', HD_TEXT_DOMAIN ); ?></a>
+                                <a title="Block Editor" href="#block_editor_settings"><?php _e( 'Block Editor', TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="optimizer-settings">
-                                <a title="Optimizer" href="#optimizer_settings"><?php _e( 'Optimizer', HD_TEXT_DOMAIN ); ?></a>
+                                <a title="Optimizer" href="#optimizer_settings"><?php _e( 'Optimizer', TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="security-settings">
-                                <a title="Security" href="#security_settings"><?php _e( 'Security', HD_TEXT_DOMAIN ); ?></a>
+                                <a title="Security" href="#security_settings"><?php _e( 'Security', TEXT_DOMAIN ); ?></a>
                             </li>
 
 							<?php if ( Helper::is_woocommerce_active() ) : ?>
                             <li class="woocommerce-settings">
-                                <a title="WooCommerce" href="#woocommerce_settings"><?php _e( 'WooCommerce', HD_TEXT_DOMAIN ); ?></a>
+                                <a title="WooCommerce" href="#woocommerce_settings"><?php _e( 'WooCommerce', TEXT_DOMAIN ); ?></a>
                             </li>
 							<?php endif; ?>
 
                             <li class="comments-settings !hidden">
-                                <a title="Comments" href="#comments_settings"><?php _e( 'Comments', HD_TEXT_DOMAIN ); ?></a>
+                                <a title="Comments" href="#comments_settings"><?php _e( 'Comments', TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="custom-script-settings">
-                                <a title="Custom Scripts" href="#custom_script_settings"><?php _e( 'Custom Scripts', HD_TEXT_DOMAIN ); ?></a>
+                                <a title="Custom Scripts" href="#custom_script_settings"><?php _e( 'Custom Scripts', TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="custom-css-settings">
-                                <a title="Custom CSS" href="#custom_css_settings"><?php _e( 'Custom CSS', HD_TEXT_DOMAIN ); ?></a>
+                                <a title="Custom CSS" href="#custom_css_settings"><?php _e( 'Custom CSS', TEXT_DOMAIN ); ?></a>
                             </li>
                         </ul>
                     </div>
@@ -565,61 +565,61 @@ final class Admin {
                         <h2 class="hidden-text"></h2>
 
                         <div id="aspect_ratio_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/aspect_ratio.php'; ?>
+							<?php require INC_PATH . 'admin_options/aspect_ratio.php'; ?>
                         </div>
 
                         <div id="smtp_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/smtp.php'; ?>
+							<?php require INC_PATH . 'admin_options/smtp.php'; ?>
                         </div>
 
                         <div id="email_settings" class="group tabs-panel">
-		                    <?php require __DIR__ . '/options/custom_email.php'; ?>
+		                    <?php require INC_PATH . 'admin_options/custom_email.php'; ?>
                         </div>
 
                         <div id="custom_order_settings" class="group tabs-panel">
-		                    <?php require __DIR__ . '/options/custom_order.php'; ?>
+		                    <?php require INC_PATH . 'admin_options/custom_order.php'; ?>
                         </div>
 
                         <div id="contact_info_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/contact_info.php'; ?>
+							<?php require INC_PATH . 'admin_options/contact_info.php'; ?>
                         </div>
 
                         <div id="contact_button_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/contact_button.php'; ?>
+							<?php require INC_PATH . 'admin_options/contact_button.php'; ?>
                         </div>
 
                         <div id="block_editor_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/block_editor.php'; ?>
+							<?php require INC_PATH . 'admin_options/block_editor.php'; ?>
                         </div>
 
                         <div id="optimizer_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/optimizer.php'; ?>
+							<?php require INC_PATH . 'admin_options/optimizer.php'; ?>
                         </div>
 
                         <div id="security_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/security.php'; ?>
+							<?php require INC_PATH . 'admin_options/security.php'; ?>
                         </div>
 
 						<?php if ( Helper::is_woocommerce_active() ) : ?>
                         <div id="woocommerce_settings" class="group tabs-panel">
-                            <?php require __DIR__ . '/options/woocommerce.php'; ?>
+                            <?php require INC_PATH . 'admin_options/woocommerce.php'; ?>
                         </div>
 						<?php endif; ?>
 
                         <div id="comments_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/comments.php'; ?>
+							<?php require INC_PATH . 'admin_options/comments.php'; ?>
                         </div>
 
                         <div id="custom_script_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/custom_script.php'; ?>
+							<?php require INC_PATH . 'admin_options/custom_script.php'; ?>
                         </div>
 
                         <div id="custom_css_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/custom_css.php'; ?>
+							<?php require INC_PATH . 'admin_options/custom_css.php'; ?>
                         </div>
 
                         <div class="save-bar">
-                            <button type="submit" name="hd_submit_settings" class="button button-primary"><?php _e( 'Save Changes', HD_TEXT_DOMAIN ) ?></button>
+                            <button type="submit" name="hd_submit_settings" class="button button-primary"><?php _e( 'Save Changes', TEXT_DOMAIN ) ?></button>
                         </div>
                     </div>
                 </div>
@@ -640,8 +640,8 @@ final class Admin {
             <div id="main">
                 <h2 class="hide-text"></h2>
                 <div class="server-info-body">
-                    <h2><?php echo __( 'Server info', HD_TEXT_DOMAIN ) ?></h2>
-                    <p class="desc"><?php echo __( 'System configuration information', HD_TEXT_DOMAIN ) ?></p>
+                    <h2><?php echo __( 'Server info', TEXT_DOMAIN ) ?></h2>
+                    <p class="desc"><?php echo __( 'System configuration information', TEXT_DOMAIN ) ?></p>
                     <div class="server-info-inner code">
                         <ul>
                             <li><?php echo sprintf( '<span>Platform:</span> %s', php_uname() ); ?></li>
@@ -708,7 +708,7 @@ final class Admin {
 
         if ( ! Helper::smtpConfigured() ) {
 			$class   = 'notice notice-error';
-			$message = __( 'You need to configure your SMTP credentials in the settings to send emails.', HD_TEXT_DOMAIN );
+			$message = __( 'You need to configure your SMTP credentials in the settings to send emails.', TEXT_DOMAIN );
 
 			printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), $message );
 		}
@@ -727,13 +727,13 @@ final class Admin {
 
 			// thumb
 			$thumb   = [
-				"term_thumb" => sprintf( '<span class="wc-image tips">%1$s</span>', __( "Thumb", HD_TEXT_DOMAIN ) ),
+				"term_thumb" => sprintf( '<span class="wc-image tips">%1$s</span>', __( "Thumb", TEXT_DOMAIN ) ),
 			];
 			$columns = Helper::insertBefore( 'name', $columns, $thumb );
 
 //			// order
 //			$menu_order = [
-//				'term_order' => sprintf( '<span class="term-order tips">%1$s</span>', __( "Order", HD_TEXT_DOMAIN ) ),
+//				'term_order' => sprintf( '<span class="term-order tips">%1$s</span>', __( "Order", TEXT_DOMAIN ) ),
 //			];
 //
 //			$columns = array_merge( $columns, $menu_order );
@@ -800,7 +800,7 @@ final class Admin {
 	 */
 	public function post_header( $columns ): array {
 		$in = [
-			"post_thumb" => sprintf( '<span class="wc-image tips">%1$s</span>', __( "Thumb", HD_TEXT_DOMAIN ) ),
+			"post_thumb" => sprintf( '<span class="wc-image tips">%1$s</span>', __( "Thumb", TEXT_DOMAIN ) ),
 		];
 
 		return Helper::insertBefore( 'title', $columns, $in );

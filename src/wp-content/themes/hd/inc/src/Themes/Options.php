@@ -60,14 +60,14 @@ final class Options {
 	 */
 	public function check_simple_antispam( $commentdata ): mixed {
 		if ( ! isset( $_POST['antispam_input'] ) || ! isset( $_POST['antispam_result'] ) ) {
-			wp_die( esc_html__( 'Lỗi CAPTCHA. Vui lòng thử lại.', HD_TEXT_DOMAIN ) );
+			wp_die( esc_html__( 'Lỗi CAPTCHA. Vui lòng thử lại.', TEXT_DOMAIN ) );
 		}
 
 		$input  = intval( $_POST['antispam_input'] );
 		$result = intval( $_POST['antispam_result'] );
 
 		if ( $input !== $result ) {
-			wp_die( esc_html__( 'Câu trả lời chưa chính xác. Vui lòng thử lại.', HD_TEXT_DOMAIN ) );
+			wp_die( esc_html__( 'Câu trả lời chưa chính xác. Vui lòng thử lại.', TEXT_DOMAIN ) );
 		}
 
 		return $commentdata;
@@ -89,9 +89,9 @@ final class Options {
 			$operator = rand( 0, 1 ) ? '+' : '-';
 			$result   = $operator === '+' ? $num1 + $num2 : $num1 - $num2;
 
-			echo '<p class="comment-form-antispam">' . sprintf( esc_html__( 'Để xác minh bạn không phải là robot spam comment, Hãy tính: %1$d %2$s %3$d = ?', HD_TEXT_DOMAIN ), $num1, $operator, $num2 ) . '</p>';
+			echo '<p class="comment-form-antispam">' . sprintf( esc_html__( 'Để xác minh bạn không phải là robot spam comment, Hãy tính: %1$d %2$s %3$d = ?', TEXT_DOMAIN ), $num1, $operator, $num2 ) . '</p>';
 			echo '<input type="hidden" name="antispam_result" value="' . $result . '" />';
-			echo '<p class="comment-form-antispam-answer"><label for="antispam_input">' . esc_html__( 'Câu trả lời:', HD_TEXT_DOMAIN ) . '</label> <input type="text" name="antispam_input" id="antispam_input" required /></p>';
+			echo '<p class="comment-form-antispam-answer"><label for="antispam_input">' . esc_html__( 'Câu trả lời:', TEXT_DOMAIN ) . '</label> <input type="text" name="antispam_input" id="antispam_input" required /></p>';
 		}
 	}
 

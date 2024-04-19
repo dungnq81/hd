@@ -5,7 +5,7 @@ use Cores\Helper;
 $ar_post_type_list = apply_filters( 'hd_aspect_ratio_post_type', [] );
 
 ?>
-<h2><?php _e( 'Aspect Ratio Settings', HD_TEXT_DOMAIN ); ?></h2>
+<h2><?php _e( 'Aspect Ratio Settings', TEXT_DOMAIN ); ?></h2>
 <?php
 foreach ( $ar_post_type_list as $ar ) :
 	$title = Helper::mbUcFirst( $ar );
@@ -20,7 +20,7 @@ foreach ( $ar_post_type_list as $ar ) :
 
 ?>
 <div class="section section-text" id="section_aspect_ratio">
-    <span class="heading"><?php _e( $title, HD_TEXT_DOMAIN ); ?></span>
+    <span class="heading"><?php _e( $title, TEXT_DOMAIN ); ?></span>
     <div class="option inline-option">
         <div class="controls">
             <div class="inline-group">

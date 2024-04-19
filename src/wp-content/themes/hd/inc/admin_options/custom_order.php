@@ -7,9 +7,9 @@ $order_post_type      = $custom_order_options['order_post_type'] ?? [];
 $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
 
 ?>
-<h2><?php _e( 'Order Settings', HD_TEXT_DOMAIN ); ?></h2>
+<h2><?php _e( 'Order Settings', TEXT_DOMAIN ); ?></h2>
 <div class="section section-checkbox" id="section_custom_order">
-    <span class="heading block !fw-700"><?php _e( 'Check to Sort Post Types', HD_TEXT_DOMAIN ); ?></span>
+    <span class="heading block !fw-700"><?php _e( 'Check to Sort Post Types', TEXT_DOMAIN ); ?></span>
 
 	<?php
 	$hd_order_post_types_args = [
@@ -39,7 +39,7 @@ $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
     </div>
 	<?php endforeach; ?>
 
-    <span class="heading block !fw-700"><?php _e( 'Check to Sort Taxonomies', HD_TEXT_DOMAIN ); ?></span>
+    <span class="heading block !fw-700"><?php _e( 'Check to Sort Taxonomies', TEXT_DOMAIN ); ?></span>
 
     <?php
     $taxonomies = get_taxonomies( [ 'show_ui' => true ], 'objects' );
@@ -56,12 +56,12 @@ $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
     </div>
     <?php endforeach; ?>
 
-    <span class="heading block !fw-700"><?php _e( 'Check to reset order', HD_TEXT_DOMAIN ); ?></span>
+    <span class="heading block !fw-700"><?php _e( 'Check to reset order', TEXT_DOMAIN ); ?></span>
 
     <div class="option mb-15">
         <label class="controls">
             <input type="checkbox" class="hd-checkbox hd-control" name="order_reset" id="order_reset" value="1">
         </label>
-        <div class="explain"><?php _e( 'Reset all', HD_TEXT_DOMAIN ); ?></div>
+        <div class="explain"><?php _e( 'Reset all', TEXT_DOMAIN ); ?></div>
     </div>
 </div>

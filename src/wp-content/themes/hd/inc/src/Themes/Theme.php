@@ -51,9 +51,9 @@ final class Theme {
 		 * Translations can be filed at WordPress.org.
 		 * See: https://translate.wordpress.org/projects/wp-themes/hello-elementor
 		 */
-		load_theme_textdomain( HD_TEXT_DOMAIN, trailingslashit( WP_LANG_DIR ) . 'themes/' );
-		load_theme_textdomain( HD_TEXT_DOMAIN, get_template_directory() . '/languages' );
-		load_theme_textdomain( HD_TEXT_DOMAIN, get_stylesheet_directory() . '/languages' );
+		load_theme_textdomain( TEXT_DOMAIN, trailingslashit( WP_LANG_DIR ) . 'themes/' );
+		load_theme_textdomain( TEXT_DOMAIN, get_template_directory() . '/languages' );
+		load_theme_textdomain( TEXT_DOMAIN, get_stylesheet_directory() . '/languages' );
 
 		/** Add theme support for various features. */
 		add_theme_support( 'automatic-feed-links' );
@@ -141,14 +141,14 @@ final class Theme {
 
 		// folders
 		$dirs = [
-			'template_structures' => HD_THEME_PATH . 'template-structures',
-			'templates'           => HD_THEME_PATH . 'templates',
-			'template_parts'      => HD_THEME_PATH . 'template-parts',
-			'storage'             => HD_THEME_PATH . 'storage',
-			'languages'           => HD_THEME_PATH . 'languages',
+			'template_structures' => THEME_PATH . 'template-structures',
+			'templates'           => THEME_PATH . 'templates',
+			'template_parts'      => THEME_PATH . 'template-parts',
+			'storage'             => THEME_PATH . 'storage',
+			'languages'           => THEME_PATH . 'languages',
 
-			'inc_tpl'  => HD_THEME_PATH . 'inc/tpl',
-			'inc_ajax' => HD_THEME_PATH . 'inc/ajax',
+			'inc_tpl'  => THEME_PATH . 'inc/tpl',
+			'inc_ajax' => THEME_PATH . 'inc/ajax',
 		];
 
 		foreach ( $dirs as $dir => $path ) {
@@ -169,7 +169,7 @@ final class Theme {
 	 * @return void
 	 */
 	public function register_widgets(): void {
-		$widgets_dir = HD_THEME_PATH . 'inc/src/Widgets';
+		$widgets_dir = THEME_PATH . 'inc/src/Widgets';
 		$FQN         = '\\Widgets\\';
 
 		Helper::createDirectory( $widgets_dir );
@@ -232,7 +232,7 @@ final class Theme {
 	 */
 	public function admin_notice_missing_acf(): void {
 		$class   = 'notice notice-error';
-		$message = sprintf( __( 'You need %1$s"Advanced Custom Fields"%2$s for the %1$s"HD theme"%2$s to work and updated.', HD_TEXT_DOMAIN ), '<strong>', '</strong>' );
+		$message = sprintf( __( 'You need %1$s"Advanced Custom Fields"%2$s for the %1$s"HD theme"%2$s to work and updated.', TEXT_DOMAIN ), '<strong>', '</strong>' );
 
 		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), $message );
 	}
@@ -247,38 +247,38 @@ final class Theme {
 	public function wp_enqueue_scripts(): void {
 
 		/** Extra */
-		wp_register_style( "swiper-style", HD_THEME_URL . "assets/css/plugins/swiper.css", [], HD_THEME_VERSION );
-		wp_register_script( "swiper", HD_THEME_URL . "assets/js/plugins/swiper.js", [], HD_THEME_VERSION, true );
+		wp_register_style( "swiper-style", ASSETS_URL . "css/plugins/swiper.css", [], THEME_VERSION );
+		wp_register_script( "swiper", ASSETS_URL . "js/plugins/swiper.js", [], THEME_VERSION, true );
 
 		/** Stylesheet */
-		wp_register_style( "plugins-style", HD_THEME_URL . "assets/css/plugins.css", [], HD_THEME_VERSION );
-		wp_enqueue_style( "app-style", HD_THEME_URL . "assets/css/app.css", [ "plugins-style" ], HD_THEME_VERSION );
+		wp_register_style( "plugins-style", ASSETS_URL . "css/plugins.css", [], THEME_VERSION );
+		wp_enqueue_style( "app-style", ASSETS_URL . "css/app.css", [ "plugins-style" ], THEME_VERSION );
 
 		/** Scripts */
-		wp_enqueue_script( "app", HD_THEME_URL . "assets/js/app.js", [ "jquery-core" ], HD_THEME_VERSION, true );
+		wp_enqueue_script( "app", ASSETS_URL . "js/app.js", [ "jquery-core" ], THEME_VERSION, true );
 		wp_script_add_data( "app", "defer", true );
 
-		wp_enqueue_style( "fonts-style", HD_THEME_URL . "assets/css/fonts.css", [], HD_THEME_VERSION );
+		wp_enqueue_style( "fonts-style", ASSETS_URL . "css/fonts.css", [], THEME_VERSION );
 
-		wp_enqueue_script( "back-to-top", HD_THEME_URL . "assets/js/plugins/back-to-top.js", [], HD_THEME_VERSION, true );
-		wp_enqueue_script( "social-share", HD_THEME_URL . "assets/js/plugins/social-share.js", [], '0.0.3', true );
+		wp_enqueue_script( "back-to-top", ASSETS_URL . "js/plugins/back-to-top.js", [], THEME_VERSION, true );
+		wp_enqueue_script( "social-share", ASSETS_URL . "js/plugins/social-share.js", [], '0.0.3', true );
 
 		/** Inline Js */
 		$l10n = [
 			'ajaxUrl'      => esc_js( admin_url( 'admin-ajax.php', 'relative' ) ),
 			'baseUrl'      => esc_js( untrailingslashit( site_url() ) . '/' ),
-			'themeUrl'     => esc_js( HD_THEME_URL ),
+			'themeUrl'     => esc_js( THEME_URL ),
 			'_wpnonce'     => wp_create_nonce( '_wpnonce_ajax_csrf' ),
 			'smoothScroll' => ! 0,
 			'tracking'     => ( defined( 'TRACKING' ) && TRACKING ) ? 1 : 0,
 			'locale'       => esc_js( get_locale() ),
 			'lang'         => esc_js( Helper::getLang() ),
 			'lg'           => [
-				'view_more'   => __( 'View more', HD_TEXT_DOMAIN ),
-				'view_detail' => __( 'Detail', HD_TEXT_DOMAIN ),
+				'view_more'   => __( 'View more', TEXT_DOMAIN ),
+				'view_detail' => __( 'Detail', TEXT_DOMAIN ),
 			],
 		];
-		wp_localize_script( 'jquery-core', HD_TEXT_DOMAIN, $l10n );
+		wp_localize_script( 'jquery-core', TEXT_DOMAIN, $l10n );
 
 		/** Comments */
 		if ( is_singular() && comments_open() && Helper::getOption( 'thread_comments' ) ) {

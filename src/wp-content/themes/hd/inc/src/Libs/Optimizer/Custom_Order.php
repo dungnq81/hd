@@ -364,10 +364,10 @@ final class Custom_Order {
 		if ( $this->_check_custom_order_script() ) {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-sortable' );
-			wp_enqueue_script( 'custom_order', HD_THEME_URL . 'assets/js/plugins/admin_custom_order.js', [
+			wp_enqueue_script( 'custom_order', ASSETS_URL . 'js/plugins/admin_custom_order.js', [
 				'jquery',
 				'jquery-ui-sortable'
-			], HD_THEME_VERSION, true );
+			], THEME_VERSION, true );
 		}
 	}
 

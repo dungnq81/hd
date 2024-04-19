@@ -43,7 +43,7 @@ final class Customizer {
 				$wp_customize,
 				'alt_logo',
 				[
-					'label'    => __( 'Alternative Logo', HD_TEXT_DOMAIN ),
+					'label'    => __( 'Alternative Logo', TEXT_DOMAIN ),
 					'section'  => 'title_tagline',
 					'settings' => 'alt_logo',
 					'priority' => 8,
@@ -62,7 +62,7 @@ final class Customizer {
 		$wp_customize->add_control(
 			'logo_title_control',
 			[
-				'label'    => __( 'The title of logo', HD_TEXT_DOMAIN ),
+				'label'    => __( 'The title of logo', TEXT_DOMAIN ),
 				'section'  => 'title_tagline',
 				'settings' => 'logo_title_setting',
 				'type'     => 'text',
@@ -89,8 +89,8 @@ final class Customizer {
 			[
 				'priority'       => 140,
 				'theme_supports' => '',
-				'title'          => __( 'HD', HD_TEXT_DOMAIN ),
-				'description'    => __( 'Controls the add-on menu', HD_TEXT_DOMAIN ),
+				'title'          => __( 'HD', TEXT_DOMAIN ),
+				'description'    => __( 'Controls the add-on menu', TEXT_DOMAIN ),
 			]
 		);
 
@@ -101,7 +101,7 @@ final class Customizer {
 		$wp_customize->add_section(
 			'login_page_section',
 			[
-				'title'    => __( 'Login page', HD_TEXT_DOMAIN ),
+				'title'    => __( 'Login page', TEXT_DOMAIN ),
 				'panel'    => 'addon_menu_panel',
 				'priority' => 999,
 			]
@@ -118,7 +118,7 @@ final class Customizer {
 			new WP_Customize_Color_Control( $wp_customize,
 				'login_page_bgcolor_control',
 				[
-					'label'    => __( 'Background color', HD_TEXT_DOMAIN ),
+					'label'    => __( 'Background color', TEXT_DOMAIN ),
 					'section'  => 'login_page_section',
 					'settings' => 'login_page_bgcolor_setting',
 					'priority' => 8,
@@ -138,7 +138,7 @@ final class Customizer {
 				$wp_customize,
 				'login_page_bgimage_control',
 				[
-					'label'    => __( 'Background image', HD_TEXT_DOMAIN ),
+					'label'    => __( 'Background image', TEXT_DOMAIN ),
 					'section'  => 'login_page_section',
 					'settings' => 'login_page_bgimage_setting',
 					'priority' => 9,
@@ -158,7 +158,7 @@ final class Customizer {
 				$wp_customize,
 				'login_page_logo_control',
 				[
-					'label'    => __( 'Logo', HD_TEXT_DOMAIN ),
+					'label'    => __( 'Logo', TEXT_DOMAIN ),
 					'section'  => 'login_page_section',
 					'settings' => 'login_page_logo_setting',
 					'priority' => 10,
@@ -176,12 +176,12 @@ final class Customizer {
 		$wp_customize->add_control(
 			'login_page_headertext_control',
 			[
-				'label'       => __( 'Header text', HD_TEXT_DOMAIN ),
+				'label'       => __( 'Header text', TEXT_DOMAIN ),
 				'section'     => 'login_page_section',
 				'settings'    => 'login_page_headertext_setting',
 				'type'        => 'text',
 				'priority'    => 11,
-				'description' => __( 'Changing the alt text', HD_TEXT_DOMAIN ),
+				'description' => __( 'Changing the alt text', TEXT_DOMAIN ),
 			]
 		);
 
@@ -195,12 +195,12 @@ final class Customizer {
 		$wp_customize->add_control(
 			'login_page_headerurl_control',
 			[
-				'label'       => __( 'Header url', HD_TEXT_DOMAIN ),
+				'label'       => __( 'Header url', TEXT_DOMAIN ),
 				'section'     => 'login_page_section',
 				'settings'    => 'login_page_headerurl_setting',
 				'type'        => 'url',
 				'priority'    => 12,
-				'description' => __( 'Changing the logo link', HD_TEXT_DOMAIN ),
+				'description' => __( 'Changing the logo link', TEXT_DOMAIN ),
 			]
 		);
 
@@ -211,7 +211,7 @@ final class Customizer {
 		$wp_customize->add_section(
 			'offcanvas_menu_section',
 			[
-				'title'    => __( 'offCanvas', HD_TEXT_DOMAIN ),
+				'title'    => __( 'offCanvas', TEXT_DOMAIN ),
 				'panel'    => 'addon_menu_panel',
 				'priority' => 1000,
 			]
@@ -229,16 +229,16 @@ final class Customizer {
 		$wp_customize->add_control(
 			'offcanvas_menu_control',
 			[
-				'label'    => __( 'offCanvas position', HD_TEXT_DOMAIN ),
+				'label'    => __( 'offCanvas position', TEXT_DOMAIN ),
 				'type'     => 'radio',
 				'section'  => 'offcanvas_menu_section',
 				'settings' => 'offcanvas_menu_setting',
 				'choices'  => [
-					'left'    => __( 'Left', HD_TEXT_DOMAIN ),
-					'right'   => __( 'Right', HD_TEXT_DOMAIN ),
-					'top'     => __( 'Top', HD_TEXT_DOMAIN ),
-					'bottom'  => __( 'Bottom', HD_TEXT_DOMAIN ),
-					'default' => __( 'Default (Right)', HD_TEXT_DOMAIN ),
+					'left'    => __( 'Left', TEXT_DOMAIN ),
+					'right'   => __( 'Right', TEXT_DOMAIN ),
+					'top'     => __( 'Top', TEXT_DOMAIN ),
+					'bottom'  => __( 'Bottom', TEXT_DOMAIN ),
+					'default' => __( 'Default (Right)', TEXT_DOMAIN ),
 				],
 			]
 		);
@@ -250,7 +250,7 @@ final class Customizer {
 		$wp_customize->add_section(
 			'breadcrumb_section',
 			[
-				'title'    => __( 'Breadcrumbs', HD_TEXT_DOMAIN ),
+				'title'    => __( 'Breadcrumbs', TEXT_DOMAIN ),
 				'panel'    => 'addon_menu_panel',
 				'priority' => 1007,
 			]
@@ -269,7 +269,7 @@ final class Customizer {
 				$wp_customize,
 				'breadcrumb_bg_control',
 				[
-					'label'    => __( 'Breadcrumb background', HD_TEXT_DOMAIN ),
+					'label'    => __( 'Breadcrumb background', TEXT_DOMAIN ),
 					'section'  => 'breadcrumb_section',
 					'settings' => 'breadcrumb_bg_setting',
 					'priority' => 9,
@@ -285,7 +285,7 @@ final class Customizer {
 		$wp_customize->add_section(
 			'header_section',
 			[
-				'title'    => __( 'Header', HD_TEXT_DOMAIN ),
+				'title'    => __( 'Header', TEXT_DOMAIN ),
 				'panel'    => 'addon_menu_panel',
 				'priority' => 1008,
 			]
@@ -303,7 +303,7 @@ final class Customizer {
 			new WP_Customize_Color_Control( $wp_customize,
 				'header_bgcolor_control',
 				[
-					'label'    => __( 'Header background color', HD_TEXT_DOMAIN ),
+					'label'    => __( 'Header background color', TEXT_DOMAIN ),
 					'section'  => 'header_section',
 					'settings' => 'header_bgcolor_setting',
 					'priority' => 9,
@@ -324,7 +324,7 @@ final class Customizer {
 				$wp_customize,
 				'header_bg_control',
 				[
-					'label'    => __( 'Header background', HD_TEXT_DOMAIN ),
+					'label'    => __( 'Header background', TEXT_DOMAIN ),
 					'section'  => 'header_section',
 					'settings' => 'header_bg_setting',
 				]
@@ -342,11 +342,11 @@ final class Customizer {
 		$wp_customize->add_control(
 			'top_header_control',
 			[
-				'label'       => __( 'Top-Header columns', HD_TEXT_DOMAIN ),
+				'label'       => __( 'Top-Header columns', TEXT_DOMAIN ),
 				'section'     => 'header_section',
 				'settings'    => 'top_header_setting',
 				'type'        => 'number',
-				'description' => __( 'Top Header columns number', HD_TEXT_DOMAIN ),
+				'description' => __( 'Top Header columns number', TEXT_DOMAIN ),
 			]
 		);
 
@@ -365,7 +365,7 @@ final class Customizer {
 				'type'     => 'checkbox',
 				'settings' => 'top_header_container_setting',
 				'section'  => 'header_section',
-				'label'    => __( 'Top Header Container', HD_TEXT_DOMAIN ),
+				'label'    => __( 'Top Header Container', TEXT_DOMAIN ),
 			]
 		);
 
@@ -380,11 +380,11 @@ final class Customizer {
 		$wp_customize->add_control(
 			'header_control',
 			[
-				'label'       => __( 'Header columns', HD_TEXT_DOMAIN ),
+				'label'       => __( 'Header columns', TEXT_DOMAIN ),
 				'section'     => 'header_section',
 				'settings'    => 'header_setting',
 				'type'        => 'number',
-				'description' => __( 'Header columns number', HD_TEXT_DOMAIN ),
+				'description' => __( 'Header columns number', TEXT_DOMAIN ),
 			]
 		);
 
@@ -403,7 +403,7 @@ final class Customizer {
 				'type'     => 'checkbox',
 				'settings' => 'header_container_setting',
 				'section'  => 'header_section',
-				'label'    => __( 'Header Container', HD_TEXT_DOMAIN ),
+				'label'    => __( 'Header Container', TEXT_DOMAIN ),
 			]
 		);
 
@@ -418,11 +418,11 @@ final class Customizer {
 		$wp_customize->add_control(
 			'bottom_header_control',
 			[
-				'label'       => __( 'Bottom Header columns', HD_TEXT_DOMAIN ),
+				'label'       => __( 'Bottom Header columns', TEXT_DOMAIN ),
 				'section'     => 'header_section',
 				'settings'    => 'bottom_header_setting',
 				'type'        => 'number',
-				'description' => __( 'Bottom Header columns number', HD_TEXT_DOMAIN ),
+				'description' => __( 'Bottom Header columns number', TEXT_DOMAIN ),
 			]
 		);
 
@@ -441,7 +441,7 @@ final class Customizer {
 				'type'     => 'checkbox',
 				'settings' => 'bottom_header_container_setting',
 				'section'  => 'header_section',
-				'label'    => __( 'Bottom Header Container', HD_TEXT_DOMAIN ),
+				'label'    => __( 'Bottom Header Container', TEXT_DOMAIN ),
 			]
 		);
 
@@ -453,7 +453,7 @@ final class Customizer {
 		$wp_customize->add_section(
 			'footer_section',
 			[
-				'title'    => __( 'Footer', HD_TEXT_DOMAIN ),
+				'title'    => __( 'Footer', TEXT_DOMAIN ),
 				'panel'    => 'addon_menu_panel',
 				'priority' => 1008,
 			]
@@ -471,7 +471,7 @@ final class Customizer {
 			new WP_Customize_Color_Control( $wp_customize,
 				'footer_bgcolor_control',
 				[
-					'label'    => __( 'Footer background color', HD_TEXT_DOMAIN ),
+					'label'    => __( 'Footer background color', TEXT_DOMAIN ),
 					'section'  => 'footer_section',
 					'settings' => 'footer_bgcolor_setting',
 					'priority' => 9,
@@ -492,7 +492,7 @@ final class Customizer {
 				$wp_customize,
 				'footer_bg_control',
 				[
-					'label'    => __( 'Footer background', HD_TEXT_DOMAIN ),
+					'label'    => __( 'Footer background', TEXT_DOMAIN ),
 					'section'  => 'footer_section',
 					'settings' => 'footer_bg_setting',
 				]
@@ -510,11 +510,11 @@ final class Customizer {
 		$wp_customize->add_control(
 			'footer_row_control',
 			[
-				'label'       => __( 'Footer rows', HD_TEXT_DOMAIN ),
+				'label'       => __( 'Footer rows', TEXT_DOMAIN ),
 				'section'     => 'footer_section',
 				'settings'    => 'footer_row_setting',
 				'type'        => 'number',
-				'description' => __( 'Footer rows number', HD_TEXT_DOMAIN ),
+				'description' => __( 'Footer rows number', TEXT_DOMAIN ),
 			]
 		);
 
@@ -529,11 +529,11 @@ final class Customizer {
 		$wp_customize->add_control(
 			'footer_col_control',
 			[
-				'label'       => __( 'Footer columns', HD_TEXT_DOMAIN ),
+				'label'       => __( 'Footer columns', TEXT_DOMAIN ),
 				'section'     => 'footer_section',
 				'settings'    => 'footer_col_setting',
 				'type'        => 'number',
-				'description' => __( 'Footer columns number', HD_TEXT_DOMAIN ),
+				'description' => __( 'Footer columns number', TEXT_DOMAIN ),
 			]
 		);
 
@@ -552,7 +552,7 @@ final class Customizer {
 				'type'     => 'checkbox',
 				'settings' => 'footer_container_setting',
 				'section'  => 'footer_section',
-				'label'    => __( 'Footer Container', HD_TEXT_DOMAIN ),
+				'label'    => __( 'Footer Container', TEXT_DOMAIN ),
 			]
 		);
 
@@ -563,7 +563,7 @@ final class Customizer {
 		$wp_customize->add_section(
 			'other_section',
 			[
-				'title'    => __( 'Other', HD_TEXT_DOMAIN ),
+				'title'    => __( 'Other', TEXT_DOMAIN ),
 				'panel'    => 'addon_menu_panel',
 				'priority' => 1011,
 			]
@@ -581,7 +581,7 @@ final class Customizer {
 			new WP_Customize_Color_Control( $wp_customize,
 				'theme_color_control',
 				[
-					'label'    => __( 'Theme Color', HD_TEXT_DOMAIN ),
+					'label'    => __( 'Theme Color', TEXT_DOMAIN ),
 					'section'  => 'other_section',
 					'settings' => 'theme_color_setting',
 				]
@@ -602,8 +602,8 @@ final class Customizer {
 				'type'        => 'textarea',
 				'section'     => 'other_section',
 				'settings'    => 'remove_menu_setting',
-				'label'       => __( 'Remove Menu', HD_TEXT_DOMAIN ),
-				'description' => __( 'The menu list will be hidden', HD_TEXT_DOMAIN ),
+				'label'       => __( 'Remove Menu', TEXT_DOMAIN ),
+				'description' => __( 'The menu list will be hidden', TEXT_DOMAIN ),
 			]
 		);
 	}

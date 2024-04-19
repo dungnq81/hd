@@ -889,7 +889,7 @@ trait Wp {
 			/* translators: 1: SVG icon. 2: posted in label, only visible to screen readers. 3: list of tags. */
 				'<div class="hashtag-links links">%1$s<span class="sr-only">%2$s</span>%3$s</div>',
 				'<i data-glyph="#"></i>',
-				__( 'Tags', HD_TEXT_DOMAIN ),
+				__( 'Tags', TEXT_DOMAIN ),
 				$hashtag_list
 			); // WPCS: XSS OK.
 
@@ -1032,7 +1032,7 @@ trait Wp {
 	 * @return mixed|void
 	 */
 	public static function humanizeTime( $post = null, $from = null, $to = null ) {
-		$_ago = __( 'ago', HD_TEXT_DOMAIN );
+		$_ago = __( 'ago', TEXT_DOMAIN );
 
 		if ( empty( $to ) ) {
 			$to = current_time( 'U' );
@@ -1063,7 +1063,7 @@ trait Wp {
 		if ( ! is_front_page() ) {
 
 			echo '<ul id="breadcrumbs" class="breadcrumbs" aria-label="Breadcrumbs">';
-			echo '<li><a class="home" href="' . self::home() . '">' . __( 'Home', HD_TEXT_DOMAIN ) . '</a></li>';
+			echo '<li><a class="home" href="' . self::home() . '">' . __( 'Home', TEXT_DOMAIN ) . '</a></li>';
 
 			//...
 			if ( self::is_woocommerce_active() && @is_shop() ) {
@@ -1119,12 +1119,12 @@ trait Wp {
 			} /** search page */
 			elseif ( is_search() ) {
 				echo $before;
-				printf( __( 'Search Results for: %s', HD_TEXT_DOMAIN ), get_search_query() );
+				printf( __( 'Search Results for: %s', TEXT_DOMAIN ), get_search_query() );
 				echo $after;
 			} /** tag */
 			elseif ( is_tag() ) {
 				echo $before;
-				printf( __( 'Tag Archives: %s', HD_TEXT_DOMAIN ), single_tag_title( '', false ) );
+				printf( __( 'Tag Archives: %s', TEXT_DOMAIN ), single_tag_title( '', false ) );
 				echo $after;
 			} /** author */
 			elseif ( is_author() ) {
@@ -1162,7 +1162,7 @@ trait Wp {
 			} /** 404 */
 			elseif ( is_404() ) {
 				echo $before;
-				__( 'Not Found', HD_TEXT_DOMAIN );
+				__( 'Not Found', TEXT_DOMAIN );
 				echo $after;
 			}
 
@@ -1170,7 +1170,7 @@ trait Wp {
 			if ( get_query_var( 'paged' ) ) {
 				echo '<li class="paged">';
 				echo ' (';
-				echo __( 'page', HD_TEXT_DOMAIN ) . ' ' . get_query_var( 'paged' );
+				echo __( 'page', TEXT_DOMAIN ) . ' ' . get_query_var( 'paged' );
 				echo ')';
 				echo $after;
 			}
@@ -2054,7 +2054,7 @@ trait Wp {
 	 */
 	public static function messageSuccess( $message ): void {
 		$message = $message ?: 'Values saved';
-		$message = __( $message, HD_TEXT_DOMAIN );
+		$message = __( $message, TEXT_DOMAIN );
 
 		$class = 'notice notice-success is-dismissible';
 		printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr( $class ), $message );
@@ -2069,7 +2069,7 @@ trait Wp {
 	 */
 	public static function messageError( $message ): void {
 		$message = $message ?: 'Values error';
-		$message = __( $message, HD_TEXT_DOMAIN );
+		$message = __( $message, TEXT_DOMAIN );
 
 		$class = 'notice notice-error is-dismissible';
 		printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr( $class ), $message );
@@ -2092,15 +2092,15 @@ trait Wp {
 
 		/* translators: %1$s: link to menus, %2$s: link to customize. */
 		printf(
-			__( 'Please assign a menu to the primary menu location under %1$s or %2$s the design.', HD_TEXT_DOMAIN ),
+			__( 'Please assign a menu to the primary menu location under %1$s or %2$s the design.', TEXT_DOMAIN ),
 			/* translators: %s: menu url */
 			sprintf(
-				__( '<a class="_blank" href="%s">Menus</a>', HD_TEXT_DOMAIN ),
+				__( '<a class="_blank" href="%s">Menus</a>', TEXT_DOMAIN ),
 				get_admin_url( get_current_blog_id(), 'nav-menus.php' )
 			),
 			/* translators: %s: customize url */
 			sprintf(
-				__( '<a class="_blank" href="%s">Customize</a>', HD_TEXT_DOMAIN ),
+				__( '<a class="_blank" href="%s">Customize</a>', TEXT_DOMAIN ),
 				get_admin_url( get_current_blog_id(), 'customize.php' )
 			)
 		);

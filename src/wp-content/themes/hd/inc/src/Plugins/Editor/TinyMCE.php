@@ -13,7 +13,7 @@ final class TinyMCE {
 	public function __construct() {
 
 		/** Custom styles. */
-		add_editor_style( HD_THEME_URL . "assets/css/editor-style.css" );
+		add_editor_style( THEME_URL . "assets/css/editor-style.css" );
 
 		add_filter( 'mce_buttons', [ &$this, 'tinymce_add_table_button' ] );
 		add_filter( 'mce_external_plugins', [ &$this, 'tinymce_add_table_plugin' ] );
@@ -47,10 +47,10 @@ final class TinyMCE {
 	 * @return mixed
 	 */
 	public function tinymce_add_table_plugin( $plugins ): mixed {
-		$plugins['table']      = HD_THEME_URL . 'inc/src/Plugins/Editor/tinymce/table/plugin.min.js';
-		$plugins['codesample'] = HD_THEME_URL . 'inc/src/Plugins/Editor/tinymce/codesample/plugin.min.js';
-		$plugins['toc']        = HD_THEME_URL . 'inc/src/Plugins/Editor/tinymce/toc/plugin.min.js';
-		//$plugins['fullscreen'] = HD_THEME_URL . 'inc/src/Plugins/Editor/tinymce/fullscreen/plugin.min.js';
+		$plugins['table']      = THEME_URL . 'inc/src/Plugins/Editor/tinymce/table/plugin.min.js';
+		$plugins['codesample'] = THEME_URL . 'inc/src/Plugins/Editor/tinymce/codesample/plugin.min.js';
+		$plugins['toc']        = THEME_URL . 'inc/src/Plugins/Editor/tinymce/toc/plugin.min.js';
+		//$plugins['fullscreen'] = THEME_URL . 'inc/src/Plugins/Editor/tinymce/fullscreen/plugin.min.js';
 
 		return $plugins;
 	}

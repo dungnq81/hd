@@ -14,16 +14,19 @@ $theme_author  = ( wp_get_theme()->get( 'Author' ) ) ?: 'HD Team';
 $theme_uri     = ( wp_get_theme()->get( 'ThemeURI' ) ) ?: 'https://webhd.vn';
 $text_domain   = ( wp_get_theme()->get( 'TextDomain' ) ) ?: 'hd';
 
-define( 'HD_TEXT_DOMAIN', $text_domain );
-define( 'HD_THEME_VERSION', $theme_version );
-define( 'HD_THEME_URI', $theme_uri );
-define( 'HD_AUTHOR', $theme_author );
+define( 'TEXT_DOMAIN', $text_domain );
+define( 'THEME_VERSION', $theme_version );
+define( 'THEME_URI', $theme_uri );
+define( 'AUTHOR', $theme_author );
 
-define( 'HD_THEME_PATH', untrailingslashit( get_template_directory() ) . DIRECTORY_SEPARATOR ); // **/wp-content/themes/**/
-define( 'HD_THEME_URL', untrailingslashit( esc_url( get_template_directory_uri() ) ) . '/' ); // https://**/wp-content/themes/**/
+define( 'THEME_PATH', untrailingslashit( get_template_directory() ) . DIRECTORY_SEPARATOR ); // **/wp-content/themes/**/
+define( 'THEME_URL', untrailingslashit( esc_url( get_template_directory_uri() ) ) . '/' ); // https://**/wp-content/themes/**/
+
+const INC_PATH = THEME_PATH . 'inc' . DIRECTORY_SEPARATOR;
+const ASSETS_URL = THEME_URL . 'assets/';
 
 if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	wp_die( __( 'Error locating autoloader. Please run <code>composer install</code>.', HD_TEXT_DOMAIN ) );
+	wp_die( __( 'Error locating autoloader. Please run <code>composer install</code>.', TEXT_DOMAIN ) );
 }
 
 require_once __DIR__ . '/vendor/autoload.php';

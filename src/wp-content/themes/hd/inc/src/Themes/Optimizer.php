@@ -156,25 +156,25 @@ final class Optimizer {
             }</script>
 		<?php
 
-//		if ( file_exists( $passive_events = HD_THEME_PATH . 'assets/js/plugins/passive-events.js' ) ) {
+//		if ( file_exists( $passive_events = THEME_PATH . 'assets/js/plugins/passive-events.js' ) ) {
 //			echo '<script>';
 //			include $passive_events;
 //			echo '</script>';
 //		}
 
-		if ( file_exists( $skip_link = HD_THEME_PATH . 'assets/js/plugins/skip-link-focus.js' ) ) {
+		if ( file_exists( $skip_link = THEME_PATH . 'assets/js/plugins/skip-link-focus.js' ) ) {
 			echo '<script>';
 			include $skip_link;
 			echo '</script>';
 		}
 
-		if ( file_exists( $flex_gap = HD_THEME_PATH . 'assets/js/plugins/flex-gap.js' ) ) {
+		if ( file_exists( $flex_gap = THEME_PATH . 'assets/js/plugins/flex-gap.js' ) ) {
 			echo '<script>';
 			include $flex_gap;
 			echo '</script>';
 		}
 
-		if ( file_exists( $load_scripts = HD_THEME_PATH . 'assets/js/plugins/load-scripts.js' ) ) {
+		if ( file_exists( $load_scripts = THEME_PATH . 'assets/js/plugins/load-scripts.js' ) ) {
 			echo '<script>';
 			include $load_scripts;
 			echo '</script>';

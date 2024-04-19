@@ -37,11 +37,11 @@ final class Login {
 	 * @retun void
 	 */
 	public function login_enqueue_script(): void {
-		wp_enqueue_style( "login-style", HD_THEME_URL . "assets/css/admin.css", [], HD_THEME_VERSION );
-		wp_enqueue_script( "login", HD_THEME_URL . "assets/js/login.js", [ "jquery" ], HD_THEME_VERSION, true );
+		wp_enqueue_style( "login-style", THEME_URL . "assets/css/admin.css", [], THEME_VERSION );
+		wp_enqueue_script( "login", THEME_URL . "assets/js/login.js", [ "jquery" ], THEME_VERSION, true );
 
-		//$default_logo    = HD_THEME_URL . "storage/img/logo.png";
-		//$default_logo_bg = HD_THEME_URL . "storage/img/login-bg.jpg";
+		//$default_logo    = THEME_URL . "storage/img/logo.png";
+		//$default_logo_bg = THEME_URL . "storage/img/login-bg.jpg";
 
 		$default_logo    = '';
 		$default_logo_bg = '';

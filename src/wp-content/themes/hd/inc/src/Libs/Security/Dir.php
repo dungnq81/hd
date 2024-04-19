@@ -100,7 +100,7 @@ class Dir extends Abstract_Htaccess {
 		$whitelisted_files = '';
 
 		// Get the whitelist template.
-		$whitelist_template = $this->wp_filesystem->get_contents( HD_THEME_PATH . 'inc/tpl/whitelist-file.tpl' );
+		$whitelist_template = $this->wp_filesystem->get_contents( THEME_PATH . 'inc/tpl/whitelist-file.tpl' );
 
 		// Loop through the files and create whitelist rules.
 		foreach ( $this->types[ $this->type ]['whitelist'] as $file ) {

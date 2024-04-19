@@ -12,9 +12,9 @@ $emails  = $contact_info_options['emails'] ?? '';
 $contact_info_others = Helper::getCustomPostContent( 'html_others', false );
 
 ?>
-<h2><?php _e('Contact Info Settings', HD_TEXT_DOMAIN); ?></h2>
+<h2><?php _e('Contact Info Settings', TEXT_DOMAIN); ?></h2>
 <div class="section section-text" id="section_hotline">
-	<label class="heading" for="contact_info_hotline"><?php _e('Hotline', HD_TEXT_DOMAIN); ?></label>
+	<label class="heading" for="contact_info_hotline"><?php _e('Hotline', TEXT_DOMAIN); ?></label>
 	<div class="option">
 		<div class="controls">
 			<input value="<?php echo esc_attr($hotline); ?>" class="hd-input hd-control" type="text" id="contact_info_hotline" name="contact_info_hotline">
@@ -23,7 +23,7 @@ $contact_info_others = Helper::getCustomPostContent( 'html_others', false );
 	</div>
 </div>
 <div class="section section-textarea" id="section_address">
-	<label class="heading" for="contact_info_address"><?php _e('Address', HD_TEXT_DOMAIN) ?></label>
+	<label class="heading" for="contact_info_address"><?php _e('Address', TEXT_DOMAIN) ?></label>
 	<div class="option">
 		<div class="controls">
 			<textarea class="hd-textarea hd-control" name="contact_info_address" id="contact_info_address" rows="4"><?php echo $address; ?></textarea>
@@ -31,7 +31,7 @@ $contact_info_others = Helper::getCustomPostContent( 'html_others', false );
 	</div>
 </div>
 <div class="section section-text" id="section_phones">
-	<label class="heading" for="contact_info_phones"><?php _e('Phones', HD_TEXT_DOMAIN); ?></label>
+	<label class="heading" for="contact_info_phones"><?php _e('Phones', TEXT_DOMAIN); ?></label>
 	<div class="option">
 		<div class="controls">
 			<input value="<?php echo esc_attr($phones); ?>" class="hd-input hd-control" type="text" id="contact_info_phones" name="contact_info_phones">
@@ -40,7 +40,7 @@ $contact_info_others = Helper::getCustomPostContent( 'html_others', false );
 	</div>
 </div>
 <div class="section section-text" id="section_emails">
-	<label class="heading" for="contact_info_emails"><?php _e('Emails', HD_TEXT_DOMAIN); ?></label>
+	<label class="heading" for="contact_info_emails"><?php _e('Emails', TEXT_DOMAIN); ?></label>
 	<div class="option">
 		<div class="controls">
 			<input value="<?php echo esc_attr($emails); ?>" class="hd-input hd-control" type="text" id="contact_info_emails" name="contact_info_emails">
@@ -49,7 +49,7 @@ $contact_info_others = Helper::getCustomPostContent( 'html_others', false );
 	</div>
 </div>
 <div class="section section-text" id="section_others">
-	<label class="heading" for="contact_info_others"><?php _e('Others', HD_TEXT_DOMAIN); ?></label>
+	<label class="heading" for="contact_info_others"><?php _e('Others', TEXT_DOMAIN); ?></label>
 	<div class="option">
 		<div class="controls">
 			<textarea class="hd-textarea hd-control codemirror_html" name="contact_info_others" id="contact_info_others" rows="4"><?php echo $contact_info_others; ?></textarea>

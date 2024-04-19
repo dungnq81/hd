@@ -366,9 +366,9 @@ final class Helper {
 	 * @return string
 	 */
 	public static function placeholderSrc( bool $img_wrap = true, bool $thumb = true ): string {
-		$src = HD_THEME_URL . 'storage/img/placeholder.png';
+		$src = THEME_URL . 'storage/img/placeholder.png';
 		if ( $thumb ) {
-			$src = HD_THEME_URL . 'storage/img/placeholder-320x320.png';
+			$src = THEME_URL . 'storage/img/placeholder-320x320.png';
 		}
 		if ( $img_wrap ) {
 			$src = "<img loading=\"lazy\" src=\"{$src}\" alt=\"placeholder\" class=\"wp-placeholder\">";

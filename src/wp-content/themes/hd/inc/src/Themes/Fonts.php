@@ -28,7 +28,7 @@ final class Fonts {
 	/** ---------------------------------------- */
 
 	public function enqueue_scripts(): void {
-		wp_enqueue_style( "fonts-style", get_template_directory_uri() . "/assets/css/fonts.css", [], HD_THEME_VERSION );
+		wp_enqueue_style( "fonts-style", get_template_directory_uri() . "/assets/css/fonts.css", [], THEME_VERSION );
 
 		//wp_register_script( "fontawesome-kit", "https://kit.fontawesome.com/870d5b0bdf.js", [], false, true );
 		//wp_script_add_data( "fontawesome-kit", "defer", true );

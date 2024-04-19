@@ -20,6 +20,6 @@ if ( ! $zalo_appid ) {
 
 ?>
 <div class="zalo-comments-area comments-area">
-    <span class="comments-title"><?php echo __( 'Zalo comments', HD_TEXT_DOMAIN ) ?></span>
+    <span class="comments-title"><?php echo __( 'Zalo comments', TEXT_DOMAIN ) ?></span>
     <div class="zalo-comment-plugin" data-appid="<?= $zalo_appid ?>" data-size="5"></div>
 </div>

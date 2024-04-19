@@ -99,7 +99,7 @@ final class Shortcode {
 			global $post;
 
 			$post_title     = get_the_title( $post->ID );
-			$title          = ( ! empty( $post_title ) ) ? $post_title : __( '(no title)', HD_TEXT_DOMAIN );
+			$title          = ( ! empty( $post_title ) ) ? $post_title : __( '(no title)', TEXT_DOMAIN );
 			$post_thumbnail = get_the_post_thumbnail( $post, $thumbnail_size );
 
 			echo $wrapper_open . '<div class="cell">';
@@ -140,7 +140,7 @@ final class Shortcode {
 				echo Helper::loopExcerpt( $post );
 			}
 			if ( $atts['show']['more'] ) {
-				echo '<a class="view-detail" href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( $title ) . '" data-glyph=""><span>' . __( 'Detail', HD_TEXT_DOMAIN ) . '</span></a>';
+				echo '<a class="view-detail" href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( $title ) . '" data-glyph=""><span>' . __( 'Detail', TEXT_DOMAIN ) . '</span></a>';
 			}
 
 			echo '</div>';
@@ -239,7 +239,7 @@ final class Shortcode {
 			'off_canvas_button'
 		);
 
-		$title = $atts['title'] ?: __( 'Menu', HD_TEXT_DOMAIN );
+		$title = $atts['title'] ?: __( 'Menu', TEXT_DOMAIN );
 		$class = $atts['hide_if_desktop'] ? ' hide-for-large' : '';
 		$class = $atts['class'] ? ' ' . $atts['class'] . $class : '';
 
@@ -321,9 +321,9 @@ final class Shortcode {
 			'inline_search'
 		);
 
-		$title             = $atts['title'] ?: __( 'Search', HD_TEXT_DOMAIN );
-		$title_for         = __( 'Search for', HD_TEXT_DOMAIN );
-		$placeholder_title = esc_attr( __( 'Search ...', HD_TEXT_DOMAIN ) );
+		$title             = $atts['title'] ?: __( 'Search', TEXT_DOMAIN );
+		$title_for         = __( 'Search for', TEXT_DOMAIN );
+		$placeholder_title = esc_attr( __( 'Search ...', TEXT_DOMAIN ) );
 		$id                = $atts['id'] ?: esc_attr( uniqid( 'search-' ) );
 
 		ob_start();
@@ -363,10 +363,10 @@ final class Shortcode {
 			'dropdown_search'
 		);
 
-		$title             = $atts['title'] ?: __( 'Search', HD_TEXT_DOMAIN );
-		$title_for         = __( 'Search for', HD_TEXT_DOMAIN );
-		$placeholder_title = __( 'Search ...', HD_TEXT_DOMAIN );
-		$close_title       = __( 'Close', HD_TEXT_DOMAIN );
+		$title             = $atts['title'] ?: __( 'Search', TEXT_DOMAIN );
+		$title_for         = __( 'Search for', TEXT_DOMAIN );
+		$placeholder_title = __( 'Search ...', TEXT_DOMAIN );
+		$close_title       = __( 'Close', TEXT_DOMAIN );
 		$id                = $atts['id'] ?: esc_attr( uniqid( 'search-' ) );
 
 		ob_start();
