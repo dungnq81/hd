@@ -131,8 +131,9 @@ img {
 }
 
 figure {
+    max-width: 100% !important;
+
     &:where(.wp-caption, .caption) {
-        max-width: 100% !important;
         display: block;
 
         img {
