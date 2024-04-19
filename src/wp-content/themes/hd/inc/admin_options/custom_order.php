@@ -26,25 +26,37 @@ $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
 			'acf-taxonomy',
 			'acf-post-type',
 			'acf-ui-options-page',
-			'acf-field-group'
+			'acf-field-group',
+            'product',
 		] ) ) {
 			continue;
 		}
+
+        $label = $post_type->label;
+        if ( 'shop_order' == $post_type->name || 'shop_coupon' == $post_type->name ) {
+	        $label = 'Product ' . $label;
+        }
     ?>
     <div class="option mb-15">
         <label class="controls">
             <input type="checkbox" class="hd-checkbox hd-control" name="order_post_type[]" value="<?php echo esc_attr( $post_type->name ); ?>" <?php in_array_checked( $order_post_type, $post_type->name ); ?>>
         </label>
-        <div class="explain"><?php echo $post_type->label; ?></div>
+        <div class="explain"><?php echo $label; ?></div>
     </div>
 	<?php endforeach; ?>
 
     <span class="heading block !fw-700"><?php _e( 'Check to Sort Taxonomies', TEXT_DOMAIN ); ?></span>
 
     <?php
+
     $taxonomies = get_taxonomies( [ 'show_ui' => true ], 'objects' );
+
     foreach ( $taxonomies as $taxonomy ) :
-	    if ( in_array( $taxonomy->name, [ 'link_category', 'wp_pattern_category' ] ) ) {
+	    if ( in_array( $taxonomy->name, [
+            'link_category',
+            'wp_pattern_category',
+            'product_cat',
+        ] ) ) {
 		    continue;
 	    }
     ?>

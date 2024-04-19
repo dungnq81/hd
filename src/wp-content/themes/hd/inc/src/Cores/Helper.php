@@ -15,6 +15,7 @@ use Cores\Traits\Wp;
  *
  * @author WEBHD
  */
+
 final class Helper {
 
 	use WooCommerce;

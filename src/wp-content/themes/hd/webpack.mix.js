@@ -19,6 +19,7 @@ mix
     .sass(resources + '/sass/admin.scss', assets + '/css')
 
     .sass(resources + '/sass/plugins/swiper.scss', assets + '/css/plugins')
+    .sass(resources + '/sass/plugins/woocommerce.scss', assets + '/css/plugins')
 
     .sass(resources + '/sass/fonts.scss', assets + '/css')
     .sass(resources + '/sass/plugins.scss', assets + '/css')
@@ -32,6 +33,7 @@ mix
     .js(resources + '/js/plugins/passive-events.js', assets + '/js/plugins')
 
     .js(resources + '/js/plugins/swiper.js', assets + '/js/plugins')
+    .js(resources + '/js/plugins/woocommerce.js', assets + '/js/plugins')
     .js(resources + '/js/plugins/admin_custom_order.js', assets + '/js/plugins')
 
     .js(resources + '/js/login.js', assets + '/js')

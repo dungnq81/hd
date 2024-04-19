@@ -75,12 +75,10 @@ final class Optimizer {
 	 * @return void
 	 */
 	private function _optimizer(): void {
+		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue' ], 11 );
 
 		// Filters the rel values that are added to links with `target` attribute.
 		add_filter( 'wp_targeted_link_rel', [ &$this, 'targeted_link_rel' ], 999, 2 );
-
-		// fixed canonical
-		//add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ] );
 
 		// hide admin-bar default
 		add_action( "user_register", [ &$this, 'user_register' ], 10, 1 );
@@ -133,6 +131,17 @@ final class Optimizer {
 	// ------------------------------------------------------
 
 	/**
+	 * @return void
+	 */
+	public function enqueue(): void {
+
+		/** Dequeue classic theme styles */
+		wp_dequeue_style( 'classic-theme-styles' );
+	}
+
+	// ------------------------------------------------------
+
+	/**
 	 * @param $rel
 	 * @param $link_target
 	 *
@@ -180,17 +189,6 @@ final class Optimizer {
 			echo '</script>';
 		}
 	}
-
-	// ------------------------------------------------------
-
-	/**
-	 * @return void
-	 */
-//	public function fixed_archive_canonical(): void {
-//		if ( is_archive() ) {
-//			echo '<link rel="canonical" href="' . get_pagenum_link() . '" />';
-//		}
-//	}
 
 	// ------------------------------------------------------
 

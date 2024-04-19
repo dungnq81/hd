@@ -8,6 +8,7 @@ use Plugins\ACF\ACF;
 use Plugins\CF7;
 use Plugins\Editor\TinyMCE;
 use Plugins\RankMath;
+use Plugins\WooCommerce\WooCommerce;
 use Plugins\WpRocket;
 
 \defined( 'ABSPATH' ) || die;
@@ -17,16 +18,19 @@ use Plugins\WpRocket;
  *
  * @author HD
  */
+
 final class Theme {
 	public function __construct() {
 
-		// init is run before wp_loaded
-		add_action( 'init', [ &$this, 'init' ], 10 );
+		// after_setup_theme -> init -> widgets_init -> wp_loaded -> admin_menu -> admin_init
 
 		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 10 );
-		add_action( 'after_setup_theme', [ &$this, 'plugins_setup' ], 11 );
+		add_action( 'after_setup_theme', [ &$this, 'setup' ], 11 );
 
-		/** Widgets wordpress */
+		// init is run after after_setup_theme
+		add_action( 'init', [ &$this, 'plugins_setup' ], 11 );
+
+		/** Widgets WordPress */
 		add_action( 'widgets_init', [ &$this, 'unregister_widgets' ], 11 );
 		add_action( 'widgets_init', [ &$this, 'register_widgets' ], 11 );
 
@@ -120,7 +124,7 @@ final class Theme {
 	 *
 	 * @return void
 	 */
-	public function init(): void {
+	public function setup(): void {
 
 		if ( is_admin() ) {
 			( new Admin() );
@@ -169,7 +173,7 @@ final class Theme {
 	 * @return void
 	 */
 	public function register_widgets(): void {
-		$widgets_dir = THEME_PATH . 'inc/src/Widgets';
+		$widgets_dir = INC_PATH . 'src/Widgets';
 		$FQN         = '\\Widgets\\';
 
 		Helper::createDirectory( $widgets_dir );
@@ -205,6 +209,9 @@ final class Theme {
 
 		/** TinyMCE Editor */
 		( new TinyMCE() );
+
+		/** WooCommerce */
+		Helper::is_woocommerce_active() && ( new WooCommerce() );
 
 		/** ACF */
 		if ( ! Helper::is_acf_active() && ! Helper::is_acf_pro_active() ) {
