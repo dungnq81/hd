@@ -1,78 +1,121 @@
-(function ($) {
+jQuery( function( $ ) {
+    $( 'table.widefat tbody th, table.widefat tbody td' ).css( 'cursor', 'move' );
 
-    const _sortable_helper = function (e, ui) {
-        ui.children().children().each(function () {
-            $(this).width($(this).width());
+    const _helper = function( event, ui ) {
+        ui.each( function() {
+            $( this ).width( $( this ).width() );
         });
         return ui;
     };
 
+    const _start = function( event, ui ) {
+        ui.item.css( 'background-color', '#ffffff' );
+        ui.item.children( 'td, th' ).css( 'border-bottom-width', '0' );
+        ui.item.css( 'outline', '1px solid #dfdfdf' );
+    };
+
+    const _stop = function( event, ui ) {
+        ui.item.removeAttr( 'style' );
+        ui.item.children( 'td,th' ).css( 'border-bottom-width', '1px' );
+    };
+
+    const _sort = function (e, ui) {
+        ui.placeholder.find( 'td' ).each( function( key, value ) {
+            if ( ui.helper.find( 'td' ).eq( key ).is( ':visible' ) ) {
+                $( this ).show();
+            } else {
+                $( this ).hide();
+            }
+        });
+    };
+
+    // pages, posts
     $('table.posts #the-list, table.pages #the-list').sortable({
-        'items': 'tr',
-        'axis': 'y',
-        'helper': _sortable_helper,
-        'update': function (e, ui) {
-            $.post(ajaxurl, {
-                action: 'update-menu-order',
-                order: $('#the-list').sortable('serialize'),
+        items: 'tr:not(.inline-edit-row)',
+        cursor: 'move',
+        axis: 'y',
+        containment: 'table.widefat',
+        scrollSensitivity: 40,
+        helper: _helper,
+        start: _start,
+        stop: _stop,
+        update: function ( event, ui ) {
+            $( 'table.widefat tbody th, table.widefat tbody td' ).css( 'cursor', 'default' );
+            $( 'table.widefat tbody' ).sortable( 'disable' );
+
+            // Show Spinner
+            ui.item
+                .find( '.check-column input' )
+                .hide()
+                .after( '<img alt="processing" src="images/wpspin_light.gif" class="waiting" style="margin-left: 6px;" />' );
+
+            // sorting via ajax
+            $.post( ajaxurl, {
+                    action: 'update-menu-order',
+                    order: $('#the-list').sortable('serialize'),
+                },
+                function( response ) {
+                    ui.item.find( '.check-column input' ).show().siblings( 'img' ).remove();
+                    $( 'table.widefat tbody th, table.widefat tbody td' ).css( 'cursor', 'move' );
+                    $( 'table.widefat tbody' ).sortable( 'enable' );
+                }
+            );
+
+            // fix cell colors
+            $( 'table.widefat tbody tr' ).each( function() {
+                let i = $( 'table.widefat tbody tr' ).index( this );
+                if ( i%2 === 0 ) {
+                    $( this ).addClass( 'alternate' );
+                } else {
+                    $( this ).removeClass( 'alternate' );
+                }
             });
-        }
+        },
+        sort: _sort,
     });
 
+    // tags
     $('table.tags #the-list').sortable({
-        'items': 'tr',
-        'axis': 'y',
-        'helper': _sortable_helper,
-        'update': function (e, ui) {
+        items: 'tr:not(.inline-edit-row)',
+        cursor: 'move',
+        axis: 'y',
+        containment: 'table.widefat',
+        scrollSensitivity: 40,
+        helper: _helper,
+        start: _start,
+        stop: _stop,
+        update: function ( event, ui ) {
+            $( 'table.widefat tbody th, table.widefat tbody td' ).css( 'cursor', 'default' );
+            $( 'table.widefat tbody' ).sortable( 'disable' );
+
+            // Show Spinner
+            ui.item
+                .find( '.check-column input' )
+                .hide()
+                .after( '<img alt="processing" src="images/wpspin_light.gif" class="waiting" style="margin-left: 6px;" />' );
+
+            // sorting via ajax
             $.post(ajaxurl, {
-                action: 'update-menu-order-tags',
-                order: $('#the-list').sortable('serialize'),
+                    action: 'update-menu-order-tags',
+                    order: $('#the-list').sortable('serialize'),
+                },
+                function( response ) {
+                    ui.item.find( '.check-column input' ).show().siblings( 'img' ).remove();
+                    $( 'table.widefat tbody th, table.widefat tbody td' ).css( 'cursor', 'move' );
+                    $( 'table.widefat tbody' ).sortable( 'enable' );
+                }
+            );
+
+            // fix cell colors
+            $( 'table.widefat tbody tr' ).each( function() {
+                let i = $( 'table.widefat tbody tr' ).index( this );
+                if ( i%2 === 0 ) {
+                    $( this ).addClass( 'alternate' );
+                } else {
+                    $( this ).removeClass( 'alternate' );
+                }
             });
-        }
+        },
+        sort: _sort,
     });
-
-    /**
-     * Fix for table breaking
-     */
-
-    $(window).on('load', function () {
-
-        // make the array for the sizes
-        let td_array = [];
-        let i = 0;
-
-        $('#the-list tr:first-child').find('td').each(function () {
-            td_array[i] = $(this).outerWidth();
-            i += 1;
-        });
-
-        $('#the-list').find('tr').each(function () {
-            let j = 0;
-            $(this).find('td').each(function () {
-                let paddingx = parseInt($(this).css('padding-left').replace('px', '')) + parseInt($(this).css('padding-right').replace('px', ''));
-                $(this).width(td_array[j] - paddingx);
-                j += 1;
-            });
-        });
-
-        let y = 0;
-
-        // check if there are items in the table
-        if ($('#the-list > tr.no-items').length === 0) {
-            $('#the-list').parent().find('thead').find('th').each(function () {
-                let paddingx = parseInt($(this).css('padding-left').replace('px', '')) + parseInt($(this).css('padding-right').replace('px', ''));
-                $(this).width(td_array[y] - paddingx);
-                y += 1;
-            });
-
-            let z = 0;
-
-            $('#the-list').parent().find('tfoot').find('th').each(function () {
-                let paddingx = parseInt($(this).css('padding-left').replace('px', '')) + parseInt($(this).css('padding-right').replace('px', ''));
-                $(this).width(td_array[z] - paddingx);
-                z += 1;
-            });
-        }
-    });
-
-})(jQuery)
+});

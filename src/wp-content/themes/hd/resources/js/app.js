@@ -1,5 +1,5 @@
 Object.assign(window, { $: jQuery, jQuery });
 
-(function ($) {
+jQuery( function( $ ) {
 
-})(jQuery)
+});

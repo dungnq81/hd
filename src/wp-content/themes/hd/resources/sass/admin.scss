@@ -875,19 +875,19 @@ body.toplevel_page_hd-settings {
 }
 
 /** */
-.ui-sortable {
-    tr {
-        &:hover {
-            cursor : move;
-        }
-
-        &.alternate {
-            background-color : #F9F9F9;
-        }
-
-        &.ui-sortable-helper {
-            background-color : #F9F9F9;
-            border-top       : 1px solid #DFDFDF;
-        }
-    }
-}
+//.ui-sortable {
+//    tr {
+//        &:hover {
+//            cursor : move;
+//        }
+//
+//        &.alternate {
+//            background-color : #F9F9F9;
+//        }
+//
+//        &.ui-sortable-helper {
+//            background-color : #F9F9F9;
+//            border-top       : 1px solid #DFDFDF;
+//        }
+//    }
+//}
