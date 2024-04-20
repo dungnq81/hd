@@ -22,22 +22,20 @@ use Plugins\WpRocket;
 final class Theme {
 	public function __construct() {
 
-		// after_setup_theme -> init -> widgets_init -> wp_loaded -> admin_menu -> admin_init
+		// after_setup_theme -> init -> widgets_init -> wp_loaded -> admin_menu -> admin_init ...
 
 		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 10 );
 		add_action( 'after_setup_theme', [ &$this, 'setup' ], 11 );
-
-		// init is run after after_setup_theme
-		add_action( 'init', [ &$this, 'plugins_setup' ], 11 );
+		add_action( 'after_setup_theme', [ &$this, 'plugins_setup' ], 12 );
 
 		/** Widgets WordPress */
-		add_action( 'widgets_init', [ &$this, 'unregister_widgets' ], 11 );
-		add_action( 'widgets_init', [ &$this, 'register_widgets' ], 11 );
+		add_action( 'widgets_init', [ &$this, 'unregister_widgets' ], 13 );
+		add_action( 'widgets_init', [ &$this, 'register_widgets' ], 13 );
 
 		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 91 );
 
 		// Prevent Specific Plugins from deactivation, delete, v.v...
-		add_filter( 'plugin_action_links', [ &$this, 'plugin_action_links' ], 11, 4 );
+		add_filter( 'plugin_action_links', [ &$this, 'plugin_action_links' ], 12, 4 );
 	}
 
 	/** ---------------------------------------- */
@@ -168,6 +166,36 @@ final class Theme {
 	/** ---------------------------------------- */
 
 	/**
+	 * @return void
+	 */
+	public function plugins_setup(): void {
+
+		/** TinyMCE Editor */
+		( new TinyMCE() );
+
+		/** WooCommerce */
+		Helper::is_woocommerce_active() && ( new WooCommerce() );
+
+		/** ACF */
+		if ( ! Helper::is_acf_active() && ! Helper::is_acf_pro_active() ) {
+			add_action( 'admin_notices', [ $this, 'admin_notice_missing_acf' ] );
+		} else {
+			( new ACF() );
+		}
+
+		/** WpRocket */
+		defined( 'WP_ROCKET_VERSION' ) && ( new WpRocket() );
+
+		/** RankMath */
+		class_exists( '\RankMath' ) && ( new RankMath() );
+
+		/** Contact form 7 */
+		class_exists( '\WPCF7' ) && ( new CF7() );
+	}
+
+	/** ---------------------------------------- */
+
+	/**
 	 * Registers a WP_Widget widget
 	 *
 	 * @return void
@@ -203,36 +231,6 @@ final class Theme {
 	/** ---------------------------------------- */
 
 	/**
-	 * @return void
-	 */
-	public function plugins_setup(): void {
-
-		/** TinyMCE Editor */
-		( new TinyMCE() );
-
-		/** WooCommerce */
-		Helper::is_woocommerce_active() && ( new WooCommerce() );
-
-		/** ACF */
-		if ( ! Helper::is_acf_active() && ! Helper::is_acf_pro_active() ) {
-			add_action( 'admin_notices', [ $this, 'admin_notice_missing_acf' ] );
-		} else {
-			( new ACF() );
-		}
-
-		/** WpRocket */
-		defined( 'WP_ROCKET_VERSION' ) && ( new WpRocket() );
-
-		/** RankMath */
-		class_exists( '\RankMath' ) && ( new RankMath() );
-
-		/** Contact form 7 */
-		class_exists( '\WPCF7' ) && ( new CF7() );
-	}
-
-	/** ---------------------------------------- */
-
-	/**
 	 * Handles admin notice for non-active
 	 *
 	 * @return void
@@ -252,6 +250,8 @@ final class Theme {
 	 * @return void
 	 */
 	public function wp_enqueue_scripts(): void {
+
+		// wp_enqueue_style( 'style', get_stylesheet_uri(), [], THEME_VERSION );
 
 		/** Extra */
 		wp_register_style( "swiper-style", ASSETS_URL . "css/plugins/swiper.css", [], THEME_VERSION );

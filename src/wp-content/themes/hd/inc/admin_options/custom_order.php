@@ -20,24 +20,32 @@ $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
 	$post_types = get_post_types( $hd_order_post_types_args, 'objects' );
 	foreach ( $post_types as $post_type ) :
 
+        // Exclude
 		if ( in_array( $post_type->name, [
 			'attachment',
 			'wp_navigation',
-			'acf-taxonomy',
-			'acf-post-type',
-			'acf-ui-options-page',
-			'acf-field-group',
+			//'acf-taxonomy',
+			//'acf-post-type',
+			//'acf-ui-options-page',
+			//'acf-field-group',
             'product',
 		] ) ) {
 			continue;
 		}
 
         $label = $post_type->label;
-        if ( 'shop_order' == $post_type->name || 'shop_coupon' == $post_type->name ) {
+        if ( str_starts_with( $post_type->name, 'shop_' ) ) {
 	        $label = 'Product ' . $label;
         }
+
+		if ( str_starts_with( $post_type->name, 'acf-' ) ) {
+			$label = 'ACF ' . $label;
+		}
+
+        $label .= ' <span class="!fw-400">(' . $post_type->name . ')</span>';
+
     ?>
-    <div class="option mb-15">
+    <div class="option mb-20">
         <label class="controls">
             <input type="checkbox" class="hd-checkbox hd-control" name="order_post_type[]" value="<?php echo esc_attr( $post_type->name ); ?>" <?php in_array_checked( $order_post_type, $post_type->name ); ?>>
         </label>
@@ -59,18 +67,21 @@ $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
         ] ) ) {
 		    continue;
 	    }
+
+        $label = $taxonomy->label;
+	    $label .= ' <span class="!fw-400">(' . $taxonomy->name . ')</span>';
     ?>
-    <div class="option mb-15">
+    <div class="option mb-20">
         <label class="controls">
             <input type="checkbox" class="hd-checkbox hd-control" name="order_taxonomy[]" value="<?php echo esc_attr( $taxonomy->name ); ?>" <?php in_array_checked( $order_taxonomy, $taxonomy->name ); ?>>
         </label>
-        <div class="explain"><?php echo $taxonomy->label; ?></div>
+        <div class="explain"><?php echo $label; ?></div>
     </div>
     <?php endforeach; ?>
 
     <span class="heading block !fw-700"><?php _e( 'Check to reset order', TEXT_DOMAIN ); ?></span>
 
-    <div class="option mb-15">
+    <div class="option mb-20">
         <label class="controls">
             <input type="checkbox" class="hd-checkbox hd-control" name="order_reset" id="order_reset" value="1">
         </label>

@@ -547,6 +547,19 @@ add_filter( 'hd_posts_num_per_page', function ( array $arr ) {
 
 /** ---------------------------------------- */
 
+add_filter( 'hd_smtp_plugins', function ( array $arr ) {
+	$update_arr = [
+		'wp_mail_smtp' => 'wp-mail-smtp/wp_mail_smtp.php',
+		'wp_mail_smtp_pro' => 'wp-mail-smtp-pro/wp_mail_smtp.php',
+		'smtp_mailer' => 'smtp-mailer/main.php',
+		'gmail_smtp' => 'gmail-smtp/main.php',
+	];
+
+	return array_merge( $arr, $update_arr );
+}, 99, 1);
+
+/** ---------------------------------------- */
+
 add_filter( 'hd_email_list', function ( array $arr ) {
 	$update_arr = [
 		'lien_he' => 'Liên hệ',

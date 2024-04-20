@@ -16,10 +16,8 @@ node_modules/
 # JIRA plugin
 atlassian-ide-plugin.xml
 
-# JetBrains IDE
+# IDE
 .idea/
-
-# Visual Studio Code
 .vscode/
 .history/
 
@@ -48,15 +46,14 @@ Thumbs.db
 # WordPress template
 wp-content/uploads/
 
-# ignore these plugins
-wp-content/plugins/hello.php
-
 # ignore specific themes
 wp-content/themes/twenty*/
 
 # Project exclude paths
 wp-content/themes/hd/assets/
-wp-content/plugins/remove-cpt-base/
-wp-content/plugins/simple-custom-post-order/
-wp-content/plugins/smtp-mailer/
-wp-content/plugins/woocommerce/
+
+# ignore these plugins
+
+wp-content/plugins/*
+!wp-content/plugins/advanced-custom-fields-pro/
+!wp-content/plugins/contact-form-7/

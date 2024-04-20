@@ -19,7 +19,7 @@ final class Security {
 	/**
 	 * @var array|false|mixed
 	 */
-	public $security_options = [];
+	public mixed $security_options = [];
 
 	// ------------------------------------------------------
 

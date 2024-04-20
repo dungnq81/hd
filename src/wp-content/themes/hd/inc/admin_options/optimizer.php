@@ -8,7 +8,7 @@ $https_enforce = $optimizer_options['https_enforce'] ?? 0;
 ?>
 <h2><?php _e( 'Optimizer Settings', TEXT_DOMAIN ); ?></h2>
 <div class="section section-checkbox" id="section_https_enforce">
-    <label class="heading" for="https_enforce"><?php _e( 'HTTPS Enforce', TEXT_DOMAIN ); ?></label>
+    <label class="heading" for="https_enforce"><?php _e( 'HTTPS', TEXT_DOMAIN ); ?></label>
     <div class="desc"><?php _e( 'Configures your site to work correctly via HTTPS and forces a secure connection to your site. In order to force HTTPS, we will automatically update your database replacing all insecure links. In addition to that, we will add a rule in your .htaccess file, forcing all requests to go through encrypted connection.', TEXT_DOMAIN ); ?></div>
     <div class="option">
         <div class="controls">

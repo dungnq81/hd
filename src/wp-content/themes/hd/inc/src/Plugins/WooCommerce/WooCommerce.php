@@ -11,7 +11,6 @@ use Cores\Helper;
  *
  * @author   WEBHD
  */
-
 final class WooCommerce {
 
 	/**
@@ -24,15 +23,12 @@ final class WooCommerce {
 	public function __construct() {
 
 		$this->woocommerce_options = Helper::getOption( 'woocommerce__options', false, false );
-		$woocommerce_jsonld = $this->woocommerce_options['woocommerce_jsonld'] ?? '';
+		$woocommerce_jsonld        = $this->woocommerce_options['woocommerce_jsonld'] ?? '';
 		if ( $woocommerce_jsonld ) {
 
 			// Remove the default WooCommerce 3 JSON/LD structured data format
 			add_action( 'init', [ &$this, 'remove_woocommerce_jsonld' ], 10 );
 		}
-
-		// hooks
-		$this->_hooks();
 
 		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 31 );
 
@@ -41,6 +37,9 @@ final class WooCommerce {
 
 		add_action( 'enqueue_block_assets', [ &$this, 'enqueue_block_assets' ], 31 );
 		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 98 );
+
+		// hooks
+		$this->_hooks();
 	}
 
 	// ------------------------------------------------------
@@ -50,7 +49,10 @@ final class WooCommerce {
 	 */
 	public function remove_woocommerce_jsonld(): void {
 		remove_action( 'wp_footer', [ WC()->structured_data, 'output_structured_data' ], 10 );
-		remove_action( 'woocommerce_email_order_details', [ WC()->structured_data, 'output_email_structured_data' ], 30 );
+		remove_action( 'woocommerce_email_order_details', [
+			WC()->structured_data,
+			'output_email_structured_data'
+		], 30 );
 	}
 
 	// ------------------------------------------------------
@@ -118,7 +120,7 @@ final class WooCommerce {
 
 		// Remove woocommerce blocks styles
 		$block_editor_options = Helper::getOption( 'block_editor__options', false, true );
-		$block_style_off = $block_editor_options['block_style_off'] ?? '';
+		$block_style_off      = $block_editor_options['block_style_off'] ?? '';
 
 		if ( $block_style_off ) {
 			wp_deregister_style( 'wc-block-editor' );

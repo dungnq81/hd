@@ -10,10 +10,8 @@ use Cores\Helper;
  * Order Items (Posts, Pages, and Custom Post Types) using a Drag-and-Drop Sortable JavaScript.
  *
  * @author Colorlib
- * Modified by HD Team
  *
- * @copyright 2013-2017 Sameer Humagain im@hsameer.com.np
- * @copyright 2017-2023 Colorlib support@colorlib.com
+ * Modified by HD Team
  */
 final class Custom_Order {
 
