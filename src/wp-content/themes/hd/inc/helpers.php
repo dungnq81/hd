@@ -11,6 +11,29 @@ use Cores\Helper;
 
 /** ----------------------------------------------- */
 
+if ( ! function_exists( 'check_smtp_plugin_active' ) ) {
+	/**
+	 * @return bool
+	 */
+	function check_smtp_plugin_active(): bool {
+		$hd_smtp_plugins_support = apply_filters( 'hd_smtp_plugins_support', [] );
+
+		$check = true;
+		if ( ! empty( $hd_smtp_plugins_support ) ) {
+			foreach ( $hd_smtp_plugins_support as $key => $plugin_slug ) {
+				if ( Helper::check_plugin_active( $plugin_slug ) ) {
+					$check = false;
+					break;
+				}
+			}
+		}
+
+		return $check;
+	}
+}
+
+/** ----------------------------------------------- */
+
 if ( ! function_exists( 'in_array_checked' ) ) {
 	/**
 	 * @param array $checked_arr

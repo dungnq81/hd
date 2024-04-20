@@ -19,8 +19,7 @@ final class Options {
 		add_action( 'wp_enqueue_scripts', [ &$this, 'aspect_ratio_enqueue_scripts' ], 11 );
 
 		/** SMTP */
-		if ( Helper::smtpConfigured() ) {
-			//add_action( 'phpmailer_init', [ &$this, 'setup_phpmailer_init' ], 11 );
+		if ( Helper::smtpConfigured() && check_smtp_plugin_active() ) {
 			add_filter( 'pre_wp_mail', [ &$this, 'smtp_mailer_pre_wp_mail' ], 10, 2 );
 		}
 

@@ -247,38 +247,41 @@ final class Admin {
 
 			/** SMTP Settings */
 
-			$smtp_host     = ! empty( $_POST['smtp_host'] ) ? sanitize_text_field( $_POST['smtp_host'] ) : '';
-			$smtp_auth     = ! empty( $_POST['smtp_auth'] ) ? sanitize_text_field( $_POST['smtp_auth'] ) : '';
-			$smtp_username = ! empty( $_POST['smtp_username'] ) ? sanitize_text_field( $_POST['smtp_username'] ) : '';
+            if ( check_smtp_plugin_active() ) {
 
-			if ( ! empty( $_POST['smtp_password'] ) ) {
-				$smtp_password = sanitize_text_field( $_POST['smtp_password'] );
-				$smtp_password = wp_unslash( $smtp_password ); // This removes slash (automatically added by WordPress) from the password when apostrophe is present
-				$smtp_password = base64_encode( $smtp_password );
-			}
+				$smtp_host     = ! empty( $_POST['smtp_host'] ) ? sanitize_text_field( $_POST['smtp_host'] ) : '';
+				$smtp_auth     = ! empty( $_POST['smtp_auth'] ) ? sanitize_text_field( $_POST['smtp_auth'] ) : '';
+				$smtp_username = ! empty( $_POST['smtp_username'] ) ? sanitize_text_field( $_POST['smtp_username'] ) : '';
 
-			$smtp_encryption               = ! empty( $_POST['smtp_encryption'] ) ? sanitize_text_field( $_POST['smtp_encryption'] ) : '';
-			$smtp_port                     = ! empty( $_POST['smtp_port'] ) ? sanitize_text_field( $_POST['smtp_port'] ) : '';
-			$smtp_from_email               = ! empty( $_POST['smtp_from_email'] ) ? sanitize_email( $_POST['smtp_from_email'] ) : '';
-			$smtp_from_name                = ! empty( $_POST['smtp_from_name'] ) ? sanitize_text_field( $_POST['smtp_from_name'] ) : '';
-			$smtp_disable_ssl_verification = ! empty( $_POST['smtp_disable_ssl_verification'] ) ? sanitize_text_field( $_POST['smtp_disable_ssl_verification'] ) : '';
+				if ( ! empty( $_POST['smtp_password'] ) ) {
+					$smtp_password = sanitize_text_field( $_POST['smtp_password'] );
+					$smtp_password = wp_unslash( $smtp_password ); // This removes slash (automatically added by WordPress) from the password when apostrophe is present
+					$smtp_password = base64_encode( $smtp_password );
+				}
 
-			$smtp_options = [
-				'smtp_host'                     => $smtp_host,
-				'smtp_auth'                     => $smtp_auth,
-				'smtp_username'                 => $smtp_username,
-				'smtp_encryption'               => $smtp_encryption,
-				'smtp_port'                     => $smtp_port,
-				'smtp_from_email'               => $smtp_from_email,
-				'smtp_from_name'                => $smtp_from_name,
-				'smtp_disable_ssl_verification' => $smtp_disable_ssl_verification,
-			];
+				$smtp_encryption               = ! empty( $_POST['smtp_encryption'] ) ? sanitize_text_field( $_POST['smtp_encryption'] ) : '';
+				$smtp_port                     = ! empty( $_POST['smtp_port'] ) ? sanitize_text_field( $_POST['smtp_port'] ) : '';
+				$smtp_from_email               = ! empty( $_POST['smtp_from_email'] ) ? sanitize_email( $_POST['smtp_from_email'] ) : '';
+				$smtp_from_name                = ! empty( $_POST['smtp_from_name'] ) ? sanitize_text_field( $_POST['smtp_from_name'] ) : '';
+				$smtp_disable_ssl_verification = ! empty( $_POST['smtp_disable_ssl_verification'] ) ? sanitize_text_field( $_POST['smtp_disable_ssl_verification'] ) : '';
 
-			if ( ! empty( $smtp_password ) ) {
-				$smtp_options['smtp_password'] = $smtp_password;
-			}
+				$smtp_options = [
+					'smtp_host'                     => $smtp_host,
+					'smtp_auth'                     => $smtp_auth,
+					'smtp_username'                 => $smtp_username,
+					'smtp_encryption'               => $smtp_encryption,
+					'smtp_port'                     => $smtp_port,
+					'smtp_from_email'               => $smtp_from_email,
+					'smtp_from_name'                => $smtp_from_name,
+					'smtp_disable_ssl_verification' => $smtp_disable_ssl_verification,
+				];
 
-			Helper::updateOption( 'smtp__options', $smtp_options, true );
+				if ( ! empty( $smtp_password ) ) {
+					$smtp_options['smtp_password'] = $smtp_password;
+				}
+
+				Helper::updateOption( 'smtp__options', $smtp_options, true );
+            }
 
 			// ------------------------------------------------------
 
@@ -287,11 +290,13 @@ final class Admin {
 			$email_options = [];
 			$hd_email_list = apply_filters( 'hd_email_list', [] );
 
-			foreach ( $hd_email_list as $i => $ar ) {
-				$email_options[ $i ] = ! empty( $_POST[ $i . '_email' ] ) ? sanitize_text_field( $_POST[ $i . '_email' ] ) : '';
-			}
+            if ( $hd_email_list ) {
+	            foreach ( $hd_email_list as $i => $ar ) {
+		            $email_options[ $i ] = ! empty( $_POST[ $i . '_email' ] ) ? sanitize_text_field( $_POST[ $i . '_email' ] ) : '';
+	            }
 
-			Helper::updateOption( 'emails__options', $email_options );
+	            Helper::updateOption( 'emails__options', $email_options );
+            }
 
 			// ------------------------------------------------------
 
@@ -509,14 +514,15 @@ final class Admin {
                                 <a class="current" title="Aspect ratio" href="#aspect_ratio_settings"><?php _e( 'Aspect Ratio', TEXT_DOMAIN ); ?></a>
                             </li>
 
+                            <?php if ( check_smtp_plugin_active() ) : ?>
                             <li class="smtp-settings">
                                 <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', TEXT_DOMAIN ); ?></a>
                             </li>
+                            <?php endif; ?>
 
                             <?php
                             $hd_email_list = apply_filters( 'hd_email_list', [] );
 		                    if ( ! empty( $hd_email_list ) ) :
-
                             ?>
                             <li class="email-settings">
                                 <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', TEXT_DOMAIN ); ?></a>
@@ -568,13 +574,17 @@ final class Admin {
 							<?php require INC_PATH . 'admin_options/aspect_ratio.php'; ?>
                         </div>
 
+		                <?php if ( check_smtp_plugin_active() ) : ?>
                         <div id="smtp_settings" class="group tabs-panel">
 							<?php require INC_PATH . 'admin_options/smtp.php'; ?>
                         </div>
+                        <?php endif; ?>
 
+                        <?php if ( ! empty( $hd_email_list ) ) : ?>
                         <div id="email_settings" class="group tabs-panel">
 		                    <?php require INC_PATH . 'admin_options/custom_email.php'; ?>
                         </div>
+                        <?php endif; ?>
 
                         <div id="custom_order_settings" class="group tabs-panel">
 		                    <?php require INC_PATH . 'admin_options/custom_order.php'; ?>

@@ -3,13 +3,22 @@
         'name' => 'wordpress/hd',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '84beb184f6f3b09e0af2145f7022f6a817d1a699',
+        'reference' => '8546d0bd4720745a93135f1f63bed267ef15f83a',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
+        'enshrined/svg-sanitize' => array(
+            'pretty_version' => '0.18.0',
+            'version' => '0.18.0.0',
+            'reference' => '6a2c069dab3843ca4d887ff09c972fc7033888d0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../enshrined/svg-sanitize',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'matthiasmullie/minify' => array(
             'pretty_version' => '1.3.73',
             'version' => '1.3.73.0',
@@ -85,7 +94,7 @@
         'wordpress/hd' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '84beb184f6f3b09e0af2145f7022f6a817d1a699',
+            'reference' => '8546d0bd4720745a93135f1f63bed267ef15f83a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
