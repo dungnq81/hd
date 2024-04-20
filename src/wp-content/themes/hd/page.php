@@ -18,8 +18,8 @@ get_header();
 the_content();
 
 // homepage widget
-if ( is_active_sidebar( 'ehd-home-sidebar' ) ) :
-	dynamic_sidebar( 'ehd-home-sidebar' );
+if ( is_active_sidebar( 'hd-home-sidebar' ) ) :
+	dynamic_sidebar( 'hd-home-sidebar' );
 endif;
 
 ?>

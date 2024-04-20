@@ -16,11 +16,11 @@ use PHPMailer\PHPMailer\Exception;
 final class Options {
 	public function __construct() {
 
-		add_action( 'wp_enqueue_scripts', [ &$this, 'aspect_ratio_enqueue_scripts' ], 11 );
+		add_action( 'wp_enqueue_scripts', [ &$this, 'aspect_ratio_enqueue_scripts' ], 98 );
 
 		/** SMTP */
 		if ( Helper::smtpConfigured() && check_smtp_plugin_active() ) {
-			add_filter( 'pre_wp_mail', [ &$this, 'smtp_mailer_pre_wp_mail' ], 10, 2 );
+			add_filter( 'pre_wp_mail', [ &$this, 'smtp_mailer_pre_wp_mail' ], 11, 2 );
 		}
 
 		/** Custom Order */
@@ -31,7 +31,7 @@ final class Options {
 		/** Contact Button */
 
 		/** Block Editor */
-		add_action( 'admin_init', [ &$this, 'editor_admin_init' ], 10 );
+		add_action( 'admin_init', [ &$this, 'editor_admin_init' ], 11 );
 		add_action( 'wp_enqueue_scripts', [ &$this, 'editor_enqueue_scripts' ], 98 );
 
 		/** Comments */
@@ -187,22 +187,9 @@ final class Options {
 		}
 
 		if ( $styles ) {
-			wp_add_inline_style( 'hd-core-style', $styles );
+			wp_add_inline_style( 'app-style', $styles );
 		}
 	}
-
-	// ------------------------------------------------------
-
-	/**
-	 * @param $phpmailer
-	 *
-	 * @return void
-	 * @throws Exception
-	 * @deprecated
-	 */
-//	public function setup_phpmailer_init( $phpmailer ): void {
-//		Helper::PHPMailerInit( $phpmailer, 'smtp__options' );
-//	}
 
 	// ------------------------------------------------------
 

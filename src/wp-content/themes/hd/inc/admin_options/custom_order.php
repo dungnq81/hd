@@ -10,26 +10,29 @@ $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
 <h2><?php _e( 'Order Settings', TEXT_DOMAIN ); ?></h2>
 <div class="section section-checkbox" id="section_custom_order">
     <span class="heading block !fw-700"><?php _e( 'Check to Sort Post Types', TEXT_DOMAIN ); ?></span>
-
 	<?php
-	$hd_order_post_types_args = [
-		//'public' => true,
-		//'show_in_menu' => true,
-		'show_ui' => true,
-	];
-	$post_types = get_post_types( $hd_order_post_types_args, 'objects' );
+
+	$post_types = get_post_types( [ 'show_ui' => true ], 'objects' );
+
 	foreach ( $post_types as $post_type ) :
 
-        // Exclude
-		if ( in_array( $post_type->name, [
+        // Exclude post-type
+		$exclude_post_type = [
 			'attachment',
 			'wp_navigation',
-			//'acf-taxonomy',
-			//'acf-post-type',
-			//'acf-ui-options-page',
-			//'acf-field-group',
-            'product',
-		] ) ) {
+			'product',
+        ];
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			$exclude_post_type = array_merge( $exclude_post_type, [
+				'acf-taxonomy',
+				'acf-post-type',
+				'acf-ui-options-page',
+				'acf-field-group',
+            ] );
+        }
+
+		if ( in_array( $post_type->name, $exclude_post_type ) ) {
 			continue;
 		}
 

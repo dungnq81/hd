@@ -42,7 +42,7 @@ add_action( 'acf/include_fields', function () {
 				],
 			],
 		],
-		'menu_order'            => 9999,
+		'menu_order'            => 7,
 		'position'              => 'normal',
 		'style'                 => 'default',
 		'label_placement'       => 'top',

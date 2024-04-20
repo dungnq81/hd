@@ -260,21 +260,20 @@ trait Str {
 
 	/**
 	 * @param $string
-	 * @param string $replace
 	 * @param bool $remove_js
 	 * @param bool $flatten
 	 * @param null $allowed_tags
 	 *
 	 * @return string
 	 */
-	public static function stripAllTags( $string, string $replace = ' ', bool $remove_js = true, bool $flatten = true, $allowed_tags = null ): string {
+	public static function stripAllTags( $string, bool $remove_js = true, bool $flatten = true, $allowed_tags = null ): string {
 
 		if ( ! is_scalar( $string ) ) {
 			return '';
 		}
 
 		if ( true === $remove_js ) {
-			$string = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', $replace, $string );
+			$string = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', ' ', $string );
 		}
 
 		$string = strip_tags( $string, $allowed_tags );

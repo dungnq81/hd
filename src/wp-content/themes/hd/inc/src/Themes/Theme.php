@@ -32,7 +32,7 @@ final class Theme {
 		add_action( 'widgets_init', [ &$this, 'unregister_widgets' ], 13 );
 		add_action( 'widgets_init', [ &$this, 'register_widgets' ], 13 );
 
-		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 91 );
+		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 10 );
 
 		// Prevent Specific Plugins from deactivation, delete, v.v...
 		add_filter( 'plugin_action_links', [ &$this, 'plugin_action_links' ], 12, 4 );

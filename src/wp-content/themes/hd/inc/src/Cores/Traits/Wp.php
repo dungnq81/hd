@@ -1394,7 +1394,7 @@ trait Wp {
 		$code_type = $code_type ?: 'text/css';
 
 		if ( in_array( $code_type, [ 'css', 'text/css' ] ) ) {
-			$mixed = self::stripAllTags( $mixed, ' ', true, false );
+			$mixed = self::stripAllTags( $mixed, true, false );
 		}
 
 		if ( $encode ) {

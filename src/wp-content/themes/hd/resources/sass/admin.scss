@@ -874,6 +874,14 @@ body.toplevel_page_hd-settings {
     font-weight: 700;
 }
 
+.acf-fields > .acf-tab-wrap .acf-tab-group {
+    border-bottom: none !important;
+
+    li {
+        border-bottom: #ccd0d4 solid 1px;
+    }
+}
+
 /** */
 //.ui-sortable {
 //    tr {

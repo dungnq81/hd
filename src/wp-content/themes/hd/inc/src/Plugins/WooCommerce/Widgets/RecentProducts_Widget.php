@@ -11,7 +11,7 @@ use WP_Query;
 class RecentProducts_Widget extends Abstract_Widget {
 	public function __construct() {
 		$this->widget_description = __( "Display a list of recent products from your store.", TEXT_DOMAIN );
-		$this->widget_name        = __( 'Recent Products *', TEXT_DOMAIN );
+		$this->widget_name        = __( '* Recent Products', TEXT_DOMAIN );
 		$this->settings           = [
 			'title'      => [
 				'type'  => 'text',
@@ -71,13 +71,12 @@ class RecentProducts_Widget extends Abstract_Widget {
 	/**
 	 * Query the products and return them.
 	 *
-	 * @param array $args Arguments.
+	 * @param $number
 	 * @param array $instance Widget instance.
 	 *
 	 * @return WP_Query
 	 */
-	public function get_products( $args, $instance ) {
-		$number = ! empty( $instance['number'] ) ? absint( $instance['number'] ) : $this->settings['number']['std'];
+	public function get_products( $number, $instance ) {
 		$show    = ! empty( $instance['show'] ) ? sanitize_title( $instance['show'] ) : $this->settings['show']['std'];
 		$orderby = ! empty( $instance['orderby'] ) ? sanitize_title( $instance['orderby'] ) : $this->settings['orderby']['std'];
 		$order   = ! empty( $instance['order'] ) ? sanitize_title( $instance['order'] ) : $this->settings['order']['std'];
@@ -160,7 +159,11 @@ class RecentProducts_Widget extends Abstract_Widget {
 				break;
 		}
 
-		return new WP_Query( apply_filters( 'recent_products_widget_query_args', $query_args ) );
+		set_pre_get_posts( $number );
+		$products_query = new WP_Query( apply_filters( 'recent_products_widget_query_args', $query_args ) );
+		reset_pre_get_posts();
+
+		return $products_query;
 	}
 
 	/**
@@ -182,14 +185,14 @@ class RecentProducts_Widget extends Abstract_Widget {
 		$title = $this->get_instance_title( $instance );
 		$number  = ! empty( $instance['number'] ) ? absint( $instance['number'] ) : $this->settings['number']['std'];
 
-		$products = $this->get_products( $args, $instance );
+		$products = $this->get_products( $number, $instance );
 		if ( ! $products || ! $products->have_posts() ) {
 			return;
 		}
 
-		$css_class = ! empty( $ACF->css_class ) ? ' ' . sanitize_title( $ACF->css_class ) : '';
+		$css_class = ! empty( $ACF->css_class ) ? ' ' . esc_attr_strip_tags( $ACF->css_class ) : '';
 		$css_class = $this->widget_classname . $css_class;
-		$uniqid    = esc_attr( uniqid( $this->widget_classname . '-' ) );
+		$uniqid    = esc_attr_strip_tags( uniqid( $this->widget_classname . '-' ) );
 
 		// has products
 		wc_set_loop_prop( 'name', 'recent_products_widget' );
@@ -203,7 +206,7 @@ class RecentProducts_Widget extends Abstract_Widget {
 				echo '<h2 class="heading-title">' . $title . '</h2>';
 			} ?>
 
-            <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr( $title ); ?>">
+            <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr_strip_tags( $title ); ?>">
                 <div class="grid-products">
 					<?php
 					$i = 0;
