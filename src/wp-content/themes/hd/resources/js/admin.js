@@ -1,7 +1,6 @@
 import { nanoid } from 'nanoid';
 import Cookies from 'js-cookie';
 
-'use strict';
 jQuery( function( $ ) {
 
     /**

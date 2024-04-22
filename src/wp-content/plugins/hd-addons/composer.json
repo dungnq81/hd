@@ -1,0 +1,17 @@
+{
+	"name": "plugins/hd-addons",
+	"description": "HD addons plugin",
+	"authors": [
+		{
+			"name": "WEBHD Team"
+		}
+	],
+	"autoload": {
+		"psr-4": {},
+		"files": [],
+		"classmap": []
+	},
+	"require": {
+		"php": ">=8.2"
+	}
+}

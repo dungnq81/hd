@@ -33,9 +33,6 @@ final class Theme {
 		add_action( 'widgets_init', [ &$this, 'register_widgets' ], 13 );
 
 		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 10 );
-
-		// Prevent Specific Plugins from deactivation, delete, v.v...
-		add_filter( 'plugin_action_links', [ &$this, 'plugin_action_links' ], 12, 4 );
 	}
 
 	/** ---------------------------------------- */
@@ -177,9 +174,7 @@ final class Theme {
 		Helper::is_woocommerce_active() && ( new WooCommerce() );
 
 		/** ACF */
-		if ( ! Helper::is_acf_active() && ! Helper::is_acf_pro_active() ) {
-			add_action( 'admin_notices', [ $this, 'admin_notice_missing_acf' ] );
-		} else {
+		if ( Helper::is_acf_active() || Helper::is_acf_pro_active() ) {
 			( new ACF() );
 		}
 
@@ -226,20 +221,6 @@ final class Theme {
 			$wp_widget_factory->widgets['WP_Widget_Recent_Comments'],
 			'recent_comments_style'
 		] );
-	}
-
-	/** ---------------------------------------- */
-
-	/**
-	 * Handles admin notice for non-active
-	 *
-	 * @return void
-	 */
-	public function admin_notice_missing_acf(): void {
-		$class   = 'notice notice-error';
-		$message = sprintf( __( 'You need %1$s"Advanced Custom Fields"%2$s for the %1$s"HD theme"%2$s to work and updated.', TEXT_DOMAIN ), '<strong>', '</strong>' );
-
-		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), $message );
 	}
 
 	/** ---------------------------------------- */
@@ -293,37 +274,6 @@ final class Theme {
 		} else {
 			wp_dequeue_script( 'comment-reply' );
 		}
-	}
-
-	/** ---------------------------------------- */
-
-	/**
-	 * @param $actions
-	 * @param $plugin_file
-	 * @param $plugin_data
-	 * @param $context
-	 *
-	 * @return mixed
-	 */
-	public function plugin_action_links( $actions, $plugin_file, $plugin_data, $context ): mixed {
-		$keys = [
-			'deactivate',
-			'delete'
-		];
-
-		foreach ( $keys as $key ) {
-			if ( array_key_exists( $key, $actions )
-			     && in_array(
-				     $plugin_file,
-				     [
-					     //'advanced-custom-fields-pro/acf.php',
-				     ] )
-			) {
-				unset( $actions[ $key ] );
-			}
-		}
-
-		return $actions;
 	}
 
 	/** ---------------------------------------- */

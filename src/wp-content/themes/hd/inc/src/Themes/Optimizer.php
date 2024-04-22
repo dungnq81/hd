@@ -38,13 +38,13 @@ final class Optimizer {
 	 */
 	private function _cleanup(): void {
 
-		remove_action( 'welcome_panel', 'wp_welcome_panel' );
-
 		// wp_head
-		remove_action( 'wp_head', 'rsd_link' );                        // Remove the EditURI/RSD link
-		remove_action( 'wp_head', 'wlwmanifest_link' );                // Remove a Windows Live Writer Manifest link
-		remove_action( 'wp_head', 'wp_generator' );                    // remove WordPress Generator
-		remove_action( 'wp_head', 'print_emoji_detection_script', 7 ); // Emoji detection script.
+		remove_action( 'wp_head', 'rsd_link' );
+		remove_action( 'wp_head', 'wlwmanifest_link' );
+		remove_action( 'wp_head', 'wp_shortlink_wp_head' );
+		remove_action( 'wp_head', 'wp_generator' );
+		remove_action( 'wp_head', 'feed_links_extra', 3 );
+		remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 
 		// All actions related to emojis
 		remove_action( 'wp_print_styles', 'print_emoji_styles' );
@@ -75,13 +75,12 @@ final class Optimizer {
 	 * @return void
 	 */
 	private function _optimizer(): void {
+
 		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue' ], 11 );
-
-		// Filters the rel values that are added to links with `target` attribute.
-		add_filter( 'wp_targeted_link_rel', [ &$this, 'targeted_link_rel' ], 999, 2 );
-
-		// hide admin-bar default
 		add_action( "user_register", [ &$this, 'user_register' ], 10, 1 );
+
+		add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 );
+		add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 );
 
 		// if not admin page
 		if ( ! is_admin() ) {
@@ -96,15 +95,18 @@ final class Optimizer {
 			add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 99 );
 		}
 
-		add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 ); // filter post search only by title
-		// add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 ); // custom posts where, filter post search only by title
+		// Filters the rel values that are added to links with `target` attribute.
+		add_filter( 'wp_targeted_link_rel', function ( $rel, $link_target ) {
+			$rel .= ' nofollow';
+			return $rel;
+		}, 999, 2 );
 
-        // excerpt_more
+		// excerpt_more
 		add_filter( 'excerpt_more', function () {
 			return ' ' . '&hellip;';
 		} );
 
-		// Remove admin bar
+		// Remove logo admin bar
 		add_action( 'wp_before_admin_bar_render', function () {
 			global $wp_admin_bar;
 			$wp_admin_bar->remove_menu( 'wp-logo' );
@@ -119,13 +121,13 @@ final class Optimizer {
 			return remove_accents( $filename );
 		}, 10, 1 );
 
-        // query_vars
-		add_filter( 'query_vars', function ( $vars ) {
-			$vars[] = 'page';
-			$vars[] = 'paged';
-
-			return $vars;
-		} );
+		// query_vars
+//		add_filter( 'query_vars', function ( $vars ) {
+//			$vars[] = 'page';
+//			$vars[] = 'paged';
+//
+//			return $vars;
+//		} );
 	}
 
 	// ------------------------------------------------------
@@ -137,20 +139,6 @@ final class Optimizer {
 
 		/** Dequeue classic theme styles */
 		wp_dequeue_style( 'classic-theme-styles' );
-	}
-
-	// ------------------------------------------------------
-
-	/**
-	 * @param $rel
-	 * @param $link_target
-	 *
-	 * @return string
-	 */
-	public function targeted_link_rel( $rel, $link_target ): string {
-		$rel .= ' nofollow';
-
-		return $rel;
 	}
 
 	// ------------------------------------------------------
@@ -251,28 +239,31 @@ final class Optimizer {
 	 * @param $query
 	 */
 	public function set_posts_per_page( $query ): void {
-		if ( ! is_admin() ) {
+		if ( ! is_admin() && $query->is_main_query() ) {
 
 			// get default value
-			$posts_per_page = Helper::getOption( 'posts_per_page' );
-			$posts_per_page_x2 = $posts_per_page * 2;
-			$posts_per_page_x3 = $posts_per_page * 3;
+			$posts_per_page_default    = $posts_per_page = get_option( 'posts_per_page' );
+			$hd_posts_num_per_page_arr = apply_filters( 'hd_posts_num_per_page', [] );
 
-			$hd_posts_num_per_page_arr = apply_filters( 'hd_posts_num_per_page', [ $posts_per_page, $posts_per_page_x2, $posts_per_page_x3 ] );
-			if ( isset( $_GET['pagenum'] ) ) {
+			if ( ! empty( $hd_posts_num_per_page_arr ) ) {
+				$posts_per_page = min( $hd_posts_num_per_page_arr );
 
-				$pagenum = esc_sql( $_GET['pagenum'] );
-				if ( in_array( $pagenum, $hd_posts_num_per_page_arr ) ) {
-					$posts_per_page = $pagenum;
-				}
+				if ( isset( $_GET['pagenum'] ) ) {
 
-				if ( $pagenum > max( $hd_posts_num_per_page_arr ) ) {
-					$posts_per_page = max( $hd_posts_num_per_page_arr );
+					$pagenum = esc_sql( $_GET['pagenum'] );
+					if ( in_array( $pagenum, $hd_posts_num_per_page_arr ) ) {
+						$posts_per_page = $pagenum;
+					}
+
+					if ( $pagenum > max( $hd_posts_num_per_page_arr ) ) {
+						$posts_per_page = max( $hd_posts_num_per_page_arr );
+					}
 				}
 			}
 
-			$query->set( 'posts_per_page', $posts_per_page );
-
+			if ( $posts_per_page_default != $posts_per_page ) {
+				$query->set( 'posts_per_page', $posts_per_page );
+			}
 		}
 	}
 
@@ -342,7 +333,7 @@ final class Optimizer {
 //		return $where;
 //	}
 
-    // ------------------------------------------------------
+	// ------------------------------------------------------
 
 	/**
 	 * @param $user_id

@@ -716,7 +716,7 @@ final class Admin {
 	 */
 	public function options_admin_notice(): void {
 
-        if ( ! Helper::smtpConfigured() ) {
+        if ( ! Helper::smtpConfigured() && check_smtp_plugin_active() ) {
 			$class   = 'notice notice-error';
 			$message = __( 'You need to configure your SMTP credentials in the settings to send emails.', TEXT_DOMAIN );
 

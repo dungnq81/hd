@@ -125,47 +125,27 @@ if ( ! function_exists( 'sanitize_image' ) ) {
  *
  * @return void
  */
-function set_pre_get_posts( int $post_limit = 12 ): void {
+function set_posts_per_page( int $post_limit = 12 ): void {
 	if ( ! is_admin() ) {
-		add_action( 'pre_get_posts', function ( $query ) use ( $post_limit ) {
-			$query->set( 'posts_per_page', $post_limit );
-		} );
+
+		$limit_default = $limit_min = get_option( 'posts_per_page' );
+		$hd_posts_num_per_page = apply_filters( 'hd_posts_num_per_page', [] );
+
+		if ( ! empty( $hd_posts_num_per_page ) ) {
+			$limit_min = min( $hd_posts_num_per_page );
+		}
+
+		if ( $post_limit != $limit_default && $post_limit != $limit_min ) {
+			add_action( 'pre_get_posts', function ( $query ) use ( $post_limit ) {
+				! $query->is_main_query() && $query->set( 'posts_per_page', $post_limit );
+			} );
+		}
 	}
 }
 
 /** ----------------------------------------------- */
 
-/**
- * @return void
- */
-function reset_pre_get_posts(): void {
-	if ( ! is_admin() ) {
-		add_action( 'pre_get_posts', function ( $query ) {
-
-			// get default value
-			$posts_per_page = get_option( 'posts_per_page' );
-
-			$hd_posts_num_per_page_arr = apply_filters( 'hd_posts_num_per_page', [ 12, 24, 36 ] );
-			if ( isset( $_GET['pagenum'] ) ) {
-				$pagenum = esc_sql( $_GET['pagenum'] );
-
-				if ( in_array( $pagenum, $hd_posts_num_per_page_arr ) ) {
-					$posts_per_page = $pagenum;
-				}
-
-				if ( $pagenum > max( $hd_posts_num_per_page_arr ) ) {
-					$posts_per_page = max( $hd_posts_num_per_page_arr );
-				}
-			}
-
-			$query->set( 'posts_per_page', $posts_per_page );
-		} );
-	}
-}
-
-/** ----------------------------------------------- */
-
-if ( ! function_exists( 'hd_pagination_links' ) ) {
+if ( ! function_exists( 'the_paginate_links' ) ) {
 	/**
 	 * @param null $query
 	 * @param bool $get
@@ -173,7 +153,7 @@ if ( ! function_exists( 'hd_pagination_links' ) ) {
 	 *
 	 * @return string|null
 	 */
-	function hd_pagination_links( $query = null, bool $get = false, bool $echo = true ): ?string {
+	function the_paginate_links( $query = null, bool $get = false, bool $echo = true ): ?string {
 		if ( ! $query ) {
 			global $wp_query;
 		} else {
@@ -243,12 +223,12 @@ if ( ! function_exists( 'hd_pagination_links' ) ) {
 
 /** ----------------------------------------------- */
 
-if ( ! function_exists( 'hd_post_comment' ) ) {
+if ( ! function_exists( 'the_post_comment' ) ) {
 
 	/**
 	 * @param mixed|null $id The ID, to load a single record;
 	 */
-	function hd_post_comment( mixed $id = null ): void {
+	function the_post_comment( mixed $id = null ): void {
 		if ( ! $id ) {
 			if ( 'product' === get_post_type() ) {
 				global $product;

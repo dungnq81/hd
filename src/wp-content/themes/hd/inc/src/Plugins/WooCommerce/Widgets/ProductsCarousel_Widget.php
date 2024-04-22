@@ -177,11 +177,9 @@ class ProductsCarousel_Widget extends Abstract_Widget {
 		}
 
 		//...
-        set_pre_get_posts( $number );
-		$products_query = new WP_Query( apply_filters( 'products_carousel_widget_query_args', $query_args ) );
-        reset_pre_get_posts();
+        set_posts_per_page( $number );
 
-        return $products_query;
+		return new WP_Query( apply_filters( 'products_carousel_widget_query_args', $query_args ) );
 	}
 
 	/**

@@ -1,6 +1,4 @@
 (function () {
-    'use strict';
-
     let smooth_scroll_back_to_top = true;
 
     // Feature Test
