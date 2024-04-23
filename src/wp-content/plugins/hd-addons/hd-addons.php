@@ -4,12 +4,12 @@
  * Plugin URI: https://webhd.vn
  * Description: Addons plugin for HD Theme
  * Version: 0.24.04
- * Requires PHP: 8.2
+ * Requires PHP: 7.4
  * Author: HD Team
  * Author URI: https://webhd.vn
  * Text Domain: hd-addons
- * License: GPL-3.0
- * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
+ * License: GPLv2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 \defined( 'ABSPATH' ) || die;
