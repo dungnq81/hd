@@ -344,7 +344,7 @@ abstract class Abstract_Widget extends WP_Widget {
 	 *
 	 * @return array
 	 */
-	protected function swiper_acf_options( $instance, $ACF ) {
+	protected function swiper_acf_options( $instance, $ACF ): array {
 		$m_rows           = $ACF->m_rows ?? 1;
 		$m_spacebetween   = $ACF->m_spacebetween ?? 20;
 		$m_slidesperview  = $ACF->m_slidesperview ?? 0;
@@ -360,44 +360,42 @@ abstract class Abstract_Widget extends WP_Widget {
 		$d_slidesperview  = $ACF->m_slidesperview ?? 0;
 		$d_slidespergroup = $ACF->d_slidespergroup ?? 1;
 
+        $show_responsive_breakpoints = $ACF->show_responsive_breakpoints ?? false;
+
 		$swiper_class = '';
-		$_data        = [
-			//'observer' => true,
-			'mobile'  => false,
-			'tablet'  => false,
-			'desktop' => false,
-		];
+		$_data        = [];
 
-		if ( $m_slidesperview > 0 ) {
-			$_data['mobile'] = [
-				'row'    => absint( $m_rows ),
-				'gap'    => absint( $m_spacebetween ),
-				'column' => absint( $m_slidesperview ),
-				'group'  => absint( $m_slidespergroup ),
-			];
-		}
-
-		if ( $t_slidesperview > 0 ) {
-			$_data['tablet'] = [
-				'row'    => absint( $t_rows ),
-				'gap'    => absint( $t_spacebetween ),
-				'column' => absint( $t_slidesperview ),
-				'group'  => absint( $t_slidespergroup ),
-			];
-		}
-
-		if ( $d_slidesperview > 0 ) {
-			$_data['desktop'] = [
-				'row'    => absint( $d_rows ),
-				'gap'    => absint( $d_spacebetween ),
-				'column' => absint( $d_slidesperview ),
-				'group'  => absint( $d_slidespergroup ),
-			];
-		}
-
-		if ( ! $_data['mobile'] && ! $_data['tablet'] && ! $_data['desktop'] ) {
+		if ( ! $show_responsive_breakpoints ) {
 			$_data['autoview'] = true;
 			$swiper_class      .= ' auto-view';
+		} else {
+
+			if ( $m_slidesperview > 0 ) {
+				$_data['mobile'] = [
+					'row'    => absint( $m_rows ),
+					'gap'    => absint( $m_spacebetween ),
+					'column' => absint( $m_slidesperview ),
+					'group'  => absint( $m_slidespergroup ),
+				];
+			}
+
+			if ( $t_slidesperview > 0 ) {
+				$_data['tablet'] = [
+					'row'    => absint( $t_rows ),
+					'gap'    => absint( $t_spacebetween ),
+					'column' => absint( $t_slidesperview ),
+					'group'  => absint( $t_slidespergroup ),
+				];
+			}
+
+			if ( $d_slidesperview > 0 ) {
+				$_data['desktop'] = [
+					'row'    => absint( $d_rows ),
+					'gap'    => absint( $d_spacebetween ),
+					'column' => absint( $d_slidesperview ),
+					'group'  => absint( $d_slidespergroup ),
+				];
+			}
 		}
 
 		$navigation   = $ACF->navigation ?? false;
@@ -467,7 +465,7 @@ abstract class Abstract_Widget extends WP_Widget {
 	 *
 	 * @return object|mixed|null
 	 */
-	protected function acfFields( $id ) {
+	protected function acfFields( $id ): mixed {
         return Helper::acfFields( $id );
 	}
 }

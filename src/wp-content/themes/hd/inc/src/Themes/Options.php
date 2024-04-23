@@ -3,8 +3,6 @@
 namespace Themes;
 
 use Cores\Helper;
-use Libs\Optimizer\Custom_Order;
-use PHPMailer\PHPMailer\Exception;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -15,24 +13,15 @@ use PHPMailer\PHPMailer\Exception;
  */
 final class Options {
 	public function __construct() {
-
 		add_action( 'wp_enqueue_scripts', [ &$this, 'aspect_ratio_enqueue_scripts' ], 98 );
-
-		/** SMTP */
-		if ( Helper::smtpConfigured() && check_smtp_plugin_active() ) {
-			add_filter( 'pre_wp_mail', [ &$this, 'smtp_mailer_pre_wp_mail' ], 11, 2 );
-		}
-
-		/** Custom Order */
-		( new Custom_Order() );
 
 		/** Contact Info */
 
 		/** Contact Button */
 
 		/** Block Editor */
-		add_action( 'admin_init', [ &$this, 'editor_admin_init' ], 11 );
 		add_action( 'wp_enqueue_scripts', [ &$this, 'editor_enqueue_scripts' ], 98 );
+		add_action( 'admin_init', [ &$this, 'editor_admin_init' ], 11 );
 
 		/** Comments */
 		add_action( 'comment_form_after_fields', [ &$this, 'add_simple_antispam_field' ] );
@@ -189,19 +178,6 @@ final class Options {
 		if ( $styles ) {
 			wp_add_inline_style( 'app-style', $styles );
 		}
-	}
-
-	// ------------------------------------------------------
-
-	/**
-	 * @param $null
-	 * @param $atts
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function smtp_mailer_pre_wp_mail( $null, $atts ): void {
-		Helper::smtp_mailer_pre_wp_mail( $null, $atts, 'smtp__options' );
 	}
 
 	// ------------------------------------------------------

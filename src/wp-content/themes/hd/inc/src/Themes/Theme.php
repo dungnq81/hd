@@ -3,7 +3,6 @@
 namespace Themes;
 
 use Cores\Helper;
-
 use Plugins\ACF\ACF;
 use Plugins\CF7;
 use Plugins\Editor\TinyMCE;
@@ -22,7 +21,7 @@ use Plugins\WpRocket;
 final class Theme {
 	public function __construct() {
 
-		// after_setup_theme -> init -> widgets_init -> wp_loaded -> admin_menu -> admin_init ...
+		// plugins_loaded -> after_setup_theme -> init -> widgets_init -> wp_loaded -> admin_menu -> admin_init ...
 
 		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 10 );
 		add_action( 'after_setup_theme', [ &$this, 'setup' ], 11 );

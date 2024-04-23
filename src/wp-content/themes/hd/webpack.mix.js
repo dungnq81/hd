@@ -34,7 +34,6 @@ mix
 
     .js(resources + '/js/plugins/swiper.js', assets + '/js/plugins')
     .js(resources + '/js/plugins/woocommerce.js', assets + '/js/plugins')
-    .js(resources + '/js/plugins/admin_custom_order.js', assets + '/js/plugins')
 
     .js(resources + '/js/login.js', assets + '/js')
     .js(resources + '/js/admin.js', assets + '/js')

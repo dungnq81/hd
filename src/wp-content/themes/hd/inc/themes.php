@@ -556,7 +556,7 @@ add_filter( 'hd_smtp_plugins_support', function ( array $arr ) {
 	];
 
 	return array_merge( $arr, $update_arr );
-}, 99, 1);
+}, 99, 1 );
 
 /** ---------------------------------------- */
 

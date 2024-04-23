@@ -2,11 +2,11 @@
 
 namespace Themes;
 
+use Addons\Custom_Order\Custom_Order;
+
 use Cores\Helper;
 
-use Libs\Optimizer\Custom_Order;
 use Libs\Optimizer\Ssl;
-
 use Libs\Security\Dir;
 use Libs\Security\Headers;
 use Libs\Security\Readme;
@@ -28,9 +28,6 @@ final class Admin {
 
         // admin.js, admin.css & codemirror_settings, v.v...
 		add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 9999, 1 );
-
-        // SMTP alert
-		add_action( 'admin_notices', [ &$this, 'options_admin_notice' ] );
 
 		add_action( 'admin_init', [ &$this, 'admin_init' ], 11 );
 		add_action( 'admin_menu', [ &$this, 'admin_menu' ] );
@@ -247,7 +244,7 @@ final class Admin {
 
 			/** SMTP Settings */
 
-            if ( check_smtp_plugin_active() ) {
+            if ( Helper::is_addons_active() && check_smtp_plugin_active() ) {
 
 				$smtp_host     = ! empty( $_POST['smtp_host'] ) ? sanitize_text_field( $_POST['smtp_host'] ) : '';
 				$smtp_auth     = ! empty( $_POST['smtp_auth'] ) ? sanitize_text_field( $_POST['smtp_auth'] ) : '';
@@ -318,24 +315,27 @@ final class Admin {
 
 			/** Custom Order */
 
-			$order_reset = ! empty( $_POST['order_reset'] ) ? sanitize_text_field( $_POST['order_reset'] ) : '';
+            if ( Helper::is_addons_active() ) {
 
-			if ( empty( $order_reset ) ) {
-				$custom_order_options = [
-					'order_post_type' => ! empty( $_POST['order_post_type'] ) ? array_map( 'sanitize_text_field', $_POST['order_post_type'] ) : [],
-					'order_taxonomy'  => ! empty( $_POST['order_taxonomy'] ) ? array_map( 'sanitize_text_field', $_POST['order_taxonomy'] ) : [],
-				];
+	            $order_reset = ! empty( $_POST['order_reset'] ) ? sanitize_text_field( $_POST['order_reset'] ) : '';
 
-				Helper::updateOption( 'custom_order__options', $custom_order_options );
+	            if ( empty( $order_reset ) ) {
+		            $custom_order_options = [
+			            'order_post_type' => ! empty( $_POST['order_post_type'] ) ? array_map( 'sanitize_text_field', $_POST['order_post_type'] ) : [],
+			            'order_taxonomy'  => ! empty( $_POST['order_taxonomy'] ) ? array_map( 'sanitize_text_field', $_POST['order_taxonomy'] ) : [],
+		            ];
 
-                // update options
-				( new Custom_Order() )->update_options();
+		            Helper::updateOption( 'custom_order__options', $custom_order_options );
 
-			} else {
+		            // update options
+		            ( new Custom_Order() )->update_options();
 
-                // reset order
-				( new Custom_Order() )->reset_all();
-			}
+	            } else {
+
+		            // reset order
+		            ( new Custom_Order() )->reset_all();
+	            }
+            }
 
 			// ------------------------------------------------------
 
@@ -497,6 +497,7 @@ final class Admin {
 				<?php wp_nonce_field( '_wpnonce_hd_settings' ); ?>
 
                 <div id="main" class="filter-tabs clearfix">
+
                     <div id="hd_nav" class="tabs-nav">
                         <div class="logo-title">
                             <h3>
@@ -514,7 +515,7 @@ final class Admin {
                                 <a class="current" title="Aspect ratio" href="#aspect_ratio_settings"><?php _e( 'Aspect Ratio', TEXT_DOMAIN ); ?></a>
                             </li>
 
-                            <?php if ( check_smtp_plugin_active() ) : ?>
+                            <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
                             <li class="smtp-settings">
                                 <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', TEXT_DOMAIN ); ?></a>
                             </li>
@@ -529,9 +530,11 @@ final class Admin {
                             </li>
                             <?php endif; ?>
 
+                            <?php if ( Helper::is_addons_active() ) : ?>
                             <li class="order-settings">
                                 <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', TEXT_DOMAIN ); ?></a>
                             </li>
+                            <?php endif;?>
 
                             <li class="contact-info-settings">
                                 <a title="Contact Info" href="#contact_info_settings"><?php _e( 'Contact Info', TEXT_DOMAIN ); ?></a>
@@ -574,9 +577,9 @@ final class Admin {
 							<?php require INC_PATH . 'admin_options/aspect_ratio.php'; ?>
                         </div>
 
-		                <?php if ( check_smtp_plugin_active() ) : ?>
+		                <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
                         <div id="smtp_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin_options/smtp.php'; ?>
+							<?php require ADDONS_PATH . 'src/SMTP/options.php'; ?>
                         </div>
                         <?php endif; ?>
 
@@ -586,9 +589,11 @@ final class Admin {
                         </div>
                         <?php endif; ?>
 
+		                <?php if ( Helper::is_addons_active() ) : ?>
                         <div id="custom_order_settings" class="group tabs-panel">
-		                    <?php require INC_PATH . 'admin_options/custom_order.php'; ?>
+		                    <?php require ADDONS_PATH . 'src/Custom_Order/options.php'; ?>
                         </div>
+		                <?php endif; ?>
 
                         <div id="contact_info_settings" class="group tabs-panel">
 							<?php require INC_PATH . 'admin_options/contact_info.php'; ?>
@@ -706,24 +711,6 @@ final class Admin {
             </div>
         </div>
 	<?php }
-
-	/** ---------------------------------------- */
-
-	/**
-	 * SMTP notices
-	 *
-	 * @return void
-	 */
-	public function options_admin_notice(): void {
-
-        if ( ! Helper::smtpConfigured() && check_smtp_plugin_active() ) {
-			$class   = 'notice notice-error';
-			$message = __( 'You need to configure your SMTP credentials in the settings to send emails.', TEXT_DOMAIN );
-
-			printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), $message );
-		}
-
-	}
 
 	/** ---------------------------------------- */
 

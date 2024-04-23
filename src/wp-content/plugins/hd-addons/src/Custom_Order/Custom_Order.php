@@ -1,8 +1,6 @@
 <?php
 
-namespace Libs\Optimizer;
-
-use Cores\Helper;
+namespace Addons\Custom_Order;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -13,6 +11,7 @@ use Cores\Helper;
  *
  * Modified by HD Team
  */
+
 final class Custom_Order {
 
 	private mixed $order_post_type;
@@ -22,7 +21,7 @@ final class Custom_Order {
 		$this->_init();
 
 		// Check custom order
-		$custom_order_options  = Helper::getOption( 'custom_order__options', [] );
+		$custom_order_options  = get_option( 'custom_order__options', [] );
 		$this->order_post_type = $custom_order_options['order_post_type'] ?? [];
 		$this->order_taxonomy  = $custom_order_options['order_taxonomy'] ?? [];
 
@@ -37,7 +36,7 @@ final class Custom_Order {
 	 * @return void
 	 */
 	private function _init(): void {
-		$_custom_order_ = Helper::getThemeMod( '_custom_order_' );
+		$_custom_order_ = get_theme_mod( '_custom_order_' );
 		if ( ! $_custom_order_ ) {
 			global $wpdb;
 
@@ -76,6 +75,24 @@ final class Custom_Order {
 		// ajax
 		add_action( 'wp_ajax_update-menu-order', [ &$this, 'update_menu_order_ajax' ] );
 		add_action( 'wp_ajax_update-menu-order-tags', [ &$this, 'update_menu_order_tags_ajax' ] );
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @param $hook_suffix - The current admin page.
+	 *
+	 * @return void
+	 */
+	public function admin_enqueue_scripts( $hook_suffix ): void {
+		if ( $this->_check_custom_order_script() ) {
+			wp_enqueue_script( 'jquery' );
+			wp_enqueue_script( 'jquery-ui-sortable' );
+			wp_enqueue_script( 'custom_order', ADDONS_URL . 'assets/js/admin_custom_order.js', [
+				'jquery',
+				'jquery-ui-sortable'
+			], ADDONS_VERSION, true );
+		}
 	}
 
 	// ------------------------------------------------------
@@ -151,7 +168,7 @@ final class Custom_Order {
 				);
 
 				foreach ( $results as $key => $result ) {
-					$wpdb->update( $wpdb->terms, array( 'term_order' => $key + 1 ), array( 'term_id' => $result->term_id ) );
+					$wpdb->update( $wpdb->terms, [ 'term_order' => $key + 1 ], [ 'term_id' => $result->term_id ] );
 				}
 			}
 		}
@@ -349,24 +366,6 @@ final class Custom_Order {
 		}
 
 		return $orderby;
-	}
-
-	// ------------------------------------------------------
-
-	/**
-	 * @param $hook_suffix - The current admin page.
-	 *
-	 * @return void
-	 */
-	public function admin_enqueue_scripts( $hook_suffix ): void {
-		if ( $this->_check_custom_order_script() ) {
-			wp_enqueue_script( 'jquery' );
-			wp_enqueue_script( 'jquery-ui-sortable' );
-			wp_enqueue_script( 'custom_order', ASSETS_URL . 'js/plugins/admin_custom_order.js', [
-				'jquery',
-				'jquery-ui-sortable'
-			], THEME_VERSION, true );
-		}
 	}
 
 	// ------------------------------------------------------
@@ -669,7 +668,7 @@ final class Custom_Order {
 			'order_taxonomy'  => [],
 		];
 
-		Helper::updateOption( 'custom_order__options', $custom_order_options );
+		update_option( 'custom_order__options', $custom_order_options );
 		set_theme_mod( '_custom_order_', 0 );
 	}
 }

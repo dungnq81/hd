@@ -413,4 +413,13 @@ final class Helper {
 	public static function is_acf_active(): bool {
 		return self::check_plugin_active( 'advanced-custom-fields/acf.php' );
 	}
+
+	// -------------------------------------------------------------
+
+	/**
+	 * @return bool
+	 */
+	public static function is_addons_active(): bool {
+		return self::check_plugin_active( 'hd-addons/hd-addons.php' );
+	}
 }

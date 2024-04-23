@@ -25,7 +25,7 @@ final class Login {
 			return $headertext ?: get_bloginfo( 'name' );
 		} );
 
-		// Changing the logo link from wordpress.org to your site
+		// Changing the logo link from WordPress.org to your site
 		add_filter( 'login_headerurl', function () {
 			$headerurl = Helper::getThemeMod( 'login_page_headerurl_setting' );
 

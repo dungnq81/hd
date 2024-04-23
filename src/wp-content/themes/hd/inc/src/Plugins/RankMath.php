@@ -14,14 +14,8 @@ require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 final class RankMath {
 	public function __construct() {
 
-		add_action( 'after_setup_theme', [ &$this, 'setup_theme' ] );
 		add_filter( 'rank_math/frontend/breadcrumb/args', [ &$this, 'breadcrumb_args' ] );
-
-		// show_keywords
 		add_filter( 'rank_math/frontend/show_keywords', '__return_true' );
-
-		// disable_adjacent_rel_links
-		add_filter( 'rank_math/frontend/disable_adjacent_rel_links', '__return_true' );
 
 		/**
 		 * Filter if XML sitemap transient cache is enabled.
@@ -66,16 +60,6 @@ final class RankMath {
 				return $toc_plugins;
 			} );
 		}
-	}
-
-	/** ---------------------------------------- */
-
-	/**
-	 * @return void
-	 */
-	public function setup_theme(): void {
-		// Rank Math Breadcrumb.
-		add_theme_support( 'rank-math-breadcrumbs' );
 	}
 
 	/** ---------------------------------------- */

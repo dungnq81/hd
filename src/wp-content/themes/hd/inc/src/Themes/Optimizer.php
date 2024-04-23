@@ -80,7 +80,7 @@ final class Optimizer {
 		add_action( "user_register", [ &$this, 'user_register' ], 10, 1 );
 
 		add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 );
-		add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 );
+		//add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 );
 
 		// if not admin page
 		if ( ! is_admin() ) {

@@ -1,5 +1,10 @@
 <?php
 
+use Addons\Admin;
+use Addons\Custom_Order\Custom_Order;
+use Addons\SMTP\SMTP;
+use Addons\SVG\SVG;
+
 \defined( 'ABSPATH' ) || die;
 
 /**
@@ -9,8 +14,14 @@
  */
 final class Addons {
 	public function __construct() {
-		add_action( 'init', [ &$this, 'i18n' ], 10 );
+		add_action( 'plugins_loaded', [ &$this, 'i18n' ] );
+		add_action( 'plugins_loaded', [ &$this, 'plugins_loaded' ] );
+		add_action( 'admin_enqueue_scripts', [ &$this, 'enqueue_admin_scripts' ] );
+
+		add_action( 'init', [ &$this, 'init' ] );
 	}
+
+	/** ---------------------------------------- */
 
 	/**
 	 * Load localization file
@@ -21,4 +32,33 @@ final class Addons {
 		load_plugin_textdomain( ADDONS_TEXT_DOMAIN );
 		load_plugin_textdomain( ADDONS_TEXT_DOMAIN, false, ADDONS_PATH . 'languages' );
 	}
+
+	/** ---------------------------------------- */
+
+	/**
+	 * @return void
+	 */
+	public function enqueue_admin_scripts(): void {}
+
+	/** ---------------------------------------- */
+
+	/**
+	 * @return void
+	 */
+	public function init(): void {
+		if ( is_admin() ) {
+			( new Admin() );
+		}
+
+		( new Custom_Order() );
+		( new SMTP() );
+		( new SVG() );
+	}
+
+	/** ---------------------------------------- */
+
+	/**
+	 * @return void
+	 */
+	public function plugins_loaded(): void {}
 }

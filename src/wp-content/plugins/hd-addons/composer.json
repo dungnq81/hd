@@ -7,7 +7,9 @@
 		}
 	],
 	"autoload": {
-		"psr-4": {},
+		"psr-4": {
+			"Addons\\": "src"
+		},
 		"files": [],
 		"classmap": []
 	},
