@@ -1,22 +1,11 @@
-@import "functions";
-$body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Arial, sans-serif;
+@import "flex_mixins";
+@import "grid_mixins";
 
-@mixin hide-text {
-    border: 0;
-    clip: rect(0, 0, 0, 0);
-    height: 1px;
-    width: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
-    position: absolute;
-    top: -10000em;
-}
+$body-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Arial, sans-serif;
 
 /** */
-.hide-text, .hidden-text, .sr-only {
-    @include hide-text;
+:is(.screen-reader-text, .submenu-toggle-text, .hidden-text, .sr-only) {
+    @include hidden-text;
 }
 
 .help-text {
@@ -270,7 +259,7 @@ body.wp-admin {
                     text-indent: 0;
                     font-size: 15px;
                     font-weight: 400;
-                    color: #666;
+                    color: #666666;
                 }
             }
         }
@@ -281,7 +270,7 @@ body.wp-admin {
 .post-type-site-review {
     #contentdiv textarea,
     .wp-editor-area {
-        font-family: $body-font-family;
+        font-family: $body-font;
     }
 }
 
@@ -300,14 +289,14 @@ body.wp-admin {
     max-height: 75px;
     overflow-x: hidden;
     overflow-y: scroll;
-    background-color: #eee;
+    background-color: #eeeeee;
     padding: 10px;
     width: calc(100% - 20px);
 }
 
 .row-actions {
     .action_id {
-        color: #999;
+        color: #999999;
     }
 }
 
@@ -315,7 +304,7 @@ body.wp-admin {
 #elementor-editor-wrapper {
     #elementor-preview {
         #elementor-notice-bar {
-            @include hide-text;
+            @include hidden-text;
         }
     }
 }
@@ -375,14 +364,14 @@ div[data-notice_id="elementor_dev_promote"] {
     & > .acf-field {
         & > .acf-label label {
             font-size: 13px;
-            color: #000;
+            color: #000000;
         }
     }
 }
 
 .form-table > tbody > .acf-field > .acf-label label {
     font-weight: 600;
-    color: #000;
+    color: #000000;
 }
 
 table.fixed {
@@ -404,11 +393,11 @@ table.fixed {
 }
 
 .edit-post-meta-boxes-area #poststuff h2.hndle {
-    color: #000;
+    color: #000000;
 }
 
 .widgets-chooser .widgets-chooser-button {
-    color: #000;
+    color: #000000;
 }
 
 table.wp-list-table .column-price {
@@ -507,11 +496,11 @@ body.toplevel_page_hd-settings {
                     padding: 0;
 
                     a {
-                        color: #666;
+                        color: #666666;
                         text-decoration: none;
                         padding: 10px 30px 10px 20px;
                         display: block;
-                        border-bottom: 1px solid #ddd;
+                        border-bottom: 1px solid #dddddd;
                         font-weight: bold;
                         font-size: 100%;
                         background-repeat: no-repeat;
@@ -519,8 +508,8 @@ body.toplevel_page_hd-settings {
                         transition: all 0.3s;
 
                         &:hover, &.current {
-                            color: #000;
-                            background-color: #fff;
+                            color: #000000;
+                            background-color: #ffffff;
                             margin-right: -1px;
                             position: relative;
                         }
@@ -530,10 +519,10 @@ body.toplevel_page_hd-settings {
         }
 
         #hd_content {
-            border-left: 1px solid #ddd;
+            border-left: 1px solid #dddddd;
             display: table-cell;
             min-height: 100%;
-            background-color: #FFF;
+            background-color: #ffffff;
             padding: 20px 30px 30px;
             width: 100%;
 
@@ -554,9 +543,9 @@ body.toplevel_page_hd-settings {
 
                 &.section-checkbox, &.section-select, &.section-text, &.section-textarea, &.section-multicheck {
                     .desc {
-                        color: #999;
+                        color: #999999;
                         font-size: 13px;
-                        margin-bottom: 20px;
+                        margin-bottom: 25px;
                         margin-top: -5px;
                     }
                 }
@@ -594,11 +583,11 @@ body.toplevel_page_hd-settings {
                     text-transform: uppercase;
                     margin: 25px 0 0 0;
                     padding: 25px 0 20px 0;
-                    border-top: 1px solid #ddd;
+                    border-top: 1px solid #dddddd;
                     display: block;
                     width: 600px;
                     max-width: calc(100% - 15px);
-                    font-weight: 600;
+                    font-weight: 700;
                 }
 
                 .desc {
@@ -616,10 +605,10 @@ body.toplevel_page_hd-settings {
                         :where(input:not([type="checkbox"]), textarea, select) {
                             width: 100%;
                             background-color: #f9f9f9;
-                            border: 1px solid #ddd;
+                            border: 1px solid #dddddd;
                             border-radius: 3px;
                             padding: 10px;
-                            color: #666;
+                            color: #666666;
                             font-size: 13px;
                             line-height: normal;
                             font-weight: 400;
@@ -635,7 +624,7 @@ body.toplevel_page_hd-settings {
                         textarea {
                             max-width: 100%;
                             padding: 5px;
-                            color: #666;
+                            color: #666666;
                             /*min-height: 150px;*/
                         }
 
@@ -650,7 +639,7 @@ body.toplevel_page_hd-settings {
 
                             label {
                                 font-size: 12px;
-                                color: #999;
+                                color: #999999;
 
                                 input, select, textarea {
                                     margin-top: 5px;
@@ -664,6 +653,97 @@ body.toplevel_page_hd-settings {
                 .explain {
                     font-size: 13px;
                     color: #666666;
+                }
+
+                /** */
+                &.section-radio {
+                    .heading {}
+
+                    & > .desc {
+                        color: #999999;
+                        font-size: 13px;
+                        margin-bottom: 25px;
+                        margin-top: -5px;
+                    }
+
+                    .controls {
+                        .inline-group {
+                            @include gap(30);
+                            flex-wrap: wrap;
+
+                            & > label {
+                                display: inline-flex;
+                                align-items: center;
+
+                                input[type="radio"] {
+                                    appearance: none;
+                                    -webkit-tap-highlight-color: transparent;
+                                    @include box(22);
+                                    position: relative;
+                                    border: 0;
+                                    outline: 0;
+                                    cursor: pointer;
+                                    background: none;
+                                    box-shadow: none;
+                                    margin-top: 0;
+                                    margin-right: 8px;
+
+                                    &::after {
+                                        content: '';
+                                        @include box(18);
+                                        display: block;
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                        margin: 0;
+                                        border-radius: 50%;
+                                        border: 1px solid #666666;
+                                    }
+
+                                    &::before {
+                                        content: '';
+                                        @include box(12);
+                                        display: block;
+                                        position: absolute;
+                                        top: 4px;
+                                        left: 4px;
+                                        margin: 0;
+                                        border-radius: 50%;
+                                        background-color: #ffffff;
+                                        transition: ease .15s;
+                                    }
+
+                                    &:checked {
+                                        &::before {
+                                            background-color: #2271b1;
+                                        }
+
+                                        &::after {
+                                            border: 1px solid #2271b1;
+                                        }
+                                    }
+
+                                    &:hover {
+                                        &::before {
+                                            background-color: rgba(34, 113, 177, 0.68);
+                                            transition: 0.3s;
+                                        }
+
+                                        &::after {
+                                            border: 1px solid rgba(34, 113, 177, 0.68);
+                                            transition: 0.3s;
+                                        }
+                                    }
+                                }
+
+                                & > span {
+                                    font-weight: 500;
+                                    font-size: 14px;
+                                    color: #666666;
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -710,7 +790,7 @@ body.toplevel_page_hd-settings {
     padding: 25px 20px 15px 22px;
 
     .server-info-inner {
-        background: #fff;
+        background: #ffffff;
         padding: 1em 1.5em;
         border: 1px solid #c3c4c7;
 
@@ -822,7 +902,7 @@ body.toplevel_page_hd-settings {
                 font-size: 13px;
 
                 &:hover {
-                    background-color: #fff;
+                    background-color: #ffffff;
                 }
             }
         }

@@ -107,7 +107,7 @@ abstract class Abstract_Htaccess {
 			);
 
 			// Get the new rule.
-			$new_rule = $this->wp_filesystem->get_contents( THEME_PATH . 'inc/tpl/' . $this->template );
+			$new_rule = $this->wp_filesystem->get_contents( INC_PATH . 'admin/tpl/' . $this->template );
 
 			// Add the rule and write the new htaccess.
 			$content = $content . PHP_EOL . $new_rule;

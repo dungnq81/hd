@@ -6,7 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'enshrined\\svgSanitize\\' => array($vendorDir . '/enshrined/svg-sanitize/src'),
     'Widgets\\' => array($baseDir . '/inc/src/Widgets'),
     'Vectorface\\Whip\\' => array($vendorDir . '/vectorface/whip/src'),
     'Themes\\' => array($baseDir . '/inc/src/Themes'),

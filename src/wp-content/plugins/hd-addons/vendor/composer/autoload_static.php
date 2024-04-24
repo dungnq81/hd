@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInit87b0866f271891d99b07d8193ea233f6
 {
     public static $prefixLengthsPsr4 = array (
+        'e' => 
+        array (
+            'enshrined\\svgSanitize\\' => 22,
+        ),
         'A' => 
         array (
             'Addons\\' => 7,
@@ -14,6 +18,10 @@ class ComposerStaticInit87b0866f271891d99b07d8193ea233f6
     );
 
     public static $prefixDirsPsr4 = array (
+        'enshrined\\svgSanitize\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/enshrined/svg-sanitize/src',
+        ),
         'Addons\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',

@@ -2,8 +2,9 @@
 
 use Cores\Helper;
 
-$optimizer_options = Helper::getOption( 'optimizer__options', false, false );
+$optimizer_options = Helper::getOption( 'optimizer__options' );
 $https_enforce = $optimizer_options['https_enforce'] ?? 0;
+$svgs = $optimizer_options['svgs'] ?? 'disable';
 
 ?>
 <h2><?php _e( 'Optimizer Settings', TEXT_DOMAIN ); ?></h2>
@@ -17,3 +18,8 @@ $https_enforce = $optimizer_options['https_enforce'] ?? 0;
         <div class="explain"><?php _e( 'Check to activate', TEXT_DOMAIN ); ?></div>
     </div>
 </div>
+
+<?php
+if ( Helper::is_addons_active() ) {
+    require ADDONS_PATH . 'src/SVG/options.php';
+}

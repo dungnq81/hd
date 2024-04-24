@@ -29,8 +29,8 @@ final class Admin {
         // admin.js, admin.css & codemirror_settings, v.v...
 		add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 9999, 1 );
 
-		add_action( 'admin_init', [ &$this, 'admin_init' ], 11 );
 		add_action( 'admin_menu', [ &$this, 'admin_menu' ] );
+		add_action( 'admin_init', [ &$this, 'admin_init' ], 11 );
 
 		add_filter( 'custom_menu_order', '__return_true' );
 		add_filter( 'menu_order', [ &$this, 'options_reorder_submenu' ] );
@@ -79,71 +79,7 @@ final class Admin {
 	/**
 	 * @return void
 	 */
-	public function admin_init(): void {
-
-		// https://wordpress.stackexchange.com/questions/77532/how-to-add-the-category-id-to-admin-page
-		$taxonomy_arr = [
-			'category',
-			'post_tag',
-		];
-
-		$taxonomy_arr = apply_filters( 'hd_term_row_actions', $taxonomy_arr );
-
-		foreach ( $taxonomy_arr as $term ) {
-			add_filter( "{$term}_row_actions", [ &$this, 'term_action_links' ], 11, 2 );
-		}
-
-		// customize row_actions
-		$post_type_arr = [
-			'user',
-			'post',
-			'page',
-		];
-		$post_type_arr = apply_filters( 'hd_post_row_actions', $post_type_arr );
-
-		foreach ( $post_type_arr as $post_type ) {
-			add_filter( "{$post_type}_row_actions", [ &$this, 'post_type_action_links' ], 11, 2 );
-		}
-
-		// customize post-page
-		add_filter( 'manage_posts_columns', [ &$this, 'post_header' ], 11, 1 );
-		add_filter( 'manage_posts_custom_column', [ &$this, 'post_column' ], 11, 2 );
-
-		add_filter( 'manage_pages_columns', [ &$this, 'post_header' ], 5, 1 );
-		add_filter( 'manage_pages_custom_column', [ &$this, 'post_column' ], 5, 2 );
-
-		// exclude post columns
-		$exclude_thumb_posts = [];
-		$exclude_thumb_posts = apply_filters( 'hd_post_exclude_columns', $exclude_thumb_posts );
-
-		foreach ( $exclude_thumb_posts as $post ) {
-			add_filter( "manage_{$post}_posts_columns", [ $this, 'post_exclude_header' ], 12, 1 );
-		}
-
-		// thumb terms
-		$thumb_terms = [
-			'category',
-			'post_tag',
-		];
-
-		$thumb_terms = apply_filters( 'hd_term_columns', $thumb_terms );
-
-		foreach ( $thumb_terms as $term ) {
-			add_filter( "manage_edit-{$term}_columns", [ &$this, 'term_header' ], 11, 1 );
-			add_filter( "manage_{$term}_custom_column", [ &$this, 'term_column' ], 11, 3 );
-		}
-	}
-
-	/** ---------------------------------------- */
-
-	/**
-	 * @return void
-	 */
 	public function admin_menu(): void {
-		remove_meta_box('dashboard_site_health',     'dashboard', 'normal');
-		remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'normal' );
-		remove_meta_box( 'dashboard_primary', 'dashboard', 'normal' );
-		remove_meta_box( 'dashboard_secondary',      'dashboard', 'side' );
 
 		global $menu, $submenu;
 		//dump($menu);
@@ -376,6 +312,7 @@ final class Admin {
 
 			$optimizer_options = [
 				'https_enforce' => ! empty( $_POST['https_enforce'] ) ? sanitize_text_field( $_POST['https_enforce'] ) : 0,
+				'svgs'          => ! empty( $_POST['svgs'] ) ? sanitize_text_field( $_POST['svgs'] ) : 'disable',
 			];
 
 			Helper::updateOption( 'optimizer__options', $optimizer_options, true );
@@ -574,7 +511,7 @@ final class Admin {
                         <h2 class="hidden-text"></h2>
 
                         <div id="aspect_ratio_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin_options/aspect_ratio.php'; ?>
+							<?php require INC_PATH . 'admin/options/aspect_ratio.php'; ?>
                         </div>
 
 		                <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
@@ -585,7 +522,7 @@ final class Admin {
 
                         <?php if ( ! empty( $hd_email_list ) ) : ?>
                         <div id="email_settings" class="group tabs-panel">
-		                    <?php require INC_PATH . 'admin_options/custom_email.php'; ?>
+		                    <?php require INC_PATH . 'admin/options/custom_email.php'; ?>
                         </div>
                         <?php endif; ?>
 
@@ -596,41 +533,41 @@ final class Admin {
 		                <?php endif; ?>
 
                         <div id="contact_info_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin_options/contact_info.php'; ?>
+							<?php require INC_PATH . 'admin/options/contact_info.php'; ?>
                         </div>
 
                         <div id="contact_button_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin_options/contact_button.php'; ?>
+							<?php require INC_PATH . 'admin/options/contact_button.php'; ?>
                         </div>
 
                         <div id="block_editor_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin_options/block_editor.php'; ?>
+							<?php require INC_PATH . 'admin/options/block_editor.php'; ?>
                         </div>
 
                         <div id="optimizer_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin_options/optimizer.php'; ?>
+							<?php require INC_PATH . 'admin/options/optimizer.php'; ?>
                         </div>
 
                         <div id="security_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin_options/security.php'; ?>
+							<?php require INC_PATH . 'admin/options/security.php'; ?>
                         </div>
 
 						<?php if ( Helper::is_woocommerce_active() ) : ?>
                         <div id="woocommerce_settings" class="group tabs-panel">
-                            <?php require INC_PATH . 'admin_options/woocommerce.php'; ?>
+                            <?php require INC_PATH . 'src/Plugins/WooCommerce/options.php'; ?>
                         </div>
 						<?php endif; ?>
 
                         <div id="comments_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin_options/comments.php'; ?>
+							<?php require INC_PATH . 'admin/options/comments.php'; ?>
                         </div>
 
                         <div id="custom_script_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin_options/custom_script.php'; ?>
+							<?php require INC_PATH . 'admin/options/custom_script.php'; ?>
                         </div>
 
                         <div id="custom_css_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin_options/custom_css.php'; ?>
+							<?php require INC_PATH . 'admin/options/custom_css.php'; ?>
                         </div>
 
                         <div class="save-bar">
@@ -711,6 +648,66 @@ final class Admin {
             </div>
         </div>
 	<?php }
+
+	/** ---------------------------------------- */
+
+	/**
+	 * @return void
+	 */
+	public function admin_init(): void {
+
+		// https://wordpress.stackexchange.com/questions/77532/how-to-add-the-category-id-to-admin-page
+		$taxonomy_arr = [
+			'category',
+			'post_tag',
+		];
+
+		$taxonomy_arr = apply_filters( 'hd_term_row_actions', $taxonomy_arr );
+
+		foreach ( $taxonomy_arr as $term ) {
+			add_filter( "{$term}_row_actions", [ &$this, 'term_action_links' ], 11, 2 );
+		}
+
+		// customize row_actions
+		$post_type_arr = [
+			'user',
+			'post',
+			'page',
+		];
+		$post_type_arr = apply_filters( 'hd_post_row_actions', $post_type_arr );
+
+		foreach ( $post_type_arr as $post_type ) {
+			add_filter( "{$post_type}_row_actions", [ &$this, 'post_type_action_links' ], 11, 2 );
+		}
+
+		// customize post-page
+		add_filter( 'manage_posts_columns', [ &$this, 'post_header' ], 11, 1 );
+		add_filter( 'manage_posts_custom_column', [ &$this, 'post_column' ], 11, 2 );
+
+		add_filter( 'manage_pages_columns', [ &$this, 'post_header' ], 5, 1 );
+		add_filter( 'manage_pages_custom_column', [ &$this, 'post_column' ], 5, 2 );
+
+		// exclude post columns
+		$exclude_thumb_posts = [];
+		$exclude_thumb_posts = apply_filters( 'hd_post_exclude_columns', $exclude_thumb_posts );
+
+		foreach ( $exclude_thumb_posts as $post ) {
+			add_filter( "manage_{$post}_posts_columns", [ $this, 'post_exclude_header' ], 12, 1 );
+		}
+
+		// thumb terms
+		$thumb_terms = [
+			'category',
+			'post_tag',
+		];
+
+		$thumb_terms = apply_filters( 'hd_term_columns', $thumb_terms );
+
+		foreach ( $thumb_terms as $term ) {
+			add_filter( "manage_edit-{$term}_columns", [ &$this, 'term_header' ], 11, 1 );
+			add_filter( "manage_{$term}_custom_column", [ &$this, 'term_column' ], 11, 3 );
+		}
+	}
 
 	/** ---------------------------------------- */
 

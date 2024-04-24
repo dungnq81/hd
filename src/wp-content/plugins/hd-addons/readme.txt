@@ -1,7 +1,7 @@
 === HD Addons ===
 Contributors: HD Team
 Requires at least: 3.0
-Requires PHP: 7.4
+Requires PHP: 8.2
 Tested up to: 6.5.2
 Stable tag: 6.5
 License: GPLv2 or later

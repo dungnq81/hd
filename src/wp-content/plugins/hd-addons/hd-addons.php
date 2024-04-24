@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name: HD addons
+ * Plugin Name: HD Addons
  * Plugin URI: https://webhd.vn
  * Description: Addons plugin for HD Theme
  * Version: 0.24.04
- * Requires PHP: 7.4
+ * Requires PHP: 8.2
  * Author: HD Team
  * Author URI: https://webhd.vn
  * Text Domain: hd-addons

@@ -67,11 +67,7 @@ final class Theme {
 		] );
 
 		add_theme_support( 'customize-selective-refresh-widgets' );
-
-		/** Gutenberg wide images. */
 		add_theme_support( 'align-wide' );
-
-		/** Add support for block styles. */
 		add_theme_support( 'wp-block-styles' );
 
 		/** This theme styles the visual editor to resemble the theme style. */
@@ -145,8 +141,8 @@ final class Theme {
 			'storage'             => THEME_PATH . 'storage',
 			'languages'           => THEME_PATH . 'languages',
 
-			'inc_tpl'  => THEME_PATH . 'inc/tpl',
-			'inc_ajax' => THEME_PATH . 'inc/ajax',
+			'inc_tpl'  => INC_PATH . 'admin/tpl',
+			'inc_ajax' => INC_PATH . 'ajax',
 		];
 
 		foreach ( $dirs as $dir => $path ) {

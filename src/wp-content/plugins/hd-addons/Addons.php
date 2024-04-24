@@ -16,9 +16,9 @@ final class Addons {
 	public function __construct() {
 		add_action( 'plugins_loaded', [ &$this, 'i18n' ] );
 		add_action( 'plugins_loaded', [ &$this, 'plugins_loaded' ] );
-		add_action( 'admin_enqueue_scripts', [ &$this, 'enqueue_admin_scripts' ] );
 
 		add_action( 'init', [ &$this, 'init' ] );
+		add_action( 'admin_enqueue_scripts', [ &$this, 'enqueue_admin_scripts' ] );
 	}
 
 	/** ---------------------------------------- */
@@ -45,7 +45,14 @@ final class Addons {
 	/**
 	 * @return void
 	 */
-	public function init(): void {
+	public function init(): void {}
+
+	/** ---------------------------------------- */
+
+	/**
+	 * @return void
+	 */
+	public function plugins_loaded(): void {
 		if ( is_admin() ) {
 			( new Admin() );
 		}
@@ -54,11 +61,4 @@ final class Addons {
 		( new SMTP() );
 		( new SVG() );
 	}
-
-	/** ---------------------------------------- */
-
-	/**
-	 * @return void
-	 */
-	public function plugins_loaded(): void {}
 }
