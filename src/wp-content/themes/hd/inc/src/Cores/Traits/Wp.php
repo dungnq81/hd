@@ -490,8 +490,8 @@ trait Wp {
 			'posts_per_page'         => $posts_per_page ?: 12,
 			'no_found_rows'          => true,
 			'ignore_sticky_posts'    => true,
-			//'update_post_meta_cache' => false,
-			//'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
 			'tax_query'              => [ 'relation' => 'AND' ],
 		];
 

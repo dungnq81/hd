@@ -329,7 +329,7 @@ abstract class Abstract_Widget extends WP_Widget {
 		$this->registered = true;
 
 		if ( is_active_widget( false, false, $this->id_base, true ) ) {
-			add_action( 'wp_enqueue_scripts', [ &$this, 'styles_and_scripts' ], 12 );
+			add_action( 'wp_enqueue_scripts', [ &$this, 'styles_and_scripts' ], 99 );
 		}
 	}
 

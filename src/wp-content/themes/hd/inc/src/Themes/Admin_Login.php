@@ -13,7 +13,7 @@ use Libs\CSS;
 
 \defined( 'ABSPATH' ) || die;
 
-final class Login {
+final class Admin_Login {
 	public function __construct() {
 
 		add_action( 'login_enqueue_scripts', [ &$this, 'login_enqueue_script' ], 31 );

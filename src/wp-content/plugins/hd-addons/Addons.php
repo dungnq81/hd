@@ -38,14 +38,16 @@ final class Addons {
 	/**
 	 * @return void
 	 */
-	public function enqueue_admin_scripts(): void {}
+	public function enqueue_admin_scripts(): void {
+	}
 
 	/** ---------------------------------------- */
 
 	/**
 	 * @return void
 	 */
-	public function init(): void {}
+	public function init(): void {
+	}
 
 	/** ---------------------------------------- */
 

@@ -122,7 +122,7 @@ final class Theme {
 			( new Fonts() );
 		}
 
-		( new Login() );
+		( new Admin_Login() );
 		( new Customizer() );
 		( new Optimizer() );
 		( new Security() );
@@ -173,7 +173,7 @@ final class Theme {
 			( new ACF() );
 		}
 
-		/** WpRocket */
+		/** Wp-Rocket */
 		defined( 'WP_ROCKET_VERSION' ) && ( new WpRocket() );
 
 		/** RankMath */
@@ -228,10 +228,6 @@ final class Theme {
 	public function wp_enqueue_scripts(): void {
 
 		// wp_enqueue_style( 'style', get_stylesheet_uri(), [], THEME_VERSION );
-
-		/** Extra */
-		wp_register_style( "swiper-style", ASSETS_URL . "css/plugins/swiper.css", [], THEME_VERSION );
-		wp_register_script( "swiper", ASSETS_URL . "js/plugins/swiper.js", [], THEME_VERSION, true );
 
 		/** Stylesheet */
 		wp_register_style( "plugins-style", ASSETS_URL . "css/plugins.css", [], THEME_VERSION );

@@ -13,7 +13,7 @@ class ProductsCarousel_Widget extends Abstract_Widget {
 		$this->widget_description = __( "A slideshow list of your store's products.", TEXT_DOMAIN );
 		$this->widget_name        = __( '* Products Carousels', TEXT_DOMAIN );
 		$this->settings           = [
-			'title'                 => [
+			'title'      => [
 				'type'  => 'text',
 				'std'   => __( 'Products slideshow', TEXT_DOMAIN ),
 				'label' => __( 'Title', TEXT_DOMAIN ),
@@ -26,7 +26,7 @@ class ProductsCarousel_Widget extends Abstract_Widget {
 				'class' => 'tiny-text',
 				'label' => __( 'Number of products to show', TEXT_DOMAIN ),
 			],
-			'container'          => [
+			'container'  => [
 				'type'  => 'checkbox',
 				'std'   => 0,
 				'label' => __( 'Container layout', TEXT_DOMAIN ),
@@ -38,7 +38,7 @@ class ProductsCarousel_Widget extends Abstract_Widget {
 				'options' => [
 					''         => __( 'All', TEXT_DOMAIN ),
 					'featured' => __( 'Featured', TEXT_DOMAIN ),
-					'on_sale'   => __( 'On-sale', TEXT_DOMAIN ),
+					'on_sale'  => __( 'On-sale', TEXT_DOMAIN ),
 				],
 			],
 			'orderby'    => [
@@ -83,9 +83,9 @@ class ProductsCarousel_Widget extends Abstract_Widget {
 	 * @return WP_Query
 	 */
 	public function get_products( $number, $instance, $ACF ) {
-		$show    = ! empty( $instance['show'] ) ? esc_attr_strip_tags( $instance['show'] ) : $this->settings['show']['std'];
-		$orderby = ! empty( $instance['orderby'] ) ? esc_attr_strip_tags( $instance['orderby'] ) : $this->settings['orderby']['std'];
-		$order   = ! empty( $instance['order'] ) ? esc_attr_strip_tags( $instance['order'] ) : $this->settings['order']['std'];
+		$show    = ! empty( $instance['show'] ) ? sanitize_title( $instance['show'] ) : $this->settings['show']['std'];
+		$orderby = ! empty( $instance['orderby'] ) ? sanitize_title( $instance['orderby'] ) : $this->settings['orderby']['std'];
+		$order   = ! empty( $instance['order'] ) ? sanitize_title( $instance['order'] ) : $this->settings['order']['std'];
 
 		$limit_time                  = $instance['limit_time'] ? trim( $instance['limit_time'] ) : $this->settings['limit_time']['std'];
 		$product_visibility_term_ids = wc_get_product_visibility_term_ids();
@@ -177,7 +177,7 @@ class ProductsCarousel_Widget extends Abstract_Widget {
 		}
 
 		//...
-        set_posts_per_page( $number );
+		set_posts_per_page( $number );
 
 		return new WP_Query( apply_filters( 'products_carousel_widget_query_args', $query_args ) );
 	}
@@ -186,9 +186,8 @@ class ProductsCarousel_Widget extends Abstract_Widget {
 	 * @return void
 	 */
 	public function styles_and_scripts(): void {
-		wp_enqueue_style( 'swiper-style' );
-
-		wp_enqueue_script( 'swiper' );
+		wp_enqueue_style( "swiper-style", ASSETS_URL . "css/plugins/swiper.css", [], THEME_VERSION );
+		wp_enqueue_script( "swiper", ASSETS_URL . "js/plugins/swiper.js", [], THEME_VERSION, true );
 		wp_script_add_data( "swiper", "defer", true );
 	}
 
@@ -205,7 +204,7 @@ class ProductsCarousel_Widget extends Abstract_Widget {
 
 		$title = $this->get_instance_title( $instance );
 
-		$number  = ! empty( $instance['number'] ) ? absint( $instance['number'] ) : $this->settings['number']['std'];
+		$number    = ! empty( $instance['number'] ) ? absint( $instance['number'] ) : $this->settings['number']['std'];
 		$container = ! empty( $instance['container'] );
 
 		// ACF
@@ -219,10 +218,9 @@ class ProductsCarousel_Widget extends Abstract_Widget {
 		$view_more_link        = Helper::ACF_Link( $view_more_link );
 
 		$css_class = ! empty( $ACF->css_class ) ? ' ' . esc_attr_strip_tags( $ACF->css_class ) : '';
-		$css_class = $this->widget_classname . $css_class;
 		$uniqid    = esc_attr( uniqid( $this->widget_classname . '-' ) );
 
-        // products query
+		// products query
 		$products = $this->get_products( $number, $instance, $ACF );
 		if ( ! $products->have_posts() ) {
 			return;
@@ -235,13 +233,15 @@ class ProductsCarousel_Widget extends Abstract_Widget {
 		ob_start();
 
 		?>
-        <section class="section carousel-section products-carousel-section <?= $css_class ?>">
+        <section class="section carousel-section products-carousel-section<?= $css_class ?>">
 	        <?php
-	        if ( $container ) echo '<div class="grid-container">';
+	        if ( $container ) {
+		        echo '<div class="grid-container">';
+	        }
 
 	        if ( $title ) {
 		        $args['before_title'] = '<' . $heading_tag . ' class="' . $heading_class . '">';
-		        $args['after_title'] = '</' . $heading_tag . '>';
+		        $args['after_title']  = '</' . $heading_tag . '>';
 
 		        echo $args['before_title'] . $title . $args['after_title'];
 	        }
@@ -282,12 +282,16 @@ class ProductsCarousel_Widget extends Abstract_Widget {
                     </div>
                 </div>
             </div>
-	        <?php
+			<?php
 
-	        if ( $show_view_more_button ) echo $view_more_link;
-	        if ( $container ) echo '</div>';
+			if ( $show_view_more_button ) {
+				echo $view_more_link;
+			}
+			if ( $container ) {
+				echo '</div>';
+			}
 
-	        ?>
+			?>
         </section>
 		<?php
 		echo $this->cache_widget( $args, ob_get_clean() ); // WPCS: XSS ok.

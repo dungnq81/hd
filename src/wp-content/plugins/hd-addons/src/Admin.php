@@ -15,9 +15,9 @@ final class Admin {
 	 * @return void
 	 */
 	public function admin_menu(): void {
-		remove_meta_box('dashboard_site_health',     'dashboard', 'normal');
+		remove_meta_box( 'dashboard_site_health', 'dashboard', 'normal' );
 		remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'normal' );
 		remove_meta_box( 'dashboard_primary', 'dashboard', 'normal' );
-		remove_meta_box( 'dashboard_secondary',      'dashboard', 'side' );
+		remove_meta_box( 'dashboard_secondary', 'dashboard', 'side' );
 	}
 }

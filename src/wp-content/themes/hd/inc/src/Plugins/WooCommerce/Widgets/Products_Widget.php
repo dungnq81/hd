@@ -170,7 +170,6 @@ class Products_Widget extends Abstract_Widget {
 	    $view_more_link        = Helper::ACF_Link( $view_more_link );
 
 	    $css_class = ! empty( $ACF->css_class ) ? ' ' . esc_attr_strip_tags( $ACF->css_class ) : '';
-	    $css_class = $this->widget_classname . $css_class;
 	    $uniqid    = esc_attr_strip_tags( uniqid( $this->widget_classname . '-' ) );
 
 	    //-----------------------------------------------------
@@ -180,7 +179,7 @@ class Products_Widget extends Abstract_Widget {
 	    ob_start();
 
         ?>
-        <section class="section products-section <?= $css_class ?>">
+        <section class="section products-section<?= $css_class ?>">
             <?php
             if ( $container ) echo '<div class="grid-container">';
 

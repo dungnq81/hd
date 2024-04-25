@@ -159,11 +159,9 @@ class RecentProducts_Widget extends Abstract_Widget {
 				break;
 		}
 
-		set_pre_get_posts( $number );
-		$products_query = new WP_Query( apply_filters( 'recent_products_widget_query_args', $query_args ) );
-		reset_pre_get_posts();
+		set_posts_per_page( $number );
 
-		return $products_query;
+		return new WP_Query( apply_filters( 'recent_products_widget_query_args', $query_args ) );
 	}
 
 	/**
@@ -191,7 +189,6 @@ class RecentProducts_Widget extends Abstract_Widget {
 		}
 
 		$css_class = ! empty( $ACF->css_class ) ? ' ' . esc_attr_strip_tags( $ACF->css_class ) : '';
-		$css_class = $this->widget_classname . $css_class;
 		$uniqid    = esc_attr_strip_tags( uniqid( $this->widget_classname . '-' ) );
 
 		// has products
@@ -200,7 +197,7 @@ class RecentProducts_Widget extends Abstract_Widget {
 		ob_start();
 
 		?>
-        <section class="section recent-products-section <?= $css_class ?>">
+        <section class="section recent-products-section<?= $css_class ?>">
 
 			<?php if ( $title ) {
 				echo '<h2 class="heading-title">' . $title . '</h2>';

@@ -72,7 +72,7 @@ final class Shortcode {
 
 		//...
 		$term_ids         = $atts['term_ids'] ?: [];
-		$posts_per_page   = $atts['posts_per_page'] ? absint( $atts['posts_per_page'] ) : 12;
+		$posts_per_page   = $atts['posts_per_page'] ? absint( $atts['posts_per_page'] ) : get_option( 'posts_per_page' );
 		$include_children = Helper::toBool( $atts['include_children'] );
 		$orderby          = [ 'date' => 'DESC' ];
 		$strtotime_str    = $atts['limit_time'] ? Helper::toString( $atts['limit_time'] ) : false;
@@ -99,8 +99,10 @@ final class Shortcode {
 			global $post;
 
 			$post_title     = get_the_title( $post->ID );
-			$title          = ( ! empty( $post_title ) ) ? $post_title : __( '(no title)', TEXT_DOMAIN );
-			$post_thumbnail = get_the_post_thumbnail( $post, $thumbnail_size );
+			$post_title     = ( ! empty( $post_title ) ) ? $post_title : __( '(no title)', TEXT_DOMAIN );
+
+            $attr_post_title = esc_attr_strip_tags( $post_title );
+			$post_thumbnail = get_the_post_thumbnail( $post, $thumbnail_size, [ 'alt' => $attr_post_title ] );
 
 			echo $wrapper_open . '<div class="cell">';
 			echo '<article class="item">';
@@ -113,7 +115,7 @@ final class Shortcode {
 				$ratio_obj   = Helper::getAspectRatioClass( 'post', 'aspect_ratio__options' );
 				$ratio_class = $ratio_obj->class ?? '';
 
-				echo '<a class="block cover" href="' . get_permalink( $post->ID ) . '" aria-label="' . esc_attr( $title ) . '" tabindex="0">';
+				echo '<a class="block cover" href="' . get_permalink( $post->ID ) . '" aria-label="' . $attr_post_title . '">';
 				echo '<span class="' . $scale_class . 'after-overlay res ' . $ratio_class . '">' . $post_thumbnail . '</span>';
 				echo '</a>';
 
@@ -121,7 +123,7 @@ final class Shortcode {
 
 			// post info
 			echo '<div class="cover-content">';
-			echo '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( $title ) . '"><h6>' . $title . '</h6></a>';
+			echo '<a href="' . get_permalink( $post->ID ) . '" title="' . $attr_post_title . '"><h6>' . $post_title . '</h6></a>';
 
 			if ( $atts['show']['time'] || $atts['show']['term'] ) :
 				echo '<div class="meta">';
@@ -140,7 +142,7 @@ final class Shortcode {
 				echo Helper::loopExcerpt( $post );
 			}
 			if ( $atts['show']['more'] ) {
-				echo '<a class="view-detail" href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( $title ) . '" data-glyph=""><span>' . __( 'Detail', TEXT_DOMAIN ) . '</span></a>';
+				echo '<a class="view-detail" href="' . get_permalink( $post->ID ) . '" title="' . $attr_post_title . '" data-glyph=""><span>' . __( 'Detail', TEXT_DOMAIN ) . '</span></a>';
 			}
 
 			echo '</div>';
@@ -175,7 +177,7 @@ final class Shortcode {
 		);
 
 		$location = $atts['location'] ?: 'mobile-nav';
-		$class    = $atts['class'] ?: 'mobile-menu';
+		$class    = $atts['class'] ? esc_attr_strip_tags( $atts['class'] ) : 'mobile-menu';
 		$depth    = $atts['depth'] ? absint( $atts['depth'] ) : 1;
 		$id       = $atts['id'] ?: esc_attr( uniqid( 'menu-' ) );
 
@@ -208,7 +210,7 @@ final class Shortcode {
 		);
 
 		$location = $atts['location'] ?: 'main-nav';
-		$class    = $atts['class'] ?: 'desktop-menu';
+		$class    = $atts['class'] ? esc_attr_strip_tags( $atts['class'] ) : 'desktop-menu';
 		$depth    = $atts['depth'] ? absint( $atts['depth'] ) : 1;
 		$id       = $atts['id'] ?: esc_attr( uniqid( 'menu-' ) );
 
@@ -241,7 +243,7 @@ final class Shortcode {
 
 		$title = $atts['title'] ?: __( 'Menu', TEXT_DOMAIN );
 		$class = $atts['hide_if_desktop'] ? ' hide-for-large' : '';
-		$class = $atts['class'] ? ' ' . $atts['class'] . $class : '';
+		$class = $atts['class'] ? ' ' . esc_attr_strip_tags( $atts['class'] ) . $class : '';
 
 		ob_start();
 
@@ -273,11 +275,11 @@ final class Shortcode {
 			'safe_mail'
 		);
 
-		$attributes['title'] = $atts['title'] ? esc_attr( $atts['title'] ) : esc_attr( $atts['email'] );
-		$attributes['id']    = $atts['id'] ? esc_attr( $atts['id'] ) : esc_attr( uniqid( 'mail-' ) );
+		$attributes['title'] = $atts['title'] ? esc_attr_strip_tags( $atts['title'] ) : esc_attr_strip_tags( $atts['email'] );
+		$attributes['id']    = $atts['id'] ? esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'mail-' ) );
 
 		if ( $atts['class'] ) {
-			$attributes['class'] = esc_attr( $atts['class'] );
+			$attributes['class'] = esc_attr_strip_tags( $atts['class'] );
 		}
 
 		return Helper::safeMailTo( $atts['email'], $atts['title'], $attributes );
@@ -324,25 +326,25 @@ final class Shortcode {
 		$title             = $atts['title'] ?: __( 'Search', TEXT_DOMAIN );
 		$title_for         = __( 'Search for', TEXT_DOMAIN );
 		$placeholder_title = esc_attr( __( 'Search ...', TEXT_DOMAIN ) );
-		$id                = $atts['id'] ?: esc_attr( uniqid( 'search-' ) );
+		$id                = $atts['id'] ? esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'search-' ) );
+        $class = $atts['class'] ? ' ' . esc_attr_strip_tags( $atts['class'] ) : '';
 
 		ob_start();
 
 		?>
-        <form role="search" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8"
-              data-abide novalidate>
-            <label for="<?= $id; ?>" class="screen-reader-text"><?= esc_attr( $title_for ); ?></label>
-            <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" autocomplete="off" name="s" value="<?= get_search_query(); ?>" placeholder="<?= esc_attr( $placeholder_title ); ?>">
+        <form action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
+            <label for="<?= $id; ?>" class="screen-reader-text"><?= $title_for; ?></label>
+            <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" autocomplete="off" name="s" value="<?= get_search_query(); ?>" placeholder="<?= $placeholder_title; ?>">
             <button type="submit" data-glyph="">
                 <span><?= $title; ?></span>
             </button>
 			<?php if ( class_exists( '\WooCommerce' ) ) : ?>
-                <input type="hidden" name="post_type" value="product">
+            <input type="hidden" name="post_type" value="product">
 			<?php endif; ?>
         </form>
 		<?php
 
-		return '<div class="inline-search ' . $atts['class'] . '">' . ob_get_clean() . '</div>';
+		return '<div class="inline-search' . $class . '">' . ob_get_clean() . '</div>';
 	}
 
 	// ------------------------------------------------------
@@ -365,24 +367,25 @@ final class Shortcode {
 
 		$title             = $atts['title'] ?: __( 'Search', TEXT_DOMAIN );
 		$title_for         = __( 'Search for', TEXT_DOMAIN );
-		$placeholder_title = __( 'Search ...', TEXT_DOMAIN );
+		$placeholder_title = esc_attr( __( 'Search ...', TEXT_DOMAIN ) );
 		$close_title       = __( 'Close', TEXT_DOMAIN );
-		$id                = $atts['id'] ?: esc_attr( uniqid( 'search-' ) );
+		$id                = $atts['id'] ? esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'search-' ) );
+		$class             = $atts['class'] ? ' ' . esc_attr_strip_tags( $atts['class'] ) : '';
 
 		ob_start();
 
 		?>
-        <a class="trigger-s" title="<?= esc_attr( $title ); ?>" href="javascript:;" data-toggle="dropdown-<?= $id; ?>" data-glyph=""><span><?php echo $title; ?></span></a>
-        <div role="search" class="dropdown-pane" id="dropdown-<?= $atts['id']; ?>" data-dropdown data-auto-focus="true">
-            <form role="form" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
+        <a class="trigger-s" title="<?= esc_attr_strip_tags( $title ); ?>" href="javascript:;" data-toggle="dropdown-<?= $id; ?>" data-glyph=""><span><?php echo $title; ?></span></a>
+        <div role="search" class="dropdown-pane" id="dropdown-<?= $id; ?>" data-dropdown data-auto-focus="true">
+            <form action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
                 <div class="frm-container">
-                    <label for="<?= $id; ?>" class="screen-reader-text"><?= esc_attr( $title_for ); ?></label>
-                    <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" name="s" value="<?php echo get_search_query(); ?>" placeholder="<?php echo esc_attr( $placeholder_title ); ?>">
+                    <label for="<?= $id; ?>" class="screen-reader-text"><?= $title_for; ?></label>
+                    <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" name="s" value="<?php echo get_search_query(); ?>" placeholder="<?php echo $placeholder_title; ?>">
                     <button class="btn-s" type="submit" data-glyph="">
                         <span><?php echo $title; ?></span>
                     </button>
                     <button class="trigger-s-close" type="button" data-glyph="">
-                        <span><?php echo esc_attr( $close_title ); ?></span>
+                        <span><?php echo $close_title; ?></span>
                     </button>
                 </div>
 				<?php if ( class_exists( '\WooCommerce' ) ) : ?>
@@ -392,7 +395,7 @@ final class Shortcode {
         </div>
 		<?php
 
-		return '<div class="dropdown-search ' . $atts['class'] . '">' . ob_get_clean() . '</div>';
+		return '<div class="dropdown-search' . $class . '">' . ob_get_clean() . '</div>';
 	}
 
 	// ------------------------------------------------------
