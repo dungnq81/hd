@@ -5,6 +5,7 @@ use Addons\Custom_Email\Custom_Email;
 use Addons\Custom_Order\Custom_Order;
 use Addons\Heartbeat\Heartbeat;
 use Addons\LazyLoad\LazyLoad;
+use Addons\Minifier\Minify_HTML;
 use Addons\SMTP\SMTP;
 use Addons\SVG\SVG;
 
@@ -16,14 +17,21 @@ use Addons\SVG\SVG;
  * @author HD Team
  */
 final class Addons {
+
+	public mixed $optimizer_options;
+
 	public function __construct() {
+
+		$this->optimizer_options = get_option( 'optimizer__options', [] );
+
 		add_action( 'plugins_loaded', [ &$this, 'i18n' ] );
 		add_action( 'plugins_loaded', [ &$this, 'plugins_loaded' ] );
 
-		add_action( 'init', [ &$this, 'init' ] );
 		add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 39 );
-
 		add_action( 'admin_menu', [ &$this, 'admin_menu' ] );
+
+		// Parser functions
+		$this->_parser();
 	}
 
 	/** ---------------------------------------- */
@@ -43,6 +51,166 @@ final class Addons {
 	/**
 	 * @return void
 	 */
+	public function plugins_loaded(): void {
+
+		( new Custom_Order() );
+		( new Custom_Email() );
+		( new SMTP() );
+		( new SVG() );
+		( new LazyLoad() );
+		( new Base_Slug() );
+
+		( new Heartbeat() );
+	}
+
+	/** ---------------------------------------- */
+
+	/**
+	 * @return void
+	 */
+	private function _parser(): void {
+		if ( is_admin() || defined( 'WP_CLI' ) ) {
+			return;
+		}
+
+		$minify_html  = $this->optimizer_options['minify_html'] ?? 0;
+		$font_preload = $this->optimizer_options['font_preload'] ? implode( PHP_EOL, $this->optimizer_options['font_preload'] ) : '';
+		$dns_prefetch = $this->optimizer_options['dns_prefetch'] ? implode( PHP_EOL, $this->optimizer_options['dns_prefetch'] ) : '';
+
+		if ( ! empty( $minify_html ) ||
+		     ! empty( $font_preload ) ||
+		     ! empty( $dns_prefetch )
+		) {
+			add_action( 'init', [ &$this, 'start_bufffer' ] );
+			add_action( 'shutdown', [ &$this, 'end_buffer' ] );
+		}
+	}
+
+	/** ----------------------------------------------- */
+
+	/**
+	 * @return void
+	 */
+	public function start_bufffer(): void {
+		ob_start( [ &$this, 'run' ] );
+	}
+
+	/** ----------------------------------------------- */
+
+	/**
+	 * @return void
+	 */
+	public function end_buffer(): void {
+		if ( ob_get_length() ) {
+			ob_end_flush();
+		}
+	}
+
+	/** ---------------------------------------- */
+
+	/**
+	 * @param string $html
+	 *
+	 * @return string
+	 */
+	public function run( string $html ): string {
+		if ( ! preg_match( '/<\/html>/i', $html ) ) {
+			return $html;
+		}
+
+		// Do not run optimization if amp is active, the page is an xml or feed.
+		if ( is_amp_enabled( $html ) ||
+		     is_xml( $html ) ||
+		     is_feed()
+		) {
+			return $html;
+		}
+
+		return $this->optimize_for_visitors( $html );
+	}
+
+	/** ----------------------------------------------- */
+
+	/**
+	 * @param $html
+	 *
+	 * @return string
+	 */
+	public function optimize_for_visitors( $html ): string {
+
+		$html = $this->font_preload( $html );
+		$html = $this->dns_prefetch( $html );
+
+		$minify_html = $this->optimizer_options['minify_html'] ?? 0;
+		if ( ! empty( $minify_html ) ) {
+			$html = Minify_Html::minify( $html );
+		}
+
+		return $html;
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @param $html
+	 *
+	 * @return array|mixed|string|string[]
+	 */
+	public function dns_prefetch( $html ): mixed {
+
+		// Check if there are any urls inserted by the user.
+		$urls = $this->optimizer_options['dns_prefetch'] ?? false;
+
+		// Return, if no url's are set by the user.
+		if ( empty( $urls ) ) {
+			return $html;
+		}
+
+		$new_html = '';
+
+		foreach ( $urls as $url ) {
+
+			// Replace the protocol with //.
+			$url_without_protocol = preg_replace( '~(?:(?:https?:)?(?:\/\/)(?:www\.|(?!www)))?((?:.*?)\.(?:.*))~', '//$1', $url );
+
+			// Remove the protocol if for some reason url has passed with it.
+			$new_html .= '<link rel="dns-prefetch" href="' . $url_without_protocol . '" />';
+		}
+
+		return str_replace( '</head>', $new_html . '</head>', $html );
+	}
+
+	/** ---------------------------------------- */
+
+	/**
+	 * @param $html
+	 *
+	 * @return array|mixed|string|string[]|null
+	 */
+	public function font_preload( $html ): mixed {
+
+		// Check if there are any urls inserted by the user.
+		$urls = $this->optimizer_options['font_preload'] ?? false;
+
+		// Return, if no url's are set by the user.
+		if ( empty( $urls ) ) {
+			return $html;
+		}
+
+		$new_html = '';
+
+		foreach ( $urls as $url ) {
+			$new_html .= '<link rel="preload" as="font" href="' . $url . '" crossorigin />';
+		}
+
+		return preg_replace( '~<\/title>~', '</title>' . $new_html, $html, 1 );
+	}
+
+	/** ---------------------------------------- */
+
+	/**
+	 * @return void
+	 */
 	public function admin_enqueue_scripts(): void {
 		if ( ! wp_style_is( 'woocommerce_admin_styles' ) ) {
 			wp_enqueue_style( "select2-style", ADDONS_URL . "assets/css/select2.min.css", [], ADDONS_VERSION );
@@ -54,30 +222,6 @@ final class Addons {
 
 		wp_enqueue_style( "addon-style", ADDONS_URL . "assets/css/addon.css", [], ADDONS_VERSION );
 		wp_enqueue_script( "addon", ADDONS_URL . "assets/js/addon.js", [ "jquery-core" ], ADDONS_VERSION, true );
-	}
-
-	/** ---------------------------------------- */
-
-	/**
-	 * @return void
-	 */
-	public function init(): void {}
-
-	/** ---------------------------------------- */
-
-	/**
-	 * @return void
-	 */
-	public function plugins_loaded(): void {
-
-		( new Custom_Order() );
-		( new Custom_Email() );
-		( new SMTP() );
-		( new SVG() );
-		( new LazyLoad() );
-		( new Base_Slug() );
-
-		( new Heartbeat() );
 	}
 
 	// ------------------------------------------------------

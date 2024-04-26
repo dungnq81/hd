@@ -318,10 +318,10 @@ final class Admin {
 			$exclude_lazyload = array_map( fn( $a ) => sanitize_title( $a ), $exclude_lazyload );
 
 			$font_preload = ! empty( $_POST['font_preload'] ) ? explode( PHP_EOL, $_POST['font_preload'] ) : [];
-			$font_preload = array_map( fn( $a ) => sanitize_title( $a ), $font_preload );
+			$font_preload = array_map( fn( $a ) => sanitize_url( $a ), $font_preload );
 
 			$dns_prefetch = ! empty( $_POST['dns_prefetch'] ) ? explode( PHP_EOL, $_POST['dns_prefetch'] ) : [];
-			$dns_prefetch = array_map( fn( $a ) => sanitize_title( $a ), $dns_prefetch );
+			$dns_prefetch = array_map( fn( $a ) => sanitize_url( $a ), $dns_prefetch );
 
 			$optimizer_options = [
 				'https_enforce'    => ! empty( $_POST['https_enforce'] ) ? sanitize_text_field( $_POST['https_enforce'] ) : 0,
