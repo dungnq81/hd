@@ -11,7 +11,7 @@ $svgs = $svgs ?? '';
 ?>
 <div class="section section-radio" id="section_svg">
 	<span class="heading !block"><?php _e( 'SVG Images', ADDONS_TEXT_DOMAIN ); ?></span>
-    <div class="desc"><?php _e( '<b>Security notice:</b> Every SVG image is an XML file, which can contain <b>malicious code</b>, that can lead to <b>XSS</b> or <b>Injection attacks</b>.', TEXT_DOMAIN ); ?></div>
+    <div class="desc"><?php _e( '<b>Security notice:</b> Every SVG image is an XML file that can contain <b>malicious code</b>, potentially leading to <b>XSS</b> or <b>injection attacks</b>.', TEXT_DOMAIN ); ?></div>
     <div class="option inline-option">
         <div class="controls">
             <div class="inline-group">

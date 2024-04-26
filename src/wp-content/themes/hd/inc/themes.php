@@ -390,17 +390,22 @@ add_filter( 'widget_tag_cloud_args', function ( array $args ) {
 
 /** defer scripts */
 add_filter( 'hd_defer_script', function ( array $arr ) {
-	$arr_new = [
-		// defer script
-		//'wc-single-product' => 'defer',
-		'contact-form-7' => 'defer',
 
-		// delay script - default 5s
-		'comment-reply'  => 'delay',
-		'wp-embed'       => 'delay',
-		'admin-bar'      => 'delay',
-		'back-to-top'    => 'delay',
-		'social-share'   => 'delay',
+	// defer script
+	// delay script - default 5s
+	$arr_new = [
+		'contact-form-7' => 'defer',
+		'swv'            => 'defer',
+		'hoverintent-js' => 'defer',
+		'wc-single-product' => 'defer',
+		'sourcebuster-js'   => 'defer',
+		'wc-order-attribution'   => 'defer',
+
+		'comment-reply' => 'delay',
+		'wp-embed'      => 'delay',
+		'admin-bar'     => 'delay',
+		'back-to-top'   => 'delay',
+		'social-share'  => 'delay',
 	];
 
 	return array_merge( $arr, $arr_new );
@@ -412,8 +417,8 @@ add_filter( 'hd_defer_script', function ( array $arr ) {
 add_filter( 'hd_defer_style', function ( array $arr ) {
 	$arr_new = [
 		'dashicons',
+		'admin-bar',
 		'contact-form-7',
-		//'rank-math',
 	];
 
 	return array_merge( $arr, $arr_new );

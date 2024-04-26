@@ -48,7 +48,7 @@ $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
 		?>
 		<div class="option mb-20">
 			<label class="controls">
-				<input type="checkbox" class="hd-checkbox hd-control" name="order_post_type[]" value="<?php echo esc_attr( $post_type->name ); ?>" <?php in_array_checked( $order_post_type, $post_type->name ); ?>>
+				<input type="checkbox" class="hd-checkbox hd-control" name="order_post_type[]" value="<?php echo esc_attr_strip_tags( $post_type->name ); ?>" <?php in_array_checked( $order_post_type, $post_type->name ); ?>>
 			</label>
 			<div class="explain"><?php echo $label; ?></div>
 		</div>
@@ -74,7 +74,7 @@ $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
 		?>
 		<div class="option mb-20">
 			<label class="controls">
-				<input type="checkbox" class="hd-checkbox hd-control" name="order_taxonomy[]" value="<?php echo esc_attr( $taxonomy->name ); ?>" <?php in_array_checked( $order_taxonomy, $taxonomy->name ); ?>>
+				<input type="checkbox" class="hd-checkbox hd-control" name="order_taxonomy[]" value="<?php echo esc_attr_strip_tags( $taxonomy->name ); ?>" <?php in_array_checked( $order_taxonomy, $taxonomy->name ); ?>>
 			</label>
 			<div class="explain"><?php echo $label; ?></div>
 		</div>

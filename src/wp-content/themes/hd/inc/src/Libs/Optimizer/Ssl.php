@@ -22,9 +22,9 @@ class Ssl extends Abstract_Htaccess {
 	 * @var array
 	 */
 	public array $rules = [
-		'enabled'     => '/Https\s+Forced/si',
-		'disabled'    => '/\#\s+Https\s+Forced(.+?)\#\s+Https\s+Forced\s+END(\n)?/ims',
-		'disable_all' => '/\#\s+Https\s+Forced(.+?)\#\s+Https\s+Forced\s+END(\n)?/ims',
+		'enabled'     => '/\#\s+Https/si',
+		'disabled'    => '/\#\s+Https(.+?)\#\s+Https\s+END(\n)?/ims',
+		'disable_all' => '/\#\s+Https(.+?)\#\s+Https\s+END(\n)?/ims',
 	];
 
 	/**
@@ -104,7 +104,7 @@ class Ssl extends Abstract_Htaccess {
 	 */
 	public function enable() {
 
-		// Bail if the domain doesn't have certificate.
+		// Bail if the domain doesn't have a certificate.
 		if ( ! $this->has_certificate() ) {
 			return false;
 		}
@@ -133,7 +133,7 @@ class Ssl extends Abstract_Htaccess {
 	 *
 	 * @return bool     The result.
 	 */
-	private function switch_protocol( $ssl = false ) {
+	private function switch_protocol( bool $ssl = false ): bool {
 		$from = ( true === $ssl ) ? 'http' : 'https';
 		$to   = ( true === $ssl ) ? 'https' : 'http';
 
@@ -163,7 +163,7 @@ class Ssl extends Abstract_Htaccess {
 	 *
 	 * @return array
 	 */
-	public function get_url_list() {
+	public function get_url_list(): array {
 		$home = Helper::home();
 
 		// Build the search links.
@@ -186,7 +186,7 @@ class Ssl extends Abstract_Htaccess {
 	 *
 	 * @return string Modified content.
 	 */
-	public function replace_insecure_links( $content ) {
+	public function replace_insecure_links( string $content ): string {
 		// Get the url list.
 		$urls = $this->get_url_list();
 

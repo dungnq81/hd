@@ -18,7 +18,7 @@ $contact_popup_content = Helper::getCustomPostContent( 'html_contact', false );
     <label class="heading" for="contact_title"><?php _e('Contact Button Title', TEXT_DOMAIN); ?></label>
     <div class="option">
         <div class="controls">
-            <input value="<?php echo esc_attr($contact_title); ?>" class="hd-input hd-control" type="text" id="contact_title" name="contact_title">
+            <input value="<?php echo esc_attr_strip_tags($contact_title); ?>" class="hd-input hd-control" type="text" id="contact_title" name="contact_title">
         </div>
     </div>
 </div>
@@ -26,7 +26,7 @@ $contact_popup_content = Helper::getCustomPostContent( 'html_contact', false );
     <label class="heading" for="contact_url"><?php _e('Contact Button URL', TEXT_DOMAIN); ?></label>
     <div class="option">
         <div class="controls">
-            <input value="<?php echo esc_attr($contact_url); ?>" class="hd-input hd-control" type="url" id="contact_url" name="contact_url" placeholder="https://">
+            <input value="<?php echo esc_attr_strip_tags($contact_url); ?>" class="hd-input hd-control" type="url" id="contact_url" name="contact_url" placeholder="https://">
         </div>
     </div>
 </div>
@@ -52,7 +52,7 @@ $contact_popup_content = Helper::getCustomPostContent( 'html_contact', false );
     <div class="desc">The waiting time to display the popup, calculated in seconds.</div>
     <div class="option">
         <div class="controls">
-            <input value="<?php echo esc_attr($contact_waiting_time); ?>" class="hd-input hd-control" type="number" min="0" id="contact_waiting_time" name="contact_waiting_time">
+            <input value="<?php echo esc_attr_strip_tags($contact_waiting_time); ?>" class="hd-input hd-control" type="number" min="0" id="contact_waiting_time" name="contact_waiting_time">
         </div>
     </div>
 </div>
@@ -61,7 +61,7 @@ $contact_popup_content = Helper::getCustomPostContent( 'html_contact', false );
     <div class="desc">Number of repeat displays of the popup.</div>
     <div class="option">
         <div class="controls">
-            <input value="<?php echo esc_attr($contact_show_repeat); ?>" class="hd-input hd-control" type="number" min="0" id="contact_show_repeat" name="contact_show_repeat">
+            <input value="<?php echo esc_attr_strip_tags($contact_show_repeat); ?>" class="hd-input hd-control" type="number" min="0" id="contact_show_repeat" name="contact_show_repeat">
         </div>
     </div>
 </div>

@@ -147,10 +147,7 @@ final class Optimizer {
 	 * @return void
 	 */
 	public function print_footer_scripts(): void { ?>
-        <script>document.documentElement.classList.remove("no-js");
-            if (-1 !== navigator.userAgent.toLowerCase().indexOf('msie') || -1 !== navigator.userAgent.toLowerCase().indexOf('trident/')) {
-                document.documentElement.classList.add('is-IE');
-            }</script>
+        <script>document.documentElement.classList.remove("no-js"); if (-1 !== navigator.userAgent.toLowerCase().indexOf('msie') || -1 !== navigator.userAgent.toLowerCase().indexOf('trident/')) {document.documentElement.classList.add('is-IE');}</script>
 		<?php
 
 //		if ( file_exists( $passive_events = THEME_PATH . 'assets/js/plugins/passive-events.js' ) ) {

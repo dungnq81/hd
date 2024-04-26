@@ -7,8 +7,7 @@ $block_editor_options = Helper::getOption( 'block_editor__options', false, false
 $use_widgets_block_editor_off           = $block_editor_options['use_widgets_block_editor_off'] ?? '';
 $gutenberg_use_widgets_block_editor_off = $block_editor_options['gutenberg_use_widgets_block_editor_off'] ?? '';
 $use_block_editor_for_post_type_off     = $block_editor_options['use_block_editor_for_post_type_off'] ?? '';
-
-$block_style_off = $block_editor_options['block_style_off'] ?? '';
+$block_style_off                        = $block_editor_options['block_style_off'] ?? '';
 
 ?>
 <h2><?php _e( 'Block Editor Settings', TEXT_DOMAIN ); ?></h2>

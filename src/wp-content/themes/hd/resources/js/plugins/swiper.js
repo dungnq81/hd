@@ -1,8 +1,5 @@
-import {nanoid} from 'nanoid';
-
-import random from "lodash/random";
-import isEmpty from "lodash/isEmpty";
-import toString from "lodash/toString";
+import { nanoid } from 'nanoid';
+import { random, isEmpty, toString } from "lodash";
 
 /** current-device */
 import device from "current-device";
@@ -12,7 +9,7 @@ const is_tablet = () => device.tablet();
 const is_desktop = () => device.desktop();
 
 /** import a Swiper bundle with all modules installed */
-import {Swiper} from 'swiper/bundle';
+import Swiper from 'swiper/bundle';
 
 /** swiper container */
 const w_swiper = [...document.querySelectorAll('.w-swiper')];
@@ -60,7 +57,7 @@ w_swiper.forEach((el, index) => {
         slideActiveClass: 'swiper-slide-active'
     };
 
-    /** responsive + gap + autoview */
+    /** responsive + gap + auto-view */
     let _desktop_data = 1,
         _tablet_data = 1,
         _mobile_data = 1;

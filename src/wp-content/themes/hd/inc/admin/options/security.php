@@ -77,7 +77,7 @@ $two_factor_authentication = $security_options['two_factor_authentication'] ?? '
 </div>
 <div class="section section-checkbox" id="section_illegal_users">
     <label class="heading" for="illegal_users"><?php _e( 'Disable Common Usernames', TEXT_DOMAIN ); ?></label>
-    <div class="desc"><?php _e( 'Using common usernames like \'admin\' is a security threat that often results in unauthorised access. By enabling this option we will disable the creation of common usernames and if you already have one or more users with a weak username, we\'ll ask you to provide new one(s).', TEXT_DOMAIN )?></div>
+    <div class="desc"><?php _e( 'Using common usernames like <b>\'admin\'</b> is a security threat that often results in unauthorised access. By enabling this option we will disable the creation of common usernames and if you already have one or more users with a weak username, we\'ll ask you to provide new one(s).', TEXT_DOMAIN )?></div>
     <div class="option">
         <div class="controls">
             <input type="checkbox" class="hd-checkbox hd-control" name="illegal_users" id="illegal_users" <?php checked( $illegal_users, 1 ); ?> value="1">
@@ -101,7 +101,7 @@ $two_factor_authentication = $security_options['two_factor_authentication'] ?? '
         </div>
     </div>
 </div>
-<div class="section section-checkbox hide" id="section_two_factor_authentication">
+<div class="section section-checkbox !hidden" id="section_two_factor_authentication">
     <label class="heading" for="two_factor_authentication"><?php _e( 'Two-factor Authentication for Admin & Editors Users', TEXT_DOMAIN ); ?></label>
     <div class="desc"><?php _e( 'Two-factor authentication forces admin users to login only after providing a token, generated from the Google Authenticator application. When you enable this option, all admin & editor users will be asked to configure their two-factor authentication in the Authenticator app on their next login.', TEXT_DOMAIN )?></div>
     <div class="option">

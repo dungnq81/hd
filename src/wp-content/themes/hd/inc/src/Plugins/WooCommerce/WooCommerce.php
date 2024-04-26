@@ -88,6 +88,10 @@ final class WooCommerce {
 	 * @return void
 	 */
 	public function enqueue_scripts(): void {
+
+		// remove 'woocommerce-inline-inline-css'
+		wp_deregister_style( 'woocommerce-inline' );
+
 		wp_enqueue_style( 'hdwc-style', ASSETS_URL . "css/plugins/woocommerce.css", [ "app-style" ], THEME_VERSION );
 		wp_enqueue_script( "hdwc", ASSETS_URL . "js/plugins/woocommerce.js", [ "app" ], THEME_VERSION, true );
 		wp_script_add_data( "hdwc", "defer", true );

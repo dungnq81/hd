@@ -543,10 +543,10 @@ body.toplevel_page_hd-settings {
 
                 &.section-checkbox, &.section-select, &.section-text, &.section-textarea, &.section-multicheck {
                     .desc {
-                        color: #999999;
+                        color: #888888;
                         font-size: 13px;
-                        margin-bottom: 25px;
-                        margin-top: -5px;
+                        margin-bottom: 20px;
+                        margin-top: -10px;
                     }
                 }
 
@@ -585,13 +585,19 @@ body.toplevel_page_hd-settings {
                     padding: 25px 0 20px 0;
                     border-top: 1px solid #dddddd;
                     display: block;
-                    width: 600px;
+                    width: 660px;
                     max-width: calc(100% - 15px);
                     font-weight: 700;
+
+                    &.inline-heading {
+                        border-top: none;
+                        margin-top: 0;
+                        padding-top: 20px;
+                    }
                 }
 
                 .desc {
-                    width: 1000px;
+                    /*width: 1000px;*/
                     max-width: calc(100% - 15px);
                 }
 
@@ -599,7 +605,7 @@ body.toplevel_page_hd-settings {
                     .controls {
                         position: relative;
                         margin: 0 10px 10px 0;
-                        width: 600px;
+                        width: 660px;
                         max-width: calc(100% - 15px);
 
                         :where(input:not([type="checkbox"]), textarea, select) {
@@ -660,10 +666,10 @@ body.toplevel_page_hd-settings {
                     .heading {}
 
                     & > .desc {
-                        color: #999999;
+                        color: #888888;
                         font-size: 13px;
-                        margin-bottom: 25px;
-                        margin-top: -5px;
+                        margin-bottom: 20px;
+                        margin-top: -10px;
                     }
 
                     .controls {

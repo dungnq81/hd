@@ -58,3 +58,5 @@ wp-content/plugins/*
 !wp-content/plugins/advanced-custom-fields-pro/
 !wp-content/plugins/contact-form-7/
 !wp-content/plugins/hd-addons/
+
+wp-content/sgo-config.php

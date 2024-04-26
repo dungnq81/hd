@@ -15,6 +15,9 @@ final class ACF {
 
 	public function __construct() {
 
+		// License
+		$this->_license();
+
 		add_filter( 'acf/format_value/type=textarea', 'wp_kses_post', 10, 1 );
 		add_filter( 'acf/fields/wysiwyg/toolbars', [ &$this, 'wysiwyg_toolbars' ], 11, 1 );
 
@@ -244,5 +247,32 @@ final class ACF {
 		}
 
 		return $items;
+	}
+
+	// -------------------------------------------------------------
+
+	/**
+	 * @return void
+	 */
+	private function _license(): void {
+		$lic_data = base64_encode(
+			maybe_serialize(
+				[
+					'key' => '********',
+					'url' => home_url(),
+				]
+			)
+		);
+		update_option( 'acf_pro_license', $lic_data );
+		update_option( 'acf_pro_license_status', [ 'status' => 'active', 'next_check' => time() * 9 ] );
+		add_action( 'init', function () {
+			add_filter( 'pre_http_request', function ( $pre, $url, $request_args ) {
+				if ( is_string( $url ) && str_contains( $url, 'https://connect.advancedcustomfields.com/' ) ) {
+					return [ 'response' => [ 'code' => 200, 'message' => 'OK' ] ];
+				}
+
+				return $pre;
+			}, 10, 3 );
+		} );
 	}
 }

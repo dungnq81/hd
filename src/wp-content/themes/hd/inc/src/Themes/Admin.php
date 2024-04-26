@@ -6,7 +6,10 @@ use Addons\Custom_Order\Custom_Order;
 
 use Cores\Helper;
 
+use Libs\Optimizer\Bs_Cache;
+use Libs\Optimizer\Gzip;
 use Libs\Optimizer\Ssl;
+
 use Libs\Security\Dir;
 use Libs\Security\Headers;
 use Libs\Security\Readme;
@@ -220,16 +223,18 @@ final class Admin {
 
 			/** Emails list */
 
-			$email_options = [];
-			$hd_email_list = apply_filters( 'hd_email_list', [] );
+			if ( Helper::is_addons_active() ) {
+				$email_options = [];
+				$hd_email_list = apply_filters( 'hd_email_list', [] );
 
-            if ( $hd_email_list ) {
-	            foreach ( $hd_email_list as $i => $ar ) {
-		            $email_options[ $i ] = ! empty( $_POST[ $i . '_email' ] ) ? sanitize_text_field( $_POST[ $i . '_email' ] ) : '';
-	            }
+				if ( $hd_email_list ) {
+					foreach ( $hd_email_list as $i => $ar ) {
+						$email_options[ $i ] = ! empty( $_POST[ $i . '_email' ] ) ? sanitize_text_field( $_POST[ $i . '_email' ] ) : '';
+					}
 
-	            Helper::updateOption( 'emails__options', $email_options );
-            }
+					Helper::updateOption( 'emails__options', $email_options );
+				}
+			}
 
 			// ------------------------------------------------------
 
@@ -252,7 +257,6 @@ final class Admin {
 			/** Custom Order */
 
             if ( Helper::is_addons_active() ) {
-
 	            $order_reset = ! empty( $_POST['order_reset'] ) ? sanitize_text_field( $_POST['order_reset'] ) : '';
 
 	            if ( empty( $order_reset ) ) {
@@ -307,21 +311,41 @@ final class Admin {
 
 			/** Optimizer */
 
-			$optimizer_options_old = Helper::getOption( 'optimizer__options', false, false );
+			$optimizer_options_old = Helper::getOption( 'optimizer__options' );
 			$https_enforce_old     = $optimizer_options_old['https_enforce'] ?? 0;
 
+			$exclude_lazyload = ! empty( $_POST['exclude_lazyload'] ) ? explode( PHP_EOL, $_POST['exclude_lazyload'] ) : [];
+			$exclude_lazyload = array_map( fn( $a ) => sanitize_title( $a ), $exclude_lazyload );
+
+			$font_preload = ! empty( $_POST['font_preload'] ) ? explode( PHP_EOL, $_POST['font_preload'] ) : [];
+			$font_preload = array_map( fn( $a ) => sanitize_title( $a ), $font_preload );
+
+			$dns_prefetch = ! empty( $_POST['dns_prefetch'] ) ? explode( PHP_EOL, $_POST['dns_prefetch'] ) : [];
+			$dns_prefetch = array_map( fn( $a ) => sanitize_title( $a ), $dns_prefetch );
+
 			$optimizer_options = [
-				'https_enforce' => ! empty( $_POST['https_enforce'] ) ? sanitize_text_field( $_POST['https_enforce'] ) : 0,
-				'svgs'          => ! empty( $_POST['svgs'] ) ? sanitize_text_field( $_POST['svgs'] ) : 'disable',
+				'https_enforce'    => ! empty( $_POST['https_enforce'] ) ? sanitize_text_field( $_POST['https_enforce'] ) : 0,
+				'gzip'             => ! empty( $_POST['gzip'] ) ? sanitize_text_field( $_POST['gzip'] ) : 0,
+				'bs_caching'       => ! empty( $_POST['bs_caching'] ) ? sanitize_text_field( $_POST['bs_caching'] ) : 0,
+				'heartbeat'        => ! empty( $_POST['heartbeat'] ) ? sanitize_text_field( $_POST['heartbeat'] ) : 0,
+				'minify_html'      => ! empty( $_POST['minify_html'] ) ? sanitize_text_field( $_POST['minify_html'] ) : 0,
+				'svgs'             => ! empty( $_POST['svgs'] ) ? sanitize_text_field( $_POST['svgs'] ) : 'disable',
+				'lazy_load'        => ! empty( $_POST['lazy_load'] ) ? sanitize_text_field( $_POST['lazy_load'] ) : 0,
+				'exclude_lazyload' => $exclude_lazyload,
+				'font_preload'     => $font_preload,
+				'dns_prefetch'     => $dns_prefetch,
 			];
 
 			Helper::updateOption( 'optimizer__options', $optimizer_options, true );
 
 			// Ssl
 			if ( $https_enforce_old != $optimizer_options['https_enforce'] ) {
-				$ssl = new Ssl();
-				$ssl->toggle_rules( $optimizer_options['https_enforce'] );
+				( new Ssl() )->toggle_rules( $optimizer_options['https_enforce'] );
 			}
+
+            // Gzip + Caching
+			( new Gzip() )->toggle_rules( $optimizer_options['gzip'] );
+			( new Bs_Cache() )->toggle_rules( $optimizer_options['bs_caching'] );
 
 			// ------------------------------------------------------
 
@@ -347,17 +371,10 @@ final class Admin {
 				$readme->delete_readme();
 			}
 
-			// xml-rpc
-			$xml_rpc = new Xmlrpc();
-			$xml_rpc->toggle_rules( $security_options['xml_rpc_off'] );
-
-			// system protect
-			$protect_system = new Dir();
-			$protect_system->toggle_rules( $security_options['lock_protect_system'] );
-
-			// xss protection
-			$xss_protection = new Headers();
-			$xss_protection->toggle_rules( $security_options['advanced_xss_protection'] );
+			// toggle_rules
+			( new Xmlrpc() )->toggle_rules( $security_options['xml_rpc_off'] );
+			( new Dir() )->toggle_rules( $security_options['lock_protect_system'] );
+			( new Headers() )->toggle_rules( $security_options['advanced_xss_protection'] );
 
 			// ------------------------------------------------------
 
@@ -458,16 +475,16 @@ final class Admin {
                             </li>
                             <?php endif; ?>
 
-                            <?php
-                            $hd_email_list = apply_filters( 'hd_email_list', [] );
-		                    if ( ! empty( $hd_email_list ) ) :
+                            <?php if ( Helper::is_addons_active() ) :
+
+                                $hd_email_list = apply_filters( 'hd_email_list', [] );
+		                        if ( ! empty( $hd_email_list ) ) :
                             ?>
                             <li class="email-settings">
                                 <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', TEXT_DOMAIN ); ?></a>
                             </li>
                             <?php endif; ?>
 
-                            <?php if ( Helper::is_addons_active() ) : ?>
                             <li class="order-settings">
                                 <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', TEXT_DOMAIN ); ?></a>
                             </li>
@@ -520,13 +537,14 @@ final class Admin {
                         </div>
                         <?php endif; ?>
 
-                        <?php if ( ! empty( $hd_email_list ) ) : ?>
+	                    <?php if ( Helper::is_addons_active() ) :
+                            if ( ! empty( $hd_email_list ) ) :
+                        ?>
                         <div id="email_settings" class="group tabs-panel">
-		                    <?php require INC_PATH . 'admin/options/custom_email.php'; ?>
+		                    <?php require ADDONS_PATH . 'src/Custom_Email/options.php'; ?>
                         </div>
                         <?php endif; ?>
 
-		                <?php if ( Helper::is_addons_active() ) : ?>
                         <div id="custom_order_settings" class="group tabs-panel">
 		                    <?php require ADDONS_PATH . 'src/Custom_Order/options.php'; ?>
                         </div>

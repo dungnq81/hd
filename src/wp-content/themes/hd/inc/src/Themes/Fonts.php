@@ -11,7 +11,7 @@ namespace Themes;
  */
 final class Fonts {
 	public function __construct() {
-		add_action( 'wp_head', [ &$this, 'pre_connect' ], 2 );
+		add_action( 'wp_head', [ &$this, 'pre_connect' ], 9 );
 		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 101 );
 	}
 
@@ -20,10 +20,7 @@ final class Fonts {
 	/**
 	 * @return void
 	 */
-	public function pre_connect(): void {
-		echo '<link rel="preconnect" href="https://fonts.googleapis.com" />';
-		echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />';
-	}
+	public function pre_connect(): void {}
 
 	/** ---------------------------------------- */
 

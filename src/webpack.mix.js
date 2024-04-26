@@ -10,6 +10,10 @@ mix
 			ignored: "/node_modules/",
 			poll: false,
 		},
+		externals: {
+			$: 'jQuery',
+			jquery: 'jQuery',
+		}
 	})
 	.options({
 		processCssUrls: false,
