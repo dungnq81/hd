@@ -4,7 +4,7 @@ use Addons\Base_Slug\Base_Slug;
 use Addons\Custom_Email\Custom_Email;
 use Addons\Custom_Order\Custom_Order;
 use Addons\Heartbeat\Heartbeat;
-use Addons\LazyLoad\LazyLoad;
+use Addons\Lazy_Load\Lazy_Load;
 use Addons\Minifier\Minify_HTML;
 use Addons\SMTP\SMTP;
 use Addons\SVG\SVG;
@@ -21,7 +21,6 @@ final class Addons {
 	public mixed $optimizer_options;
 
 	public function __construct() {
-
 		$this->optimizer_options = get_option( 'optimizer__options', [] );
 
 		add_action( 'plugins_loaded', [ &$this, 'i18n' ] );
@@ -57,10 +56,9 @@ final class Addons {
 		( new Custom_Email() );
 		( new SMTP() );
 		( new SVG() );
-		( new LazyLoad() );
 		( new Base_Slug() );
-
 		( new Heartbeat() );
+		( new Lazy_Load() );
 	}
 
 	/** ---------------------------------------- */
@@ -173,7 +171,6 @@ final class Addons {
 			// Replace the protocol with //.
 			$url_without_protocol = preg_replace( '~(?:(?:https?:)?(?:\/\/)(?:www\.|(?!www)))?((?:.*?)\.(?:.*))~', '//$1', $url );
 
-			// Remove the protocol if for some reason url has passed with it.
 			$new_html .= '<link rel="dns-prefetch" href="' . $url_without_protocol . '" />';
 		}
 

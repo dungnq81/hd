@@ -34,3 +34,7 @@ Options -Indexes
 </IfModule>
 # HD END
 
+
+# SGO Unset Vary
+  Header unset Vary
+# SGO Unset Vary END

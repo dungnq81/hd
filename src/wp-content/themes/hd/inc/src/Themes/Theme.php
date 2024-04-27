@@ -21,6 +21,12 @@ use Plugins\WpRocket;
 final class Theme {
 	public function __construct() {
 
+//		$excluded_assets = optimizer_options( 'exclude_lazyload', [] );
+//		$excluded_base   = apply_filters( 'hd_lazy_load_exclude', [] );
+//		$excluded_all    = array_unique( (array) array_merge( $excluded_base, $excluded_assets ) );
+
+//		dump($excluded_all);
+
 		// plugins_loaded -> after_setup_theme -> init -> widgets_init -> wp_loaded -> admin_menu -> admin_init ...
 
 		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 10 );
@@ -319,7 +325,7 @@ final class Theme {
 		} );
 
 		/** Disable scaled */
-		add_filter( 'big_image_size_threshold', '__return_false' );
+		//add_filter( 'big_image_size_threshold', '__return_false' );
 
 		/** Disable other sizes */
 		add_action( 'init', function () {

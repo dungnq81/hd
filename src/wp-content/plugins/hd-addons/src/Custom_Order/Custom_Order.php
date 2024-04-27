@@ -84,12 +84,16 @@ final class Custom_Order {
 	 */
 	public function admin_enqueue_scripts( $hook_suffix ): void {
 		if ( $this->_check_custom_order_script() ) {
-//			wp_enqueue_script( 'jquery-core' );
-//			wp_enqueue_script( 'jquery-ui-sortable' );
-			wp_enqueue_script( 'addon-custom-order', ADDONS_URL . 'assets/js/admin_custom_order.js', [
-				'jquery-core',
-				'jquery-ui-sortable'
-			], ADDONS_VERSION, true );
+			wp_enqueue_script(
+				'addon-custom-order',
+				ADDONS_URL . 'assets/js/admin_custom_order.js',
+				[
+					'jquery-core',
+					'jquery-ui-sortable'
+				],
+				ADDONS_VERSION,
+				true
+			);
 		}
 	}
 

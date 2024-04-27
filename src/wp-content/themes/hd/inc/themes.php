@@ -1,6 +1,6 @@
 <?php
 /**
- * Themes Functions
+ * Themes functions
  *
  * @author WEBHD
  */
@@ -394,12 +394,12 @@ add_filter( 'hd_defer_script', function ( array $arr ) {
 	// defer script
 	// delay script - default 5s
 	$arr_new = [
-		'contact-form-7' => 'defer',
-		'swv'            => 'defer',
-		'hoverintent-js' => 'defer',
-		'wc-single-product' => 'defer',
-		'sourcebuster-js'   => 'defer',
-		'wc-order-attribution'   => 'defer',
+		'contact-form-7'       => 'defer',
+		'swv'                  => 'defer',
+		'hoverintent-js'       => 'defer',
+		'wc-single-product'    => 'defer',
+		'sourcebuster-js'      => 'defer',
+		'wc-order-attribution' => 'defer',
 
 		'comment-reply' => 'delay',
 		'wp-embed'      => 'delay',
@@ -543,6 +543,7 @@ add_filter( 'hd_location_mega_menu', function ( array $arr ) {
 
 /** ---------------------------------------- */
 
+// Custom post_per_page
 add_filter( 'hd_posts_num_per_page', function ( array $arr ) {
 	//$update_arr = [ 12, 24, 36 ];
 	$update_arr = [];
@@ -565,10 +566,45 @@ add_filter( 'hd_smtp_plugins_support', function ( array $arr ) {
 
 /** ---------------------------------------- */
 
+// Custom Email list
 add_filter( 'hd_email_list', function ( array $arr ) {
 	$update_arr = [
 		'lien_he' => 'Liên hệ',
 	];
+
+	return array_merge( $arr, $update_arr );
+}, 99, 1 );
+
+/** ---------------------------------------- */
+
+add_filter( 'hd_lazy_load_hook_content', function ( array $arr ) {
+	$update_arr = [
+		'lazyload_iframes' => [],
+		'lazyload_videos' => [],
+		'lazyload_images' => [],
+	];
+
+	return array_merge( $arr, $update_arr );
+} );
+
+/** ---------------------------------------- */
+
+add_filter( 'hd_lazy_load_exclude', function ( array $arr ) {
+	$update_arr = [
+		'no-lazy',
+		'skip-lazy',
+		'logo.png',
+		'logo.svg',
+	];
+
+	return array_merge( $arr, $update_arr );
+}, 99, 1 );
+
+/** ---------------------------------------- */
+
+// The urls where a lazy load is excluded.
+add_filter( 'hd_lazy_load_exclude_urls', function ( array $arr ) {
+	$update_arr = [];
 
 	return array_merge( $arr, $update_arr );
 }, 99, 1 );

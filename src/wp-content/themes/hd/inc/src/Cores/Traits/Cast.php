@@ -11,6 +11,31 @@ trait Cast {
 	// --------------------------------------------------
 
 	/**
+	 * @param $delimiters
+	 * @param $string
+	 * @param bool $remove_empty
+	 *
+	 * @return mixed
+	 */
+	public static function explode_multi( $delimiters, $string, bool $remove_empty = true ): mixed {
+		if ( is_string( $delimiters ) ) {
+			return explode( $delimiters, $string );
+		}
+
+		if ( is_array( $delimiters ) ) {
+			$ready = str_replace( $delimiters, $delimiters[0], $string );
+			$launch = explode( $delimiters[0], $ready );
+			if ( true === $remove_empty ) {
+				$launch = array_filter( $launch );
+			}
+
+			return $launch;
+		}
+
+		return $string;
+	}
+
+	/**
 	 * @param mixed $value
 	 *
 	 * @return int

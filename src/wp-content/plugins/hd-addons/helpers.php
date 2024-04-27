@@ -1,5 +1,54 @@
 <?php
 
+\defined( 'ABSPATH' ) || die;
+
+/** ----------------------------------------------- */
+
+if ( ! function_exists( 'is_mobile' ) ) {
+	/**
+	 * @return bool
+	 */
+	function is_mobile(): bool {
+		if ( function_exists( 'wp_is_mobile' ) ) {
+			return wp_is_mobile();
+		}
+
+		if ( empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
+			$is_mobile = false;
+		} elseif ( @strpos( $_SERVER['HTTP_USER_AGENT'], 'Mobile' ) !== false
+		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'Android' ) !== false
+		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'Silk/' ) !== false
+		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'Kindle' ) !== false
+		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'BlackBerry' ) !== false
+		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'Opera Mini' ) !== false
+		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'Opera Mobi' ) !== false ) {
+			$is_mobile = true;
+		} else {
+			$is_mobile = false;
+		}
+
+		return $is_mobile;
+	}
+}
+
+/** ----------------------------------------------- */
+
+if ( ! function_exists( 'optimizer_options' ) ) {
+	/**
+	 * @param $key
+	 * @param mixed $default
+	 *
+	 * @return mixed|string
+	 */
+	function optimizer_options( $key, mixed $default = '' ): mixed {
+		$optimizer_options = get_option( 'optimizer__options', [] );
+
+		return $optimizer_options[ $key ] ?? $default;
+	}
+}
+
+/** ----------------------------------------------- */
+
 if ( ! function_exists( 'in_array_checked' ) ) {
 	/**
 	 * @param array $checked_arr
@@ -21,6 +70,35 @@ if ( ! function_exists( 'in_array_checked' ) ) {
 		}
 
 		return $result;
+	}
+}
+
+/** ----------------------------------------------- */
+
+if ( ! function_exists( 'explode_multi' ) ) {
+	/**
+	 * @param $delimiters
+	 * @param $string
+	 * @param bool $remove_empty
+	 *
+	 * @return mixed|string[]
+	 */
+	function explode_multi( $delimiters, $string, bool $remove_empty = true ): mixed {
+		if ( is_string( $delimiters ) ) {
+			return explode( $delimiters, $string );
+		}
+
+		if ( is_array( $delimiters ) ) {
+			$ready  = str_replace( $delimiters, $delimiters[0], $string );
+			$launch = explode( $delimiters[0], $ready );
+			if ( true === $remove_empty ) {
+				$launch = array_filter( $launch );
+			}
+
+			return $launch;
+		}
+
+		return $string;
 	}
 }
 

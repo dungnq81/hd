@@ -314,13 +314,13 @@ final class Admin {
 			$optimizer_options_old = Helper::getOption( 'optimizer__options' );
 			$https_enforce_old     = $optimizer_options_old['https_enforce'] ?? 0;
 
-			$exclude_lazyload = ! empty( $_POST['exclude_lazyload'] ) ? explode( PHP_EOL, $_POST['exclude_lazyload'] ) : [];
-			$exclude_lazyload = array_map( fn( $a ) => sanitize_title( $a ), $exclude_lazyload );
+			$exclude_lazyload = ! empty( $_POST['exclude_lazyload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $_POST['exclude_lazyload'] ) : [];
+			$exclude_lazyload = array_map( fn( $a ) => esc_textarea( $a ), $exclude_lazyload );
 
-			$font_preload = ! empty( $_POST['font_preload'] ) ? explode( PHP_EOL, $_POST['font_preload'] ) : [];
+			$font_preload = ! empty( $_POST['font_preload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $_POST['font_preload'] ) : [];
 			$font_preload = array_map( fn( $a ) => sanitize_url( $a ), $font_preload );
 
-			$dns_prefetch = ! empty( $_POST['dns_prefetch'] ) ? explode( PHP_EOL, $_POST['dns_prefetch'] ) : [];
+			$dns_prefetch = ! empty( $_POST['dns_prefetch'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $_POST['dns_prefetch'] ) : [];
 			$dns_prefetch = array_map( fn( $a ) => sanitize_url( $a ), $dns_prefetch );
 
 			$optimizer_options = [
@@ -343,7 +343,7 @@ final class Admin {
 				( new Ssl() )->toggle_rules( $optimizer_options['https_enforce'] );
 			}
 
-            // Gzip + Caching
+			// Gzip + Caching
 			( new Gzip() )->toggle_rules( $optimizer_options['gzip'] );
 			( new Bs_Cache() )->toggle_rules( $optimizer_options['bs_caching'] );
 
@@ -528,12 +528,12 @@ final class Admin {
                         <h2 class="hidden-text"></h2>
 
                         <div id="aspect_ratio_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin/options/aspect_ratio.php'; ?>
+							<?php include INC_PATH . 'admin/options/aspect_ratio.php'; ?>
                         </div>
 
 		                <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
                         <div id="smtp_settings" class="group tabs-panel">
-							<?php require ADDONS_PATH . 'src/SMTP/options.php'; ?>
+							<?php include ADDONS_PATH . 'src/SMTP/options.php'; ?>
                         </div>
                         <?php endif; ?>
 
@@ -541,51 +541,51 @@ final class Admin {
                             if ( ! empty( $hd_email_list ) ) :
                         ?>
                         <div id="email_settings" class="group tabs-panel">
-		                    <?php require ADDONS_PATH . 'src/Custom_Email/options.php'; ?>
+		                    <?php include ADDONS_PATH . 'src/Custom_Email/options.php'; ?>
                         </div>
                         <?php endif; ?>
 
                         <div id="custom_order_settings" class="group tabs-panel">
-		                    <?php require ADDONS_PATH . 'src/Custom_Order/options.php'; ?>
+		                    <?php include ADDONS_PATH . 'src/Custom_Order/options.php'; ?>
                         </div>
 		                <?php endif; ?>
 
                         <div id="contact_info_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin/options/contact_info.php'; ?>
+							<?php include INC_PATH . 'admin/options/contact_info.php'; ?>
                         </div>
 
                         <div id="contact_button_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin/options/contact_button.php'; ?>
+							<?php include INC_PATH . 'admin/options/contact_button.php'; ?>
                         </div>
 
                         <div id="block_editor_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin/options/block_editor.php'; ?>
+							<?php include INC_PATH . 'admin/options/block_editor.php'; ?>
                         </div>
 
                         <div id="optimizer_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin/options/optimizer.php'; ?>
+							<?php include INC_PATH . 'admin/options/optimizer.php'; ?>
                         </div>
 
                         <div id="security_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin/options/security.php'; ?>
+							<?php include INC_PATH . 'admin/options/security.php'; ?>
                         </div>
 
 						<?php if ( Helper::is_woocommerce_active() ) : ?>
                         <div id="woocommerce_settings" class="group tabs-panel">
-                            <?php require INC_PATH . 'src/Plugins/WooCommerce/options.php'; ?>
+                            <?php include INC_PATH . 'src/Plugins/WooCommerce/options.php'; ?>
                         </div>
 						<?php endif; ?>
 
                         <div id="comments_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin/options/comments.php'; ?>
+							<?php include INC_PATH . 'admin/options/comments.php'; ?>
                         </div>
 
                         <div id="custom_script_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin/options/custom_script.php'; ?>
+							<?php include INC_PATH . 'admin/options/custom_script.php'; ?>
                         </div>
 
                         <div id="custom_css_settings" class="group tabs-panel">
-							<?php require INC_PATH . 'admin/options/custom_css.php'; ?>
+							<?php include INC_PATH . 'admin/options/custom_css.php'; ?>
                         </div>
 
                         <div class="save-bar">

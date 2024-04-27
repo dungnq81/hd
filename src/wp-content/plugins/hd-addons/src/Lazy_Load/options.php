@@ -17,7 +17,8 @@ $exclude_lazyload = implode( PHP_EOL, $exclude_lazyload );
 </div>
 
 <div class="section section-textarea" id="section_exclude_lazyload">
-	<label class="heading inline-heading" for="exclude_lazyload"><?php _e( 'Exclude CSS Classes from Lazy Load', TEXT_DOMAIN ) ?></label>
+	<label class="heading inline-heading" for="exclude_lazyload"><?php _e( 'Excluded images or iframes', TEXT_DOMAIN ) ?></label>
+    <div class="desc">The keywords include file-name, CSS classes of images or iframe codes that will be excluded.</div>
 	<div class="option">
 		<div class="controls">
 			<textarea class="hd-textarea hd-control" name="exclude_lazyload" id="exclude_lazyload" rows="4"><?php echo $exclude_lazyload; ?></textarea>

@@ -52,8 +52,8 @@ $dns_prefetch = $optimizer_options['dns_prefetch'] ?? [];
 
 <?php
 if ( Helper::is_addons_active() ) {
-    require ADDONS_PATH . 'src/Heartbeat/options.php';
-    require ADDONS_PATH . 'src/SVG/options.php';
-	require ADDONS_PATH . 'src/Minifier/options.php';
-	require ADDONS_PATH . 'src/LazyLoad/options.php';
+    include ADDONS_PATH . 'src/Heartbeat/options.php';
+	include ADDONS_PATH . 'src/SVG/options.php';
+	include ADDONS_PATH . 'src/Minifier/options.php';
+	include ADDONS_PATH . 'src/Lazy_Load/options.php';
 }

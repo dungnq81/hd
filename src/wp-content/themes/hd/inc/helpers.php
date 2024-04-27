@@ -128,7 +128,7 @@ if ( ! function_exists( 'sanitize_image' ) ) {
 function set_posts_per_page( int $post_limit = 12 ): void {
 	if ( ! is_admin() ) {
 
-		$limit_default = $limit_min = get_option( 'posts_per_page' );
+		$limit_default         = $limit_min = get_option( 'posts_per_page' );
 		$hd_posts_num_per_page = apply_filters( 'hd_posts_num_per_page', [] );
 
 		if ( ! empty( $hd_posts_num_per_page ) ) {
