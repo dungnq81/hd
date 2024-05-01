@@ -1,5 +1,8 @@
 <?php
 
+use Detection\Exception\MobileDetectException;
+use Detection\MobileDetect;
+
 \defined( 'ABSPATH' ) || die;
 
 /** ----------------------------------------------- */
@@ -7,8 +10,14 @@
 if ( ! function_exists( 'is_mobile' ) ) {
 	/**
 	 * @return bool
+	 * @throws MobileDetectException
 	 */
 	function is_mobile(): bool {
+
+		if ( class_exists( '\Detection\MobileDetect' ) ) {
+			return ( new MobileDetect() )->isMobile();
+		}
+
 		if ( function_exists( 'wp_is_mobile' ) ) {
 			return wp_is_mobile();
 		}

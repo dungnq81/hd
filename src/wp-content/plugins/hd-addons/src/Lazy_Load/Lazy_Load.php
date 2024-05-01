@@ -2,6 +2,8 @@
 
 namespace Addons\Lazy_Load;
 
+use Detection\Exception\MobileDetectException;
+
 \defined( 'ABSPATH' ) || die;
 
 final class Lazy_Load {
@@ -32,6 +34,9 @@ final class Lazy_Load {
 
 	/** ---------------------------------------- */
 
+	/**
+	 * @throws MobileDetectException
+	 */
 	public function __construct() {
 		$lazy_load = optimizer_options( 'lazy_load', 0 );
 

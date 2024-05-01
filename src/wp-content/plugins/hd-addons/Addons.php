@@ -3,6 +3,7 @@
 use Addons\Base_Slug\Base_Slug;
 use Addons\Custom_Email\Custom_Email;
 use Addons\Custom_Order\Custom_Order;
+use Addons\Font\Font;
 use Addons\Heartbeat\Heartbeat;
 use Addons\Lazy_Load\Lazy_Load;
 use Addons\Minifier\Minify_HTML;
@@ -72,10 +73,12 @@ final class Addons {
 		}
 
 		$minify_html  = $this->optimizer_options['minify_html'] ?? 0;
+		$font_optimize = $this->optimizer_options['font_optimize'] ?? 0;
 		$font_preload = $this->optimizer_options['font_preload'] ? implode( PHP_EOL, $this->optimizer_options['font_preload'] ) : '';
 		$dns_prefetch = $this->optimizer_options['dns_prefetch'] ? implode( PHP_EOL, $this->optimizer_options['dns_prefetch'] ) : '';
 
 		if ( ! empty( $minify_html ) ||
+		     ! empty( $font_optimize ) ||
 		     ! empty( $font_preload ) ||
 		     ! empty( $dns_prefetch )
 		) {
@@ -136,7 +139,7 @@ final class Addons {
 	 */
 	public function optimize_for_visitors( $html ): string {
 
-		$html = $this->font_preload( $html );
+		$html = ( new Font() )->run( $html );
 		$html = $this->dns_prefetch( $html );
 
 		$minify_html = $this->optimizer_options['minify_html'] ?? 0;
@@ -180,36 +183,10 @@ final class Addons {
 	/** ---------------------------------------- */
 
 	/**
-	 * @param $html
-	 *
-	 * @return array|mixed|string|string[]|null
-	 */
-	public function font_preload( $html ): mixed {
-
-		// Check if there are any urls inserted by the user.
-		$urls = $this->optimizer_options['font_preload'] ?? false;
-
-		// Return, if no url's are set by the user.
-		if ( empty( $urls ) ) {
-			return $html;
-		}
-
-		$new_html = '';
-
-		foreach ( $urls as $url ) {
-			$new_html .= '<link rel="preload" as="font" href="' . $url . '" crossorigin />';
-		}
-
-		return preg_replace( '~<\/title>~', '</title>' . $new_html, $html, 1 );
-	}
-
-	/** ---------------------------------------- */
-
-	/**
 	 * @return void
 	 */
 	public function admin_enqueue_scripts(): void {
-		if ( ! wp_style_is( 'woocommerce_admin_styles' ) ) {
+		if ( ! wp_style_is( 'woocommerce_admin_styles' ) ) { // tested
 			wp_enqueue_style( "select2-style", ADDONS_URL . "assets/css/select2.min.css", [], ADDONS_VERSION );
 		}
 

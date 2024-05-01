@@ -17,6 +17,8 @@ $exclude_lazyload = $optimizer_options['exclude_lazyload'] ?? [];
 $font_preload = $optimizer_options['font_preload'] ?? [];
 $dns_prefetch = $optimizer_options['dns_prefetch'] ?? [];
 
+$font_optimize = $optimizer_options['font_optimize'] ?? 0;
+
 ?>
 <h2><?php _e( 'Optimizer Settings', TEXT_DOMAIN ); ?></h2>
 <div class="section section-checkbox" id="section_https_enforce">
@@ -55,5 +57,6 @@ if ( Helper::is_addons_active() ) {
     include ADDONS_PATH . 'src/Heartbeat/options.php';
 	include ADDONS_PATH . 'src/SVG/options.php';
 	include ADDONS_PATH . 'src/Minifier/options.php';
+	include ADDONS_PATH . 'src/Font/options.php';
 	include ADDONS_PATH . 'src/Lazy_Load/options.php';
 }

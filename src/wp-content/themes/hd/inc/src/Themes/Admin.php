@@ -332,6 +332,7 @@ final class Admin {
 				'svgs'             => ! empty( $_POST['svgs'] ) ? sanitize_text_field( $_POST['svgs'] ) : 'disable',
 				'lazy_load'        => ! empty( $_POST['lazy_load'] ) ? sanitize_text_field( $_POST['lazy_load'] ) : 0,
 				'exclude_lazyload' => $exclude_lazyload,
+				'font_optimize'    => ! empty( $_POST['font_optimize'] ) ? sanitize_text_field( $_POST['font_optimize'] ) : 0,
 				'font_preload'     => $font_preload,
 				'dns_prefetch'     => $dns_prefetch,
 			];
@@ -440,7 +441,7 @@ final class Admin {
 
 			// Clear wp-rocket cache
 			if ( \defined( 'WP_ROCKET_VERSION' ) && \function_exists( 'rocket_clean_domain' ) ) {
-				rocket_clean_domain();
+				\rocket_clean_domain();
 			}
 		}
 
@@ -475,21 +476,6 @@ final class Admin {
                             </li>
                             <?php endif; ?>
 
-                            <?php if ( Helper::is_addons_active() ) :
-
-                                $hd_email_list = apply_filters( 'hd_email_list', [] );
-		                        if ( ! empty( $hd_email_list ) ) :
-                            ?>
-                            <li class="email-settings">
-                                <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', TEXT_DOMAIN ); ?></a>
-                            </li>
-                            <?php endif; ?>
-
-                            <li class="order-settings">
-                                <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', TEXT_DOMAIN ); ?></a>
-                            </li>
-                            <?php endif;?>
-
                             <li class="contact-info-settings">
                                 <a title="Contact Info" href="#contact_info_settings"><?php _e( 'Contact Info', TEXT_DOMAIN ); ?></a>
                             </li>
@@ -511,6 +497,21 @@ final class Admin {
                                 <a title="WooCommerce" href="#woocommerce_settings"><?php _e( 'WooCommerce', TEXT_DOMAIN ); ?></a>
                             </li>
 							<?php endif; ?>
+
+	                        <?php if ( Helper::is_addons_active() ) :
+
+		                        $hd_email_list = apply_filters( 'hd_email_list', [] );
+		                        if ( ! empty( $hd_email_list ) ) :
+			                        ?>
+                            <li class="email-settings">
+                                <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', TEXT_DOMAIN ); ?></a>
+                            </li>
+		                        <?php endif; ?>
+
+                            <li class="order-settings">
+                                <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', TEXT_DOMAIN ); ?></a>
+                            </li>
+	                        <?php endif;?>
 
                             <li class="comments-settings !hidden">
                                 <a title="Comments" href="#comments_settings"><?php _e( 'Comments', TEXT_DOMAIN ); ?></a>
@@ -537,19 +538,6 @@ final class Admin {
                         </div>
                         <?php endif; ?>
 
-	                    <?php if ( Helper::is_addons_active() ) :
-                            if ( ! empty( $hd_email_list ) ) :
-                        ?>
-                        <div id="email_settings" class="group tabs-panel">
-		                    <?php include ADDONS_PATH . 'src/Custom_Email/options.php'; ?>
-                        </div>
-                        <?php endif; ?>
-
-                        <div id="custom_order_settings" class="group tabs-panel">
-		                    <?php include ADDONS_PATH . 'src/Custom_Order/options.php'; ?>
-                        </div>
-		                <?php endif; ?>
-
                         <div id="contact_info_settings" class="group tabs-panel">
 							<?php include INC_PATH . 'admin/options/contact_info.php'; ?>
                         </div>
@@ -575,6 +563,19 @@ final class Admin {
                             <?php include INC_PATH . 'src/Plugins/WooCommerce/options.php'; ?>
                         </div>
 						<?php endif; ?>
+
+	                    <?php if ( Helper::is_addons_active() ) :
+		                    if ( ! empty( $hd_email_list ) ) :
+                        ?>
+                        <div id="email_settings" class="group tabs-panel">
+                            <?php include ADDONS_PATH . 'src/Custom_Email/options.php'; ?>
+                        </div>
+                        <?php endif; ?>
+
+                        <div id="custom_order_settings" class="group tabs-panel">
+		                    <?php include ADDONS_PATH . 'src/Custom_Order/options.php'; ?>
+                        </div>
+	                    <?php endif; ?>
 
                         <div id="comments_settings" class="group tabs-panel">
 							<?php include INC_PATH . 'admin/options/comments.php'; ?>

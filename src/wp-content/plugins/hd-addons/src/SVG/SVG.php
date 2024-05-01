@@ -9,7 +9,7 @@ use enshrined\svgSanitize\Sanitizer;
 \defined( 'ABSPATH' ) || die;
 
 /**
- * SVG Media support in WordPress
+ * SVG support in WordPress
  *
  * @author ShortPixel
  * Modified by HD Team

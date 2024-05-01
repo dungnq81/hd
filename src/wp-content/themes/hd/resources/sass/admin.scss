@@ -599,6 +599,10 @@ body.toplevel_page_hd-settings {
                 .desc {
                     /*width: 1000px;*/
                     max-width: calc(100% - 15px);
+
+                    :where(b, strong) {
+                        font-weight: 700;
+                    }
                 }
 
                 .option {

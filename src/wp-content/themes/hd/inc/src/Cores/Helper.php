@@ -110,10 +110,14 @@ final class Helper {
 			return $css;
 		}
 
-		$minifier = new Minify\CSS();
-		$minifier->add( $css );
+		if ( class_exists( '\MatthiasMullie\Minify\CSS' ) ) {
+			$minifier = new Minify\CSS();
+			$minifier->add( $css );
 
-		return $minifier->minify();
+			return $minifier->minify();
+		}
+
+		return $css;
 	}
 
 	// --------------------------------------------------
@@ -337,9 +341,9 @@ final class Helper {
 	 * @param string $uri
 	 * @param int $status
 	 *
-	 * @return void
+	 * @return true|void
 	 */
-	public static function redirect( string $uri = '', int $status = 302): void {
+	public static function redirect( string $uri = '', int $status = 302) {
 		if (!preg_match('#^(\w+:)?//#i', $uri)) {
 			$uri = Helper::home( $uri );
 		}
@@ -353,9 +357,9 @@ final class Helper {
 			echo '<noscript>';
 			echo '<meta http-equiv="refresh" content="0;url=' . $uri . '" />';
 			echo '</noscript>';
-		}
 
-		exit();
+			return true;
+		}
 	}
 
 	// -------------------------------------------------------------

@@ -21,10 +21,13 @@ class ComposerStaticInit87b0866f271891d99b07d8193ea233f6
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\VarDumper\\' => 28,
         ),
-        'M' => 
+        'P' => 
         array (
-            'MatthiasMullie\\PathConverter\\' => 29,
-            'MatthiasMullie\\Minify\\' => 22,
+            'Psr\\SimpleCache\\' => 16,
+        ),
+        'D' => 
+        array (
+            'Detection\\' => 10,
         ),
         'A' => 
         array (
@@ -45,13 +48,13 @@ class ComposerStaticInit87b0866f271891d99b07d8193ea233f6
         array (
             0 => __DIR__ . '/..' . '/symfony/var-dumper',
         ),
-        'MatthiasMullie\\PathConverter\\' => 
+        'Psr\\SimpleCache\\' => 
         array (
-            0 => __DIR__ . '/..' . '/matthiasmullie/path-converter/src',
+            0 => __DIR__ . '/..' . '/psr/simple-cache/src',
         ),
-        'MatthiasMullie\\Minify\\' => 
+        'Detection\\' => 
         array (
-            0 => __DIR__ . '/..' . '/matthiasmullie/minify/src',
+            0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/src',
         ),
         'Addons\\' => 
         array (

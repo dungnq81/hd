@@ -49,7 +49,7 @@ trait Cast {
 	 *
 	 * @return float
 	 */
-	public static function toFloat( $value ): float {
+	public static function toFloat( mixed $value ): float {
 		return (float) filter_var( $value, FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION | FILTER_FLAG_ALLOW_THOUSAND );
 	}
 

@@ -2,11 +2,26 @@
 
 namespace Cores\Traits;
 
+use DateTimeInterface;
+use Detection\Exception\MobileDetectException;
+use Detection\MobileDetect;
 use Exception;
 
 \defined( 'ABSPATH' ) || die;
 
 trait Base {
+
+	// --------------------------------------------------
+
+	/**
+	 * @param string $datetime
+	 *
+	 * @return string
+	 * @throws \Exception
+	 */
+	public static function ATOM_format( string $datetime = 'now' ): string {
+		return ( new \DateTime( $datetime ) )->format( DateTimeInterface::ATOM );
+	}
 
 	// --------------------------------------------------
 
@@ -17,7 +32,7 @@ trait Base {
 	 * @return string
 	 * @throws Exception
 	 */
-	function iso_duration_time( string $date_time_1, string $date_time_2 ): string {
+	public static function isoDuration( string $date_time_1, string $date_time_2 ): string {
 
 		$date_time_1 = new \DateTime( $date_time_1 );
 		$date_time_2 = new \DateTime( $date_time_2 );
@@ -25,13 +40,13 @@ trait Base {
 		$interval = $date_time_1->diff( $date_time_2 );
 
 		$isoDuration = 'P';
-		$isoDuration .= ($interval->y > 0) ? $interval->y . 'Y' : '';
-		$isoDuration .= ($interval->m > 0) ? $interval->m . 'M' : '';
-		$isoDuration .= ($interval->d > 0) ? $interval->d . 'D' : '';
+		$isoDuration .= ( $interval->y > 0 ) ? $interval->y . 'Y' : '';
+		$isoDuration .= ( $interval->m > 0 ) ? $interval->m . 'M' : '';
+		$isoDuration .= ( $interval->d > 0 ) ? $interval->d . 'D' : '';
 		$isoDuration .= 'T';
-		$isoDuration .= ($interval->h > 0) ? $interval->h . 'H' : '';
-		$isoDuration .= ($interval->i > 0) ? $interval->i . 'M' : '';
-		$isoDuration .= ($interval->s > 0) ? $interval->s . 'S' : '';
+		$isoDuration .= ( $interval->h > 0 ) ? $interval->h . 'H' : '';
+		$isoDuration .= ( $interval->i > 0 ) ? $interval->i . 'M' : '';
+		$isoDuration .= ( $interval->s > 0 ) ? $interval->s . 'S' : '';
 
 		return $isoDuration;
 	}
@@ -42,8 +57,14 @@ trait Base {
 	 * Test if the current browser runs on a mobile device (smartphone, tablet, etc.)
 	 *
 	 * @return boolean
+	 * @throws MobileDetectException
 	 */
 	public static function is_mobile(): bool {
+
+		if ( class_exists( '\Detection\MobileDetect' ) ) {
+			return ( new MobileDetect() )->isMobile();
+		}
+
 		if ( function_exists( 'wp_is_mobile' ) ) {
 			return wp_is_mobile();
 		}
