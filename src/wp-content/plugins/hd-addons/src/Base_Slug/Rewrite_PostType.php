@@ -71,6 +71,7 @@ class Rewrite_PostType {
 		global $post;
 
 		if ( ! is_preview() &&
+		     ! is_admin() &&
 		     is_single() &&
 		     is_object( $post ) &&
 		     in_array( $post->post_type, $this->base_slug_post_type )
@@ -146,8 +147,7 @@ class Rewrite_PostType {
 
 				return $replace;
 
-			}
-			else {
+			} else {
 				// extra
 				//...
 			}
