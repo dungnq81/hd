@@ -2,6 +2,7 @@
 
 namespace Themes;
 
+use Addons\Base_Slug\Base_Slug;
 use Addons\Custom_Order\Custom_Order;
 
 use Cores\Helper;
@@ -164,7 +165,7 @@ final class Admin {
 
 		if ( isset( $_POST['hd_submit_settings'] ) ) {
 
-			check_admin_referer( '_wpnonce_hd_settings' );
+			check_admin_referer( '_wpnonce_hd_settings_' . get_current_user_id() );
 
 			// ------------------------------------------------------
 
@@ -399,6 +400,26 @@ final class Admin {
 
 			// ------------------------------------------------------
 
+            /** Remove base slug */
+
+			if ( Helper::is_addons_active() ) {
+				$base_slug_reset = ! empty( $_POST['base_slug_reset'] ) ? sanitize_text_field( $_POST['base_slug_reset'] ) : '';
+
+				if ( empty( $base_slug_reset ) ) {
+					$custom_base_slug_options = [
+						'base_slug_post_type' => ! empty( $_POST['base_slug_post_type'] ) ? array_map( 'sanitize_text_field', $_POST['base_slug_post_type'] ) : [],
+						'base_slug_taxonomy'  => ! empty( $_POST['base_slug_taxonomy'] ) ? array_map( 'sanitize_text_field', $_POST['base_slug_taxonomy'] ) : [],
+					];
+					Helper::updateOption( 'custom_base_slug__options', $custom_base_slug_options );
+				} else {
+
+					// reset order
+					( new Base_Slug() )->reset_all();
+				}
+			}
+
+			// ------------------------------------------------------
+
 			/** Comments */
 
 			$comment_options = [
@@ -449,7 +470,7 @@ final class Admin {
         <div class="wrap" id="hd_container">
             <form id="hd_form" method="post" enctype="multipart/form-data">
 
-				<?php wp_nonce_field( '_wpnonce_hd_settings' ); ?>
+				<?php wp_nonce_field( '_wpnonce_hd_settings_' . get_current_user_id() ); ?>
 
                 <div id="main" class="filter-tabs clearfix">
 
@@ -498,15 +519,18 @@ final class Admin {
                             </li>
 							<?php endif; ?>
 
-	                        <?php if ( Helper::is_addons_active() ) :
-
+                            <?php if ( Helper::is_addons_active() ) : ?>
+                            <li class="base-slug-settings">
+                                <a title="Remove base slug" href="#base_slug_settings"><?php _e( 'Remove Base Slug', TEXT_DOMAIN ); ?></a>
+                            </li>
+	                        <?php
 		                        $hd_email_list = apply_filters( 'hd_email_list', [] );
 		                        if ( ! empty( $hd_email_list ) ) :
-			                        ?>
+                            ?>
                             <li class="email-settings">
                                 <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', TEXT_DOMAIN ); ?></a>
                             </li>
-		                        <?php endif; ?>
+                            <?php endif; ?>
 
                             <li class="order-settings">
                                 <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', TEXT_DOMAIN ); ?></a>
@@ -564,9 +588,12 @@ final class Admin {
                         </div>
 						<?php endif; ?>
 
-	                    <?php if ( Helper::is_addons_active() ) :
-		                    if ( ! empty( $hd_email_list ) ) :
-                        ?>
+                        <?php if ( Helper::is_addons_active() ) : ?>
+                        <div id="base_slug_settings" class="group tabs-panel">
+                            <?php include ADDONS_PATH . 'src/Base_Slug/options.php'; ?>
+                        </div>
+
+	                    <?php if ( ! empty( $hd_email_list ) ) : ?>
                         <div id="email_settings" class="group tabs-panel">
                             <?php include ADDONS_PATH . 'src/Custom_Email/options.php'; ?>
                         </div>

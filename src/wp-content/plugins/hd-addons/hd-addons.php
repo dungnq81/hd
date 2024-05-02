@@ -36,7 +36,8 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 require_once __DIR__ . '/vendor/autoload.php';
+
 require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/Addons.php';
 
-$addons = new Addons();
+( new Addons() );

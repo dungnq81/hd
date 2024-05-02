@@ -21,11 +21,17 @@ use Plugins\WpRocket;
 final class Theme {
 	public function __construct() {
 
-//		$excluded_assets = optimizer_options( 'exclude_lazyload', [] );
-//		$excluded_base   = apply_filters( 'hd_lazy_load_exclude', [] );
-//		$excluded_all    = array_unique( (array) array_merge( $excluded_base, $excluded_assets ) );
-
-//		dump($excluded_all);
+//		global $wp_post_types;
+//		foreach ( $wp_post_types as $type => $custom_post ) {
+//			if (
+//			     $custom_post->public === true &&
+//			     $custom_post->show_ui === true
+//			) {
+//				dump($custom_post);
+//			}
+//		}
+//
+//		dump($wp_post_types);
 
 		// plugins_loaded -> after_setup_theme -> init -> widgets_init -> wp_loaded -> admin_menu -> admin_init ...
 
