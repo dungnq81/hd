@@ -18,21 +18,14 @@ class Rewrite_PostType {
 	 * @return void
 	 */
 	public function run(): void {
-		if ( is_admin() ) {
-			return;
-		}
-
-		// only FE
 		if ( ! empty( $this->base_slug_post_type ) ) {
 
-			// remove base slug from URLs
-			add_filter( 'post_type_link', [ &$this, 'post_type_link' ], 10, 2 );
+			add_filter( 'post_type_link', [ &$this, 'post_type_link' ], 10, 2 ); // remove base slug from URLs
 
-			// auto redirect old URLs to non-base versions
-			add_action( 'wp', [ &$this, 'redirect' ] );
-
-			// Permalink Manager.
-			add_action( 'request', [ &$this, 'request' ], 11, 1 );
+			if ( ! is_admin() ) {
+				add_action( 'wp', [ &$this, 'redirect' ] ); // auto redirect old URLs to non-base versions
+				add_action( 'request', [ &$this, 'request' ], 11, 1 ); // Permalink Manager.
+			}
 		}
 	}
 
