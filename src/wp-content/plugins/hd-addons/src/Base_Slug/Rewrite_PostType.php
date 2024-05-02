@@ -148,8 +148,62 @@ class Rewrite_PostType {
 				return $replace;
 
 			} else {
-				// extra
-				//...
+
+				/**
+				 * @author KubiQ
+				 */
+				global $wp_rewrite;
+
+				foreach ( $this->base_slug_post_type as $post_type ) {
+					$query_var = get_post_type_object( $post_type )->query_var;
+					foreach ( $wp_rewrite->rules as $pattern => $rewrite ) {
+
+						// current rules
+						if ( str_contains( $pattern, $query_var ) ) {
+
+							if ( ! str_contains( $pattern, '(' . $query_var . ')' ) ) {
+								preg_match_all( '#' . $pattern . '#', '/' . $query_var . '/' . $url_request, $matches, PREG_SET_ORDER );
+							} else {
+								preg_match_all( '#' . $pattern . '#', $query_var . '/' . $url_request, $matches, PREG_SET_ORDER );
+							}
+
+							if ( count( $matches ) !== 0 && isset( $matches[0] ) ) {
+
+								// build URL query array
+								$rewrite = str_replace( 'index.php?', '', $rewrite );
+								parse_str( $rewrite, $url_query );
+								foreach ( $url_query as $key => $value ) {
+									$value = (int) str_replace( [ '$matches[', ']' ], '', $value );
+									if ( isset( $matches[0][ $value ] ) ) {
+										$value             = $matches[0][ $value ];
+										$url_query[ $key ] = $value;
+									}
+								}
+
+								// new path
+								if ( isset( $url_query[ $query_var ] ) ) {
+									$post_data = get_page_by_path( '/' . $url_query[ $query_var ], OBJECT, $this->base_slug_post_type );
+
+									if ( is_object( $post_data ) ) {
+										$replace['page']                  = '';
+										$replace['name']                  = $url_request;
+										$replace['post_type']             = $post_data->post_type;
+										$replace[ $post_data->post_type ] = $url_request;
+
+										// rewrites, pagination, etc.
+										foreach ( $url_query as $key => $value ) {
+											if ( $key != 'post_type' && ! str_starts_with( $value, '$matches' ) ) {
+												$replace[ $key ] = $value;
+											}
+										}
+
+										return $replace;
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 
