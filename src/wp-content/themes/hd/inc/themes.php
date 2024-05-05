@@ -569,7 +569,7 @@ add_filter( 'hd_smtp_plugins_support', function ( array $arr ) {
 // Custom Email list
 add_filter( 'hd_email_list', function ( array $arr ) {
 	$update_arr = [
-		'lien_he' => 'Liên hệ',
+		//'lien_he' => 'Liên hệ',
 	];
 
 	return array_merge( $arr, $update_arr );
@@ -593,8 +593,6 @@ add_filter( 'hd_lazy_load_exclude', function ( array $arr ) {
 	$update_arr = [
 		'no-lazy',
 		'skip-lazy',
-		'logo.png',
-		'logo.svg',
 	];
 
 	return array_merge( $arr, $update_arr );
