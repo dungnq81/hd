@@ -349,7 +349,7 @@ final class Helper {
 		}
 
 		if ( ! headers_sent() ) {
-			wp_redirect( $uri, $status);
+			wp_safe_redirect( $uri, $status);
 		} else {
 			echo '<script>';
 			echo 'window.location.href="' . $uri . '";';

@@ -9,6 +9,7 @@ $base_slug_taxonomy       = $custom_base_slug_options['base_slug_taxonomy'] ?? [
 
 <div class="section section-checkbox" id="section_base_slug_post_type">
 	<span class="heading block !fw-700"><?php _e( 'Post Types', ADDONS_TEXT_DOMAIN ); ?></span>
+    <div class="desc">Remove post-type base like <b>/product/*</b>, <b>/project/*</b> from post-type URLs. Example: default: <b>/product/sample-product/</b> - becomes: <b>/sample-product/</b></div>
 	<?php
 
 	$post_types = get_post_types(
@@ -39,6 +40,7 @@ $base_slug_taxonomy       = $custom_base_slug_options['base_slug_taxonomy'] ?? [
 
 <div class="section section-checkbox" id="section_base_slug_taxonomy">
 	<span class="heading block !fw-700"><?php _e( 'Taxonomies', ADDONS_TEXT_DOMAIN ); ?></span>
+    <div class="desc">Remove category base from category URLs. E.g. <b>/category/my-category/</b> becomes <b>/my-category/</b></div>
 	<?php
 
 	$taxonomies = get_taxonomies(

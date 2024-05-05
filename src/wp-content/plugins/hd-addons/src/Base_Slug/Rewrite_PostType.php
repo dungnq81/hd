@@ -51,15 +51,15 @@ class Rewrite_PostType {
 			     in_array( $custom_post->name, $this->base_slug_post_type )
 			) {
 				// woocommerce
-				if ( 'product' === $post->post_type &&
-				     check_plugin_active( 'woocommerce/woocommerce.php' )
-				) {
+				if ( 'product' === $post->post_type && check_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 					return str_replace( $this->_get_product_base(), '/', $permalink );
 				}
 
 				return str_replace( '/' . trim( $custom_post->rewrite['slug'], '/' ) . '/', '/', $permalink );
 			}
 		}
+
+		return $permalink;
 	}
 
 	// ------------------------------------------------------
@@ -85,7 +85,7 @@ class Rewrite_PostType {
 				remove_filter( 'post_type_link', [ &$this, 'post_type_link' ], 10 );
 				$old_url = get_permalink();
 
-				add_filter( 'post_type_link', [ &$this, 'post_type_link' ], 10, 3 );
+				add_filter( 'post_type_link', [ &$this, 'post_type_link' ], 10, 2 );
 				$fixed_url = str_replace( $old_url, $new_url, $real_url );
 
 				wp_safe_redirect( $fixed_url, 301 );
