@@ -104,6 +104,16 @@ body#tinymce {
                     bottom: 0;
                 }
             }
+
+            .alignleft {
+                float: none;
+                margin: 0.5em auto 0.5em 0;
+            }
+
+            .alignright {
+                float: none;
+                margin: 0.5em 0 0.5em auto;
+            }
         }
     }
 }

@@ -126,7 +126,7 @@ abstract class Abstract_Lazy_Load {
 					continue;
 				}
 
-				$orig_item = str_replace( $classes, $classes . ' lazyload', $item );
+				$orig_item = str_replace( $classes, $classes . ' lazy', $item );
 			} else {
 				$orig_item = $this->add_lazyload_class( $item );
 			}
@@ -148,7 +148,7 @@ abstract class Abstract_Lazy_Load {
 	/** ---------------------------------------- */
 
 	/**
-	 * Add classname to the html element.
+	 * Add class-name to the html element.
 	 *
 	 * @param $element
 	 *

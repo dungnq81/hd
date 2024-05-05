@@ -8,20 +8,20 @@ use Detection\Exception\MobileDetectException;
 
 final class Lazy_Load {
 
-	public $lazyload_iframes;
-	public $lazyload_videos;
-	public $lazyload_images;
+	public Lazy_Load_Iframes $lazyload_iframes;
+	public Lazy_Load_Videos $lazyload_videos;
+	public Lazy_Load_Images $lazyload_images;
 
 	public array $lazyload_hooks = [
 		'lazyload_iframes' => [
 			'the_content',
 			'widget_text',
 		],
-		'lazyload_videos' => [
+		'lazyload_videos'  => [
 			'the_content',
 			'widget_text',
 		],
-		'lazyload_images' => [
+		'lazyload_images'  => [
 			'the_content',
 			'widget_text',
 			'widget_block_content',
@@ -90,7 +90,7 @@ final class Lazy_Load {
 	public function load_scripts(): void {
 		wp_enqueue_script(
 			'lazy-js',
-			ADDONS_URL . '/assets/js/lazyload.js',
+			ADDONS_URL . 'assets/js/lazyload.js',
 			[],
 			ADDONS_VERSION,
 			true
