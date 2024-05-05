@@ -324,7 +324,7 @@ figure {
     }
 }
 
-:is(.grid-gap, .flex-gap) {
+:is(.grid-gap, .flex-gap, .gap) {
     @include media-gap($gap-xs, $gap, false);
 }
 
@@ -368,19 +368,19 @@ figure {
 /** @todo layout */
 @for $i from 1 through 12 {
 
-    .flex {
+    :is(.flex, .\!flex) {
         &.m-up-#{$i} > .cell, & > .cell.m-#{$i} {
             @include flex-self($i, 1, false);
         }
 
-        &.flex-gap {
+        &.gap {
             &.m-up-#{$i} > .cell, & > .cell.m-#{$i} {
                 @include flex-self($i, 1, $gap-xs);
             }
         }
     }
 
-    .grid {
+    :is(.grid, .\!grid) {
         &.m-up-#{$i} {
             @include grid-template($i, true);
         }
@@ -390,19 +390,19 @@ figure {
 @include mq-min(tablet) {
     @for $i from 1 through 12 {
 
-        .flex {
+        :is(.flex, .\!flex) {
             &.t-up-#{$i} > .cell, & > .cell.t-#{$i} {
                 @include flex-self($i, 1, false);
             }
 
-            &.flex-gap {
+            &.gap {
                 &.t-up-#{$i} > .cell, & > .cell.t-#{$i} {
                     @include flex-self($i, 1, $gap);
                 }
             }
         }
 
-        .grid {
+        :is(.grid, .\!grid) {
             &.t-up-#{$i} {
                 @include grid-template($i, true);
             }
@@ -413,19 +413,19 @@ figure {
 @include mq-min(desktop) {
     @for $i from 1 through 12 {
 
-        .flex {
+        :is(.flex, .\!flex) {
             &.d-up-#{$i} > .cell, & > .cell.d-#{$i} {
                 @include flex-self($i, 1, false);
             }
 
-            &.flex-gap {
+            &.gap {
                 &.d-up-#{$i} > .cell, & > .cell.d-#{$i} {
                     @include flex-self($i, 1, $gap);
                 }
             }
         }
 
-        .grid {
+        :is(.grid, .\!grid) {
             &.d-up-#{$i} {
                 @include grid-template($i, true);
             }

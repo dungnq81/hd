@@ -22,6 +22,8 @@ trait Url {
 	}
 
 	/**
+	 * Get the IP address from which the user is viewing the current page.
+	 *
 	 * @return string
 	 */
 	public static function getIpAddress(): string {

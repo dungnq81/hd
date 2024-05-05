@@ -61,7 +61,7 @@
     }
 }
 
-@mixin cell( $w: auto ) {
+@mixin cell( $w: 100% ) {
     flex: 0 0 auto;
     min-height: 0;
     min-width: 0;

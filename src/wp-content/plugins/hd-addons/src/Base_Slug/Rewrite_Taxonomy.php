@@ -80,7 +80,6 @@ class Rewrite_Taxonomy {
 
 				$category_base .= '/';
 
-				$wp_rewrite->extra_permastructs[ $custom_tax->name ]['struct'] = '%' . $custom_tax->name . '%';
 				return preg_replace( '`' . preg_quote( $category_base, '`' ) . '`u', '', $link, 1 );
 			}
 		}

@@ -41,6 +41,7 @@ final class Base_Slug {
 		$tag_rules         = [];
 		$product_rules     = [];
 		$product_cat_rules = [];
+		$product_tag_rules = [];
 		$taxonomy_rules    = [];
 
 		$taxonomies = get_taxonomies(
@@ -54,16 +55,17 @@ final class Base_Slug {
 		foreach ( $taxonomies as $type => $custom_tax ) {
 
 			// built-in
-			if ( $custom_tax->_builtin === true &&
-			     in_array( $custom_tax->name, $this->base_slug_taxonomy )
-			) {
+			if ( $custom_tax->_builtin === true && in_array( $custom_tax->name, $this->base_slug_taxonomy ) ) {
 
 				//----------------------------------
 				// category
 				//----------------------------------
 				if ( 'category' === $custom_tax->name ) {
-					$categories = get_categories( [ 'hide_empty' => false ] );
 
+					// Redirect support from old category base
+					$old_category_base = trim( str_replace( '%category%', '(.+)', $wp_rewrite->get_category_permastruct() ), '/' );
+
+					$categories = get_categories( [ 'hide_empty' => false ] );
 					foreach ( $categories as $category ) {
 						$category_slug = $category->slug;
 
@@ -73,15 +75,12 @@ final class Base_Slug {
 							$category_slug = get_category_parents( $category->parent, false, '/', true ) . $category_slug;
 						}
 
-						// Redirect support from Old Category Base
-						$old_base = str_replace( '%category%', '(.+)', $wp_rewrite->get_category_permastruct() );
-						$old_base = trim( $old_base, '/' );
-
 						$category_rules += [
 							'(' . $category_slug . ')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'                => 'index.php?category_name=$matches[1]&feed=$matches[2]',
 							'(' . $category_slug . ')/' . $wp_rewrite->pagination_base . '/?([0-9]{1,})/?$' => 'index.php?category_name=$matches[1]&paged=$matches[2]',
+							'(' . $category_slug . ')/embed/?$'                                             => 'index.php?category_name=$matches[1]&embed=true',
 							'(' . $category_slug . ')/?$'                                                   => 'index.php?category_name=$matches[1]',
-							$old_base . '$'                                                                 => 'index.php?addons_category_redirect=$matches[1]',
+							$old_category_base . '$'                                                        => 'index.php?addons_category_redirect=$matches[1]',
 						];
 					}
 				}
@@ -93,8 +92,7 @@ final class Base_Slug {
 					$tags = get_tags( [ 'hide_empty' => false ] );
 
 					foreach ( $tags as $tag ) {
-						$old_base = str_replace( '%post_tag%', '(.+)', $wp_rewrite->get_tag_permastruct() );
-						$old_base = trim( $old_base, '/' );
+						$old_base = trim( str_replace( '%post_tag%', '(.+)', $wp_rewrite->get_tag_permastruct() ), '/' );
 
 						$tag_rules += [
 							'(' . $tag->slug . ')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'                => 'index.php?tag=$matches[1]&feed=$matches[2]',
@@ -109,13 +107,11 @@ final class Base_Slug {
 			//----------------------------------
 			// product_cat
 			//----------------------------------
-			if ( 'product_cat' === $custom_tax->name &&
-			     check_plugin_active( 'woocommerce/woocommerce.php' )
-			) {
+			if ( 'product_cat' === $custom_tax->name && check_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 				$permalink_structure = wc_get_permalink_structure();
 
 				$old_category_base = trim( $permalink_structure['category_rewrite_slug'], '/' );
-				$category_base     = in_array( $custom_tax->name, $this->base_slug_taxonomy ) ? '' : $old_category_base . '/';
+				$category_base     = in_array( 'product_cat', $this->base_slug_taxonomy ) ? '' : $old_category_base . '/';
 				$use_parent_slug   = str_contains( $permalink_structure['product_rewrite_slug'], '%product_cat%' );
 
 				foreach ( $this->_get_categories( 'product_cat' ) as $category ) {
@@ -123,36 +119,75 @@ final class Base_Slug {
 					$cat_slug = $category_base . $cat_path;
 
 					$product_cat_rules += [
-						'(' . $cat_slug . ')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'                => 'index.php?product_cat=' . $category['slug'] . '&feed=$matches[1]',
-						'(' . $cat_slug . ')/' . $wp_rewrite->pagination_base . '/?([0-9]{1,})/?$' => 'index.php?product_cat=' . $category['slug'] . '&paged=$matches[1]',
-						'(' . $cat_slug . ')/embed/?$'                                             => 'index.php?product_cat=' . $category['slug'] . '&embed=true',
-						'(' . $cat_slug . ')/?$'                                                   => 'index.php?product_cat=' . $category['slug'],
+						'(' . $cat_slug . ')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'                => 'index.php?product_cat=$matches[1]&feed=$matches[2]',
+						'(' . $cat_slug . ')/' . $wp_rewrite->pagination_base . '/?([0-9]{1,})/?$' => 'index.php?product_cat=$matches[1]&paged=$matches[2]',
+						'(' . $cat_slug . ')/embed/?$'                                             => 'index.php?product_cat=$matches[1]&embed=true',
+						'(' . $cat_slug . ')/?$'                                                   => 'index.php?product_cat=$matches[1]',
 						$old_category_base . '/(.+)$'                                              => 'index.php?addons_category_redirect=$matches[1]',
 					];
 
-					if ( $use_parent_slug &&
-					     in_array( 'product', $this->base_slug_post_type )
-					) {
+					if ( $use_parent_slug && in_array( 'product', $this->base_slug_post_type ) ) {
 						$product_rules += [
-							'(' . $cat_path . ')/([^/]+)/?$'                                                           => 'index.php?product=$matches[1]',
-							'(' . $cat_path . ')/([^/]+)/' . $wp_rewrite->comments_pagination_base . '-([0-9]{1,})/?$' => 'index.php?product=$matches[1]&cpage=$matches[2]',
+							$cat_path . '/([^/]+)/?$'                                                           => 'index.php?product=$matches[1]',
+							$cat_path . '/([^/]+)/' . $wp_rewrite->comments_pagination_base . '-([0-9]{1,})/?$' => 'index.php?product=$matches[1]&cpage=$matches[2]',
 						];
 					}
 				}
 			}
 
 			//----------------------------------
+			// product_tag
+			//----------------------------------
+			if ( 'product_tag' === $custom_tax->name &&
+			     in_array( 'product_tag', $this->base_slug_taxonomy ) &&
+			     check_plugin_active( 'woocommerce/woocommerce.php' )
+			) {
+				$permalink_structure = wc_get_permalink_structure();
+				$old_category_base   = trim( $permalink_structure['tag_rewrite_slug'], '/' );
+
+				foreach ( $this->_get_categories( 'product_tag' ) as $category ) {
+					$cat_slug          = $category['slug'];
+					$product_tag_rules += [
+						'(' . $cat_slug . ')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'                => 'index.php?product_tag=$matches[1]&feed=$matches[2]',
+						'(' . $cat_slug . ')/' . $wp_rewrite->pagination_base . '/?([0-9]{1,})/?$' => 'index.php?product_tag=$matches[1]&paged=$matches[2]',
+						'(' . $cat_slug . ')/embed/?$'                                             => 'index.php?product_tag=$matches[1]&embed=true',
+						'(' . $cat_slug . ')/?$'                                                   => 'index.php?product_tag=$matches[1]',
+						$old_category_base . '/(.+)$'                                              => 'index.php?addons_category_redirect=$matches[1]',
+					];
+				}
+			}
+
+			//----------------------------------
 			// Custom taxonomy
 			//----------------------------------
+			if ( $custom_tax->_builtin === false &&
+			     'product_cat' !== $custom_tax->name &&
+			     'product_tag' !== $custom_tax->name &&
+			     in_array( $custom_tax->name, $this->base_slug_taxonomy )
+			) {
+				// Redirect support from old category base
+				$old_taxonomy_base = trim( str_replace( '%' . $custom_tax->name . '%', '(.+)', $wp_rewrite->get_extra_permastruct( $custom_tax->name ) ), '/' );
 
+				$taxonomies = $this->_get_categories( $custom_tax->name );
+				foreach ( $taxonomies as $taxonomy ) {
+					$taxonomy_slug = $this->_get_category_fullpath( $taxonomy, $custom_tax->name );
+
+					$taxonomy_rules += [
+						'(' . $taxonomy_slug . ')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'                => 'index.php?' . $custom_tax->name . '=$matches[1]&feed=$matches[2]',
+						'(' . $taxonomy_slug . ')/embed/?$'                                             => 'index.php?' . $custom_tax->name . '=$matches[1]&embed=true',
+						'(' . $taxonomy_slug . ')/' . $wp_rewrite->pagination_base . '/?([0-9]{1,})/?$' => 'index.php?' . $custom_tax->name . '=$matches[1]&paged=$matches[2]',
+						'(' . $taxonomy_slug . ')/?$'                                                   => 'index.php?' . $custom_tax->name . '=$matches[1]',
+						$old_taxonomy_base . '$'                                                        => 'index.php?addons_category_redirect=$matches[1]',
+					];
+				}
+			}
 		}
 
 		$this->_wpml_restore_term_filters();
-		$rules = empty( $rules ) ? [] : $rules;
+		$rules       = empty( $rules ) ? [] : $rules;
+		$added_rules = $category_rules + $tag_rules + $product_rules + $product_cat_rules + $product_tag_rules + $taxonomy_rules;
 
-		dump( $taxonomy_rules );
-
-		return $category_rules + $tag_rules + $product_rules + $product_cat_rules + $taxonomy_rules + $rules;
+		return $added_rules + $rules;
 	}
 
 	// ------------------------------------------------------

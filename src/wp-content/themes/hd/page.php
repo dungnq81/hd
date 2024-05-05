@@ -23,20 +23,20 @@ if ( is_active_sidebar( 'hd-home-sidebar' ) ) :
 endif;
 
 ?>
-    <div class="layout-demo grid-container">
-        <div class="grid-x grid-gap is-grid m-up-4 t-up-3 d-up-2">
-            <div class="cell cell-1" style="background-color: #0a4b78;padding: 20px;">cell-1</div>
-            <div class="cell cell-2" style="background-color: #0c6ca0;padding: 20px;">cell-2</div>
-            <div class="cell cell-3" style="background-color: #00a32a;padding: 20px;">cell-3</div>
-            <div class="cell cell-4" style="background-color: #0c88b4;padding: 20px;">cell-4</div>
-            <div class="cell cell-5" style="background-color: #6f42c1;padding: 20px;">cell-5</div>
-            <div class="cell cell-6" style="background-color: #8a6d3b;padding: 20px;">cell-6</div>
-            <div class="cell cell-7" style="background-color: #f4a224;padding: 20px;">cell-7</div>
-            <div class="cell cell-8" style="background-color: darkred;padding: 20px;">cell-8</div>
-            <div class="cell cell-9" style="background-color: #ff2222;padding: 20px;">cell-9</div>
-            <div class="cell cell-10" style="background-color: mediumblue;padding: 20px;">cell-10</div>
-            <div class="cell cell-11" style="background-color: purple;padding: 20px;">cell-11</div>
-            <div class="cell cell-12" style="background-color: yellowgreen;padding: 20px;">cell-12</div>
+    <div class="layout-demo flex-container">
+        <div class="!flex flex-x gap">
+            <div class="cell cell-1 m-4 t-3 d-2" style="background-color: #0a4b78;">cell-1</div>
+            <div class="cell cell-2 m-4 t-3 d-2" style="background-color: #0c6ca0;">cell-2</div>
+            <div class="cell cell-3 m-4 t-3 d-2" style="background-color: #00a32a;">cell-3</div>
+            <div class="cell cell-4 m-4 t-3 d-2" style="background-color: #0c88b4;">cell-4</div>
+            <div class="cell cell-5" style="background-color: #6f42c1;">cell-5</div>
+            <div class="cell cell-6" style="background-color: #8a6d3b;">cell-6</div>
+            <div class="cell cell-7" style="background-color: #f4a224;">cell-7</div>
+            <div class="cell cell-8" style="background-color: darkred;">cell-8</div>
+            <div class="cell cell-9" style="background-color: #ff2222;">cell-9</div>
+            <div class="cell cell-10" style="background-color: mediumblue;">cell-10</div>
+            <div class="cell cell-11" style="background-color: purple;">cell-11</div>
+            <div class="cell cell-12" style="background-color: yellowgreen;">cell-12</div>
         </div>
     </div>
 <?php
