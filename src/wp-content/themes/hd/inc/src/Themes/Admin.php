@@ -385,8 +385,9 @@ final class Admin {
 			if ( Helper::is_woocommerce_active() ) {
 
 				$woocommerce_options = [
-					'remove_legacy_coupon' => ! empty( $_POST['remove_legacy_coupon'] ) ? sanitize_text_field( $_POST['remove_legacy_coupon'] ) : '',
-					'woocommerce_jsonld'   => ! empty( $_POST['woocommerce_jsonld'] ) ? sanitize_text_field( $_POST['woocommerce_jsonld'] ) : '',
+					'remove_legacy_coupon'    => ! empty( $_POST['remove_legacy_coupon'] ) ? sanitize_text_field( $_POST['remove_legacy_coupon'] ) : '',
+					'woocommerce_jsonld'      => ! empty( $_POST['woocommerce_jsonld'] ) ? sanitize_text_field( $_POST['woocommerce_jsonld'] ) : '',
+					'woocommerce_default_css' => ! empty( $_POST['woocommerce_default_css'] ) ? sanitize_text_field( $_POST['woocommerce_default_css'] ) : '',
 				];
 
 				Helper::updateOption( 'woocommerce__options', $woocommerce_options, true );

@@ -33,7 +33,7 @@ mix
     .js(resources + '/js/plugins/flex-gap.js', assets + '/js/plugins')
     .js(resources + '/js/plugins/load-scripts.js', assets + '/js/plugins')
     .js(resources + '/js/plugins/passive-events.js', assets + '/js/plugins')
-    .js(resources + '/js/plugins/highlight.js', assets + '/js/plugins')
+    .js(resources + '/js/plugins/mark.js', assets + '/js/plugins')
 
     .js(resources + '/js/plugins/swiper.js', assets + '/js/plugins')
     .js(resources + '/js/plugins/woocommerce.js', assets + '/js/plugins')
