@@ -62,6 +62,8 @@ $base_slug_taxonomy       = $custom_base_slug_options['base_slug_taxonomy'] ?? [
         <div class="explain"><?php echo $label; ?></div>
     </div>
 	<?php endforeach; ?>
+
+    <div class="desc !mt-30" style="color:#d63638">If encountering a 404 error, navigate to <b>Settings</b> -> <b>Permalinks</b>, and click "<b>Save Changes</b>".</div>
 </div>
 
 <div class="section section-checkbox" id="section_base_slug_reset">

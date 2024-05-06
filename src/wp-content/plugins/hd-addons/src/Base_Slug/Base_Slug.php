@@ -78,7 +78,7 @@ final class Base_Slug {
 						$category_rules += [
 							'(' . $category_slug . ')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'                => 'index.php?category_name=$matches[1]&feed=$matches[2]',
 							'(' . $category_slug . ')/' . $wp_rewrite->pagination_base . '/?([0-9]{1,})/?$' => 'index.php?category_name=$matches[1]&paged=$matches[2]',
-							'(' . $category_slug . ')/embed/?$'                                             => 'index.php?category_name=$matches[1]&embed=true',
+							//'(' . $category_slug . ')/embed/?$'                                             => 'index.php?category_name=$matches[1]&embed=true',
 							'(' . $category_slug . ')/?$'                                                   => 'index.php?category_name=$matches[1]',
 							$old_category_base . '$'                                                        => 'index.php?addons_category_redirect=$matches[1]',
 						];
@@ -150,7 +150,7 @@ final class Base_Slug {
 					$product_tag_rules += [
 						'(' . $cat_slug . ')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'                => 'index.php?product_tag=$matches[1]&feed=$matches[2]',
 						'(' . $cat_slug . ')/' . $wp_rewrite->pagination_base . '/?([0-9]{1,})/?$' => 'index.php?product_tag=$matches[1]&paged=$matches[2]',
-						'(' . $cat_slug . ')/embed/?$'                                             => 'index.php?product_tag=$matches[1]&embed=true',
+						//'(' . $cat_slug . ')/embed/?$'                                             => 'index.php?product_tag=$matches[1]&embed=true',
 						'(' . $cat_slug . ')/?$'                                                   => 'index.php?product_tag=$matches[1]',
 						$old_category_base . '/(.+)$'                                              => 'index.php?addons_category_redirect=$matches[1]',
 					];
@@ -174,7 +174,7 @@ final class Base_Slug {
 
 					$taxonomy_rules += [
 						'(' . $taxonomy_slug . ')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'                => 'index.php?' . $custom_tax->name . '=$matches[1]&feed=$matches[2]',
-						'(' . $taxonomy_slug . ')/embed/?$'                                             => 'index.php?' . $custom_tax->name . '=$matches[1]&embed=true',
+						//'(' . $taxonomy_slug . ')/embed/?$'                                             => 'index.php?' . $custom_tax->name . '=$matches[1]&embed=true',
 						'(' . $taxonomy_slug . ')/' . $wp_rewrite->pagination_base . '/?([0-9]{1,})/?$' => 'index.php?' . $custom_tax->name . '=$matches[1]&paged=$matches[2]',
 						'(' . $taxonomy_slug . ')/?$'                                                   => 'index.php?' . $custom_tax->name . '=$matches[1]',
 						$old_taxonomy_base . '$'                                                        => 'index.php?addons_category_redirect=$matches[1]',
