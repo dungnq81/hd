@@ -34,10 +34,11 @@ $woocommerce_default_css = $woocommerce__options['woocommerce_default_css'] ?? '
 
 <div class="section section-checkbox" id="woocommerce_default_css">
     <label class="heading" for="woocommerce_default_css"><?php _e( 'Remove WooCommerce CSS', TEXT_DOMAIN ); ?></label>
+    <div class="desc">Remove all default CSS of WooCommerce.</div>
     <div class="option">
         <div class="controls">
             <input type="checkbox" class="hd-checkbox hd-control" name="woocommerce_default_css" id="woocommerce_default_css" <?php checked( $woocommerce_default_css, 1 ); ?> value="1">
         </div>
-        <div class="explain"><?php _e( 'Remove all default WooCommerce CSS', TEXT_DOMAIN ); ?></div>
+        <div class="explain"><?php _e( 'Remove all', TEXT_DOMAIN ); ?></div>
     </div>
 </div>
