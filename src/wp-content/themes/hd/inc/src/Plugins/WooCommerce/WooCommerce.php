@@ -90,7 +90,10 @@ final class WooCommerce {
 	public function enqueue_scripts(): void {
 
 		// remove 'woocommerce-inline-inline-css'
-		wp_deregister_style( 'woocommerce-inline' );
+		$woocommerce_default_css = $this->woocommerce_options['woocommerce_default_css'] ?? '';
+		if ( $woocommerce_default_css ) {
+			wp_deregister_style( 'woocommerce-inline' );
+		}
 
 		wp_enqueue_style( 'hdwc-style', ASSETS_URL . "css/plugins/woocommerce.css", [ "app-style" ], THEME_VERSION );
 		wp_enqueue_script( "hdwc", ASSETS_URL . "js/plugins/woocommerce.js", [ "app" ], THEME_VERSION, true );
@@ -111,7 +114,10 @@ final class WooCommerce {
 		//add_theme_support( 'wc-product-gallery-slider' );
 
 		// Remove woocommerce default styles
-		add_filter( 'woocommerce_enqueue_styles', '__return_false' );
+		$woocommerce_default_css = $this->woocommerce_options['woocommerce_default_css'] ?? '';
+		if ( $woocommerce_default_css ) {
+			add_filter( 'woocommerce_enqueue_styles', '__return_false' );
+		}
 	}
 
 	// ------------------------------------------------------
