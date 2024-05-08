@@ -229,9 +229,38 @@ figure {
     position: absolute !important;
 }
 
-//...
+// show
+.md\:show {
+    @include mq-max(tablet) {
+        display: none;
+    }
+}
+
+.\!md\:show {
+    @include mq-max(tablet) {
+        display: none !important;
+    }
+}
+
+.lg\:show {
+    @include mq-max(desktop) {
+        display: none;
+    }
+}
+
+.\!lg\:show {
+    @include mq-max(desktop) {
+        display: none !important;
+    }
+}
+
+// hide
 .hidden {
     display: none;
+}
+
+.\!hidden {
+    display: none !important;
 }
 
 .md\:hidden {
@@ -240,19 +269,15 @@ figure {
     }
 }
 
-.lg\:hidden {
-    @include mq-min(desktop) {
-        display: none;
-    }
-}
-
-.\!hidden {
-    display: none !important;
-}
-
 .\!md\:hidden {
     @include mq-min(tablet) {
         display: none !important;
+    }
+}
+
+.lg\:hidden {
+    @include mq-min(desktop) {
+        display: none;
     }
 }
 

@@ -260,7 +260,7 @@ final class Helper {
 
 		$_fields = \get_fields( $id ) ?? [];
 
-		return Helper::toObject( $_fields );
+		return self::toObject( $_fields );
 	}
 
 	// -------------------------------------------------------------
@@ -345,7 +345,7 @@ final class Helper {
 	 */
 	public static function redirect( string $uri = '', int $status = 302) {
 		if (!preg_match('#^(\w+:)?//#i', $uri)) {
-			$uri = Helper::home( $uri );
+			$uri = self::home( $uri );
 		}
 
 		if ( ! headers_sent() ) {

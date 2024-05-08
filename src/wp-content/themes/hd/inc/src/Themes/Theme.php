@@ -333,9 +333,9 @@ final class Theme {
 			return preg_replace( '/(<img[^>]+)(style=\"[^\"]+\")([^>]+)(>)/', '${1}${3}${4}', $html );
 		}, 10, 1 );
 
-		add_filter( 'image_send_to_editor', function ( $html ) {
-			return preg_replace( '/(<img[^>]+)(style=\"[^\"]+\")([^>]+)(>)/', '${1}${3}${4}', $html );
-		}, 10, 1 );
+//		add_filter( 'image_send_to_editor', function ( $html ) {
+//			return preg_replace( '/(<img[^>]+)(style=\"[^\"]+\")([^>]+)(>)/', '${1}${3}${4}', $html );
+//		}, 10, 1 );
 
 		add_filter( 'the_content', function ( $html ) {
 			return preg_replace( '/(<img[^>]+)(style=\"[^\"]+\")([^>]+)(>)/', '${1}${3}${4}', $html );

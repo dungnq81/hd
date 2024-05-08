@@ -126,7 +126,7 @@ if ( ! function_exists( 'sanitize_image' ) ) {
  * @return void
  */
 function set_posts_per_page( int $post_limit = 12 ): void {
-	if ( ! is_admin() ) {
+	if ( ! is_admin() && ! is_main_query() ) {
 
 		$limit_default         = $limit_min = get_option( 'posts_per_page' );
 		$hd_posts_num_per_page = apply_filters( 'hd_posts_num_per_page', [] );
@@ -137,7 +137,7 @@ function set_posts_per_page( int $post_limit = 12 ): void {
 
 		if ( $post_limit != $limit_default && $post_limit != $limit_min ) {
 			add_action( 'pre_get_posts', function ( $query ) use ( $post_limit ) {
-				! $query->is_main_query() && $query->set( 'posts_per_page', $post_limit );
+				$query->set( 'posts_per_page', $post_limit );
 			} );
 		}
 	}

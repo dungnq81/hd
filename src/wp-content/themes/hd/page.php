@@ -7,8 +7,7 @@
  * and that other 'pages' on your WordPress site will use a
  * different template.
  *
- * @package eHD
- * @since 1.0.0
+ * @package HD
  */
 
 \defined( 'ABSPATH' ) || die;

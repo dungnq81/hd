@@ -34,7 +34,7 @@ trait Wp {
 	 */
 	public static function csrf_token( mixed $action = - 1, string $name = '_csrf_token', bool $referer = false, bool $display = true ): string {
 		$name        = esc_attr( $name );
-		$nonce_field = '<input type="hidden" id="' . Helper::random( 9 ) . '" name="' . $name . '" value="' . wp_create_nonce( $action ) . '" />';
+		$nonce_field = '<input type="hidden" id="' . self::random( 9 ) . '" name="' . $name . '" value="' . wp_create_nonce( $action ) . '" />';
 
 		if ( $referer ) {
 			$nonce_field .= wp_referer_field( false );
@@ -178,20 +178,24 @@ trait Wp {
 			return null;
 		}
 
-		$_return = [
-			'alt'         => get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true ),
-			'caption'     => $attachment->post_excerpt,
-			'description' => $attachment->post_content,
-			'href'        => get_permalink( $attachment->ID ),
-			'src'         => $attachment->guid,
-			'title'       => $attachment->post_title,
-		];
+		if ( ! empty( $attachment ) ) {
+			$_return = [
+				'alt'         => get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true ),
+				'caption'     => $attachment->post_excerpt,
+				'description' => $attachment->post_content,
+				'href'        => get_permalink( $attachment->ID ),
+				'src'         => $attachment->guid,
+				'title'       => $attachment->post_title,
+			];
 
-		if ( true === $return_object ) {
-			return self::toObject( $_return );
+			if ( true === $return_object ) {
+				$_return = self::toObject( $_return );
+			}
+
+			return $_return;
 		}
 
-		return $_return;
+		return null;
 	}
 
 	// -------------------------------------------------------------
@@ -269,7 +273,7 @@ trait Wp {
 
 	/**
 	 * @param string $option
-	 * @param mixed $default
+	 * @param bool|mixed $default
 	 * @param bool $static_cache
 	 *
 	 * @return false|mixed
@@ -303,7 +307,7 @@ trait Wp {
 
 	/**
 	 * @param string $mod_name
-	 * @param false|mixed $default
+	 * @param bool|mixed $default
 	 *
 	 * @return false|mixed
 	 */
@@ -364,7 +368,7 @@ trait Wp {
 	 * @param int $posts_per_page
 	 * @param array $orderby
 	 * @param array $meta_query
-	 * @param bool|string $strtotime_recent - strtotime('last week');
+	 * @param bool|string $strtotime_recent - strtotime( 'last week' );
 	 *
 	 * @return bool|WP_Query
 	 */
@@ -375,20 +379,21 @@ trait Wp {
 		int $posts_per_page = 12,
 		array $orderby = [ 'date' => 'DESC' ],
 		array $meta_query = [],
-		bool|string $strtotime_recent = false ): WP_Query|bool
-	{
+		bool|string $strtotime_recent = false
+	): WP_Query|bool {
 		if ( ! $term ) {
 			return false;
 		}
 
-		$_args = [
+		$posts_per_page = $posts_per_page ?: 10;
+		$_args          = [
 			'post_type'              => $post_type ?: 'post',
 			'post_status'            => 'publish',
-			'posts_per_page'         => $posts_per_page ?: 10,
+			'posts_per_page'         => $posts_per_page,
 			'ignore_sticky_posts'    => true,
 			'no_found_rows'          => true,
-			//'update_post_meta_cache' => false,
-			//'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
 			'tax_query'              => [ 'relation' => 'AND' ],
 		];
 
@@ -442,7 +447,7 @@ trait Wp {
 		     'product' == $post_type
 		) {
 			$product_visibility_term_ids = \wc_get_product_visibility_term_ids();
-			$_args['tax_query'][] = [
+			$_args['tax_query'][]        = [
 				[
 					'taxonomy' => 'product_visibility',
 					'field'    => 'term_taxonomy_id',
@@ -451,6 +456,8 @@ trait Wp {
 				],
 			]; // WPCS: slow query ok.
 		}
+
+		set_posts_per_page( $posts_per_page );
 
 		$_query = new WP_Query( $_args );
 		if ( ! $_query->have_posts() ) {
@@ -482,12 +489,13 @@ trait Wp {
 		int $posts_per_page = 12,
 		array $orderby = [ 'date' => 'DESC' ],
 		array $meta_query = [],
-		bool|string $strtotime_str = false ): WP_Query|false
-	{
-		$_args = [
+		bool|string $strtotime_str = false
+	): WP_Query|false {
+		$posts_per_page = $posts_per_page ?: 12;
+		$_args          = [
 			'post_type'              => $post_type ?: 'post',
 			'post_status'            => 'publish',
-			'posts_per_page'         => $posts_per_page ?: 12,
+			'posts_per_page'         => $posts_per_page,
 			'no_found_rows'          => true,
 			'ignore_sticky_posts'    => true,
 			'update_post_meta_cache' => false,
@@ -547,7 +555,7 @@ trait Wp {
 		     'product' == $post_type
 		) {
 			$product_visibility_term_ids = wc_get_product_visibility_term_ids();
-			$_args['tax_query'][] = [
+			$_args['tax_query'][]        = [
 				[
 					'taxonomy' => 'product_visibility',
 					'field'    => 'term_taxonomy_id',
@@ -556,6 +564,9 @@ trait Wp {
 				],
 			]; // WPCS: slow query ok.
 		}
+
+		// set custom posts_per_page
+		set_posts_per_page( $posts_per_page );
 
 		// query
 		$r = new WP_Query( $_args );
@@ -935,12 +946,12 @@ trait Wp {
 
 		if ( $image ) {
 			[ $src, $width, $height ] = $image;
-			$hwstring   = image_hwstring( $width, $height );
+			$hwstring = image_hwstring( $width, $height );
 
-			$default_attr = array(
-				'src'   => $src,
-				'alt'   => trim( strip_tags( get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ) ) ),
-			);
+			$default_attr = [
+				'src' => $src,
+				'alt' => trim( strip_tags( get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ) ) ),
+			];
 
 			$context = apply_filters( 'wp_get_attachment_image_context', 'wp_get_attachment_image' );
 			$attr    = wp_parse_args( $attr, $default_attr );
@@ -958,7 +969,7 @@ trait Wp {
 			$attr = array_merge( $attr, $loading_optimization_attr );
 
 			// Omit the `decoding` attribute if the value is invalid according to the spec.
-			if ( empty( $attr['decoding'] ) || ! in_array( $attr['decoding'], array( 'async', 'sync', 'auto' ), true ) ) {
+			if ( empty( $attr['decoding'] ) || ! in_array( $attr['decoding'], [ 'async', 'sync', 'auto' ], true ) ) {
 				unset( $attr['decoding'] );
 			}
 

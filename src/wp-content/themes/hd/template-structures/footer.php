@@ -30,8 +30,8 @@ if ( ! function_exists( '__wp_footer' ) ) {
 				sprintf(
 					'<a title="%1$s" aria-label="%1$s" rel="nofollow" href="#" class="back-to-top toTop" data-scroll-speed="%2$s" data-start-scroll="%3$s" data-glyph=""></a>',
 					esc_attr__( 'Scroll back to top', TEXT_DOMAIN ),
-					absint( apply_filters( 'ehd_back_to_top_scroll_speed', 400 ) ),
-					absint( apply_filters( 'ehd_back_to_top_start_scroll', 300 ) ),
+					absint( apply_filters( 'hd_back_to_top_scroll_speed', 400 ) ),
+					absint( apply_filters( 'hd_back_to_top_start_scroll', 300 ) ),
 				)
 			);
 		}
@@ -186,6 +186,6 @@ if ( ! function_exists( '__hd_credits' ) ) {
 			__( 'HD Agency', TEXT_DOMAIN )
 		);
 
-		echo apply_filters( 'ehd_copyright', $copyright ); // phpcs:ignore
+		echo apply_filters( 'hd_copyright', $copyright ); // phpcs:ignore
 	}
 }

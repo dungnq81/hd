@@ -138,9 +138,9 @@ if ( ! function_exists( '__top_header' ) ) {
 	        else echo '<div class="grid-container fluid">';
 
 		    for ( $i = 1; $i <= $top_header_cols; $i++ ) :
-			    if ( is_active_sidebar( 'ehd-top-header-' . $i . '-sidebar' )) :
+			    if ( is_active_sidebar( 'hd-top-header-' . $i . '-sidebar' )) :
 				    echo '<div class="cell cell-' . $i . '">';
-				    dynamic_sidebar( 'ehd-top-header-' . $i . '-sidebar' );
+				    dynamic_sidebar( 'hd-top-header-' . $i . '-sidebar' );
 				    echo '</div>';
 			    endif;
             endfor;
@@ -173,9 +173,9 @@ if ( ! function_exists( '__header' ) ) {
 	        else echo '<div class="grid-container fluid">';
 
 	        for ( $i = 1; $i <= $header_cols; $i++ ) :
-		        if ( is_active_sidebar( 'ehd-header-' . $i . '-sidebar' )) :
+		        if ( is_active_sidebar( 'hd-header-' . $i . '-sidebar' )) :
 			        echo '<div class="cell cell-' . $i . '">';
-			        dynamic_sidebar( 'ehd-header-' . $i . '-sidebar' );
+			        dynamic_sidebar( 'hd-header-' . $i . '-sidebar' );
 			        echo '</div>';
 		        endif;
 	        endfor;
@@ -208,9 +208,9 @@ if ( ! function_exists( '__bottom_header' ) ) {
             else echo '<div class="grid-container fluid">';
 
             for ( $i = 1; $i <= $bottom_header_cols; $i++ ) :
-	            if ( is_active_sidebar( 'ehd-bottom-header-' . $i . '-sidebar' )) :
+	            if ( is_active_sidebar( 'hd-bottom-header-' . $i . '-sidebar' )) :
 		            echo '<div class="cell cell-' . $i . '">';
-		            dynamic_sidebar( 'ehd-bottom-header-' . $i . '-sidebar' );
+		            dynamic_sidebar( 'hd-bottom-header-' . $i . '-sidebar' );
 		            echo '</div>';
 	            endif;
             endfor;
