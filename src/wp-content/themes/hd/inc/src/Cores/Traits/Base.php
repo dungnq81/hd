@@ -300,7 +300,7 @@ trait Base {
 		$x = array_reverse( $x );
 
 		// improve obfuscation by eliminating newlines & whitespace
-		$output = '<script type="text/javascript">'
+		$output = '<script>'
 		          . 'var l=new Array();';
 
 		foreach ( $x as $i => $value ) {

@@ -12,6 +12,9 @@ use Cores\Helper;
  * @author WEBHD
  */
 final class Shortcode {
+
+	// --------------------------------------------------
+
 	/**
 	 * @return void
 	 */
@@ -242,7 +245,7 @@ final class Shortcode {
 		);
 
 		$title = $atts['title'] ?: __( 'Menu', TEXT_DOMAIN );
-		$class = $atts['hide_if_desktop'] ? ' hide-for-large' : '';
+		$class = $atts['hide_if_desktop'] ? ' !lg:hidden' : '';
 		$class = $atts['class'] ? ' ' . esc_attr_strip_tags( $atts['class'] ) . $class : '';
 
 		ob_start();

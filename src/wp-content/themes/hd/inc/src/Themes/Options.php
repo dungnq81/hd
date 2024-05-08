@@ -12,6 +12,9 @@ use Cores\Helper;
  * @author HD
  */
 final class Options {
+
+	// --------------------------------------------------
+
 	public function __construct() {
 		add_action( 'wp_enqueue_scripts', [ &$this, 'aspect_ratio_enqueue_scripts' ], 98 );
 

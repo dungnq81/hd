@@ -1,11 +1,8 @@
-import $ from "jquery";
-
-window.jQuery = window.$ = $;
+// import $ from 'jquery';
+Object.assign(window, { $: jQuery, jQuery });
 
 import { Foundation } from "foundation-sites/js/foundation.core";
 import * as CoreUtils from "foundation-sites/js/foundation.core.utils";
-
-Foundation.addToJquery($);
 
 // Foundation Utilities
 import { Keyboard } from "foundation-sites/js/foundation.util.keyboard";
@@ -122,6 +119,7 @@ import { Abide } from "foundation-sites/js/foundation.abide";
 
 Foundation.plugin(Abide, "Abide");
 
-jQuery(document).ready(($) => $(document).foundation());
+Foundation.addToJquery($);
+$(() => $(document).foundation());
 
 export default Foundation;

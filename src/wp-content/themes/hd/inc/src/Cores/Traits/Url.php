@@ -8,6 +8,8 @@ use Vectorface\Whip\Whip;
 
 trait Url {
 
+	// --------------------------------------------------
+
 	/**
 	 * @param string $img
 	 *
@@ -20,6 +22,8 @@ trait Url {
 
 		return "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Get the IP address from which the user is viewing the current page.
@@ -61,6 +65,8 @@ trait Url {
 		return '127.0.0.1';
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param $url
 	 *
@@ -69,6 +75,8 @@ trait Url {
 	public static function urlToPath( $url ): string {
 		return substr( get_home_path(), 0, - 1 ) . wp_make_link_relative( $url );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param $dir
@@ -82,6 +90,8 @@ trait Url {
 		return str_replace( ABSPATH, self::home(), $url );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param string $path
 	 *
@@ -90,6 +100,8 @@ trait Url {
 	public static function home( string $path = '' ): string {
 		return trailingslashit( esc_url( network_home_url( $path ) ) );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param bool $nopaging
@@ -100,10 +112,10 @@ trait Url {
 	public static function current( bool $nopaging = true, bool $get_vars = true ): string {
 		global $wp;
 
-		$current_url =  self::home( $wp->request );
+		$current_url = self::home( $wp->request );
 
 		// get the position where '/page. ' text start.
-		$pos = strpos($current_url , '/page');
+		$pos = strpos( $current_url, '/page' );
 
 		// remove string from the specific position
 		if ( $nopaging && $pos ) {
@@ -111,18 +123,19 @@ trait Url {
 		}
 
 		if ( $get_vars ) {
-			$queryString =  http_build_query( $_GET );
+			$queryString = http_build_query( $_GET );
 
-			if (strpos( $current_url, "?") && $queryString ) {
+			if ( strpos( $current_url, "?" ) && $queryString ) {
 				$current_url .= "&" . $queryString;
-			}
-			elseif ( $queryString ) {
+			} elseif ( $queryString ) {
 				$current_url .= "?" . $queryString;
 			}
 		}
 
 		return $current_url;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Normalize the given path. On Windows servers backslash will be replaced
@@ -162,6 +175,8 @@ trait Url {
 		return substr( $path, 1 );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param string $url
 	 *
@@ -173,6 +188,8 @@ trait Url {
 
 		return $queries;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param string $url
@@ -190,6 +207,8 @@ trait Url {
 		return $queries[ $param ];
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param string $url
 	 *
@@ -200,6 +219,7 @@ trait Url {
 			'timeout'   => 5,
 			'sslverify' => false,
 		] );
+
 		if ( ! is_wp_error( $response ) ) {
 			return $response['response']['code'];
 		}

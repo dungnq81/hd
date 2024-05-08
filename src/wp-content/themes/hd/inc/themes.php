@@ -9,7 +9,7 @@ use Cores\Helper;
 
 \defined( 'ABSPATH' ) || die;
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 if ( ! function_exists( '__after_setup_theme' ) ) {
 	add_action( 'after_setup_theme', '__after_setup_theme', 11 );
@@ -32,7 +32,7 @@ if ( ! function_exists( '__after_setup_theme' ) ) {
 	}
 }
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 if ( ! function_exists( '__register_sidebars' ) ) {
 	add_action( 'widgets_init', '__register_sidebars', 11 );
@@ -172,7 +172,7 @@ if ( ! function_exists( '__register_sidebars' ) ) {
 	}
 }
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 if ( ! function_exists( '__wp_default_scripts' ) ) {
 	add_action( 'wp_default_scripts', '__wp_default_scripts' );
@@ -196,7 +196,7 @@ if ( ! function_exists( '__wp_default_scripts' ) ) {
 	}
 }
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 if ( ! function_exists( '__body_classes' ) ) {
 	add_filter( 'body_class', '__body_classes', 11, 1 );
@@ -238,7 +238,7 @@ if ( ! function_exists( '__body_classes' ) ) {
 	}
 }
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 if ( ! function_exists( '__post_classes' ) ) {
 	add_filter( 'post_class', '__post_classes', 11, 1 );
@@ -271,7 +271,7 @@ if ( ! function_exists( '__post_classes' ) ) {
 	}
 }
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 // add class to li in wp_nav_menu
 if ( ! function_exists( '__nav_menu_css_classes' ) ) {
@@ -326,7 +326,7 @@ if ( ! function_exists( '__nav_menu_css_classes' ) ) {
 	}
 }
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 // add class to link in wp_nav_menu
 if ( ! function_exists( '__nav_menu_link_attributes' ) ) {
@@ -360,7 +360,7 @@ if ( ! function_exists( '__nav_menu_link_attributes' ) ) {
 	}
 }
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 /** comment off default */
 add_filter( 'wp_insert_post_data', function ( array $data ) {
@@ -372,7 +372,7 @@ add_filter( 'wp_insert_post_data', function ( array $data ) {
 	return $data;
 }, 99, 1 );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 /** Tags cloud font sizes */
 add_filter( 'widget_tag_cloud_args', function ( array $args ) {
@@ -384,9 +384,9 @@ add_filter( 'widget_tag_cloud_args', function ( array $args ) {
 	return $args;
 } );
 
-/** ---------------------------------------- */
-/** custom filter */
-/** ---------------------------------------- */
+// --------------------------------------------------
+// custom filter
+// --------------------------------------------------
 
 /** defer scripts */
 add_filter( 'hd_defer_script', function ( array $arr ) {
@@ -411,7 +411,7 @@ add_filter( 'hd_defer_script', function ( array $arr ) {
 	return array_merge( $arr, $arr_new );
 }, 11, 1 );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 /** defer styles */
 add_filter( 'hd_defer_style', function ( array $arr ) {
@@ -424,7 +424,7 @@ add_filter( 'hd_defer_style', function ( array $arr ) {
 	return array_merge( $arr, $arr_new );
 }, 11, 1 );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 /** Aspect Ratio default */
 add_filter( 'hd_aspect_ratio_default_list', function ( array $arr ) {
@@ -438,7 +438,7 @@ add_filter( 'hd_aspect_ratio_default_list', function ( array $arr ) {
 	return array_merge( $new_arr, $update_arr );
 }, 99, 1 );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 /** Aspect Ratio - custom */
 add_filter( 'hd_aspect_ratio_post_type', function ( array $arr ) {
@@ -454,7 +454,7 @@ add_filter( 'hd_aspect_ratio_post_type', function ( array $arr ) {
 	return $new_arr;
 }, 99, 1 );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 // add the category ID to admin page
 add_filter( 'hd_term_row_actions', function ( array $arr ) {
@@ -472,7 +472,7 @@ add_filter( 'hd_term_row_actions', function ( array $arr ) {
 	return $new_arr;
 }, 99, 1 );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 // post_row_actions
 add_filter( 'hd_post_row_actions', function ( array $arr ) {
@@ -485,7 +485,7 @@ add_filter( 'hd_post_row_actions', function ( array $arr ) {
 	return array_merge( $arr, $update_arr );
 }, 99, 1 );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 // Terms thumbnail (term_thumb)
 add_filter( 'hd_term_columns', function ( array $arr ) {
@@ -497,7 +497,7 @@ add_filter( 'hd_term_columns', function ( array $arr ) {
 	return array_merge( $arr, $update_arr );
 }, 99, 1 );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 // exclude thumb post column
 add_filter( 'hd_post_exclude_columns', function ( array $arr ) {
@@ -517,7 +517,7 @@ add_filter( 'hd_post_exclude_columns', function ( array $arr ) {
 	return $new_arr;
 }, 99, 1 );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 // Add ACF attributes in menu locations
 add_filter( 'hd_location_menu_items', function ( array $arr ) {
@@ -529,7 +529,7 @@ add_filter( 'hd_location_menu_items', function ( array $arr ) {
 	return array_merge( $arr, $update_arr );
 }, 99, 1 );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 // Add ACF attributes in mega menu locations
 add_filter( 'hd_location_mega_menu', function ( array $arr ) {
@@ -541,7 +541,7 @@ add_filter( 'hd_location_mega_menu', function ( array $arr ) {
 	return array_merge( $arr, $update_arr );
 }, 99, 1 );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 // Custom post_per_page
 add_filter( 'hd_posts_num_per_page', function ( array $arr ) {
@@ -551,7 +551,7 @@ add_filter( 'hd_posts_num_per_page', function ( array $arr ) {
 	return array_merge( $arr, $update_arr );
 }, 99, 1 );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 add_filter( 'hd_smtp_plugins_support', function ( array $arr ) {
 	$update_arr = [
@@ -564,7 +564,7 @@ add_filter( 'hd_smtp_plugins_support', function ( array $arr ) {
 	return array_merge( $arr, $update_arr );
 }, 99, 1 );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 // Custom Email list
 add_filter( 'hd_email_list', function ( array $arr ) {
@@ -575,7 +575,7 @@ add_filter( 'hd_email_list', function ( array $arr ) {
 	return array_merge( $arr, $update_arr );
 }, 99, 1 );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 add_filter( 'hd_lazy_load_hook_content', function ( array $arr ) {
 	$update_arr = [
@@ -587,7 +587,7 @@ add_filter( 'hd_lazy_load_hook_content', function ( array $arr ) {
 	return array_merge( $arr, $update_arr );
 } );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 add_filter( 'hd_lazy_load_exclude', function ( array $arr ) {
 	$update_arr = [
@@ -598,7 +598,7 @@ add_filter( 'hd_lazy_load_exclude', function ( array $arr ) {
 	return array_merge( $arr, $update_arr );
 }, 99, 1 );
 
-/** ---------------------------------------- */
+// --------------------------------------------------
 
 // The urls where a lazy load is excluded.
 add_filter( 'hd_lazy_load_exclude_urls', function ( array $arr ) {

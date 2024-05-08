@@ -10,6 +10,9 @@ namespace Plugins;
  * @author   WEBHD
  */
 final class CF7 {
+
+	// --------------------------------------------------
+
 	public function __construct() {
 
 		// remove <p> and <br> contact-form-7 plugin
@@ -21,6 +24,8 @@ final class CF7 {
 		// form CSRF
 		add_filter( 'wpcf7_verify_nonce', '__return_true' );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Dynamic Select Terms for Contact Form 7

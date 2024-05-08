@@ -15,7 +15,6 @@ use Cores\Traits\Wp;
  *
  * @author WEBHD
  */
-
 final class Helper {
 
 	use WooCommerce;
@@ -57,7 +56,7 @@ final class Helper {
 		if ( $unique ) {
 
 			$start += strlen( $attr );
-			$end = strpos( $str, $quote, $start );
+			$end   = strpos( $str, $quote, $start );
 
 			// Get the current content.
 			$content = explode( ' ', substr( $str, $start, $end - $start ) );
@@ -76,7 +75,7 @@ final class Helper {
 			$content = implode( ' ', $content );
 
 			$before_content = substr( $str, 0, $start );
-			$after_content = substr( $str, $end );
+			$after_content  = substr( $str, $end );
 
 			// Combine the string again.
 			$str = $before_content . $content . $after_content;
@@ -142,8 +141,8 @@ final class Helper {
 
 		$link = (array) $link;
 		if ( $link ) {
-			$_link_title = $link['title'] ?? '';
-			$_link_url = $link['url'] ?? '#';
+			$_link_title  = $link['title'] ?? '';
+			$_link_url    = $link['url'] ?? '#';
 			$_link_target = $link['target'] ?? '';
 
 			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( $_link_url ), esc_attr( $_link_title ), esc_attr( $class ) );
@@ -174,7 +173,7 @@ final class Helper {
 		$link_return = '';
 
 		// string
-		if ( ! empty( $link ) &&  is_string( $link ) ) {
+		if ( ! empty( $link ) && is_string( $link ) ) {
 			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( trim( $link ) ), esc_attr( $label ), esc_attr( $class ) );
 			$link_return .= '>';
 			$link_return .= $label . $extra_title;
@@ -184,9 +183,9 @@ final class Helper {
 		}
 
 		// array
-		if ( !empty( $link ) && is_array( $link ) ) {
-			$_link_title = $link['title'] ?? '';
-			$_link_url = $link['url'] ?? '#';
+		if ( ! empty( $link ) && is_array( $link ) ) {
+			$_link_title  = $link['title'] ?? '';
+			$_link_url    = $link['url'] ?? '#';
 			$_link_target = $link['target'] ?? '';
 
 			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( $_link_url ), esc_attr( $_link_title ), esc_attr( $class ) );
@@ -215,8 +214,7 @@ final class Helper {
 	 * @return void
 	 */
 	public static function FQN_Load( ?string $path, bool $required_path = false, bool $required_new = false, string $FQN = '\\', bool $is_widget = false ): void {
-
-		if ( !empty( $path ) && is_dir( $path ) ) {
+		if ( ! empty( $path ) && is_dir( $path ) ) {
 
 			$iterator = new DirectoryIterator( $path );
 			foreach ( $iterator as $fileInfo ) {
@@ -226,9 +224,9 @@ final class Helper {
 
 				$filename    = self::fileName( $fileInfo, false );
 				$filenameFQN = $FQN . $filename;
-				$fileExt = self::fileExtension( $fileInfo, true ); // include_dot
+				$fileExt     = self::fileExtension( $fileInfo, true ); // true: include dot
 
-				if ( '.php' === mb_strtolower( $fileExt ) ) {
+				if ( '.php' === strtolower( $fileExt ) ) {
 
 					if ( $required_path ) {
 						require $path . DIRECTORY_SEPARATOR . $filename . $fileExt;
@@ -249,16 +247,18 @@ final class Helper {
 	// -------------------------------------------------------------
 
 	/**
-	 * @param $id
+	 * @param $post_id
+	 * @param $format_value
+	 * @param $escape_html
 	 *
 	 * @return mixed|object
 	 */
-	public static function acfFields( $id ): mixed {
+	public static function acfFields( $post_id = false, $format_value = true, $escape_html = false ) {
 		if ( ! self::is_acf_pro_active() && ! self::is_acf_active() ) {
 			return (object) [];
 		}
 
-		$_fields = \get_fields( $id ) ?? [];
+		$_fields = \get_fields( $post_id, $format_value, $escape_html ) ?? [];
 
 		return self::toObject( $_fields );
 	}
@@ -288,7 +288,7 @@ final class Helper {
 		parse_str( wp_parse_url( $url, PHP_URL_QUERY ), $vars );
 		if ( isset( $vars['v'] ) ) {
 			$id      = $vars['v'];
-			$url_img = 'https://img.youtube.com/vi/' . $id . '/' . $resolution[$resolution_key] . '.jpg';
+			$url_img = 'https://img.youtube.com/vi/' . $id . '/' . $resolution[ $resolution_key ] . '.jpg';
 		}
 
 		return $url_img;
@@ -343,13 +343,13 @@ final class Helper {
 	 *
 	 * @return true|void
 	 */
-	public static function redirect( string $uri = '', int $status = 302) {
-		if (!preg_match('#^(\w+:)?//#i', $uri)) {
+	public static function redirect( string $uri = '', int $status = 302 ) {
+		if ( ! preg_match( '#^(\w+:)?//#i', $uri ) ) {
 			$uri = self::home( $uri );
 		}
 
 		if ( ! headers_sent() ) {
-			wp_safe_redirect( $uri, $status);
+			wp_safe_redirect( $uri, $status );
 		} else {
 			echo '<script>';
 			echo 'window.location.href="' . $uri . '";';
@@ -421,9 +421,19 @@ final class Helper {
 	// -------------------------------------------------------------
 
 	/**
+	 * @param string $folder
+	 * @param string $file
+	 *
 	 * @return bool
 	 */
-	public static function is_addons_active(): bool {
-		return self::check_plugin_active( 'hd-addons/hd-addons.php' );
+	public static function is_addons_active( string $folder = 'hd-addons', string $file = 'hd-addons.php' ): bool {
+		if ( empty( $folder ) ) {
+			$folder = 'hd-addons';
+		}
+		if ( empty( $file ) ) {
+			$file = 'hd-addons.php';
+		}
+
+		return self::check_plugin_active( $folder . '/' . $file );
 	}
 }

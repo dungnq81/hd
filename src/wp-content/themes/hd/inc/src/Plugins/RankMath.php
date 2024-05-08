@@ -12,6 +12,9 @@ require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
  * @author   WEBHD
  */
 final class RankMath {
+
+	// --------------------------------------------------
+
 	public function __construct() {
 
 		add_filter( 'rank_math/frontend/breadcrumb/args', [ &$this, 'breadcrumb_args' ] );
@@ -62,7 +65,7 @@ final class RankMath {
 		}
 	}
 
-	/** ---------------------------------------- */
+	// --------------------------------------------------
 
 	/**
 	 * @param $args

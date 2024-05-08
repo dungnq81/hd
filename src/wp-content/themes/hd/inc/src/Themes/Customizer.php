@@ -15,13 +15,16 @@ use WP_Customize_Manager;
 \defined( 'ABSPATH' ) || die;
 
 final class Customizer {
+
+	// --------------------------------------------------
+
 	public function __construct() {
 
 		// Theme Customizer settings and controls.
 		add_action( 'customize_register', [ &$this, 'customize_register' ], 30 );
 	}
 
-	/** ---------------------------------------- */
+	// --------------------------------------------------
 
 	/**
 	 * @param WP_Customize_Manager $wp_customize
@@ -65,7 +68,7 @@ final class Customizer {
 		);
 	}
 
-	/** ---------------------------------------- */
+	// --------------------------------------------------
 
 	/**
 	 * Register customizer options.

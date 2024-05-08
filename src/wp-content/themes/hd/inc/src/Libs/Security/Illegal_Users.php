@@ -17,6 +17,8 @@ class Illegal_Users {
 		'admin1',
 	];
 
+	// --------------------------------------------------
+
 	/**
 	 * Add illegal usernames
 	 *
@@ -39,6 +41,8 @@ class Illegal_Users {
 		);
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * Change the default admin username.
 	 *
@@ -55,6 +59,8 @@ class Illegal_Users {
 			[ 'ID' => $new_username['ID'] ]
 		);
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Check if common usernames exist in the database.
@@ -101,6 +107,8 @@ class Illegal_Users {
 			'admin_matches' => array_values( $admins ),
 		];
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Start the name change for common usernames.

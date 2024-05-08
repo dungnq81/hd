@@ -2,7 +2,6 @@
 
 namespace Cores\Traits;
 
-use Cores\Helper;
 use Libs\CSS;
 use Libs\Horizontal_Nav_Walker;
 use Libs\Vertical_Nav_Walker;

@@ -1,6 +1,5 @@
-import './foundation/_foundation';
-window.jQuery = window.$ = $;
+import "./foundation/_foundation";
 
-jQuery( function( $ ) {
+Object.assign(window, { $: jQuery, jQuery });
 
-});
+jQuery(function ($) {});

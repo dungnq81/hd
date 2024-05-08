@@ -56,6 +56,8 @@ class Dir extends Abstract_Htaccess {
 		'disable_all' => '/\#\s+Directory\s+Hardening(.+?)\#\s+Directory\s+Hardening\s+END(\n)?/ims',
 	];
 
+	// --------------------------------------------------
+
 	/**
 	 * Get the filepath to the htaccess.
 	 *
@@ -80,6 +82,8 @@ class Dir extends Abstract_Htaccess {
 
 		return '';
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Add whitelist rule for specific or user files.
@@ -111,6 +115,8 @@ class Dir extends Abstract_Htaccess {
 		return str_replace( '{REPLACEMENT}', $whitelisted_files, $content );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * Enable all hardening rules.
 	 *
@@ -132,6 +138,8 @@ class Dir extends Abstract_Htaccess {
 			$this->maybe_remove_htaccess();
 		}
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Check if we need to remove the htaccess files after disable if they are empty.

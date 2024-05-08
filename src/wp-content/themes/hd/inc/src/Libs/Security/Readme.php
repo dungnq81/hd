@@ -8,6 +8,7 @@ namespace Libs\Security;
  * @author SiteGround Security
  */
 class Readme {
+
 	/**
 	 * Check if the file exists in the root directory of the WP Installation
 	 *
@@ -21,6 +22,8 @@ class Readme {
 
 		return false;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Remove the readme.html file from the root directory of WP Installation.

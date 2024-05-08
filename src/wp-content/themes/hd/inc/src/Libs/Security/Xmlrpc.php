@@ -34,6 +34,8 @@ class Xmlrpc extends Abstract_Htaccess {
 		'disable_all' => '/\#\s+XML-RPC\s+Disable(.+?)\#\s+XML-RPC\s+Disable\s+END(\n)?/ims',
 	];
 
+	// --------------------------------------------------
+
 	/**
 	 * Check if we have active plugins that are using XML-RPC.
 	 *

@@ -6,6 +6,8 @@ namespace Cores\Traits;
 
 trait File {
 
+	// --------------------------------------------------
+
 	/**
 	 * Check if the passed content is xml.
 	 *
@@ -19,6 +21,8 @@ trait File {
 
 		return preg_match( '/<\?xml version="/', $xml_part );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @return bool
@@ -38,6 +42,8 @@ trait File {
 		return false;
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @return mixed
 	 */
@@ -53,6 +59,8 @@ trait File {
 
 		return $wp_filesystem;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Checks if the current request is a WP REST API request.
@@ -81,6 +89,8 @@ trait File {
 		return 0 === @strpos( $current_url['path'], $rest_url['path'], 0 );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param $path
 	 *
@@ -98,6 +108,8 @@ trait File {
 		// Create the file.
 		return $wp_filesystem->touch( $path );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Reads entire file into a string
@@ -119,6 +131,8 @@ trait File {
 		return $wp_filesystem->get_contents( $file );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * Update a file
 	 *
@@ -137,6 +151,8 @@ trait File {
 		// Add the new content into the file.
 		$wp_filesystem->put_contents( $path, $content );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Lock file and write something in it.
@@ -161,6 +177,8 @@ trait File {
 		return false;
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param      $filename
 	 * @param bool $include_dot
@@ -176,6 +194,8 @@ trait File {
 		return $dot . strtolower( pathinfo( $filename, PATHINFO_EXTENSION ) );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param      $filename
 	 * @param bool $include_ext
@@ -187,6 +207,8 @@ trait File {
 			? pathinfo( $filename, PATHINFO_FILENAME ) . self::fileExtension( $filename, true )
 			: pathinfo( $filename, PATHINFO_FILENAME );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param $dirname
@@ -207,6 +229,8 @@ trait File {
 
 		return true;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param $directory

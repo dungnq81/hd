@@ -8,6 +8,8 @@ use IntlBreakIterator;
 
 trait Str {
 
+	// --------------------------------------------------
+
 	/**
 	 * https://github.com/cofirazak/phpMissingFunctions
 	 *
@@ -27,6 +29,8 @@ trait Str {
 		return mb_strtoupper( mb_substr( $str, 0, 1, $encoding ), $encoding ) . mb_substr( $str, 1, null, $encoding );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param $content
 	 *
@@ -35,6 +39,8 @@ trait Str {
 	public static function removeEmptyP( $content ): array|string {
 		return \str_replace( '<p></p>', '', $content );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param string $string
@@ -47,6 +53,8 @@ trait Str {
 		return str_replace( ' ', '', $string );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param string $string
 	 *
@@ -55,6 +63,8 @@ trait Str {
 	public static function dashCase( string $string ): string {
 		return str_replace( '_', '-', self::snakeCase( $string ) );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param string $string
@@ -71,6 +81,8 @@ trait Str {
 		return str_replace( '-', '_', $string );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param int $length
 	 *
@@ -81,6 +93,8 @@ trait Str {
 
 		return substr( str_replace( [ '/', '+', '=' ], '', $text ), 0, $length );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param string $string
@@ -100,6 +114,8 @@ trait Str {
 		return $prefix . trim( self::removePrefix( $string, $trim ) );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param string $prefix
 	 * @param string $string
@@ -108,9 +124,11 @@ trait Str {
 	 */
 	public static function removePrefix( string $string, string $prefix ): string {
 		return self::startsWith( $prefix, $string )
-			? substr( $string, strlen( $prefix ) )
+			? mb_substr( $string, mb_strlen( $prefix ) )
 			: $string;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param string|string[] $needles
@@ -129,6 +147,8 @@ trait Str {
 		return false;
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param string|string[] $needles
 	 * @param string $haystack
@@ -146,6 +166,8 @@ trait Str {
 		return false;
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param string $string
 	 * @param string $suffix
@@ -160,6 +182,8 @@ trait Str {
 		return $string;
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param string $search
 	 * @param string $replace
@@ -171,13 +195,15 @@ trait Str {
 		if ( $search == '' ) {
 			return $subject;
 		}
-		$position = strpos( $subject, $search );
+		$position = mb_strpos( $subject, $search );
 		if ( $position !== false ) {
-			return substr_replace( $subject, $replace, $position, strlen( $search ) );
+			return substr_replace( $subject, $replace, $position, mb_strlen( $search ) );
 		}
 
 		return $subject;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param string $search
@@ -187,13 +213,15 @@ trait Str {
 	 * @return string
 	 */
 	public static function replaceLast( string $search, string $replace, string $subject ): string {
-		$position = strrpos( $subject, $search );
+		$position = mb_strrpos( $subject, $search );
 		if ( '' !== $search && false !== $position ) {
-			return substr_replace( $subject, $replace, $position, strlen( $search ) );
+			return substr_replace( $subject, $replace, $position, mb_strlen( $search ) );
 		}
 
 		return $subject;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Strpos over an array.
@@ -209,14 +237,16 @@ trait Str {
 			$needles = [ $needles ];
 		}
 		foreach ( $needles as $query ) {
-			if ( strpos( $haystack, $query, $offset ) !== false ) {
-				// stop on first true result.
+			if ( mb_strrpos( $haystack, $query, $offset ) !== false ) {
+				// stop on the first true result.
 				return true;
 			}
 		}
 
 		return false;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param string $string
@@ -228,6 +258,8 @@ trait Str {
 
 		return mb_convert_case( $value, MB_CASE_TITLE, 'UTF-8' );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Keywords
@@ -245,6 +277,8 @@ trait Str {
 		return preg_replace( '/[\s]+/', ', ', trim( $str ) );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param string $value
 	 * @param int $length
@@ -257,6 +291,8 @@ trait Str {
 			? mb_substr( $value, 0, $length, 'UTF-8' ) . $end
 			: $value;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param $string
@@ -285,6 +321,8 @@ trait Str {
 		return trim( $string );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param $string
 	 * @param bool $strip_tags
@@ -308,6 +346,8 @@ trait Str {
 		return preg_replace( '/\s+/', $replace, $string );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param string $text
 	 *
@@ -326,6 +366,8 @@ trait Str {
 		return preg_replace( '/(\v){2,}/u', '$1', $text );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param string $text
 	 *
@@ -339,6 +381,8 @@ trait Str {
 		// replace all multiple-space and carriage return characters with a space
 		return preg_replace( '/(\v|\s){1,}/u', ' ', $text );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param string $text
@@ -362,8 +406,10 @@ trait Str {
 			return $offset;
 		}
 
-		return strlen( $text );
+		return mb_strlen( $text );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param string $text
@@ -378,8 +424,10 @@ trait Str {
 			return $words[ $limit ];
 		}
 
-		return strlen( $text );
+		return mb_strlen( $text );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param string $text

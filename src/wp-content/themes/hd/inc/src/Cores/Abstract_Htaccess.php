@@ -13,6 +13,7 @@ namespace Cores;
 \defined( 'ABSPATH' ) || die;
 
 abstract class Abstract_Htaccess {
+
 	/**
 	 * WordPress filesystem.
 	 *
@@ -27,6 +28,8 @@ abstract class Abstract_Htaccess {
 	 */
 	public $path = null;
 
+	// --------------------------------------------------
+
 	/**
 	 * The constructor.
 	 */
@@ -36,6 +39,8 @@ abstract class Abstract_Htaccess {
 		}
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * Get the filepath to the htaccess.
 	 *
@@ -44,6 +49,8 @@ abstract class Abstract_Htaccess {
 	public function get_filepath() {
 		return $this->wp_filesystem->abspath() . '.htaccess';
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Set the htaccess path.
@@ -65,6 +72,8 @@ abstract class Abstract_Htaccess {
 
 		return $this;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Disable the rule and remove it from the htaccess.
@@ -88,6 +97,8 @@ abstract class Abstract_Htaccess {
 
 		return false;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 *  Add rule to htaccess and enable it.
@@ -119,6 +130,8 @@ abstract class Abstract_Htaccess {
 		return false;
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * Lock file and write something in it.
 	 *
@@ -129,6 +142,8 @@ abstract class Abstract_Htaccess {
 	protected function lock_and_write( $content ) {
 		return Helper::doLockWrite( $this->path, $content );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Check if rule is enabled.
@@ -143,6 +158,8 @@ abstract class Abstract_Htaccess {
 		return preg_match( $this->rules['enabled'], $content );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * Do a replacement.
 	 *
@@ -153,6 +170,8 @@ abstract class Abstract_Htaccess {
 	public function do_replacement( $content ) {
 		return $content;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Toggle specific rule.

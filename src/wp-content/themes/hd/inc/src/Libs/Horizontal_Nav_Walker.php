@@ -8,6 +8,7 @@ use Walker_Nav_Menu;
 \defined( 'ABSPATH' ) || die;
 
 class Horizontal_Nav_Walker extends Walker_Nav_Menu {
+
 	/**
 	 * @param string $output
 	 * @param int $depth

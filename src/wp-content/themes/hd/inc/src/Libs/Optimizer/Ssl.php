@@ -27,6 +27,8 @@ class Ssl extends Abstract_Htaccess {
 		'disable_all' => '/\#\s+Https(.+?)\#\s+Https\s+END(\n)?/ims',
 	];
 
+	// --------------------------------------------------
+
 	/**
 	 * Check if the current domain has a valid ssl certificate.
 	 *
@@ -73,6 +75,8 @@ class Ssl extends Abstract_Htaccess {
 		return ! is_null( $cont['options']['ssl']['peer_certificate'] );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * Disable the rule and remove it from the htaccess.
 	 *
@@ -96,6 +100,8 @@ class Ssl extends Abstract_Htaccess {
 		// Return success.
 		return true;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 *  Add rule to htaccess and enable it.
@@ -125,6 +131,8 @@ class Ssl extends Abstract_Htaccess {
 		// Return success.
 		return true;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Change the url protocol.
@@ -158,6 +166,8 @@ class Ssl extends Abstract_Htaccess {
 		return true;
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * Creates an array of insecure links that should be https and an array of secure links to replace with
 	 *
@@ -178,6 +188,8 @@ class Ssl extends Abstract_Htaccess {
 			'replace' => str_replace( 'http://', 'https://', $search ), // The replace links.
 		];
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Replace all insecure links before the page is sent to the visitor's browser.

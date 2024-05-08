@@ -5,6 +5,9 @@ namespace Cores\Traits;
 \defined( 'ABSPATH' ) || die;
 
 trait Arr {
+
+	// --------------------------------------------------
+
 	/**
 	 * https://wordpress.stackexchange.com/questions/252865/tax-query-terms-ids-using-variable
 	 *
@@ -27,6 +30,8 @@ trait Arr {
 		return array_diff( $vars, [ "" ] );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param array $arr1
 	 * @param array $arr2
@@ -39,6 +44,8 @@ trait Arr {
 
 		return $arr1 == $arr2;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param mixed $value
@@ -54,6 +61,8 @@ trait Arr {
 		return self::reIndex( array_filter( (array) $value, $callback ) );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param mixed $array
 	 *
@@ -62,6 +71,8 @@ trait Arr {
 	public static function reIndex( $array ): array {
 		return self::isIndexedAndFlat( $array ) ? array_values( $array ) : $array;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param mixed $array
@@ -76,6 +87,8 @@ trait Arr {
 		return wp_is_numeric_array( $array );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param string $key
 	 * @param array $array
@@ -87,6 +100,8 @@ trait Arr {
 		return self::insert( $array, $insert_array, $key, 'after' );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param mixed $key
 	 * @param array $array
@@ -97,6 +112,8 @@ trait Arr {
 	public static function insertBefore( $key, array $array, array $insert_array ): array {
 		return self::insert( $array, $insert_array, $key, 'before' );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param array $array
@@ -121,6 +138,8 @@ trait Arr {
 
 		return array_merge( $result, array_slice( $array, $keyPosition ) );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param array $array

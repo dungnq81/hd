@@ -18,6 +18,9 @@ use Plugins\WpRocket;
  * @author HD
  */
 final class Theme {
+
+	// --------------------------------------------------
+
 	public function __construct() {
 
 		// plugins_loaded -> after_setup_theme -> init -> widgets_init -> wp_loaded -> admin_menu -> admin_init ...
@@ -33,7 +36,7 @@ final class Theme {
 		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 10 );
 	}
 
-	/** ---------------------------------------- */
+	// --------------------------------------------------
 
 	/**
 	 * Sets up theme defaults and register support for various WordPress features.
@@ -106,7 +109,7 @@ final class Theme {
 		);
 	}
 
-	/** ---------------------------------------- */
+	// --------------------------------------------------
 
 	/**
 	 * Init function
@@ -152,7 +155,7 @@ final class Theme {
 		}
 	}
 
-	/** ---------------------------------------- */
+	// --------------------------------------------------
 
 	/**
 	 * @return void
@@ -180,7 +183,7 @@ final class Theme {
 		class_exists( '\WPCF7' ) && ( new CF7() );
 	}
 
-	/** ---------------------------------------- */
+	// --------------------------------------------------
 
 	/**
 	 * Registers a WP_Widget widget
@@ -195,7 +198,7 @@ final class Theme {
 		Helper::FQN_Load( $widgets_dir, false, true, $FQN, true );
 	}
 
-	/** ---------------------------------------- */
+	// --------------------------------------------------
 
 	/**
 	 * Unregisters a WP_Widget widget
@@ -215,7 +218,7 @@ final class Theme {
 		] );
 	}
 
-	/** ---------------------------------------- */
+	// --------------------------------------------------
 
 	/**
 	 * Enqueue scripts and styles
@@ -267,7 +270,7 @@ final class Theme {
 		}
 	}
 
-	/** ---------------------------------------- */
+	// --------------------------------------------------
 
 	protected function _hooks(): void {
 		/**

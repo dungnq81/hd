@@ -23,7 +23,7 @@ trait Cast {
 		}
 
 		if ( is_array( $delimiters ) ) {
-			$ready = str_replace( $delimiters, $delimiters[0], $string );
+			$ready  = str_replace( $delimiters, $delimiters[0], $string );
 			$launch = explode( $delimiters[0], $ready );
 			if ( true === $remove_empty ) {
 				$launch = array_filter( $launch );
@@ -35,6 +35,8 @@ trait Cast {
 		return $string;
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param mixed $value
 	 *
@@ -44,6 +46,8 @@ trait Cast {
 		return (int) round( self::toFloat( $value ) );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param mixed $value
 	 *
@@ -52,6 +56,8 @@ trait Cast {
 	public static function toFloat( mixed $value ): float {
 		return (float) filter_var( $value, FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION | FILTER_FLAG_ALLOW_THOUSAND );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param mixed $value
@@ -76,6 +82,8 @@ trait Cast {
 		return (array) $value;
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param mixed $value
 	 * @param bool $strict
@@ -99,6 +107,8 @@ trait Cast {
 		return (string) $value;
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param mixed $value
 	 *
@@ -107,6 +117,8 @@ trait Cast {
 	public static function toBool( mixed $value ): bool {
 		return filter_var( $value, FILTER_VALIDATE_BOOLEAN );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param mixed $value

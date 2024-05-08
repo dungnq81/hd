@@ -45,6 +45,8 @@ class Headers extends Abstract_Htaccess {
 	 */
 	public array $security_headers;
 
+	// --------------------------------------------------
+
 	/**
 	 * The constructor.
 	 */
@@ -52,6 +54,8 @@ class Headers extends Abstract_Htaccess {
 		$this->security_headers = $this->prepare_headers();
 		parent::__construct();
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Set the necessary security headers.
@@ -73,6 +77,8 @@ class Headers extends Abstract_Htaccess {
 		return $headers;
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * Set the necessary security headers for the rest api.
 	 *
@@ -92,6 +98,8 @@ class Headers extends Abstract_Htaccess {
 		// Return the result to the user.
 		return $result;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Prepare the headers.

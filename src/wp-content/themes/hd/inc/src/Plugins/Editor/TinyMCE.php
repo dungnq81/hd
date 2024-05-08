@@ -10,6 +10,9 @@ namespace Plugins\Editor;
  * @author   WEBHD
  */
 final class TinyMCE {
+
+	// --------------------------------------------------
+
 	public function __construct() {
 
 		/** Custom styles. */
@@ -18,6 +21,8 @@ final class TinyMCE {
 		add_filter( 'mce_buttons', [ &$this, 'tinymce_add_table_button' ] );
 		add_filter( 'mce_external_plugins', [ &$this, 'tinymce_add_table_plugin' ] );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param $buttons
@@ -40,6 +45,8 @@ final class TinyMCE {
 
 		return $buttons;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param $plugins

@@ -25,6 +25,8 @@ abstract class Abstract_Widget extends WP_Widget {
 	 */
 	protected bool $registered = false;
 
+	// --------------------------------------------------
+
 	/**
 	 * Constructor.
 	 */
@@ -43,6 +45,8 @@ abstract class Abstract_Widget extends WP_Widget {
 		add_action( 'switch_theme', [ &$this, 'flush_widget_cache' ] );
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @return array
 	 */
@@ -56,12 +60,16 @@ abstract class Abstract_Widget extends WP_Widget {
 		];
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @return array
 	 */
 	protected function control_options() {
 		return [];
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Flush the cache
@@ -73,6 +81,8 @@ abstract class Abstract_Widget extends WP_Widget {
 			wp_cache_delete( $this->get_widget_id_for_cache( $this->widget_id, $scheme ), 'widget' );
 		}
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param        $widget_id
@@ -89,6 +99,8 @@ abstract class Abstract_Widget extends WP_Widget {
 
 		return apply_filters( 'w_cached_widget_id', $widget_id_for_cache );
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Cache the widget
@@ -114,6 +126,8 @@ abstract class Abstract_Widget extends WP_Widget {
 
 		return $content;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * Get cached widget
@@ -142,6 +156,8 @@ abstract class Abstract_Widget extends WP_Widget {
 		return false;
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param array $instance Array of instance options.
 	 *
@@ -158,6 +174,8 @@ abstract class Abstract_Widget extends WP_Widget {
 
 		return '';
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param $new_instance
@@ -211,6 +229,8 @@ abstract class Abstract_Widget extends WP_Widget {
 
 		return $instance;
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param $instance
@@ -317,6 +337,8 @@ abstract class Abstract_Widget extends WP_Widget {
 		}
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * @param int $number
 	 */
@@ -333,10 +355,14 @@ abstract class Abstract_Widget extends WP_Widget {
 		}
 	}
 
+	// --------------------------------------------------
+
 	/**
 	 * styles_and_scripts
 	 */
 	public function styles_and_scripts() {}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param $instance
@@ -459,6 +485,8 @@ abstract class Abstract_Widget extends WP_Widget {
 			'data'  => json_encode( $_data, JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE ),
 		];
 	}
+
+	// --------------------------------------------------
 
 	/**
 	 * @param $id
