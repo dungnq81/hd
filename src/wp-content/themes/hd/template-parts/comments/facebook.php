@@ -1,7 +1,7 @@
 <?php
 /*
  * If the current post is protected by a password and
- * the visitor has not yet entered the password we will
+ * the visitor has not yet entered the password, we will
  * return early without loading the comments.
 */
 
@@ -13,7 +13,7 @@ if ( post_password_required() ) {
 	return;
 }
 
-$fb_appid = Helper::getThemeMod( 'fb_menu_setting' );
+$fb_appid = Helper::getThemeMod( 'social_fb_setting' );
 if ( ! $fb_appid ) {
 	return;
 }

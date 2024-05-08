@@ -2,7 +2,7 @@
 /**
  * The template part for displaying a message that posts cannot be found.
  *
- * @package ehd
+ * @package hd
  */
 
 \defined( 'ABSPATH' ) || die;

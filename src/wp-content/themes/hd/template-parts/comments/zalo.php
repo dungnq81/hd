@@ -10,12 +10,12 @@ use Cores\Helper;
 \defined( 'ABSPATH' ) || die;
 
 if ( post_password_required() ) {
-    return;
+	return;
 }
 
-$zalo_appid = Helper::getThemeMod( 'zalo_menu_setting' );
+$zalo_appid = Helper::getThemeMod( 'social_zalo_setting' );
 if ( ! $zalo_appid ) {
-    return;
+	return;
 }
 
 ?>

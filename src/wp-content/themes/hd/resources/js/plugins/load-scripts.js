@@ -1,5 +1,5 @@
 (function () {
-    const timeout = 5000;
+    const timeout = 4000;
     const loadScriptsTimer = setTimeout(loadScripts, timeout);
     const userInteractionEvents = ["mouseover", "keydown", "touchstart", "touchmove", "wheel"];
 

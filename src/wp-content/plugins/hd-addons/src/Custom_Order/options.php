@@ -8,6 +8,7 @@ $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
 <h2><?php _e( 'Order Settings', ADDONS_TEXT_DOMAIN ); ?></h2>
 <div class="section section-checkbox" id="section_custom_post_type_order">
 	<span class="heading block !fw-700"><?php _e( 'Check to Sort Post Types', ADDONS_TEXT_DOMAIN ); ?></span>
+    <div class="desc">Sort by dragging and dropping post-types.</div>
 	<?php
 
 	$post_types = get_post_types( [ 'show_ui' => true ], 'objects' );
@@ -57,7 +58,7 @@ $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
 
 <div class="section section-checkbox" id="section_custom_taxonomy_order">
 	<span class="heading block !fw-700"><?php _e( 'Check to Sort Taxonomies', ADDONS_TEXT_DOMAIN ); ?></span>
-
+    <div class="desc">Sort by dragging and dropping categories.</div>
 	<?php
 
 	$taxonomies = get_taxonomies( [ 'show_ui' => true ], 'objects' );

@@ -41,8 +41,8 @@
     --gap: #{map-get($spacers, "gap")};
     --gap-xs: #{map-get($spacers, "gap-xs")};
 
-    --line-height-header: $line-height-header;
-    --line-height-paragraph: $line-height-paragraph;
+    --line-height-header: #{$line-height-header};
+    --line-height-paragraph: #{$line-height-paragraph};
 }
 
 @include mq-min(desktop) {
@@ -60,6 +60,7 @@
 }
 
 html {
+    box-sizing: border-box;
     font-family: sans-serif;
     font-variant-ligatures: no-common-ligatures;
     -webkit-text-size-adjust: 100%;
@@ -67,7 +68,14 @@ html {
     -webkit-touch-callout: none;
 }
 
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
 body {
+    padding: 0;
     background: $body-bg;
     font-size: $body-size;
     font-weight: 400;
@@ -110,12 +118,12 @@ a {
 
 img {
     display: inline-block;
-    max-height: 100%;
+    vertical-align: middle;
     max-width: 100%;
-    width: auto;
     height: auto;
+    -ms-interpolation-mode: bicubic;
 
-    &:not([src]):not([srcset]) {
+    &:not([src]) {
         visibility: hidden;
     }
 

@@ -13,27 +13,27 @@
         </div><!-- .site-page -->
         <?php
 
-        do_action( 'ehd_before_footer' );
+        do_action( 'hd_before_footer' );
 
         ?>
         <div class="site-footer">
             <?php
 
-            do_action( 'ehd_before_footer_content' );
+            do_action( 'hd_before_footer_content' );
 
             /**
              * @see __construct_footer_widgets - 5
              * @see __construct_footer - 10
              */
-            do_action( 'ehd_footer' );
+            do_action( 'hd_footer' );
 
-            do_action( 'ehd_after_footer_content' );
+            do_action( 'hd_after_footer_content' );
 
             ?>
         </div>
         <?php
 
-        do_action( 'ehd_after_footer' );
+        do_action( 'hd_after_footer' );
 
         ?>
     </div><!-- .site-outer -->

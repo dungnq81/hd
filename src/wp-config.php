@@ -1,6 +1,4 @@
 <?php
-define( 'WP_CACHE', false ); // By Speed Optimizer by SiteGround
-
 
 /**
  * The base configuration for WordPress
@@ -53,9 +51,13 @@ const WP_AUTO_UPDATE_CORE = false;
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 
-const DB_NAME     = 'aelgsnnyhosting_hd';
-const DB_USER     = 'aelgsnnyhosting_hd';
-const DB_PASSWORD = 'ejh2WYjD!QIGd';
+//const DB_NAME     = 'aelgsnnyhosting_hd';
+//const DB_USER     = 'aelgsnnyhosting_hd';
+//const DB_PASSWORD = 'ejh2WYjD!QIGd';
+
+const DB_NAME     = 'hd';
+const DB_USER     = 'root';
+const DB_PASSWORD = 'root';
 
 const DB_HOST    = 'localhost';
 const DB_CHARSET = 'utf8mb4';

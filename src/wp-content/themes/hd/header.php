@@ -2,7 +2,8 @@
 
 /**
  * The template for displaying the header
- * This is the template that displays all of the <head> section, opens the <body> tag and adds the site's header.
+ * This is the template that displays all the <head> section, opens the <body> tag and adds the site's header.
+ *
  * @package hd
  */
 
@@ -27,32 +28,32 @@ use Cores\Helper;
     do_action( 'wp_body_open' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core WP hook.
 
     /**
-     * @see __ehd_skip_to_content_link - 2
+     * @see __skip_to_content_link - 2
      * @see __off_canvas_menu - 10
      */
-    do_action( 'ehd_before_header' );
+    do_action( 'hd_before_header' );
 
     ?>
     <div class="site-outer">
         <?php
 
         /**
-         * @see __ehd_construct_header - 10
+         * @see __construct_header - 10
          */
-        do_action( 'ehd_header' );
+        do_action( 'hd_header' );
 
-        do_action( 'ehd_after_header' );
+        do_action( 'hd_after_header' );
 
         ?>
         <div class="site-page">
 	        <?php
 
-	        do_action( 'ehd_inside_site_page' );
+	        do_action( 'hd_inside_site_page' );
 
 	        ?>
-            <div class="site-content">
+            <div class="site-content" id="site-content">
                 <?php
 
-                do_action( 'ehd_inside_site_content' );
+                do_action( 'hd_inside_site_content' );
 
 

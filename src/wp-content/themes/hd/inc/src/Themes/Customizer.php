@@ -31,13 +31,10 @@ final class Customizer {
 	private function _logo_and_title( WP_Customize_Manager $wp_customize ): void {
 
 		// Logo mobile
-		$wp_customize->add_setting(
-			'alt_logo',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_image',
-			]
-		);
+		$wp_customize->add_setting( 'alt_logo', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_image',
+		] );
 		$wp_customize->add_control(
 			new WP_Customize_Image_Control(
 				$wp_customize,
@@ -52,13 +49,10 @@ final class Customizer {
 		);
 
 		// Add control
-		$wp_customize->add_setting(
-			'logo_title_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_text_field',
-			]
-		);
+		$wp_customize->add_setting( 'logo_title_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_text_field',
+		] );
 		$wp_customize->add_control(
 			'logo_title_control',
 			[
@@ -107,13 +101,10 @@ final class Customizer {
 			]
 		);
 
-		$wp_customize->add_setting(
-			'login_page_bgcolor_setting',
-			[
-				'sanitize_callback' => 'sanitize_hex_color',
-				'capability'        => 'edit_theme_options',
-			]
-		);
+		$wp_customize->add_setting( 'login_page_bgcolor_setting', [
+			'sanitize_callback' => 'sanitize_hex_color',
+			'capability'        => 'edit_theme_options',
+		] );
 		$wp_customize->add_control(
 			new WP_Customize_Color_Control( $wp_customize,
 				'login_page_bgcolor_control',
@@ -126,13 +117,10 @@ final class Customizer {
 			)
 		);
 
-		$wp_customize->add_setting(
-			'login_page_bgimage_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_image',
-			]
-		);
+		$wp_customize->add_setting( 'login_page_bgimage_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_image',
+		] );
 		$wp_customize->add_control(
 			new WP_Customize_Image_Control(
 				$wp_customize,
@@ -146,13 +134,10 @@ final class Customizer {
 			)
 		);
 
-		$wp_customize->add_setting(
-			'login_page_logo_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_image',
-			]
-		);
+		$wp_customize->add_setting( 'login_page_logo_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_image',
+		] );
 		$wp_customize->add_control(
 			new WP_Customize_Image_Control(
 				$wp_customize,
@@ -166,13 +151,10 @@ final class Customizer {
 			)
 		);
 
-		$wp_customize->add_setting(
-			'login_page_headertext_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_text_field',
-			]
-		);
+		$wp_customize->add_setting( 'login_page_headertext_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_text_field',
+		] );
 		$wp_customize->add_control(
 			'login_page_headertext_control',
 			[
@@ -185,13 +167,10 @@ final class Customizer {
 			]
 		);
 
-		$wp_customize->add_setting(
-			'login_page_headerurl_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_text_field',
-			]
-		);
+		$wp_customize->add_setting( 'login_page_headerurl_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_text_field',
+		] );
 		$wp_customize->add_control(
 			'login_page_headerurl_control',
 			[
@@ -205,27 +184,24 @@ final class Customizer {
 		);
 
 		// -------------------------------------------------------------
-		// offCanvas Menu
+		// OffCanvas Menu
 		// -------------------------------------------------------------
 
 		$wp_customize->add_section(
 			'offcanvas_menu_section',
 			[
-				'title'    => __( 'offCanvas', TEXT_DOMAIN ),
+				'title'    => __( 'OffCanvas', TEXT_DOMAIN ),
 				'panel'    => 'addon_menu_panel',
 				'priority' => 1000,
 			]
 		);
 
 		// Add offcanvas control
-		$wp_customize->add_setting(
-			'offcanvas_menu_setting',
-			[
-				'default'           => 'default',
-				'sanitize_callback' => 'sanitize_text_field',
-				'capability'        => 'edit_theme_options',
-			]
-		);
+		$wp_customize->add_setting( 'offcanvas_menu_setting', [
+			'default'           => 'default',
+			'sanitize_callback' => 'sanitize_text_field',
+			'capability'        => 'edit_theme_options',
+		] );
 		$wp_customize->add_control(
 			'offcanvas_menu_control',
 			[
@@ -257,13 +233,10 @@ final class Customizer {
 		);
 
 		// Add control
-		$wp_customize->add_setting(
-			'breadcrumb_bg_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_image',
-			]
-		);
+		$wp_customize->add_setting( 'breadcrumb_bg_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_image',
+		] );
 		$wp_customize->add_control(
 			new WP_Customize_Image_Control(
 				$wp_customize,
@@ -278,10 +251,119 @@ final class Customizer {
 		);
 
 		// -------------------------------------------------------------
+		// Social
+		// -------------------------------------------------------------
+
+		$wp_customize->add_section(
+			'social_section',
+			[
+				'title'    => __( 'Social', TEXT_DOMAIN ),
+				'panel'    => 'addon_menu_panel',
+				'priority' => 1008,
+			]
+		);
+
+		// Add options for facebook appid
+		$wp_customize->add_setting( 'social_fb_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_text_field',
+		] );
+		$wp_customize->add_control(
+			'social_fb_control',
+			[
+				'label'       => __( 'Facebook AppID', TEXT_DOMAIN ),
+				'section'     => 'social_section',
+				'settings'    => 'social_fb_setting',
+				'type'        => 'text',
+				'description' => __( "You can do this at <a target='_blank' href='https://developers.facebook.com/apps/'>developers.facebook.com/apps</a>", TEXT_DOMAIN ),
+			]
+		);
+
+		// Add options for facebook page_id
+		$wp_customize->add_setting( 'social_fb_page_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_text_field',
+		] );
+		$wp_customize->add_control(
+			'social_fb_page_control',
+			[
+				'label'       => __( 'Facebook PageID', TEXT_DOMAIN ),
+				'section'     => 'social_section',
+				'settings'    => 'social_fb_page_setting',
+				'type'        => 'text',
+				'description' => __( "How do I find my Facebook Page ID? <a target='_blank' href='https://www.facebook.com/help/1503421039731588'>facebook.com/help/1503421039731588</a>", TEXT_DOMAIN ),
+			]
+		);
+
+		// Fb Chat
+		$wp_customize->add_setting( 'social_fb_chat_setting', [
+			'default'           => false,
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_checkbox',
+		] );
+		$wp_customize->add_control(
+			'social_fb_chat_control',
+			[
+				'type'     => 'checkbox',
+				'settings' => 'social_fb_chat_setting',
+				'section'  => 'social_section',
+				'label'    => __( 'Facebook Live Chat', TEXT_DOMAIN ),
+			]
+		);
+
+		// Zalo Appid
+		$wp_customize->add_setting( 'social_zalo_setting', [
+			'sanitize_callback' => 'sanitize_text_field',
+			'capability'        => 'edit_theme_options',
+		] );
+		$wp_customize->add_control(
+			'social_zalo_control',
+			[
+				'label'       => __( 'Zalo AppID', TEXT_DOMAIN ),
+				'section'     => 'social_section',
+				'settings'    => 'social_zalo_setting',
+				'type'        => 'text',
+				'description' => __( "You can do this at <a target='_blank' href='https://developers.zalo.me/docs/'>developers.zalo.me/docs/</a>", TEXT_DOMAIN ),
+			]
+		);
+
+		// Zalo OAID
+		$wp_customize->add_setting( 'social_zalo_oa_setting', [
+			'sanitize_callback' => 'sanitize_text_field',
+			'capability'        => 'edit_theme_options',
+		] );
+		$wp_customize->add_control(
+			'social_zalo_oa_control',
+			[
+				'label'       => __( 'Zalo OAID', TEXT_DOMAIN ),
+				'section'     => 'social_section',
+				'settings'    => 'social_zalo_oa_setting',
+				'type'        => 'text',
+				'description' => __( "You can do this at <a target='_blank' href='https://oa.zalo.me/manage/oa?option=create'>oa.zalo.me/manage/oa?option=create</a>", TEXT_DOMAIN ),
+			]
+		);
+
+		// Zalo Chat
+		$wp_customize->add_setting( 'social_zalo_chat_setting', [
+			'default'           => false,
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_checkbox',
+		] );
+		$wp_customize->add_control(
+			'social_zalo_chat_control',
+			[
+				'type'     => 'checkbox',
+				'section'  => 'social_section',
+				'settings' => 'social_zalo_chat_setting',
+				'label'    => __( 'Zalo Live Chat', TEXT_DOMAIN ),
+			]
+		);
+
+		// -------------------------------------------------------------
 		// Header
 		// -------------------------------------------------------------
 
-		// Create footer section
+		// Create a footer section
 		$wp_customize->add_section(
 			'header_section',
 			[
@@ -292,13 +374,10 @@ final class Customizer {
 		);
 
 		// Add control
-		$wp_customize->add_setting(
-			'header_bgcolor_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_hex_color'
-			]
-		);
+		$wp_customize->add_setting( 'header_bgcolor_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_hex_color'
+		] );
 		$wp_customize->add_control(
 			new WP_Customize_Color_Control( $wp_customize,
 				'header_bgcolor_control',
@@ -312,13 +391,10 @@ final class Customizer {
 		);
 
 		// Add control
-		$wp_customize->add_setting(
-			'header_bg_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_image',
-			]
-		);
+		$wp_customize->add_setting( 'header_bg_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_image',
+		] );
 		$wp_customize->add_control(
 			new WP_Customize_Image_Control(
 				$wp_customize,
@@ -332,13 +408,10 @@ final class Customizer {
 		);
 
 		// Add control
-		$wp_customize->add_setting(
-			'top_header_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_text_field'
-			]
-		);
+		$wp_customize->add_setting( 'top_header_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_text_field'
+		] );
 		$wp_customize->add_control(
 			'top_header_control',
 			[
@@ -351,14 +424,11 @@ final class Customizer {
 		);
 
 		// add control
-		$wp_customize->add_setting(
-			'top_header_container_setting',
-			[
-				'default'           => false,
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_checkbox',
-			]
-		);
+		$wp_customize->add_setting( 'top_header_container_setting', [
+			'default'           => false,
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_checkbox',
+		] );
 		$wp_customize->add_control(
 			'top_header_container_control',
 			[
@@ -370,13 +440,10 @@ final class Customizer {
 		);
 
 		// Add control
-		$wp_customize->add_setting(
-			'header_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_text_field',
-			]
-		);
+		$wp_customize->add_setting( 'header_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_text_field',
+		] );
 		$wp_customize->add_control(
 			'header_control',
 			[
@@ -389,14 +456,11 @@ final class Customizer {
 		);
 
 		// add control
-		$wp_customize->add_setting(
-			'header_container_setting',
-			[
-				'default'           => false,
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_checkbox',
-			]
-		);
+		$wp_customize->add_setting( 'header_container_setting', [
+			'default'           => false,
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_checkbox',
+		] );
 		$wp_customize->add_control(
 			'header_container_control',
 			[
@@ -408,13 +472,10 @@ final class Customizer {
 		);
 
 		// Add control
-		$wp_customize->add_setting(
-			'bottom_header_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_text_field'
-			]
-		);
+		$wp_customize->add_setting( 'bottom_header_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_text_field'
+		] );
 		$wp_customize->add_control(
 			'bottom_header_control',
 			[
@@ -427,14 +488,11 @@ final class Customizer {
 		);
 
 		// add control
-		$wp_customize->add_setting(
-			'bottom_header_container_setting',
-			[
-				'default'           => false,
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_checkbox',
-			]
-		);
+		$wp_customize->add_setting( 'bottom_header_container_setting', [
+			'default'           => false,
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_checkbox',
+		] );
 		$wp_customize->add_control(
 			'bottom_header_container_control',
 			[
@@ -449,7 +507,7 @@ final class Customizer {
 		// Footer
 		// -------------------------------------------------------------
 
-		// Create footer section
+		// Create a footer section
 		$wp_customize->add_section(
 			'footer_section',
 			[
@@ -460,13 +518,10 @@ final class Customizer {
 		);
 
 		// Add control
-		$wp_customize->add_setting(
-			'footer_bgcolor_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_hex_color'
-			]
-		);
+		$wp_customize->add_setting( 'footer_bgcolor_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_hex_color'
+		] );
 		$wp_customize->add_control(
 			new WP_Customize_Color_Control( $wp_customize,
 				'footer_bgcolor_control',
@@ -479,14 +534,11 @@ final class Customizer {
 			)
 		);
 
-		// Add control Footer background
-		$wp_customize->add_setting(
-			'footer_bg_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_image',
-			]
-		);
+		// Add a control Footer background
+		$wp_customize->add_setting( 'footer_bg_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_image',
+		] );
 		$wp_customize->add_control(
 			new WP_Customize_Image_Control(
 				$wp_customize,
@@ -500,13 +552,10 @@ final class Customizer {
 		);
 
 		// Add control
-		$wp_customize->add_setting(
-			'footer_row_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_text_field',
-			]
-		);
+		$wp_customize->add_setting( 'footer_row_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_text_field',
+		] );
 		$wp_customize->add_control(
 			'footer_row_control',
 			[
@@ -519,13 +568,10 @@ final class Customizer {
 		);
 
 		// Add control
-		$wp_customize->add_setting(
-			'footer_col_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_text_field',
-			]
-		);
+		$wp_customize->add_setting( 'footer_col_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_text_field',
+		] );
 		$wp_customize->add_control(
 			'footer_col_control',
 			[
@@ -538,14 +584,11 @@ final class Customizer {
 		);
 
 		// add control
-		$wp_customize->add_setting(
-			'footer_container_setting',
-			[
-				'default'           => false,
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_checkbox',
-			]
-		);
+		$wp_customize->add_setting( 'footer_container_setting', [
+			'default'           => false,
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_checkbox',
+		] );
 		$wp_customize->add_control(
 			'footer_container_control',
 			[
@@ -570,13 +613,10 @@ final class Customizer {
 		);
 
 		// Meta theme-color
-		$wp_customize->add_setting(
-			'theme_color_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_hex_color',
-			]
-		);
+		$wp_customize->add_setting( 'theme_color_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_hex_color',
+		] );
 		$wp_customize->add_control(
 			new WP_Customize_Color_Control( $wp_customize,
 				'theme_color_control',
@@ -589,13 +629,10 @@ final class Customizer {
 		);
 
 		// Hide menu
-		$wp_customize->add_setting(
-			'remove_menu_setting',
-			[
-				'capability'        => 'edit_theme_options',
-				'sanitize_callback' => 'sanitize_textarea_field',
-			]
-		);
+		$wp_customize->add_setting( 'remove_menu_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_textarea_field',
+		] );
 		$wp_customize->add_control(
 			'remove_menu_control',
 			[

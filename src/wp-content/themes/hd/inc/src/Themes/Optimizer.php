@@ -77,7 +77,6 @@ final class Optimizer {
 	private function _optimizer(): void {
 
 		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue' ], 11 );
-		add_action( "user_register", [ &$this, 'user_register' ], 10, 1 );
 
 		add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 );
 		//add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 );
@@ -92,7 +91,8 @@ final class Optimizer {
 			add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 12, 3 );
 			add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
 
-			add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 99 );
+			add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 999 );
+			add_action( 'wp_footer', [ &$this, 'deferred_scripts' ], 1000 );
 		}
 
 		// Filters the rel values that are added to links with `target` attribute.
@@ -122,12 +122,12 @@ final class Optimizer {
 		}, 10, 1 );
 
 		// query_vars
-//		add_filter( 'query_vars', function ( $vars ) {
-//			$vars[] = 'page';
-//			$vars[] = 'paged';
-//
-//			return $vars;
-//		} );
+		add_filter( 'query_vars', function ( $vars ) {
+			$vars[] = 'page';
+			$vars[] = 'paged';
+
+			return $vars;
+		} );
 	}
 
 	// ------------------------------------------------------
@@ -333,12 +333,7 @@ final class Optimizer {
 	// ------------------------------------------------------
 
 	/**
-	 * @param $user_id
-	 *
 	 * @return void
 	 */
-	public function user_register( $user_id ): void {
-		update_user_meta( $user_id, 'show_admin_bar_front', false );
-		update_user_meta( $user_id, 'show_admin_bar_admin', true );
-	}
+    public function deferred_scripts() {}
 }

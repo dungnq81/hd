@@ -1,8 +1,8 @@
 /** https://github.com/necolas/normalize.css */
-@import "~normalize.css";
+//@import "~normalize.css";
 
 /** foundation */
-//@import "foundation/zf";
+@import "./foundation/zf";
 
 /** aos */
 //@import '~aos/src/sass/aos';
