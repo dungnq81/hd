@@ -22,7 +22,7 @@ if ( is_active_sidebar( 'hd-home-sidebar' ) ) :
 endif;
 
 ?>
-    <div class="layout-demo flex-container">
+    <div class="layout-demo container">
         <div class="!flex flex-x gap">
             <div class="cell cell-1 m-4 t-3 d-2" style="background-color: #0a4b78;">cell-1</div>
             <div class="cell cell-2 m-4 t-3 d-2" style="background-color: #0c6ca0;">cell-2</div>

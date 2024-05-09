@@ -370,7 +370,7 @@ figure {
 }
 
 // layout container
-:is(.layout-container, .flex-container, .grid-container) {
+:is(.container, .flex-container, .grid-container) {
     @include layout-container($gutter-xs, $gutter, false, false);
 
     &:not(.full) {

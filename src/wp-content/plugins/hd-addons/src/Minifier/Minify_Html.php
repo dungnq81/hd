@@ -16,7 +16,7 @@ namespace Addons\Minifier;
  * @package Minify
  * @author Stephen Clay <steve@mrclay.org>
  */
-class Minify_HTML {
+class Minify_Html {
 	/**
 	 * @var boolean
 	 */

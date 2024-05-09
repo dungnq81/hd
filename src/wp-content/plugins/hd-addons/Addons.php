@@ -6,7 +6,7 @@ use Addons\Custom_Order\Custom_Order;
 use Addons\Font\Font;
 use Addons\Heartbeat\Heartbeat;
 use Addons\Lazy_Load\Lazy_Load;
-use Addons\Minifier\Minify_HTML;
+use Addons\Minifier\Minify_Html;
 use Addons\SMTP\SMTP;
 use Addons\SVG\SVG;
 
@@ -72,10 +72,10 @@ final class Addons {
 			return;
 		}
 
-		$minify_html  = $this->optimizer_options['minify_html'] ?? 0;
+		$minify_html   = $this->optimizer_options['minify_html'] ?? 0;
 		$font_optimize = $this->optimizer_options['font_optimize'] ?? 0;
-		$font_preload = $this->optimizer_options['font_preload'] ? implode( PHP_EOL, $this->optimizer_options['font_preload'] ) : '';
-		$dns_prefetch = $this->optimizer_options['dns_prefetch'] ? implode( PHP_EOL, $this->optimizer_options['dns_prefetch'] ) : '';
+		$font_preload  = $this->optimizer_options['font_preload'] ? implode( PHP_EOL, $this->optimizer_options['font_preload'] ) : '';
+		$dns_prefetch  = $this->optimizer_options['dns_prefetch'] ? implode( PHP_EOL, $this->optimizer_options['dns_prefetch'] ) : '';
 
 		if ( ! empty( $minify_html ) ||
 		     ! empty( $font_optimize ) ||
