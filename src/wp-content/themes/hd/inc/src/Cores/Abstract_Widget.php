@@ -378,14 +378,14 @@ abstract class Abstract_Widget extends WP_Widget {
 		$m_slidesperview  = $ACF->m_slidesperview ?? 0;
 		$m_slidespergroup = $ACF->m_slidespergroup ?? 1;
 
-		$t_rows           = $ACF->m_rows ?? 1;
-		$t_spacebetween   = $ACF->m_spacebetween ?? 0;
-		$t_slidesperview  = $ACF->m_slidesperview ?? 0;
-		$t_slidespergroup = $ACF->m_slidespergroup ?? 1;
+		$t_rows           = $ACF->t_rows ?? 1;
+		$t_spacebetween   = $ACF->t_spacebetween ?? 0;
+		$t_slidesperview  = $ACF->t_slidesperview ?? 0;
+		$t_slidespergroup = $ACF->t_slidespergroup ?? 1;
 
-		$d_rows           = $ACF->m_rows ?? 1;
-		$d_spacebetween   = $ACF->m_spacebetween ?? 0;
-		$d_slidesperview  = $ACF->m_slidesperview ?? 0;
+		$d_rows           = $ACF->d_rows ?? 1;
+		$d_spacebetween   = $ACF->d_spacebetween ?? 0;
+		$d_slidesperview  = $ACF->d_slidesperview ?? 0;
 		$d_slidespergroup = $ACF->d_slidespergroup ?? 1;
 
 		$gap                         = $ACF->gap ?? false;

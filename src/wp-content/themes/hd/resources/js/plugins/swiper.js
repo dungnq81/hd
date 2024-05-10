@@ -296,7 +296,7 @@ w_swiper.forEach((el, index) => {
         _result_options.cssMode = !0; /* API CSS Scroll Snap */
     }
 
-    //console.log(_result_options);
+    console.log(_result_options);
     let _swiper = new Swiper('.' + _class, _result_options);
 
     /** now add mouseover and mouseout events to pause and resume the autoplay; */
