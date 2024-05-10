@@ -28,7 +28,7 @@ class Posts_Widget extends Abstract_Widget {
 			'container'            => [
 				'type'  => 'checkbox',
 				'std'   => 0,
-				'label' => __( 'Container layout', TEXT_DOMAIN ),
+				'label' => __( 'Container', TEXT_DOMAIN ),
 			],
 			'include_children'      => [
 				'type'  => 'checkbox',

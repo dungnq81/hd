@@ -141,8 +141,9 @@ final class Theme {
 			'storage'             => THEME_PATH . 'storage',
 			'languages'           => THEME_PATH . 'languages',
 
-			'inc_tpl'  => INC_PATH . 'admin/tpl',
-			'inc_ajax' => INC_PATH . 'ajax',
+			'inc_tpl'    => INC_PATH . 'admin/tpl',
+			'inc_ajax'   => INC_PATH . 'ajax',
+			'inc_blocks' => INC_PATH . 'blocks',
 		];
 
 		foreach ( $dirs as $dir => $path ) {

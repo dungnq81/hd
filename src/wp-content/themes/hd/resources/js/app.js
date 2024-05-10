@@ -1,4 +1,5 @@
 import './foundation/_foundation';
+
 Object.assign(window, { $: jQuery, jQuery });
 
 import { nanoid } from 'nanoid';

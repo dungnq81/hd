@@ -120,25 +120,27 @@ if ( ! function_exists( 'sanitize_image' ) ) {
 
 // --------------------------------------------------
 
-/**
- * @param int $post_limit
- *
- * @return void
- */
-function set_posts_per_page( int $post_limit = 12 ): void {
-	if ( ! is_admin() && ! is_main_query() ) {
+if ( ! function_exists( 'set_posts_per_page' ) ) {
+	/**
+	 * @param int $post_limit
+	 *
+	 * @return void
+	 */
+	function set_posts_per_page( int $post_limit = 12 ): void {
+		if ( ! is_admin() && ! is_main_query() ) {
 
-		$limit_default         = $limit_min = get_option( 'posts_per_page' );
-		$hd_posts_num_per_page = apply_filters( 'hd_posts_num_per_page', [] );
+			$limit_default         = $limit_min = get_option( 'posts_per_page' );
+			$hd_posts_num_per_page = apply_filters( 'hd_posts_num_per_page', [] );
 
-		if ( ! empty( $hd_posts_num_per_page ) ) {
-			$limit_min = min( $hd_posts_num_per_page );
-		}
+			if ( ! empty( $hd_posts_num_per_page ) ) {
+				$limit_min = min( $hd_posts_num_per_page );
+			}
 
-		if ( $post_limit != $limit_default && $post_limit != $limit_min ) {
-			add_action( 'pre_get_posts', function ( $query ) use ( $post_limit ) {
-				$query->set( 'posts_per_page', $post_limit );
-			} );
+			if ( $post_limit != $limit_default && $post_limit != $limit_min ) {
+				add_action( 'pre_get_posts', function ( $query ) use ( $post_limit ) {
+					$query->set( 'posts_per_page', $post_limit );
+				} );
+			}
 		}
 	}
 }
@@ -259,7 +261,7 @@ if ( ! function_exists( 'the_post_comment' ) ) {
 			$zalo_comment     = \get_field( 'zalo_comment', $id ) ?? false;
 		}
 
-		if ( comments_open() || true === $facebook_comment || true === $zalo_comment ) {
+		if ( comments_open() || $facebook_comment || $zalo_comment ) {
 			echo $wrapper_open;
 			if ( comments_open() ) {
 				//if ( ( class_exists( '\WooCommerce' ) && 'product' != $post_type ) || ! class_exists( '\WooCommerce' ) ) {

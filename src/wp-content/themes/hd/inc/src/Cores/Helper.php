@@ -23,7 +23,7 @@ final class Helper {
 	// --------------------------------------------------
 
 	/**
-	 * Find an attribute and add the data as a HTML string.
+	 * Find an attribute and add the data as an HTML string.
 	 *
 	 * @param string $str The HTML string.
 	 * @param string $attr The attribute to find.

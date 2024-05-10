@@ -29,7 +29,7 @@ class ProductsCarousel_Widget extends Abstract_Widget {
 			'container'  => [
 				'type'  => 'checkbox',
 				'std'   => 0,
-				'label' => __( 'Container layout', TEXT_DOMAIN ),
+				'label' => __( 'Container', TEXT_DOMAIN ),
 			],
 			'show'       => [
 				'type'    => 'select',
@@ -188,7 +188,7 @@ class ProductsCarousel_Widget extends Abstract_Widget {
 	public function styles_and_scripts(): void {
 		wp_enqueue_style( "swiper-style", ASSETS_URL . "css/plugins/swiper.css", [], THEME_VERSION );
 		wp_enqueue_script( "swiper", ASSETS_URL . "js/plugins/swiper.js", [], THEME_VERSION, true );
-		wp_script_add_data( "swiper", "defer", true );
+		//wp_script_add_data( "swiper", "defer", true );
 	}
 
 	/**

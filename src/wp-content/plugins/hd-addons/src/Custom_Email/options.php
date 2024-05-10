@@ -1,6 +1,6 @@
 <h2><?php _e( 'Email Settings', ADDONS_TEXT_DOMAIN ); ?></h2>
-<?php
 
+<?php
 $emails_options = get_option( 'emails__options' );
 $hd_email_list = apply_filters( 'hd_email_list', [] );
 if ( ! empty( $hd_email_list ) ) :

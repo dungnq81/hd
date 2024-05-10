@@ -777,8 +777,28 @@
         "title": "#__Carousel Responsive Breakpoints",
         "fields": [
             {
+                "key": "field_663e1336348a4",
+                "label": "Gap",
+                "name": "gap",
+                "aria-label": "",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "hd-checkbox",
+                    "id": ""
+                },
+                "message": "Gap",
+                "default_value": 1,
+                "ui": 0,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
                 "key": "field_6623f13d7194e",
-                "label": "Show responsive breakpoints",
+                "label": "Carousel breakpoints",
                 "name": "show_responsive_breakpoints",
                 "aria-label": "",
                 "type": "true_false",
@@ -823,7 +843,7 @@
             },
             {
                 "key": "field_6504250661f5e",
-                "label": "slidesPerView (mobile)",
+                "label": "Column (mobile)",
                 "name": "m_slidesperview",
                 "aria-label": "",
                 "type": "number",
@@ -845,7 +865,7 @@
             },
             {
                 "key": "field_65042be14757b",
-                "label": "slidesPerGroup (mobile)",
+                "label": "Group (mobile)",
                 "name": "m_slidespergroup",
                 "aria-label": "",
                 "type": "number",
@@ -867,7 +887,7 @@
             },
             {
                 "key": "field_65042c5f00930",
-                "label": "spaceBetween (mobile)",
+                "label": "Gap (mobile)",
                 "name": "m_spacebetween",
                 "aria-label": "",
                 "type": "number",
@@ -889,7 +909,7 @@
             },
             {
                 "key": "field_65042d866c9ca",
-                "label": "Rows (mobile)",
+                "label": "Row (mobile)",
                 "name": "m_rows",
                 "aria-label": "",
                 "type": "number",
@@ -936,7 +956,7 @@
             },
             {
                 "key": "field_6504326187650",
-                "label": "slidesPerView (tablet)",
+                "label": "Column (tablet)",
                 "name": "t_slidesperview",
                 "aria-label": "",
                 "type": "number",
@@ -958,7 +978,7 @@
             },
             {
                 "key": "field_6504333cd6536",
-                "label": "slidesPerGroup (tablet)",
+                "label": "Group (tablet)",
                 "name": "t_slidespergroup",
                 "aria-label": "",
                 "type": "number",
@@ -980,7 +1000,7 @@
             },
             {
                 "key": "field_65043371d013d",
-                "label": "spaceBetween (tablet)",
+                "label": "Gap (tablet)",
                 "name": "t_spacebetween",
                 "aria-label": "",
                 "type": "number",
@@ -1002,7 +1022,7 @@
             },
             {
                 "key": "field_650433a4d013e",
-                "label": "Rows (tablet)",
+                "label": "Row (tablet)",
                 "name": "t_rows",
                 "aria-label": "",
                 "type": "number",
@@ -1049,7 +1069,7 @@
             },
             {
                 "key": "field_6504708478278",
-                "label": "slidesPerView (desktop)",
+                "label": "Column (desktop)",
                 "name": "d_slidesperview",
                 "aria-label": "",
                 "type": "number",
@@ -1071,7 +1091,7 @@
             },
             {
                 "key": "field_6504709678279",
-                "label": "slidesPerGroup (desktop)",
+                "label": "Group (desktop)",
                 "name": "d_slidespergroup",
                 "aria-label": "",
                 "type": "number",
@@ -1093,7 +1113,7 @@
             },
             {
                 "key": "field_6504709d7827a",
-                "label": "spaceBetween (desktop)",
+                "label": "Gap (desktop)",
                 "name": "d_spacebetween",
                 "aria-label": "",
                 "type": "number",
@@ -1115,7 +1135,7 @@
             },
             {
                 "key": "field_650470a47827b",
-                "label": "Rows (desktop)",
+                "label": "Row (desktop)",
                 "name": "d_rows",
                 "aria-label": "",
                 "type": "number",

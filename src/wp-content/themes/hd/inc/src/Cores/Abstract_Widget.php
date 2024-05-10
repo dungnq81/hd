@@ -19,7 +19,7 @@ abstract class Abstract_Widget extends WP_Widget {
 	protected array $settings;
 
 	/**
-	 * Whether the widget has been registered yet.
+	 * Whether the widget hasn't been registered yet.
 	 *
 	 * @var bool
 	 */
@@ -197,7 +197,7 @@ abstract class Abstract_Widget extends WP_Widget {
 				continue;
 			}
 
-			// Format the value based on settings type.
+			// Format the value based on a settings type.
 			switch ( $setting_type ) {
 				case 'number':
 					$instance[ $key ] = absint( $new_instance[ $key ] );
@@ -256,7 +256,7 @@ abstract class Abstract_Widget extends WP_Widget {
                         <input class="widefat <?php echo esc_attr( $class ); ?>"
                                id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"
                                name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>" type="text"
-                               value="<?php echo esc_attr( $value ); ?>"/>
+                               value="<?php echo esc_attr( $value ); ?>" />
 						<?php if ( isset( $setting['desc'] ) ) : ?>
                             <small class="help-text"><?php echo $setting['desc']; ?></small>
 						<?php endif; ?>
@@ -273,7 +273,7 @@ abstract class Abstract_Widget extends WP_Widget {
                                name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>" type="number"
                                min="<?php echo esc_attr( $setting['min'] ); ?>"
                                max="<?php echo esc_attr( $setting['max'] ); ?>"
-                               value="<?php echo esc_attr( $value ); ?>"/>
+                               value="<?php echo esc_attr( $value ); ?>" />
 						<?php if ( isset( $setting['desc'] ) ) : ?>
                             <small class="help-text"><?php echo $setting['desc']; ?></small>
 						<?php endif; ?>
@@ -344,6 +344,7 @@ abstract class Abstract_Widget extends WP_Widget {
 	 */
 	public function _register_one( $number = - 1 ) {
 		parent::_register_one( $number );
+
 		if ( $this->registered ) {
 			return;
 		}
@@ -360,7 +361,8 @@ abstract class Abstract_Widget extends WP_Widget {
 	/**
 	 * styles_and_scripts
 	 */
-	public function styles_and_scripts() {}
+	public function styles_and_scripts() {
+	}
 
 	// --------------------------------------------------
 
@@ -370,59 +372,29 @@ abstract class Abstract_Widget extends WP_Widget {
 	 *
 	 * @return array
 	 */
-	protected function swiper_acf_options( $instance, $ACF ): array {
+	protected function swiper_acf_options( $instance, $ACF ) {
 		$m_rows           = $ACF->m_rows ?? 1;
-		$m_spacebetween   = $ACF->m_spacebetween ?? 20;
+		$m_spacebetween   = $ACF->m_spacebetween ?? 0;
 		$m_slidesperview  = $ACF->m_slidesperview ?? 0;
 		$m_slidespergroup = $ACF->m_slidespergroup ?? 1;
 
 		$t_rows           = $ACF->m_rows ?? 1;
-		$t_spacebetween   = $ACF->m_spacebetween ?? 30;
+		$t_spacebetween   = $ACF->m_spacebetween ?? 0;
 		$t_slidesperview  = $ACF->m_slidesperview ?? 0;
 		$t_slidespergroup = $ACF->m_slidespergroup ?? 1;
 
 		$d_rows           = $ACF->m_rows ?? 1;
-		$d_spacebetween   = $ACF->m_spacebetween ?? 30;
+		$d_spacebetween   = $ACF->m_spacebetween ?? 0;
 		$d_slidesperview  = $ACF->m_slidesperview ?? 0;
 		$d_slidespergroup = $ACF->d_slidespergroup ?? 1;
 
-        $show_responsive_breakpoints = $ACF->show_responsive_breakpoints ?? false;
+		$gap                         = $ACF->gap ?? false;
+		$show_responsive_breakpoints = $ACF->show_responsive_breakpoints ?? false;
 
 		$swiper_class = '';
 		$_data        = [];
 
-		if ( ! $show_responsive_breakpoints ) {
-			$_data['autoview'] = true;
-			$swiper_class      .= ' auto-view';
-		} else {
-
-			if ( $m_slidesperview > 0 ) {
-				$_data['mobile'] = [
-					'row'    => absint( $m_rows ),
-					'gap'    => absint( $m_spacebetween ),
-					'column' => absint( $m_slidesperview ),
-					'group'  => absint( $m_slidespergroup ),
-				];
-			}
-
-			if ( $t_slidesperview > 0 ) {
-				$_data['tablet'] = [
-					'row'    => absint( $t_rows ),
-					'gap'    => absint( $t_spacebetween ),
-					'column' => absint( $t_slidesperview ),
-					'group'  => absint( $t_slidespergroup ),
-				];
-			}
-
-			if ( $d_slidesperview > 0 ) {
-				$_data['desktop'] = [
-					'row'    => absint( $d_rows ),
-					'gap'    => absint( $d_spacebetween ),
-					'column' => absint( $d_slidesperview ),
-					'group'  => absint( $d_slidespergroup ),
-				];
-			}
-		}
+		//---------------------------------------
 
 		$navigation   = $ACF->navigation ?? false;
 		$pagination   = $ACF->pagination ?? 'none';
@@ -434,6 +406,8 @@ abstract class Abstract_Widget extends WP_Widget {
 		$effect_slide = $ACF->effect_slide ?? 'default';
 		$delay        = $ACF->delay ?? 1;
 		$speed        = $ACF->speed ?? 1;
+
+		//---------------------------------------
 
 		if ( $navigation ) {
 			$_data['navigation'] = Helper::toBool( $navigation );
@@ -480,6 +454,75 @@ abstract class Abstract_Widget extends WP_Widget {
 			$_data['speed'] = absint( $speed );
 		}
 
+		if ( $gap ) {
+			$_data['gap'] = true;
+		}
+
+		//---------------------------------------
+
+		if ( ! $show_responsive_breakpoints ) {
+			$_data['autoview'] = true;
+			$swiper_class      .= ' auto-view';
+		} else {
+
+			// mobile
+			if ( $m_slidesperview > 0 ) {
+				$_data['mobile'] = [
+					'spaceBetween'   => absint( $m_spacebetween ),
+					'slidesPerView'  => absint( $m_slidesperview ),
+					'slidesPerGroup' => absint( $m_slidespergroup ),
+				];
+
+				$m_rows = absint( $m_rows );
+				if ( $m_rows > 1 ) {
+					$_data['mobile']['grid'] = [
+						'rows' => $m_rows,
+						'fill' => 'row',
+					];
+
+					unset( $_data['loop'] );
+				}
+			}
+
+			// tablet
+			if ( $t_slidesperview > 0 ) {
+				$_data['tablet'] = [
+					'spaceBetween'   => absint( $t_spacebetween ),
+					'slidesPerView'  => absint( $t_slidesperview ),
+					'slidesPerGroup' => absint( $t_slidespergroup ),
+				];
+
+				$t_rows = absint( $t_rows );
+				if ( $t_rows > 1 ) {
+					$_data['tablet']['grid'] = [
+						'rows' => $t_rows,
+						'fill' => 'row',
+					];
+
+					unset( $_data['loop'] );
+				}
+			}
+
+			// desktop
+			if ( $d_slidesperview > 0 ) {
+				$_data['desktop'] = [
+					'spaceBetween'   => absint( $d_spacebetween ),
+					'slidesPerView'  => absint( $d_slidesperview ),
+					'slidesPerGroup' => absint( $d_slidespergroup ),
+				];
+
+				$d_rows = absint( $d_rows );
+				if ( $d_rows > 1 ) {
+					$_data['desktop']['grid'] = [
+						'rows' => $d_rows,
+						'fill' => 'row',
+					];
+
+					unset( $_data['loop'] );
+				}
+			}
+		}
+
 		return [
 			'class' => $swiper_class,
 			'data'  => json_encode( $_data, JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE ),
@@ -493,7 +536,7 @@ abstract class Abstract_Widget extends WP_Widget {
 	 *
 	 * @return object|mixed|null
 	 */
-	protected function acfFields( $id ): mixed {
-        return Helper::acfFields( $id );
+	protected function acfFields( $id ) {
+		return Helper::acfFields( $id );
 	}
 }

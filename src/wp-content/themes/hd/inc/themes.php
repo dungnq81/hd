@@ -544,12 +544,12 @@ add_filter( 'hd_location_mega_menu', function ( array $arr ) {
 // --------------------------------------------------
 
 // Custom post_per_page
-add_filter( 'hd_posts_num_per_page', function ( array $arr ) {
-	//$update_arr = [ 12, 24, 36 ];
-	$update_arr = [];
-
-	return array_merge( $arr, $update_arr );
-}, 99, 1 );
+//add_filter( 'hd_posts_num_per_page', function ( array $arr ) {
+//	//$update_arr = [ 12, 24, 36 ];
+//	$update_arr = [];
+//
+//	return array_merge( $arr, $update_arr );
+//}, 99, 1 );
 
 // --------------------------------------------------
 
@@ -567,25 +567,25 @@ add_filter( 'hd_smtp_plugins_support', function ( array $arr ) {
 // --------------------------------------------------
 
 // Custom Email list
-add_filter( 'hd_email_list', function ( array $arr ) {
-	$update_arr = [
-		//'lien_he' => 'Liên hệ',
-	];
-
-	return array_merge( $arr, $update_arr );
-}, 99, 1 );
+//add_filter( 'hd_email_list', function ( array $arr ) {
+//	$update_arr = [
+//		//'lien_he' => 'Liên hệ',
+//	];
+//
+//	return array_merge( $arr, $update_arr );
+//}, 99, 1 );
 
 // --------------------------------------------------
 
-add_filter( 'hd_lazy_load_hook_content', function ( array $arr ) {
-	$update_arr = [
-		'lazyload_iframes' => [],
-		'lazyload_videos' => [],
-		'lazyload_images' => [],
-	];
-
-	return array_merge( $arr, $update_arr );
-} );
+//add_filter( 'hd_lazy_load_hook_content', function ( array $arr ) {
+//	$update_arr = [
+//		'lazyload_iframes' => [],
+//		'lazyload_videos'  => [],
+//		'lazyload_images'  => [],
+//	];
+//
+//	return array_merge( $arr, $update_arr );
+//} );
 
 // --------------------------------------------------
 
@@ -601,8 +601,53 @@ add_filter( 'hd_lazy_load_exclude', function ( array $arr ) {
 // --------------------------------------------------
 
 // The urls where a lazy load is excluded.
-add_filter( 'hd_lazy_load_exclude_urls', function ( array $arr ) {
-	$update_arr = [];
+//add_filter( 'hd_lazy_load_exclude_urls', function ( array $arr ) {
+//	$update_arr = [];
+//
+//	return array_merge( $arr, $update_arr );
+//}, 99, 1 );
+
+// --------------------------------------------------
+
+add_filter( 'hd_social_follows', function ( array $arr ) {
+	$update_arr = [
+		'facebook' => [
+			'name'  => 'Facebook',
+			'icon'  => '<svg viewBox="0 0 36 36" style="color:#0866FF" fill="currentColor" height="40" width="40"><path d="M20.181 35.87C29.094 34.791 36 27.202 36 18c0-9.941-8.059-18-18-18S0 8.059 0 18c0 8.442 5.811 15.526 13.652 17.471L14 34h5.5l.681 1.87Z"></path><path class="xe3v8dz" d="M13.651 35.471v-11.97H9.936V18h3.715v-2.37c0-6.127 2.772-8.964 8.784-8.964 1.138 0 3.103.223 3.91.446v4.983c-.425-.043-1.167-.065-2.081-.065-2.952 0-4.09 1.116-4.09 4.025V18h5.883l-1.008 5.5h-4.867v12.37a18.183 18.183 0 0 1-6.53-.399Z"></path></svg>',
+			'color' => '#0866FF',
+			'url'   => 'https://www.facebook.com',
+		],
+		'youtube'  => [
+			'name'  => 'Youtube',
+			'icon'  => 'fa-brands fa-youtube',
+			'color' => 'rgb(255, 0, 0)',
+			'url'   => 'https://www.youtube.com',
+		],
+		'twitter'  => [
+			'name'  => 'X (Twitter)',
+			'icon'  => '<svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></g></svg>',
+			'color' => 'rgb(239, 243, 244)',
+			'url'   => 'https://twitter.com/home?lang=vi',
+		],
+		'tiktok'   => [
+			'name'  => 'Tiktok',
+			'icon'  => 'fa-brands fa-tiktok',
+			'color' => 'rgba(255, 255, 255, 0.9)',
+			'url'   => 'https://www.tiktok.com',
+		],
+		'telegram' => [
+			'name'  => 'Telegram',
+			'icon'  => 'fa-brands fa-telegram',
+			'color' => '#2BA0E5',
+			'url'   => 'https://telegram.org',
+		],
+		'zalo'     => [
+			'name'  => 'Zalo',
+			'icon'  => THEME_URL . 'storage/img/zlogo.png',
+			'color' => '#0068FF',
+			'url'   => 'https://chat.zalo.me',
+		],
+	];
 
 	return array_merge( $arr, $update_arr );
 }, 99, 1 );

@@ -517,6 +517,10 @@ final class Admin {
                                 <a title="Security" href="#security_settings"><?php _e( 'Security', TEXT_DOMAIN ); ?></a>
                             </li>
 
+                            <li class="social-settings">
+                                <a title="Social" href="#social_settings"><?php _e( 'Social', TEXT_DOMAIN ); ?></a>
+                            </li>
+
 							<?php if ( Helper::is_woocommerce_active() ) : ?>
                             <li class="woocommerce-settings">
                                 <a title="WooCommerce" href="#woocommerce_settings"><?php _e( 'WooCommerce', TEXT_DOMAIN ); ?></a>
@@ -584,6 +588,10 @@ final class Admin {
 
                         <div id="security_settings" class="group tabs-panel">
 							<?php include INC_PATH . 'admin/options/security.php'; ?>
+                        </div>
+
+                        <div id="social_settings" class="group tabs-panel">
+							<?php include INC_PATH . 'admin/options/social.php'; ?>
                         </div>
 
 						<?php if ( Helper::is_woocommerce_active() ) : ?>
