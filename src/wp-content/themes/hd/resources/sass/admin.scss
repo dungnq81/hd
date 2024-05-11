@@ -1,6 +1,8 @@
 @import "flex_mixins";
 @import "grid_mixins";
 
+//@import "awesome_font";
+
 $body-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Arial, sans-serif;
 
 /** */
@@ -541,6 +543,33 @@ body.toplevel_page_hd-settings {
             .section {
                 margin-bottom: 10px;
 
+                .controls {
+                    &.control-img {
+                        display: flex;
+                        align-items: center;
+                        flex-flow: row wrap;
+                        grid-gap: 15px;
+                        gap: 15px;
+
+                        & > label {
+                            flex: 0 0 auto;
+                            width: auto;
+
+                            & > svg, & > img {
+                                width: auto;
+                                height: 22px;
+                                min-width: 22px;
+                            }
+                        }
+
+                        :where(input:not([type="checkbox"]), input:not([type="radio"])) {
+                            flex: 1 1 0;
+                            width: auto;
+                            min-width: 0;
+                        }
+                    }
+                }
+
                 &.section-checkbox, &.section-select, &.section-text, &.section-textarea, &.section-multicheck {
                     .desc {
                         color: #888888;
@@ -969,19 +998,4 @@ body.toplevel_page_hd-settings {
 }
 
 /** */
-//.ui-sortable {
-//    tr {
-//        &:hover {
-//            cursor : move;
-//        }
-//
-//        &.alternate {
-//            background-color : #F9F9F9;
-//        }
-//
-//        &.ui-sortable-helper {
-//            background-color : #F9F9F9;
-//            border-top       : 1px solid #DFDFDF;
-//        }
-//    }
-//}
+

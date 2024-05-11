@@ -8,7 +8,7 @@ use WP_Query;
 
 \defined( 'ABSPATH' ) || die;
 
-class RecentProducts_Widget extends Abstract_Widget {
+class Recent_Products_Widget extends Abstract_Widget {
 	public function __construct() {
 		$this->widget_description = __( "Display a list of recent products from your store.", TEXT_DOMAIN );
 		$this->widget_name        = __( '* Recent Products', TEXT_DOMAIN );

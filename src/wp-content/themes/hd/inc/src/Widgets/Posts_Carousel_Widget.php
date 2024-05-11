@@ -7,7 +7,7 @@ use Cores\Helper;
 
 \defined( 'ABSPATH' ) || die;
 
-class PostsCarousel_Widget extends Abstract_Widget {
+class Posts_Carousel_Widget extends Abstract_Widget {
 	public function __construct() {
 		$this->widget_description = __( 'Your site&#8217;s Posts Carousels.' );
 		$this->widget_name        = __( '* Posts Carousels', TEXT_DOMAIN );

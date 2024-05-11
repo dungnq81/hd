@@ -163,14 +163,21 @@
                 {
                     "param": "widget",
                     "operator": "==",
-                    "value": "w-productscarousel"
+                    "value": "w-posts"
                 }
             ],
             [
                 {
                     "param": "widget",
                     "operator": "==",
-                    "value": "w-posts"
+                    "value": "w-products-carousel"
+                }
+            ],
+            [
+                {
+                    "param": "widget",
+                    "operator": "==",
+                    "value": "w-posts-carousel"
                 }
             ]
         ],
@@ -226,7 +233,7 @@
                 {
                     "param": "widget",
                     "operator": "==",
-                    "value": "w-postscarousel"
+                    "value": "w-posts-carousel"
                 }
             ]
         ],
@@ -423,7 +430,14 @@
                 {
                     "param": "widget",
                     "operator": "==",
-                    "value": "w-productscarousel"
+                    "value": "w-posts-carousel"
+                }
+            ],
+            [
+                {
+                    "param": "widget",
+                    "operator": "==",
+                    "value": "w-products-carousel"
                 }
             ]
         ],
@@ -583,7 +597,7 @@
                 {
                     "param": "widget",
                     "operator": "==",
-                    "value": "w-productscarousel"
+                    "value": "w-products-carousel"
                 }
             ]
         ],
@@ -658,14 +672,21 @@
                 {
                     "param": "widget",
                     "operator": "==",
-                    "value": "w-productscarousel"
+                    "value": "w-posts"
                 }
             ],
             [
                 {
                     "param": "widget",
                     "operator": "==",
-                    "value": "w-posts"
+                    "value": "w-products-carousel"
+                }
+            ],
+            [
+                {
+                    "param": "widget",
+                    "operator": "==",
+                    "value": "w-posts-carousel"
                 }
             ]
         ],
@@ -685,7 +706,7 @@
         "fields": [
             {
                 "key": "field_65025d8b1d73d",
-                "label": "Container layout",
+                "label": "Container",
                 "name": "container",
                 "aria-label": "",
                 "type": "true_false",
@@ -1161,14 +1182,14 @@
                 {
                     "param": "widget",
                     "operator": "==",
-                    "value": "w-productscarousel"
+                    "value": "w-posts-carousel"
                 }
             ],
             [
                 {
                     "param": "widget",
                     "operator": "==",
-                    "value": "w-postscarousel"
+                    "value": "w-products-carousel"
                 }
             ]
         ],

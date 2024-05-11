@@ -76,7 +76,14 @@ final class Optimizer {
 	 */
 	private function _optimizer(): void {
 
+		// Adding Shortcode in WordPress Using Custom HTML Widget
+		add_filter( 'widget_text', 'do_shortcode' );
+		add_filter( 'widget_text', 'shortcode_unautop' );
+
 		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue' ], 11 );
+
+		add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 12, 3 );
+		add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
 
 		add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 );
 		//add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 );
@@ -88,9 +95,6 @@ final class Optimizer {
 
 		// only front-end
 		if ( ! is_admin() && ! Helper::is_login() ) {
-			add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 12, 3 );
-			add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
-
 			add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 999 );
 			add_action( 'wp_footer', [ &$this, 'deferred_scripts' ], 1000 );
 		}
@@ -98,6 +102,7 @@ final class Optimizer {
 		// Filters the rel values that are added to links with `target` attribute.
 		add_filter( 'wp_targeted_link_rel', function ( $rel, $link_target ) {
 			$rel .= ' nofollow';
+
 			return $rel;
 		}, 999, 2 );
 
@@ -111,10 +116,6 @@ final class Optimizer {
 			global $wp_admin_bar;
 			$wp_admin_bar->remove_menu( 'wp-logo' );
 		} );
-
-		// Adding Shortcode in WordPress Using Custom HTML Widget
-		add_filter( 'widget_text', 'do_shortcode' );
-		add_filter( 'widget_text', 'shortcode_unautop' );
 
 		// Normalize upload filename
 		add_filter( 'sanitize_file_name', function ( $filename ) {
@@ -147,7 +148,10 @@ final class Optimizer {
 	 * @return void
 	 */
 	public function print_footer_scripts(): void { ?>
-        <script>document.documentElement.classList.remove("no-js"); if (-1 !== navigator.userAgent.toLowerCase().indexOf('msie') || -1 !== navigator.userAgent.toLowerCase().indexOf('trident/')) {document.documentElement.classList.add('is-IE');}</script>
+        <script>document.documentElement.classList.remove('no-js');
+            if (-1 !== navigator.userAgent.toLowerCase().indexOf('msie') || -1 !== navigator.userAgent.toLowerCase().indexOf('trident/')) {
+                document.documentElement.classList.add('is-IE');
+            }</script>
 		<?php
 
 //		if ( file_exists( $passive_events = THEME_PATH . 'assets/js/plugins/passive-events.js' ) ) {
@@ -335,5 +339,6 @@ final class Optimizer {
 	/**
 	 * @return void
 	 */
-    public function deferred_scripts() {}
+	public function deferred_scripts() {
+	}
 }

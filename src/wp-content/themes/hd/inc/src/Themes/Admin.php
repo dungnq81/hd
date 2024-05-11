@@ -30,10 +30,10 @@ final class Admin {
 
 	public function __construct() {
 
-        // editor-style.css
+		// editor-style.css
 		add_action( 'enqueue_block_editor_assets', [ &$this, 'enqueue_block_editor_assets' ] );
 
-        // admin.js, admin.css & codemirror_settings, v.v...
+		// admin.js, admin.css & codemirror_settings, v.v...
 		add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 9999, 1 );
 
 		add_action( 'admin_menu', [ &$this, 'admin_menu' ] );
@@ -58,12 +58,15 @@ final class Admin {
 
 	/**
 	 * @param $hook
-	 * 
+	 *
 	 * @return void
 	 */
 	public function admin_enqueue_scripts( $hook ): void {
 		wp_enqueue_style( "admin-style", THEME_URL . "assets/css/admin.css", [], THEME_VERSION );
 		wp_enqueue_script( "admin", THEME_URL . "assets/js/admin.js", [ "jquery" ], THEME_VERSION, true );
+
+		wp_enqueue_script( "fontawesome-kit", "https://kit.fontawesome.com/09f86c70cd.js", [], false, true );
+		wp_script_add_data( "fontawesome-kit", "defer", true );
 
 		// options_enqueue_assets
 		$allowed_pages = [
@@ -103,7 +106,7 @@ final class Admin {
 			}
 		}
 
-        // themes.php
+		// themes.php
 //		if ( ! empty( $submenu['themes.php'] ) ) {
 //            foreach ( $submenu['themes.php'] as $menu_key =>  $themes_menu ) {
 //                if ( 'themes.php' == $themes_menu[2] ||
@@ -152,7 +155,7 @@ final class Admin {
 			return $menu_order;
 		}
 
-        // Change menu title
+		// Change menu title
 		$submenu['hd-settings'][0][0] = __( 'Settings', TEXT_DOMAIN );
 
 		return $menu_order;
@@ -167,7 +170,6 @@ final class Admin {
 		global $wpdb;
 
 		if ( isset( $_POST['hd_submit_settings'] ) ) {
-
 			check_admin_referer( '_wpnonce_hd_settings_' . get_current_user_id() );
 
 			// ------------------------------------------------------
@@ -187,7 +189,7 @@ final class Admin {
 
 			/** SMTP Settings */
 
-            if ( Helper::is_addons_active() && check_smtp_plugin_active() ) {
+			if ( Helper::is_addons_active() && check_smtp_plugin_active() ) {
 
 				$smtp_host     = ! empty( $_POST['smtp_host'] ) ? sanitize_text_field( $_POST['smtp_host'] ) : '';
 				$smtp_auth     = ! empty( $_POST['smtp_auth'] ) ? sanitize_text_field( $_POST['smtp_auth'] ) : '';
@@ -221,7 +223,7 @@ final class Admin {
 				}
 
 				Helper::updateOption( 'smtp__options', $smtp_options, true );
-            }
+			}
 
 			// ------------------------------------------------------
 
@@ -260,26 +262,26 @@ final class Admin {
 
 			/** Custom Order */
 
-            if ( Helper::is_addons_active() ) {
-	            $order_reset = ! empty( $_POST['order_reset'] ) ? sanitize_text_field( $_POST['order_reset'] ) : '';
+			if ( Helper::is_addons_active() ) {
+				$order_reset = ! empty( $_POST['order_reset'] ) ? sanitize_text_field( $_POST['order_reset'] ) : '';
 
-	            if ( empty( $order_reset ) ) {
-		            $custom_order_options = [
-			            'order_post_type' => ! empty( $_POST['order_post_type'] ) ? array_map( 'sanitize_text_field', $_POST['order_post_type'] ) : [],
-			            'order_taxonomy'  => ! empty( $_POST['order_taxonomy'] ) ? array_map( 'sanitize_text_field', $_POST['order_taxonomy'] ) : [],
-		            ];
+				if ( empty( $order_reset ) ) {
+					$custom_order_options = [
+						'order_post_type' => ! empty( $_POST['order_post_type'] ) ? array_map( 'sanitize_text_field', $_POST['order_post_type'] ) : [],
+						'order_taxonomy'  => ! empty( $_POST['order_taxonomy'] ) ? array_map( 'sanitize_text_field', $_POST['order_taxonomy'] ) : [],
+					];
 
-		            Helper::updateOption( 'custom_order__options', $custom_order_options );
+					Helper::updateOption( 'custom_order__options', $custom_order_options );
 
-		            // update options
-		            ( new Custom_Order() )->update_options();
+					// update options
+					( new Custom_Order() )->update_options();
 
-	            } else {
+				} else {
 
-		            // reset order
-		            ( new Custom_Order() )->reset_all();
-	            }
-            }
+					// reset order
+					( new Custom_Order() )->reset_all();
+				}
+			}
 
 			// ------------------------------------------------------
 
@@ -318,13 +320,25 @@ final class Admin {
 			$optimizer_options_old = Helper::getOption( 'optimizer__options' );
 			$https_enforce_old     = $optimizer_options_old['https_enforce'] ?? 0;
 
-			$exclude_lazyload = ! empty( $_POST['exclude_lazyload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $_POST['exclude_lazyload'] ) : [];
+			$exclude_lazyload = ! empty( $_POST['exclude_lazyload'] ) ? Helper::explode_multi( [
+				',',
+				' ',
+				PHP_EOL
+			], $_POST['exclude_lazyload'] ) : [];
 			$exclude_lazyload = array_map( fn( $a ) => esc_textarea( $a ), $exclude_lazyload );
 
-			$font_preload = ! empty( $_POST['font_preload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $_POST['font_preload'] ) : [];
+			$font_preload = ! empty( $_POST['font_preload'] ) ? Helper::explode_multi( [
+				',',
+				' ',
+				PHP_EOL
+			], $_POST['font_preload'] ) : [];
 			$font_preload = array_map( fn( $a ) => sanitize_url( $a ), $font_preload );
 
-			$dns_prefetch = ! empty( $_POST['dns_prefetch'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $_POST['dns_prefetch'] ) : [];
+			$dns_prefetch = ! empty( $_POST['dns_prefetch'] ) ? Helper::explode_multi( [
+				',',
+				' ',
+				PHP_EOL
+			], $_POST['dns_prefetch'] ) : [];
 			$dns_prefetch = array_map( fn( $a ) => sanitize_url( $a ), $dns_prefetch );
 
 			$optimizer_options = [
@@ -383,6 +397,20 @@ final class Admin {
 
 			// ------------------------------------------------------
 
+			// Socials
+
+			$social_options    = [];
+			$hd_social_follows = apply_filters( 'hd_social_follows', [] );
+			foreach ( $hd_social_follows as $i => $item ) {
+				$social_options[ $i ] = [
+					'url' => ! empty( $_POST[$i . '-option'] ) ? sanitize_url( $_POST[$i . '-option'] ) : '',
+				];
+			}
+
+			Helper::updateOption( 'social__options', $social_options );
+
+			// ------------------------------------------------------
+
 			/** Woocommerce */
 
 			if ( Helper::is_woocommerce_active() ) {
@@ -404,7 +432,7 @@ final class Admin {
 
 			// ------------------------------------------------------
 
-            /** Remove base slug */
+			/** Remove base slug */
 
 			if ( Helper::is_addons_active() ) {
 				$base_slug_reset = ! empty( $_POST['base_slug_reset'] ) ? sanitize_text_field( $_POST['base_slug_reset'] ) : '';
@@ -495,11 +523,11 @@ final class Admin {
                                 <a class="current" title="Aspect ratio" href="#aspect_ratio_settings"><?php _e( 'Aspect Ratio', TEXT_DOMAIN ); ?></a>
                             </li>
 
-                            <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
-                            <li class="smtp-settings">
+	                        <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
+                                <li class="smtp-settings">
                                 <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', TEXT_DOMAIN ); ?></a>
                             </li>
-                            <?php endif; ?>
+	                        <?php endif; ?>
 
                             <li class="contact-info-settings">
                                 <a title="Contact Info" href="#contact_info_settings"><?php _e( 'Contact Info', TEXT_DOMAIN ); ?></a>
@@ -521,29 +549,31 @@ final class Admin {
                                 <a title="Social" href="#social_settings"><?php _e( 'Social', TEXT_DOMAIN ); ?></a>
                             </li>
 
-							<?php if ( Helper::is_woocommerce_active() ) : ?>
-                            <li class="woocommerce-settings">
+	                        <?php if ( Helper::is_woocommerce_active() ) : ?>
+                                <li class="woocommerce-settings">
                                 <a title="WooCommerce" href="#woocommerce_settings"><?php _e( 'WooCommerce', TEXT_DOMAIN ); ?></a>
                             </li>
-							<?php endif; ?>
+	                        <?php endif; ?>
 
-                            <?php if ( Helper::is_addons_active() ) : ?>
-                            <li class="base-slug-settings">
+	                        <?php if ( Helper::is_addons_active() ) : ?>
+                                <li class="base-slug-settings">
                                 <a title="Remove base slug" href="#base_slug_settings"><?php _e( 'Remove Base Slug', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php
 		                        $hd_email_list = apply_filters( 'hd_email_list', [] );
 		                        if ( ! empty( $hd_email_list ) ) :
-                            ?>
-                            <li class="email-settings">
+			                        ?>
+                                    <li class="email-settings">
                                 <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', TEXT_DOMAIN ); ?></a>
                             </li>
-                            <?php endif; ?>
+		                        <?php endif; ?>
 
-                            <li class="order-settings">
+
+
+                                <li class="order-settings">
                                 <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', TEXT_DOMAIN ); ?></a>
                             </li>
-	                        <?php endif;?>
+	                        <?php endif; ?>
 
                             <li class="comments-settings !hidden">
                                 <a title="Comments" href="#comments_settings"><?php _e( 'Comments', TEXT_DOMAIN ); ?></a>
@@ -564,11 +594,11 @@ final class Admin {
 							<?php include INC_PATH . 'admin/options/aspect_ratio.php'; ?>
                         </div>
 
-		                <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
-                        <div id="smtp_settings" class="group tabs-panel">
+	                    <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
+                            <div id="smtp_settings" class="group tabs-panel">
 							<?php include ADDONS_PATH . 'src/SMTP/options.php'; ?>
                         </div>
-                        <?php endif; ?>
+	                    <?php endif; ?>
 
                         <div id="contact_info_settings" class="group tabs-panel">
 							<?php include INC_PATH . 'admin/options/contact_info.php'; ?>
@@ -594,24 +624,26 @@ final class Admin {
 							<?php include INC_PATH . 'admin/options/social.php'; ?>
                         </div>
 
-						<?php if ( Helper::is_woocommerce_active() ) : ?>
-                        <div id="woocommerce_settings" class="group tabs-panel">
+	                    <?php if ( Helper::is_woocommerce_active() ) : ?>
+                            <div id="woocommerce_settings" class="group tabs-panel">
                             <?php include INC_PATH . 'src/Plugins/WooCommerce/options.php'; ?>
                         </div>
-						<?php endif; ?>
+	                    <?php endif; ?>
 
-                        <?php if ( Helper::is_addons_active() ) : ?>
-                        <div id="base_slug_settings" class="group tabs-panel">
+	                    <?php if ( Helper::is_addons_active() ) : ?>
+                            <div id="base_slug_settings" class="group tabs-panel">
                             <?php include ADDONS_PATH . 'src/Base_Slug/options.php'; ?>
                         </div>
 
 	                    <?php if ( ! empty( $hd_email_list ) ) : ?>
-                        <div id="email_settings" class="group tabs-panel">
+                                <div id="email_settings" class="group tabs-panel">
                             <?php include ADDONS_PATH . 'src/Custom_Email/options.php'; ?>
                         </div>
-                        <?php endif; ?>
+		                    <?php endif; ?>
 
-                        <div id="custom_order_settings" class="group tabs-panel">
+
+
+                            <div id="custom_order_settings" class="group tabs-panel">
 		                    <?php include ADDONS_PATH . 'src/Custom_Order/options.php'; ?>
                         </div>
 	                    <?php endif; ?>
@@ -656,48 +688,48 @@ final class Admin {
                         <ul>
                             <li><?php echo sprintf( '<span>Platform:</span> %s', php_uname() ); ?></li>
 
-							<?php if ( $server_software = $_SERVER['SERVER_SOFTWARE'] ?? null ) : ?>
-                            <li><?php echo sprintf( '<span>SERVER:</span> %s', $server_software ); ?></li>
-							<?php endif; ?>
+	                        <?php if ( $server_software = $_SERVER['SERVER_SOFTWARE'] ?? null ) : ?>
+                                <li><?php echo sprintf( '<span>SERVER:</span> %s', $server_software ); ?></li>
+	                        <?php endif; ?>
 
                             <li><?php echo sprintf( '<span>PHP version:</span> %s', PHP_VERSION ); ?></li>
                             <li><?php echo sprintf( '<span>WordPress version:</span> %s', get_bloginfo( 'version' ) ); ?></li>
                             <li><?php echo sprintf( '<span>WordPress multisite:</span> %s', ( is_multisite() ? 'Yes' : 'No' ) ); ?></li>
-							<?php
-							$openssl_status = 'Available';
-							$openssl_text   = '';
-							if ( ! extension_loaded( 'openssl' ) && ! defined( 'OPENSSL_ALGO_SHA1' ) ) {
-								$openssl_status = 'Not available';
-								$openssl_text   = ' (openssl extension is required in order to use any kind of encryption like TLS or SSL)';
-							}
-							?>
+	                        <?php
+	                        $openssl_status = 'Available';
+	                        $openssl_text   = '';
+	                        if ( ! extension_loaded( 'openssl' ) && ! defined( 'OPENSSL_ALGO_SHA1' ) ) {
+		                        $openssl_status = 'Not available';
+		                        $openssl_text   = ' (openssl extension is required in order to use any kind of encryption like TLS or SSL)';
+	                        }
+	                        ?>
                             <li><?php echo sprintf( '<span>openssl:</span> %s%s', $openssl_status, $openssl_text ); ?></li>
                             <li><?php echo sprintf( '<span>allow_url_fopen:</span> %s', ( ini_get( 'allow_url_fopen' ) ? 'Enabled' : 'Disabled' ) ); ?></li>
-							<?php
-							$stream_socket_client_status = 'Not Available';
-							$fsockopen_status            = 'Not Available';
-							$socket_enabled              = false;
+	                        <?php
+	                        $stream_socket_client_status = 'Not Available';
+	                        $fsockopen_status            = 'Not Available';
+	                        $socket_enabled              = false;
 
-							if ( function_exists( 'stream_socket_client' ) ) {
-								$stream_socket_client_status = 'Available';
-								$socket_enabled              = true;
-							}
-							if ( function_exists( 'fsockopen' ) ) {
-								$fsockopen_status = 'Available';
-								$socket_enabled   = true;
-							}
+	                        if ( function_exists( 'stream_socket_client' ) ) {
+		                        $stream_socket_client_status = 'Available';
+		                        $socket_enabled              = true;
+	                        }
+	                        if ( function_exists( 'fsockopen' ) ) {
+		                        $fsockopen_status = 'Available';
+		                        $socket_enabled   = true;
+	                        }
 
-							$socket_text = '';
-							if ( ! $socket_enabled ) {
-								$socket_text = ' (In order to make a SMTP connection your server needs to have either stream_socket_client or fsockopen)';
-							}
-							?>
+	                        $socket_text = '';
+	                        if ( ! $socket_enabled ) {
+		                        $socket_text = ' (In order to make a SMTP connection your server needs to have either stream_socket_client or fsockopen)';
+	                        }
+	                        ?>
                             <li><?php echo sprintf( '<span>stream_socket_client:</span> %s', $stream_socket_client_status ); ?></li>
                             <li><?php echo sprintf( '<span>fsockopen:</span> %s%s', $fsockopen_status, $socket_text ); ?></li>
 
-                            <?php if ( $agent = $_SERVER['HTTP_USER_AGENT'] ?? null ) : ?>
-                            <li><?php echo sprintf( '<span>User agent:</span> %s', $agent ); ?></li>
-							<?php endif; ?>
+	                        <?php if ( $agent = $_SERVER['HTTP_USER_AGENT'] ?? null ) : ?>
+                                <li><?php echo sprintf( '<span>User agent:</span> %s', $agent ); ?></li>
+	                        <?php endif; ?>
 
                             <li><?php echo sprintf( '<span>IP:</span> %s', Helper::getIpAddress() ); ?></li>
                         </ul>

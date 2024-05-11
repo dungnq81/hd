@@ -8,7 +8,7 @@ use WP_Query;
 
 \defined( 'ABSPATH' ) || die;
 
-class ProductsCarousel_Widget extends Abstract_Widget {
+class Products_Carousel_Widget extends Abstract_Widget {
 	public function __construct() {
 		$this->widget_description = __( "A slideshow list of your store's products.", TEXT_DOMAIN );
 		$this->widget_name        = __( '* Products Carousels', TEXT_DOMAIN );

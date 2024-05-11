@@ -243,8 +243,6 @@ final class Theme {
 		wp_enqueue_script( "social-share", ASSETS_URL . "js/plugins/social-share.js", [], '0.0.3', true );
 
 		wp_enqueue_style( "fonts-style", ASSETS_URL . "css/fonts.css", [], THEME_VERSION );
-		//wp_enqueue_script( "fontawesome-kit", "https://kit.fontawesome.com/870d5b0bdf.js", [], false, true );
-		//wp_script_add_data( "fontawesome-kit", "defer", true );
 
 		/** Inline Js */
 		$l10n = [

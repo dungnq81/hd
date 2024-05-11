@@ -8,7 +8,7 @@ use WP_Query;
 
 \defined( 'ABSPATH' ) || die;
 
-class RecentPosts_Widget extends Abstract_Widget {
+class Recent_Posts_Widget extends Abstract_Widget {
 	public function __construct() {
 		$this->widget_description = __( 'Your site&#8217;s most recent Posts.' );
 		$this->widget_name        = __( '* Recent Posts', TEXT_DOMAIN );

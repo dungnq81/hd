@@ -214,7 +214,7 @@ trait Wp {
 					$tag = preg_replace( '/\s+defer\s+/', ' ', $tag );
 
 					return preg_replace( '/\s+src=/', ' defer src=', $tag );
-				} elseif ( 'delay' === $value ) {
+				} elseif ( 'delay' === $value && ! self::is_admin() ) {
 					$tag = preg_replace( '/\s+defer\s+/', ' ', $tag );
 
 					return preg_replace( '/\s+src=/', ' defer data-type=\'lazy\' data-src=', $tag );
