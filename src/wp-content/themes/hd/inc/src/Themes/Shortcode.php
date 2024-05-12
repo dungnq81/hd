@@ -114,9 +114,7 @@ final class Shortcode {
 			if ( $atts['show']['thumbnail'] && $post_thumbnail ) :
 
 				$scale_class = isset( $atts['show']['scale'] ) ? 'scale ' : '';
-
-				$ratio_obj   = Helper::getAspectRatioClass( 'post', 'aspect_ratio__options' );
-				$ratio_class = $ratio_obj->class ?? '';
+				$ratio_class = Helper::aspectRatioClass();
 
 				echo '<a class="block cover" href="' . get_permalink( $post->ID ) . '" aria-label="' . $attr_post_title . '">';
 				echo '<span class="' . $scale_class . 'after-overlay res ' . $ratio_class . '">' . $post_thumbnail . '</span>';

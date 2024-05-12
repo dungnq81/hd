@@ -149,8 +149,8 @@ class Recent_Posts_Widget extends Abstract_Widget {
             <nav class="<?= $uniqid ?>" aria-label="<?php echo $aria_label; ?>">
                 <ul>
 					<?php
-					$ratio_obj          = Helper::getAspectRatioClass( 'post', 'aspect_ratio__options' );
-					$ratio_class        = $ratio_obj->class ?? '';
+
+					$ratio_class = Helper::aspectRatioClass();
 
 					foreach ( $r->posts as $recent_post ) :
 						$post_title = get_the_title( $recent_post->ID );

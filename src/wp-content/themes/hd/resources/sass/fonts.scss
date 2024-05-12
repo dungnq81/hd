@@ -12,7 +12,7 @@
         font-style: $font-style;
         font-weight: $font-weight;
         font-display: swap;
-        src: url("#{$base}/WOFF2/#{$file_name}.woff2?v=#{$unique_id}") format("woff2"),
+        src: //url("#{$base}/WOFF2/#{$file_name}.woff2?v=#{$unique_id}") format("woff2"),
              url("#{$base}/OTF/#{$file_name}.otf?v=#{$unique_id}") format("opentype"),
              url("#{$base}/TTF/#{$file_name}.ttf?v=#{$unique_id}") format("truetype");
     }
@@ -20,8 +20,11 @@
 
 @import "awesome_font";
 
+/** Helvetica Neue */
+$helvetica_neue: unquote("../../storage/fonts/HelveticaNeue");
+
 /** Poppins fonts */
-//$poppins_base: unquote("../../storage/fonts/SVN-Poppins");
+$poppins_base: unquote("../../storage/fonts/SVN-Poppins");
 
 //@include font-face(Poppins, normal, 300, SVN-Poppins-Light, $poppins_base);
 //@include font-face(Poppins, italic, 300, SVN-Poppins-LightItalic, $poppins_base);

@@ -168,7 +168,7 @@ final class Options {
 		$ar_post_type_list = apply_filters( 'hd_aspect_ratio_post_type', [] );
 
 		foreach ( $ar_post_type_list as $ar_post_type ) {
-			$ratio_obj   = Helper::getAspectRatioClass( $ar_post_type, 'aspect_ratio__options' );
+			$ratio_obj   = Helper::getAspectRatio( $ar_post_type );
 			$ratio_class = $ratio_obj->class ?? '';
 			$ratio_style = $ratio_obj->style ?? '';
 

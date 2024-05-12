@@ -569,7 +569,7 @@ add_filter( 'hd_smtp_plugins_support', function ( array $arr ) {
 // Custom Email list
 //add_filter( 'hd_email_list', function ( array $arr ) {
 //	$update_arr = [
-//		//'lien_he' => 'Liên hệ',
+//		'lien_he' => 'Liên hệ',
 //	];
 //
 //	return array_merge( $arr, $update_arr );
@@ -617,6 +617,12 @@ add_filter( 'hd_social_follows', function ( array $arr ) {
 			'color' => '#0866FF',
 			'url'   => 'https://www.facebook.com',
 		],
+		'instagram' => [
+			'name'  => 'Instagram',
+			'icon' => 'fa-brands fa-instagram',
+			'color' => 'rgb(224, 241, 255)',
+			'url'   => 'https://www.instagram.com',
+		],
 		'youtube'  => [
 			'name'  => 'Youtube',
 			'icon'  => 'fa-brands fa-youtube',
@@ -647,6 +653,24 @@ add_filter( 'hd_social_follows', function ( array $arr ) {
 			'color' => '#0068FF',
 			'url'   => 'https://chat.zalo.me',
 		],
+		'skype' => [
+			'name'  => 'Skype',
+			'icon'  => 'fa-brands fa-skype',
+			'color' => '#0092E0',
+			'url'   => 'https://www.skype.com/en/features/skype-web/',
+		],
+		'hotline' => [
+			'name'  => 'Hotline',
+			'icon'  => 'fa-solid fa-phone',
+			'color' => '',
+			'url'   => '',
+		],
+		'email' => [
+			'name'  => 'Email',
+			'icon'  => 'fa-solid fa-envelope',
+			'color' => '',
+			'url'   => '',
+		]
 	];
 
 	return array_merge( $arr, $update_arr );

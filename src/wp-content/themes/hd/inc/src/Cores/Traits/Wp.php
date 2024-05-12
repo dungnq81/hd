@@ -49,6 +49,17 @@ trait Wp {
 	// -------------------------------------------------------------
 
 	/**
+	 * Whether the current request is a WP CLI request.
+	 *
+	 * @return bool
+	 */
+	public static function is_wp_cli(): bool {
+		return defined( 'WP_CLI' ) && WP_CLI;
+	}
+
+	// -------------------------------------------------------------
+
+	/**
 	 * @return bool
 	 */
 	public static function is_admin(): bool {
@@ -1484,12 +1495,32 @@ trait Wp {
 
 	/**
 	 * @param string $post_type
+	 * @param string $default
+	 *
+	 * @return string
+	 */
+	public static function aspectRatioClass( string $post_type = 'post', string $default = 'ar-3-2' ): string {
+		$ratio = self::getAspectRatioOption( $post_type );
+
+		$ratio_x = $ratio[0] ?? '';
+		$ratio_y = $ratio[1] ?? '';
+		if ( ! $ratio_x || ! $ratio_y ) {
+			return $default;
+		} else {
+			return 'ar-' . $ratio_x . '-' . $ratio_y;
+		}
+	}
+
+	// -------------------------------------------------------------
+
+	/**
+	 * @param string $post_type
 	 * @param string $option
 	 * @param string $default
 	 *
 	 * @return object
 	 */
-	public static function getAspectRatioClass( string $post_type = '', string $option = '', string $default = 'ar-3-2' ): object {
+	public static function getAspectRatio( string $post_type = 'post', string $option = '', string $default = 'ar-3-2' ): object {
 		$ratio = self::getAspectRatioOption( $post_type, $option );
 
 		$ratio_x = $ratio[0] ?? '';
