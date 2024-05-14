@@ -102,7 +102,6 @@ final class Optimizer {
 		// Filters the rel values that are added to links with `target` attribute.
 		add_filter( 'wp_targeted_link_rel', function ( $rel, $link_target ) {
 			$rel .= ' nofollow';
-
 			return $rel;
 		}, 999, 2 );
 
@@ -160,19 +159,19 @@ final class Optimizer {
 //			echo '</script>';
 //		}
 
-		if ( file_exists( $skip_link = THEME_PATH . 'assets/js/plugins/skip-link-focus.js' ) ) {
+		if ( is_file( $skip_link = THEME_PATH . 'assets/js/plugins/skip-link-focus.js' ) ) {
 			echo '<script>';
 			include $skip_link;
 			echo '</script>';
 		}
 
-		if ( file_exists( $flex_gap = THEME_PATH . 'assets/js/plugins/flex-gap.js' ) ) {
+		if ( is_file( $flex_gap = THEME_PATH . 'assets/js/plugins/flex-gap.js' ) ) {
 			echo '<script>';
 			include $flex_gap;
 			echo '</script>';
 		}
 
-		if ( file_exists( $load_scripts = THEME_PATH . 'assets/js/plugins/load-scripts.js' ) ) {
+		if ( is_file( $load_scripts = THEME_PATH . 'assets/js/plugins/load-scripts.js' ) ) {
 			echo '<script>';
 			include $load_scripts;
 			echo '</script>';
@@ -208,7 +207,7 @@ final class Optimizer {
 		// Custom filter which adds proper attributes
 
 		// Fontawesome kit
-		if ( ( 'fontawesome-kit' == $handle ) && ! preg_match( ":\scrossorigin(=|>|\s):", $tag ) ) {
+		if ( ( 'fontawesome-kit' === $handle ) && ! preg_match( ":\scrossorigin(=|>|\s):", $tag ) ) {
 			$tag = preg_replace( ':(?=></script>):', " crossorigin='anonymous'", $tag, 1 );
 		}
 
@@ -252,7 +251,7 @@ final class Optimizer {
 				if ( isset( $_GET['pagenum'] ) ) {
 
 					$pagenum = esc_sql( $_GET['pagenum'] );
-					if ( in_array( $pagenum, $hd_posts_num_per_page_arr ) ) {
+					if ( in_array( $pagenum, $hd_posts_num_per_page_arr, true ) ) {
 						$posts_per_page = $pagenum;
 					}
 
@@ -262,7 +261,7 @@ final class Optimizer {
 				}
 			}
 
-			if ( $posts_per_page_default != $posts_per_page ) {
+			if ( $posts_per_page_default !== $posts_per_page ) {
 				$query->set( 'posts_per_page', $posts_per_page );
 			}
 		}
@@ -277,6 +276,7 @@ final class Optimizer {
 	 * @param $wp_query
 	 *
 	 * @return mixed|string
+	 * @throws \JsonException
 	 */
 	public function post_search_by_title( $search, $wp_query ): mixed {
 		global $wpdb;
@@ -291,9 +291,9 @@ final class Optimizer {
 		$search = $search_and = '';
 
 		$search_terms = Helper::toArray( $q['search_terms'] );
+
 		foreach ( $search_terms as $term ) {
-			$term = esc_sql( $wpdb->esc_like( $term ) );
-			$term = mb_strtolower( $term );
+			$term = mb_strtolower( esc_sql( $wpdb->esc_like( $term ) ) );
 
 			$like       = "LIKE CONCAT('{$n}', CONVERT('{$term}', BINARY), '{$n}')";
 			$like_first = "LIKE CONCAT(CONVERT('{$term}', BINARY), '{$n}')";
@@ -339,6 +339,5 @@ final class Optimizer {
 	/**
 	 * @return void
 	 */
-	public function deferred_scripts() {
-	}
+	public function deferred_scripts() {}
 }

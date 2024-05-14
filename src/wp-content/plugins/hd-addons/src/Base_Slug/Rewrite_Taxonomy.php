@@ -63,7 +63,7 @@ class Rewrite_Taxonomy {
 
 			if ( $custom_tax->public === true &&
 			     $custom_tax->show_ui === true &&
-			     in_array( $custom_tax->name, $this->base_slug_taxonomy )
+			     in_array( $custom_tax->name, $this->base_slug_taxonomy, true )
 			) {
 				$category_base = trim( str_replace( '%' . $custom_tax->name . '%', '', $wp_rewrite->get_extra_permastruct( $custom_tax->name ) ), '/' );
 
@@ -110,7 +110,7 @@ class Rewrite_Taxonomy {
 	public function request( $query_vars ) {
 		if ( isset( $query_vars['addons_category_redirect'] ) ) {
 			$cat_link = trailingslashit( get_option( 'home' ) ) . user_trailingslashit( $query_vars['addons_category_redirect'], 'category' );
-			wp_safe_redirect( $cat_link, 301 );
+			redirect( $cat_link );
 			exit;
 		}
 

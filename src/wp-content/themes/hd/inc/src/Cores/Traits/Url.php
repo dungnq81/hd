@@ -32,7 +32,7 @@ trait Url {
 	 */
 	public static function getIpAddress(): string {
 
-		if ( class_exists( '\Vectorface\Whip\Whip' ) ) {
+		if ( class_exists( Whip::class ) ) {
 			$whip          = new Whip( Whip::CLOUDFLARE_HEADERS | Whip::REMOTE_ADDR | Whip::PROXY_HEADERS | Whip::INCAPSULA_HEADERS );
 			$clientAddress = $whip->getValidIpAddress();
 
@@ -54,11 +54,13 @@ trait Url {
 
 			if ( filter_var( $client, FILTER_VALIDATE_IP ) ) {
 				return $client;
-			} elseif ( filter_var( $forward, FILTER_VALIDATE_IP ) ) {
-				return $forward;
-			} else {
-				return $remote;
 			}
+
+			if ( filter_var( $forward, FILTER_VALIDATE_IP ) ) {
+				return $forward;
+			}
+
+			return $remote;
 		}
 
 		// Fallback local ip.
@@ -85,9 +87,8 @@ trait Url {
 	 */
 	public static function pathToUrl( $dir ): array|string {
 		$dirs = wp_upload_dir();
-		$url  = str_replace( $dirs['basedir'], $dirs['baseurl'], $dir );
 
-		return str_replace( ABSPATH, self::home(), $url );
+		return str_replace( [ $dirs['basedir'], ABSPATH ], [ $dirs['baseurl'], self::home() ], $dir );
 	}
 
 	// --------------------------------------------------
@@ -125,7 +126,7 @@ trait Url {
 		if ( $get_vars ) {
 			$queryString = http_build_query( $_GET );
 
-			if ( strpos( $current_url, "?" ) && $queryString ) {
+			if ( mb_strpos( $current_url, "?" ) && $queryString ) {
 				$current_url .= "&" . $queryString;
 			} elseif ( $queryString ) {
 				$current_url .= "?" . $queryString;
@@ -151,28 +152,27 @@ trait Url {
 	 * @return string
 	 */
 	public static function normalizePath( string $path ): string {
-		// Backslash to slash convert
-		if ( strtoupper( substr( PHP_OS, 0, 3 ) ) == "WIN" ) {
-			$path = preg_replace( '/([^\\\])\\\+([^\\\])/s', "$1/$2", $path );
-			if ( str_ends_with( $path, "\\" ) ) {
-				$path = substr( $path, 0, - 1 );
-			}
-			if ( str_starts_with( $path, "\\" ) ) {
-				$path = "/" . substr( $path, 1 );
-			}
-		}
-		$path = preg_replace( '/\/+/s', "/", $path );
-		$path = "/$path";
-		if ( ! str_ends_with( $path, "/" ) ) {
-			$path .= "/";
-		}
-		$expr = '/\/([^\/]{1}|[^\.\/]{2}|[^\/]{3,})\/\.\.\//s';
-		while ( preg_match( $expr, $path ) ) {
-			$path = preg_replace( $expr, "/", $path );
-		}
-		$path = substr( $path, 0, - 1 );
+		$parts = explode( '/', $path );
+		$stack = [];
 
-		return substr( $path, 1 );
+		foreach ( $parts as $part ) {
+			if ( $part === '' || $part === '.' ) {
+				// Ignore empty parts and current directory parts (.)
+				continue;
+			}
+			if ( $part === '..' ) {
+				// Pop from stack if part is '..' and stack is not empty
+				if ( ! empty( $stack ) ) {
+					array_pop( $stack );
+				}
+			} else {
+				// Add the part to the stack
+				$stack[] = $part;
+			}
+		}
+
+		// Rebuild the path
+		return '/' . implode( '/', $stack );
 	}
 
 	// --------------------------------------------------
@@ -217,7 +217,7 @@ trait Url {
 	public static function remoteStatusCheck( string $url ): false|int {
 		$response = wp_safe_remote_head( $url, [
 			'timeout'   => 5,
-			'sslverify' => false,
+			'silverier' => false,
 		] );
 
 		if ( ! is_wp_error( $response ) ) {

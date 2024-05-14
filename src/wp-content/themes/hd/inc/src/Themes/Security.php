@@ -48,7 +48,7 @@ final class Security {
 		$security_login       = new Login_Attempts();
 
 		// Bail if optimization is disabled.
-		if ( 0 === intval( $limit_login_attempts ) ) {
+		if ( 0 === (int) $limit_login_attempts ) {
 			$security_login->reset_login_attempts();
 
 			return;
@@ -72,8 +72,7 @@ final class Security {
 	 * @return void
 	 */
 	private function _illegal_users(): void {
-		$illegal_users_option = $this->security_options['illegal_users'] ?? 0;
-		if ( $illegal_users_option ) {
+		if ( $this->security_options['illegal_users'] ?? 0 ) {
 			$common_user = new Illegal_Users();
 			add_action( 'illegal_user_logins', [ &$common_user, 'get_illegal_usernames' ] );
 		}
@@ -107,8 +106,7 @@ final class Security {
 	 * @return void
 	 */
 	private function _hide_wp_version(): void {
-		$hide_wp_version = $this->security_options['hide_wp_version'] ?? 0;
-		if ( $hide_wp_version ) {
+		if ( $this->security_options['hide_wp_version'] ?? 0 ) {
 
 			// Remove an admin wp version
 			add_filter( 'update_footer', '__return_empty_string', 11 );
@@ -146,10 +144,10 @@ final class Security {
 	 * @return void
 	 */
 	private function _disable_RSSFeed(): void {
-		$rss_feed_off = $this->security_options['rss_feed_off'] ?? 0;
 
 		// If the option is already enabled.
-		if ( $rss_feed_off ) {
+		if ( $this->security_options['rss_feed_off'] ?? 0 ) {
+
 			add_action( 'do_feed', [ &$this, 'disable_feed' ], 1 );
 			add_action( 'do_feed_rdf', [ &$this, 'disable_feed' ], 1 );
 			add_action( 'do_feed_rss', [ &$this, 'disable_feed' ], 1 );
@@ -182,8 +180,7 @@ final class Security {
 	 * @return void
 	 */
 	private function _remove_ReadMe(): void {
-		$remove_readme = $this->security_options['remove_readme'] ?? 0;
-		if ( $remove_readme ) {
+		if ( $this->security_options['remove_readme'] ?? 0 ) {
 
 			// Add action to delete the README on WP core update if option is set.
 			$readme = new Readme();
@@ -199,8 +196,7 @@ final class Security {
 	 * @return void
 	 */
 	private function _disable_XMLRPC(): void {
-		$xml_rpc_off = $this->security_options['xml_rpc_off'] ?? 0;
-		if ( $xml_rpc_off ) {
+		if ( $this->security_options['xml_rpc_off'] ?? 0 ) {
 
 			// Disable XML-RPC authentication
 			if ( is_admin() ) {
@@ -230,8 +226,7 @@ final class Security {
 			 * @param array $methods The array of xml-rpc methods
 			 */
 			add_filter( 'xmlrpc_methods', function ( $methods ) {
-				unset( $methods['pingback.ping'] );
-				unset( $methods['pingback.extensions.getPingbacks'] );
+				unset( $methods['pingback.ping'], $methods['pingback.extensions.getPingbacks'] );
 
 				return $methods;
 			}, 10, 1 );

@@ -227,7 +227,8 @@ if ( ! function_exists( '__body_classes' ) ) {
 			}
 		}
 
-		if ( ( is_home() || is_front_page() ) && Helper::is_woocommerce_active() ) {
+		$is_home_or_front_page = is_home() || is_front_page();
+		if ( $is_home_or_front_page && Helper::is_woocommerce_active() ) {
 			$classes[] = 'woocommerce';
 		}
 
@@ -253,7 +254,7 @@ if ( ! function_exists( '__post_classes' ) ) {
 	function __post_classes( array $classes ): array {
 
 		// remove_sticky_class
-		if ( in_array( 'sticky', $classes ) ) {
+		if ( in_array( 'sticky', $classes, true ) ) {
 			$classes   = array_diff( $classes, [ "sticky" ] );
 			$classes[] = 'wp-sticky';
 		}
@@ -300,7 +301,7 @@ if ( ! function_exists( '__nav_menu_css_classes' ) ) {
 			}
 		}
 
-		if ( 1 == $menu_item->current
+		if ( 1 === $menu_item->current
 		     || $menu_item->current_item_ancestor
 		     || $menu_item->current_item_parent
 		) {
@@ -310,7 +311,7 @@ if ( ! function_exists( '__nav_menu_css_classes' ) ) {
 		// li_class
 		// li_depth_class
 
-		if ( $depth == 0 ) {
+		if ( $depth === 0 ) {
 			if ( isset( $args->li_class ) ) {
 				$classes[] = $args->li_class;
 			}
@@ -344,7 +345,7 @@ if ( ! function_exists( '__nav_menu_link_attributes' ) ) {
 		// link_class
 		// link_depth_class
 
-		if ( $depth == 0 ) {
+		if ( $depth === 0 ) {
 			if ( property_exists( $args, 'link_class' ) ) {
 				$atts['class'] = $args->link_class;
 			}
@@ -364,7 +365,7 @@ if ( ! function_exists( '__nav_menu_link_attributes' ) ) {
 
 /** comment off default */
 add_filter( 'wp_insert_post_data', function ( array $data ) {
-	if ( $data['post_status'] == 'auto-draft' ) {
+	if ( $data['post_status'] === 'auto-draft' ) {
 		// $data['comment_status'] = 0;
 		$data['ping_status'] = 0;
 	}
@@ -428,7 +429,7 @@ add_filter( 'hd_defer_style', function ( array $arr ) {
 
 /** Aspect Ratio default */
 add_filter( 'hd_aspect_ratio_default_list', function ( array $arr ) {
-	$new_arr    = array_merge( $arr, [ '1-1' ] );
+	$new_arr = array_merge( $arr, [ '1-1' ] );
 	$update_arr = [
 		'3-2',
 		'4-3',
@@ -448,7 +449,7 @@ add_filter( 'hd_aspect_ratio_post_type', function ( array $arr ) {
 
 	$new_arr = array_merge( $arr, $update_arr );
 	if ( Helper::is_woocommerce_active() ) {
-		$new_arr = array_merge( $new_arr, [ 'product' ] );
+		$new_arr[] = 'product';
 	}
 
 	return $new_arr;
@@ -466,7 +467,7 @@ add_filter( 'hd_term_row_actions', function ( array $arr ) {
 
 	$new_arr = array_merge( $arr, $update_arr );
 	if ( Helper::is_woocommerce_active() ) {
-		$new_arr = array_merge( $new_arr, [ 'product_cat' ] );
+		$new_arr[] = 'product_cat';
 	}
 
 	return $new_arr;
@@ -507,11 +508,11 @@ add_filter( 'hd_post_exclude_columns', function ( array $arr ) {
 
 	$new_arr = array_merge( $arr, $update_arr );
 	if ( Helper::is_woocommerce_active() ) {
-		$new_arr = array_merge( $new_arr, [ 'product' ] );
+		$new_arr[] = 'product';
 	}
 
 	if ( Helper::is_contact_form_7_active() ) {
-		$new_arr = array_merge( $new_arr, [ 'wpcf7_contact_form' ] );
+		$new_arr[] = 'wpcf7_contact_form';
 	}
 
 	return $new_arr;

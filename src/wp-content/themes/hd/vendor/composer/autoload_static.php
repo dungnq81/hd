@@ -7,7 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInitaa5d2d434f9f8d32c649008de18a5fd5
 {
     public static $files = array (
-        'e990cb5c1215e143ad9ff1cced58be3f' => __DIR__ . '/../..' . '/inc/Tgmpa/tgmpa-config.php',
+        '51f88653d7464925568360ef16d4eb37' => __DIR__ . '/../..' . '/inc/tgmpa/tgmpa-config.php',
     );
 
     public static $prefixLengthsPsr4 = array (

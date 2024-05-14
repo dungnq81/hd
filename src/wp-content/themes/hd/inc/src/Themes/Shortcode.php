@@ -170,7 +170,7 @@ final class Shortcode {
 			[
 				'location' => 'mobile-nav',
 				'class'    => 'mobile-menu',
-				'id'       => esc_attr( uniqid( 'menu-' ) ),
+				'id'       => esc_attr( uniqid( 'menu-', true ) ),
 				'depth'    => 4,
 			],
 			$atts,
@@ -180,7 +180,7 @@ final class Shortcode {
 		$location = $atts['location'] ?: 'mobile-nav';
 		$class    = $atts['class'] ? esc_attr_strip_tags( $atts['class'] ) : 'mobile-menu';
 		$depth    = $atts['depth'] ? absint( $atts['depth'] ) : 1;
-		$id       = $atts['id'] ?: esc_attr( uniqid( 'menu-' ) );
+		$id       = $atts['id'] ?: esc_attr( uniqid( 'menu-', true ) );
 
 		return Helper::verticalNav( [
 			'menu_id'        => $id,
@@ -203,7 +203,7 @@ final class Shortcode {
 			[
 				'location' => 'main-nav',
 				'class'    => 'desktop-menu',
-				'id'       => esc_attr( uniqid( 'menu-' ) ),
+				'id'       => esc_attr( uniqid( 'menu-', true ) ),
 				'depth'    => 4,
 			],
 			$atts,
@@ -213,7 +213,7 @@ final class Shortcode {
 		$location = $atts['location'] ?: 'main-nav';
 		$class    = $atts['class'] ? esc_attr_strip_tags( $atts['class'] ) : 'desktop-menu';
 		$depth    = $atts['depth'] ? absint( $atts['depth'] ) : 1;
-		$id       = $atts['id'] ?: esc_attr( uniqid( 'menu-' ) );
+		$id       = $atts['id'] ?: esc_attr( uniqid( 'menu-', true ) );
 
 		return Helper::horizontalNav( [
 			'menu_id'        => $id,
@@ -270,14 +270,14 @@ final class Shortcode {
 				'title' => '',
 				'email' => '',
 				'class' => '',
-				'id'    => esc_attr( uniqid( 'mail-' ) ),
+				'id'    => esc_attr( uniqid( 'mail-', true ) ),
 			],
 			$atts,
 			'safe_mail'
 		);
 
 		$attributes['title'] = $atts['title'] ? esc_attr_strip_tags( $atts['title'] ) : esc_attr_strip_tags( $atts['email'] );
-		$attributes['id']    = $atts['id'] ? esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'mail-' ) );
+		$attributes['id']    = $atts['id'] ? esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'mail-', true ) );
 
 		if ( $atts['class'] ) {
 			$attributes['class'] = esc_attr_strip_tags( $atts['class'] );
@@ -318,7 +318,7 @@ final class Shortcode {
 			[
 				'title' => '',
 				'class' => '',
-				'id'    => esc_attr( uniqid( 'search-' ) ),
+				'id'    => esc_attr( uniqid( 'search-', true ) ),
 			],
 			$atts,
 			'inline_search'
@@ -327,7 +327,7 @@ final class Shortcode {
 		$title             = $atts['title'] ?: __( 'Search', TEXT_DOMAIN );
 		$title_for         = __( 'Search for', TEXT_DOMAIN );
 		$placeholder_title = esc_attr( __( 'Search ...', TEXT_DOMAIN ) );
-		$id                = $atts['id'] ? esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'search-' ) );
+		$id                = $atts['id'] ? esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'search-', true ) );
         $class = $atts['class'] ? ' ' . esc_attr_strip_tags( $atts['class'] ) : '';
 
 		ob_start();
@@ -339,7 +339,7 @@ final class Shortcode {
             <button type="submit" data-glyph="">
                 <span><?= $title; ?></span>
             </button>
-			<?php if ( class_exists( '\WooCommerce' ) ) : ?>
+			<?php if ( class_exists( \WooCommerce::class ) ) : ?>
             <input type="hidden" name="post_type" value="product">
 			<?php endif; ?>
         </form>
@@ -360,7 +360,7 @@ final class Shortcode {
 			[
 				'title' => '',
 				'class' => '',
-				'id'    => esc_attr( uniqid( 'search-' ) ),
+				'id'    => esc_attr( uniqid( 'search-', true ) ),
 			],
 			$atts,
 			'dropdown_search'
@@ -370,7 +370,7 @@ final class Shortcode {
 		$title_for         = __( 'Search for', TEXT_DOMAIN );
 		$placeholder_title = esc_attr( __( 'Search ...', TEXT_DOMAIN ) );
 		$close_title       = __( 'Close', TEXT_DOMAIN );
-		$id                = $atts['id'] ? esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'search-' ) );
+		$id                = $atts['id'] ? esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'search-', true ) );
 		$class             = $atts['class'] ? ' ' . esc_attr_strip_tags( $atts['class'] ) : '';
 
 		ob_start();
@@ -389,7 +389,7 @@ final class Shortcode {
                         <span><?php echo $close_title; ?></span>
                     </button>
                 </div>
-				<?php if ( class_exists( '\WooCommerce' ) ) : ?>
+				<?php if ( class_exists( \WooCommerce::class ) ) : ?>
                     <input type="hidden" name="post_type" value="product">
 				<?php endif; ?>
             </form>

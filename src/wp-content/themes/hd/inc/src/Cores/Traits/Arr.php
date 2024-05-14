@@ -42,7 +42,7 @@ trait Arr {
 		sort( $arr1 );
 		sort( $arr2 );
 
-		return $arr1 == $arr2;
+		return $arr1 === $arr2;
 	}
 
 	// --------------------------------------------------
@@ -64,7 +64,7 @@ trait Arr {
 	// --------------------------------------------------
 
 	/**
-	 * @param mixed $array
+	 * @param $array
 	 *
 	 * @return array
 	 */
@@ -75,7 +75,7 @@ trait Arr {
 	// --------------------------------------------------
 
 	/**
-	 * @param mixed $array
+	 * @param $array
 	 *
 	 * @return bool
 	 */
@@ -103,7 +103,7 @@ trait Arr {
 	// --------------------------------------------------
 
 	/**
-	 * @param mixed $key
+	 * @param $key
 	 * @param array $array
 	 * @param array $insert_array
 	 *
@@ -124,13 +124,13 @@ trait Arr {
 	 * @return array
 	 */
 	public static function insert( array $array, array $insert_array, string $key, string $position = 'before' ): array {
-		$keyPosition = array_search( $key, array_keys( $array ) );
+		$keyPosition = array_search( $key, array_keys( $array ), true );
 		if ( $keyPosition === false ) {
 			return array_merge( $array, $insert_array );
 		}
 
 		$keyPosition = (int) $keyPosition;
-		if ( 'after' == $position ) {
+		if ( 'after' === $position ) {
 			++ $keyPosition;
 		}
 		$result = array_slice( $array, 0, $keyPosition );
@@ -143,8 +143,8 @@ trait Arr {
 
 	/**
 	 * @param array $array
-	 * @param mixed $value
-	 * @param mixed|null $key
+	 * @param $value
+	 * @param $key
 	 *
 	 * @return array
 	 */

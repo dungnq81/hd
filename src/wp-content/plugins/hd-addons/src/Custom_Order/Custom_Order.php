@@ -35,10 +35,12 @@ final class Custom_Order {
 	 */
 	private function _init(): void {
 		$_custom_order_ = get_theme_mod( '_custom_order_' );
+
 		if ( ! $_custom_order_ ) {
 			global $wpdb;
 
 			$result = $wpdb->query( "DESCRIBE {$wpdb->terms} `term_order`" );
+
 			if ( ! $result ) {
 				$query = "ALTER TABLE {$wpdb->terms} ADD `term_order` INT( 4 ) NULL DEFAULT '0'";
 				$wpdb->query( $query );
@@ -123,7 +125,7 @@ final class Custom_Order {
 					)
 				);
 
-				if ( $result[0]->cnt == 0 || $result[0]->cnt == $result[0]->max ) {
+				if ( $result[0]->cnt === 0 || $result[0]->cnt === $result[0]->max ) {
 					continue;
 				}
 
@@ -154,7 +156,7 @@ final class Custom_Order {
 					)
 				);
 
-				if ( $result[0]->cnt == 0 || $result[0]->cnt == $result[0]->max ) {
+				if ( $result[0]->cnt === 0 || $result[0]->cnt === $result[0]->max ) {
 					continue;
 				}
 
@@ -203,7 +205,7 @@ final class Custom_Order {
 
 		$menu_order_arr = [];
 		foreach ( $id_arr as $id ) {
-			$id = intval( $id );
+			$id = (int) $id;
 
 			$results = $wpdb->get_results( $wpdb->prepare( "SELECT `menu_order` FROM {$wpdb->posts} WHERE `ID` = %d", $id ) );
 			foreach ( $results as $result ) {
@@ -215,7 +217,7 @@ final class Custom_Order {
 
 		foreach ( $data as $values ) {
 			foreach ( $values as $position => $id ) {
-				$id = intval( $id );
+				$id = (int) $id;
 				$wpdb->update(
 					$wpdb->posts,
 					[ 'menu_order' => $menu_order_arr[ $position ] ],
@@ -255,7 +257,7 @@ final class Custom_Order {
 
 		$menu_order_arr = [];
 		foreach ( $id_arr as $id ) {
-			$id      = intval( $id );
+			$id      = (int) $id;
 			$results = $wpdb->get_results( $wpdb->prepare( "SELECT `term_order` FROM {$wpdb->terms} WHERE `term_id` = %d", $id ) );
 			foreach ( $results as $result ) {
 				$menu_order_arr[] = $result->term_order;
@@ -266,7 +268,7 @@ final class Custom_Order {
 
 		foreach ( $data as $values ) {
 			foreach ( $values as $position => $id ) {
-				$id = intval( $id );
+				$id = (int) $id;
 				$wpdb->update(
 					$wpdb->terms,
 					[ 'term_order' => $menu_order_arr[ $position ] ],
@@ -297,7 +299,7 @@ final class Custom_Order {
 			return $where;
 		}
 
-		if ( isset( $post->post_type ) && in_array( $post->post_type, $objects ) ) {
+		if ( isset( $post->post_type ) && in_array( $post->post_type, $objects, true ) ) {
 			$where = preg_replace( "/p.post_date < \'[0-9\-\s\:]+\'/i", "p.menu_order > '" . $post->menu_order . "'", $where );
 		}
 
@@ -341,7 +343,7 @@ final class Custom_Order {
 			return $orderby;
 		}
 
-		if ( isset( $post->post_type ) && in_array( $post->post_type, $objects ) ) {
+		if ( isset( $post->post_type ) && in_array( $post->post_type, $objects, true ) ) {
 			$orderby = 'ORDER BY p.menu_order ASC LIMIT 1';
 		}
 
@@ -363,7 +365,7 @@ final class Custom_Order {
 			return $orderby;
 		}
 
-		if ( isset( $post->post_type ) && in_array( $post->post_type, $objects ) ) {
+		if ( isset( $post->post_type ) && in_array( $post->post_type, $objects, true ) ) {
 			$orderby = 'ORDER BY p.menu_order DESC LIMIT 1';
 		}
 
@@ -387,7 +389,7 @@ final class Custom_Order {
 		if ( is_admin() && ! wp_doing_ajax() ) {
 
 			if ( isset( $wp_query->query['post_type'] ) && ! isset( $_GET['orderby'] ) ) {
-				if ( in_array( $wp_query->query['post_type'], $objects ) ) {
+				if ( in_array( $wp_query->query['post_type'], $objects, true ) ) {
 					if ( ! $wp_query->get( 'orderby' ) ) {
 						$wp_query->set( 'orderby', 'menu_order' );
 					}
@@ -402,15 +404,11 @@ final class Custom_Order {
 			$active = false;
 
 			if ( isset( $wp_query->query['post_type'] ) ) {
-				if ( ! is_array( $wp_query->query['post_type'] ) ) {
-					if ( in_array( $wp_query->query['post_type'], $objects ) ) {
-						$active = true;
-					}
-				}
-			} else {
-				if ( in_array( 'post', $objects ) ) {
+				if ( ! is_array( $wp_query->query['post_type'] ) && in_array( $wp_query->query['post_type'], $objects, true ) ) {
 					$active = true;
 				}
+			} else if ( in_array( 'post', $objects, true ) ) {
+				$active = true;
 			}
 
 			if ( ! $active ) {
@@ -418,10 +416,10 @@ final class Custom_Order {
 			}
 
 			if ( isset( $wp_query->query['suppress_filters'] ) ) {
-				if ( $wp_query->get( 'orderby' ) == 'date' ) {
+				if ( $wp_query->get( 'orderby' ) === 'date' ) {
 					$wp_query->set( 'orderby', 'menu_order' );
 				}
-				if ( $wp_query->get( 'order' ) == 'DESC' ) {
+				if ( $wp_query->get( 'order' ) === 'DESC' ) {
 					$wp_query->set( 'order', 'ASC' );
 				}
 			} else {
@@ -460,7 +458,7 @@ final class Custom_Order {
 			$taxonomy = $args['taxonomy'];
 		}
 
-		if ( ! in_array( $taxonomy, $tags ) ) {
+		if ( ! in_array( $taxonomy, $tags, true ) ) {
 			return $orderby;
 		}
 
@@ -475,7 +473,7 @@ final class Custom_Order {
 	 * @return mixed|void
 	 */
 	public function custom_order_get_object_terms( $terms ) {
-		if ( is_admin() && ! wp_doing_ajax() && isset( $_GET['orderby'] ) ) {
+		if ( isset( $_GET['orderby'] ) && is_admin() && ! wp_doing_ajax() ) {
 			return $terms;
 		}
 
@@ -508,7 +506,7 @@ final class Custom_Order {
 	 * @return int
 	 */
 	public function taxonomy_cmp( $a, $b ): int {
-		if ( $a->term_order == $b->term_order ) {
+		if ( $a->term_order === $b->term_order ) {
 			return 0;
 		}
 
@@ -527,21 +525,21 @@ final class Custom_Order {
 			return false;
 		}
 
-		if ( isset( $_GET['orderby'] ) || strstr( $_SERVER['REQUEST_URI'], 'action=edit' ) || strstr( $_SERVER['REQUEST_URI'], 'wp-admin/post-new.php' ) ) {
+		if ( isset( $_GET['orderby'] ) || str_contains( $_SERVER['REQUEST_URI'], 'action=edit' ) || str_contains( $_SERVER['REQUEST_URI'], 'wp-admin/post-new.php' ) ) {
 			return false;
 		}
 
 		if ( ! empty( $this->order_post_type ) ) {
-			if ( isset( $_GET['post_type'] ) && ! isset( $_GET['taxonomy'] ) && in_array( $_GET['post_type'], $this->order_post_type ) ) {
+			if ( isset( $_GET['post_type'] ) && ! isset( $_GET['taxonomy'] ) && in_array( $_GET['post_type'], $this->order_post_type, true ) ) {
 				$active = true;
 			}
-			if ( ! isset( $_GET['post_type'] ) && strstr( $_SERVER['REQUEST_URI'], 'wp-admin/edit.php' ) && in_array( 'post', $this->order_post_type ) ) {
+			if ( ! isset( $_GET['post_type'] ) && str_contains( $_SERVER['REQUEST_URI'], 'wp-admin/edit.php' ) && in_array( 'post', $this->order_post_type, true ) ) {
 				$active = true;
 			}
 		}
 
 		if ( ! empty( $this->order_taxonomy ) ) {
-			if ( isset( $_GET['taxonomy'] ) && in_array( $_GET['taxonomy'], $this->order_taxonomy ) ) {
+			if ( isset( $_GET['taxonomy'] ) && in_array( $_GET['taxonomy'], $this->order_taxonomy, true ) ) {
 				$active = true;
 			}
 		}
@@ -574,11 +572,11 @@ final class Custom_Order {
 					)
 				);
 
-				if ( $result[0]->cnt == 0 || $result[0]->cnt == $result[0]->max ) {
+				if ( $result[0]->cnt === 0 || $result[0]->cnt === $result[0]->max ) {
 					continue;
 				}
 
-				if ( $object == 'page' ) {
+				if ( $object === 'page' ) {
 					$results = $wpdb->get_results(
 						$wpdb->prepare(
 							"SELECT `ID`
@@ -620,7 +618,7 @@ final class Custom_Order {
 					)
 				);
 
-				if ( $result[0]->cnt == 0 || $result[0]->cnt == $result[0]->max ) {
+				if ( $result[0]->cnt === 0 || $result[0]->cnt === $result[0]->max ) {
 					continue;
 				}
 
@@ -653,7 +651,7 @@ final class Custom_Order {
 		// posts
 		if ( ! empty( $this->order_post_type ) ) {
 
-			$in_list     = implode( ',', array_map( fn( $value ) => $wpdb->prepare( '%s', $value ), $this->order_post_type ) );
+			$in_list     = implode( ',', array_map( static fn( $value ) => $wpdb->prepare( '%s', $value ), $this->order_post_type ) );
 			$status_cond = sprintf( '`post_type` IN (%s)', $in_list );
 
 			$wpdb->query( "UPDATE {$wpdb->posts} SET `menu_order` = 0 WHERE {$status_cond}" );

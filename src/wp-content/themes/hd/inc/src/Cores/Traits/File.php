@@ -74,7 +74,7 @@ trait File {
 	public static function isRest(): bool {
 		$prefix = rest_get_url_prefix();
 		if (
-			defined( 'REST_REQUEST' ) && REST_REQUEST ||
+			( defined( 'REST_REQUEST' ) && REST_REQUEST ) ||
 			(
 				isset( $_GET['rest_route'] ) &&
 				0 === @strpos( trim( $_GET['rest_route'], '\\/' ), $prefix, 0 )
@@ -123,7 +123,7 @@ trait File {
 		$wp_filesystem = self::wpFileSystem();
 
 		// Bail if we are unable to create the file.
-		if ( false === self::fileCreate( $file ) ) {
+		if ( ! self::fileCreate( $file ) ) {
 			return null;
 		}
 
@@ -144,7 +144,7 @@ trait File {
 		$wp_filesystem = self::wpFileSystem();
 
 		// Bail if we are unable to create the file.
-		if ( false === self::fileCreate( $path ) ) {
+		if ( ! self::fileCreate( $path ) ) {
 			return;
 		}
 
@@ -162,7 +162,7 @@ trait File {
 	 * @return bool    True on success, false otherwise.
 	 */
 	public static function doLockWrite( $path, string $content = '' ): bool {
-		$fp = fopen( $path, 'w+' );
+		$fp = fopen( $path, 'wb+' );
 
 		if ( flock( $fp, LOCK_EX ) ) {
 			fwrite( $fp, $content );
@@ -220,8 +220,7 @@ trait File {
 			return false;
 		}
 
-		$dirs = scandir( $dirname );
-		foreach ( $dirs as $file ) {
+		foreach ( scandir( $dirname, SCANDIR_SORT_NONE ) as $file ) {
 			if ( ! in_array( $file, [ '.', '..', '.svn', '.git' ] ) ) {
 				return false;
 			}
@@ -242,7 +241,7 @@ trait File {
 		// Create the directory and return the result.
 		$is_directory_created = wp_mkdir_p( $directory );
 
-		// Bail if cannot create temp dir.
+		// Bail if you cannot create temp dir.
 		if ( false === $is_directory_created ) {
 			// translators: `$directory` is the name of directory that should be created.
 			error_log( sprintf( 'Cannot create directory: %s.', $directory ) );

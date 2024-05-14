@@ -16,6 +16,10 @@ class ComposerStaticInit87b0866f271891d99b07d8193ea233f6
         array (
             'enshrined\\svgSanitize\\' => 22,
         ),
+        'V' => 
+        array (
+            'Vectorface\\Whip\\' => 16,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
@@ -24,6 +28,7 @@ class ComposerStaticInit87b0866f271891d99b07d8193ea233f6
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
+            'Psr\\Http\\Message\\' => 17,
         ),
         'D' => 
         array (
@@ -40,6 +45,10 @@ class ComposerStaticInit87b0866f271891d99b07d8193ea233f6
         array (
             0 => __DIR__ . '/..' . '/enshrined/svg-sanitize/src',
         ),
+        'Vectorface\\Whip\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/vectorface/whip/src',
+        ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
@@ -51,6 +60,10 @@ class ComposerStaticInit87b0866f271891d99b07d8193ea233f6
         'Psr\\SimpleCache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+        ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Detection\\' => 
         array (

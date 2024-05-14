@@ -73,7 +73,7 @@ final class Admin {
 			'toplevel_page_hd-settings',
 		];
 
-		if ( in_array( $hook, $allowed_pages ) ) {
+		if ( in_array( $hook, $allowed_pages, true ) ) {
 			$codemirror_settings = [
 				'codemirror_css'  => wp_enqueue_code_editor( [ 'type' => 'text/css' ] ),
 				'codemirror_html' => wp_enqueue_code_editor( [ 'type' => 'text/html' ] ),
@@ -196,9 +196,9 @@ final class Admin {
 				$smtp_username = ! empty( $_POST['smtp_username'] ) ? sanitize_text_field( $_POST['smtp_username'] ) : '';
 
 				if ( ! empty( $_POST['smtp_password'] ) ) {
-					$smtp_password = sanitize_text_field( $_POST['smtp_password'] );
-					$smtp_password = wp_unslash( $smtp_password ); // This removes slash (automatically added by WordPress) from the password when apostrophe is present
-					$smtp_password = base64_encode( $smtp_password );
+
+					// This removes slash (automatically added by WordPress) from the password when apostrophe is present
+					$smtp_password = base64_encode( wp_unslash( sanitize_text_field( $_POST['smtp_password'] ) ) );
 				}
 
 				$smtp_encryption               = ! empty( $_POST['smtp_encryption'] ) ? sanitize_text_field( $_POST['smtp_encryption'] ) : '';
@@ -320,26 +320,14 @@ final class Admin {
 			$optimizer_options_old = Helper::getOption( 'optimizer__options' );
 			$https_enforce_old     = $optimizer_options_old['https_enforce'] ?? 0;
 
-			$exclude_lazyload = ! empty( $_POST['exclude_lazyload'] ) ? Helper::explode_multi( [
-				',',
-				' ',
-				PHP_EOL
-			], $_POST['exclude_lazyload'] ) : [];
-			$exclude_lazyload = array_map( fn( $a ) => esc_textarea( $a ), $exclude_lazyload );
+			$exclude_lazyload = ! empty( $_POST['exclude_lazyload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $_POST['exclude_lazyload'] ) : [];
+			$exclude_lazyload = array_map( 'esc_textarea', $exclude_lazyload );
 
-			$font_preload = ! empty( $_POST['font_preload'] ) ? Helper::explode_multi( [
-				',',
-				' ',
-				PHP_EOL
-			], $_POST['font_preload'] ) : [];
-			$font_preload = array_map( fn( $a ) => sanitize_url( $a ), $font_preload );
+			$font_preload = ! empty( $_POST['font_preload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $_POST['font_preload'] ) : [];
+			$font_preload = array_map( 'sanitize_url', $font_preload );
 
-			$dns_prefetch = ! empty( $_POST['dns_prefetch'] ) ? Helper::explode_multi( [
-				',',
-				' ',
-				PHP_EOL
-			], $_POST['dns_prefetch'] ) : [];
-			$dns_prefetch = array_map( fn( $a ) => sanitize_url( $a ), $dns_prefetch );
+			$dns_prefetch = ! empty( $_POST['dns_prefetch'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $_POST['dns_prefetch'] ) : [];
+			$dns_prefetch = array_map( 'sanitize_url', $dns_prefetch );
 
 			$optimizer_options = [
 				'https_enforce'    => ! empty( $_POST['https_enforce'] ) ? sanitize_text_field( $_POST['https_enforce'] ) : 0,
@@ -358,7 +346,7 @@ final class Admin {
 			Helper::updateOption( 'optimizer__options', $optimizer_options, true );
 
 			// Ssl
-			if ( $https_enforce_old != $optimizer_options['https_enforce'] ) {
+			if ( $https_enforce_old !== $optimizer_options['https_enforce'] ) {
 				( new Ssl() )->toggle_rules( $optimizer_options['https_enforce'] );
 			}
 
@@ -403,7 +391,7 @@ final class Admin {
 			$hd_social_follows = apply_filters( 'hd_social_follows', [] );
 			foreach ( $hd_social_follows as $i => $item ) {
 				$social_options[ $i ] = [
-					'url' => ! empty( $_POST[$i . '-option'] ) ? sanitize_url( $_POST[$i . '-option'] ) : '',
+					'url' => ! empty( $_POST[ $i . '-option' ] ) ? sanitize_url( $_POST[ $i . '-option' ] ) : '',
 				];
 			}
 
@@ -570,6 +558,8 @@ final class Admin {
 
 
 
+
+
                                 <li class="order-settings">
                                 <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', TEXT_DOMAIN ); ?></a>
                             </li>
@@ -595,7 +585,7 @@ final class Admin {
                         </div>
 
 	                    <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
-                            <div id="smtp_settings" class="group tabs-panel">
+                        <div id="smtp_settings" class="group tabs-panel">
 							<?php include ADDONS_PATH . 'src/SMTP/options.php'; ?>
                         </div>
 	                    <?php endif; ?>
@@ -625,25 +615,22 @@ final class Admin {
                         </div>
 
 	                    <?php if ( Helper::is_woocommerce_active() ) : ?>
-                            <div id="woocommerce_settings" class="group tabs-panel">
+                        <div id="woocommerce_settings" class="group tabs-panel">
                             <?php include INC_PATH . 'src/Plugins/WooCommerce/options.php'; ?>
                         </div>
 	                    <?php endif; ?>
 
 	                    <?php if ( Helper::is_addons_active() ) : ?>
-                            <div id="base_slug_settings" class="group tabs-panel">
+                        <div id="base_slug_settings" class="group tabs-panel">
                             <?php include ADDONS_PATH . 'src/Base_Slug/options.php'; ?>
                         </div>
 
 	                    <?php if ( ! empty( $hd_email_list ) ) : ?>
-                                <div id="email_settings" class="group tabs-panel">
+                        <div id="email_settings" class="group tabs-panel">
                             <?php include ADDONS_PATH . 'src/Custom_Email/options.php'; ?>
                         </div>
-		                    <?php endif; ?>
-
-
-
-                            <div id="custom_order_settings" class="group tabs-panel">
+                        <?php endif; ?>
+                        <div id="custom_order_settings" class="group tabs-panel">
 		                    <?php include ADDONS_PATH . 'src/Custom_Order/options.php'; ?>
                         </div>
 	                    <?php endif; ?>
@@ -905,7 +892,7 @@ final class Admin {
 						$thumbnail = Helper::placeholderSrc();
 					}
 					echo $thumbnail;
-				} else if ( 'video' == $post_type ) {
+				} else if ( 'video' === $post_type ) {
 					if ( has_post_thumbnail( $post_id ) ) {
 						echo get_the_post_thumbnail( $post_id, 'thumbnail' );
 					} else if ( function_exists( 'get_field' ) && $url = \get_field( 'url', $post_id ) ) {

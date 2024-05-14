@@ -130,9 +130,9 @@ final class WooCommerce {
 
 		// Remove woocommerce blocks styles
 		$block_editor_options = Helper::getOption( 'block_editor__options', false, true );
-		$block_style_off      = $block_editor_options['block_style_off'] ?? '';
 
-		if ( $block_style_off ) {
+		if ( $block_editor_options['block_style_off'] ?? '' ) {
+
 			wp_deregister_style( 'wc-block-editor' );
 
 			wp_deregister_style( 'wc-blocks-style' );

@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'e990cb5c1215e143ad9ff1cced58be3f' => $baseDir . '/inc/Tgmpa/tgmpa-config.php',
+    '51f88653d7464925568360ef16d4eb37' => $baseDir . '/inc/tgmpa/tgmpa-config.php',
 );

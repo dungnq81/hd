@@ -15,4 +15,8 @@
 		"php": ">=7.4",
 		"roots/wp-password-bcrypt": "^1.1.0"
 	}
+	,
+	"require-dev": {
+		"roave/security-advisories": "dev-latest"
+	}
 }

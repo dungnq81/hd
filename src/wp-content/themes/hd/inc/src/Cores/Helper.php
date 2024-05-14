@@ -71,7 +71,7 @@ final class Helper {
 			}
 
 			// Remove duplicates and empty values.
-			$content = array_filter( array_unique( $content ) );
+			$content = array_unique( array_filter( $content ) );
 			$content = implode( ' ', $content );
 
 			$before_content = substr( $str, 0, $start );
@@ -134,7 +134,7 @@ final class Helper {
 
 		if ( is_string( $link ) ) {
 			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( trim( $link ) ), esc_attr( $label ), esc_attr( $class ) );
-			$link_return = $link_return . '>' . $content . '</a>';
+			$link_return .= '>' . $content . '</a>';
 
 			return wp_targeted_link_rel( $link_return );
 		}
@@ -343,7 +343,7 @@ final class Helper {
 	 *
 	 * @return true|void
 	 */
-	public static function redirect( string $uri = '', int $status = 302 ) {
+	public static function redirect( string $uri = '', int $status = 301 ) {
 		if ( ! preg_match( '#^(\w+:)?//#i', $uri ) ) {
 			$uri = self::home( $uri );
 		}

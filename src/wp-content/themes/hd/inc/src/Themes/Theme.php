@@ -3,6 +3,7 @@
 namespace Themes;
 
 use Cores\Helper;
+
 use Plugins\ACF\ACF;
 use Plugins\CF7;
 use Plugins\Editor\TinyMCE;
@@ -178,10 +179,10 @@ final class Theme {
 		defined( 'WP_ROCKET_VERSION' ) && ( new WpRocket() );
 
 		/** RankMath */
-		class_exists( '\RankMath' ) && ( new RankMath() );
+		class_exists( \RankMath::class ) && ( new RankMath() );
 
 		/** Contact form 7 */
-		class_exists( '\WPCF7' ) && ( new CF7() );
+		class_exists( \WPCF7::class ) && ( new CF7() );
 	}
 
 	// --------------------------------------------------
@@ -312,10 +313,10 @@ final class Theme {
 
 		/** Disable unwanted image sizes */
 		add_filter( 'intermediate_image_sizes_advanced', function ( $sizes ) {
-			unset( $sizes['medium_large'] );
+			unset( $sizes['medium_large'], $sizes['1536x1536'], $sizes['2048x2048'] );
 
-			unset( $sizes['1536x1536'] ); // disable 2x medium-large size
-			unset( $sizes['2048x2048'] ); // disable 2x large size
+			// disable 2x medium-large size
+			// disable 2x large size
 
 			return $sizes;
 		} );

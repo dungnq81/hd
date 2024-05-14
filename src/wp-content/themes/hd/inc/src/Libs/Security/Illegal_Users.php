@@ -96,7 +96,7 @@ class Illegal_Users {
 		// Check for illegal usernames.
 		foreach ( $admins as $key => $admin ) {
 			// Remove the user if its username is not in the illegal list.
-			if ( ! in_array( strtolower( $admin->user_login ), $this->get_illegal_usernames() ) ) {
+			if ( ! in_array( strtolower( $admin->user_login ), $this->get_illegal_usernames(), true ) ) {
 				unset( $admins[ $key ] );
 			}
 		}
@@ -125,6 +125,7 @@ class Illegal_Users {
 
 		// Loop the specified usernames.
 		foreach ( $usernames as $key => $username ) {
+
 			// Remove the successfully changes and return the failed only if any.
 			if ( 1 === $this->change_common_username( $username ) ) {
 				unset( $usernames[ $key ] );

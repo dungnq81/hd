@@ -32,7 +32,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 require_once __DIR__ . '/inc/helpers.php';
 require_once __DIR__ . '/inc/themes.php';
-require_once __DIR__ . '/inc/css-output.php';
+require_once __DIR__ . '/inc/css.php';
 
 // Initialize theme settings.
 ( new Theme() );

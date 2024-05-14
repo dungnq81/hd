@@ -5,8 +5,6 @@ namespace Addons\Lazy_Load;
 \defined( 'ABSPATH' ) || die;
 
 /**
- * https://siteground.com
- *
  * @author SiteGround
  * Modified by HD Team
  */
@@ -32,16 +30,11 @@ abstract class Abstract_Lazy_Load {
 	 * @return bool
 	 */
 	public function should_process( $content ): bool {
-		if ( $this->is_lazy_url_excluded() ||
-		     is_feed() ||
-		     empty( $content ) ||
-		     is_admin() ||
-		     is_amp_enabled( $content )
-		) {
-			return true;
-		}
-
-		return false;
+		return empty( $content ) ||
+		       $this->is_lazy_url_excluded() ||
+		       is_feed() ||
+		       is_admin() ||
+		       is_amp_enabled( $content );
 	}
 
 	/** ---------------------------------------- */
@@ -55,7 +48,7 @@ abstract class Abstract_Lazy_Load {
 		$excluded_urls = apply_filters( 'hd_lazy_load_exclude_urls', [] );
 
 		// Bail if no excluding are found, or we do not have a match.
-		if ( empty( $excluded_urls ) && ! in_array( get_current_url(), $excluded_urls ) ) {
+		if ( empty( $excluded_urls ) && ! in_array( get_current_url(), $excluded_urls, true ) ) {
 			return false;
 		}
 
@@ -106,7 +99,7 @@ abstract class Abstract_Lazy_Load {
 				// If we have a match and the array is part of the excluded assets bail from lazy loading.
 				if ( ! empty( $src_match ) ) {
 					$item_filename = basename( $src_match[1] );
-					if ( in_array( $item_filename, $excluded_all ) ) {
+					if ( in_array( $item_filename, $excluded_all, true ) ) {
 						continue;
 					}
 				}

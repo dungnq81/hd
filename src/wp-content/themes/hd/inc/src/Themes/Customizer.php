@@ -76,7 +76,7 @@ final class Customizer {
 	 * @param WP_Customize_Manager $wp_customize Theme Customizer object.
 	 */
 	public function customize_register( WP_Customize_Manager $wp_customize ): void {
-		self::_logo_and_title( $wp_customize );
+		$this->_logo_and_title( $wp_customize );
 
 		// -------------------------------------------------------------
 

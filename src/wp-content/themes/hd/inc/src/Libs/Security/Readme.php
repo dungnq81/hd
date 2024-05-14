@@ -16,11 +16,7 @@ class Readme {
 	 */
 	public function readme_exist(): bool {
 		// Check if the readme.html file exists in the root of the application.
-		if ( file_exists( ABSPATH . 'readme.html' ) ) {
-			return true;
-		}
-
-		return false;
+		return file_exists( ABSPATH . 'readme.html' );
 	}
 
 	// --------------------------------------------------
@@ -38,7 +34,7 @@ class Readme {
 		}
 
 		// Check if file permissions are set accordingly.
-		if ( 600 >= intval( substr( sprintf( '%o', fileperms( ABSPATH . 'readme.html' ) ), - 3 ) ) ) {
+		if ( 600 >= (int) substr( sprintf( '%o', fileperms( ABSPATH . 'readme.html' ) ), - 3 ) ) {
 			return false;
 		}
 

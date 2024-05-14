@@ -2,6 +2,8 @@
 
 namespace Cores;
 
+\defined( 'ABSPATH' ) || die;
+
 /**
  * Htaccess Class
  *
@@ -9,8 +11,6 @@ namespace Cores;
  *
  * Modified by NTH for HD theme
  */
-
-\defined( 'ABSPATH' ) || die;
 
 abstract class Abstract_Htaccess {
 
@@ -121,7 +121,7 @@ abstract class Abstract_Htaccess {
 			$new_rule = $this->wp_filesystem->get_contents( INC_PATH . 'admin/tpl/' . $this->template );
 
 			// Add the rule and write the new htaccess.
-			$content = $content . PHP_EOL . $new_rule;
+			$content .= PHP_EOL . $new_rule;
 			$content = $this->do_replacement( $content );
 
 			return $this->lock_and_write( $content );
@@ -151,6 +151,7 @@ abstract class Abstract_Htaccess {
 	 * @return boolean True if the rule is enabled, false otherwise.
 	 */
 	public function is_enabled() {
+
 		// Get the content of htaccess.
 		$content = $this->wp_filesystem->get_contents( $this->path );
 
@@ -180,6 +181,6 @@ abstract class Abstract_Htaccess {
 	 */
 	public function toggle_rules( $rule = 1 ) {
 		$this->set_filepath();
-		( 1 === intval( $rule ) ) ? $this->enable() : $this->disable();
+		( 1 === (int) $rule ) ? $this->enable() : $this->disable();
 	}
 }

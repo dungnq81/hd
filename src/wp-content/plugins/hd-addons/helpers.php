@@ -2,8 +2,163 @@
 
 use Detection\Exception\MobileDetectException;
 use Detection\MobileDetect;
+use Vectorface\Whip\Whip;
 
-\defined( 'ABSPATH' ) || die;
+defined( 'ABSPATH' ) || die;
+
+/** ----------------------------------------------- */
+
+if ( ! function_exists( 'security_options' ) ) {
+	/**
+	 * @param $key
+	 * @param mixed $default
+	 *
+	 * @return mixed|string
+	 */
+	function security_options( $key, mixed $default = '' ): mixed {
+		$security_options = get_option( 'security__options', [] );
+
+		return $security_options[ $key ] ?? $default;
+	}
+}
+
+/** ----------------------------------------------- */
+
+if ( ! function_exists( 'optimizer_options' ) ) {
+	/**
+	 * @param $key
+	 * @param mixed $default
+	 *
+	 * @return mixed|string
+	 */
+	function optimizer_options( $key, mixed $default = '' ): mixed {
+		$optimizer_options = get_option( 'optimizer__options', [] );
+
+		return $optimizer_options[ $key ] ?? $default;
+	}
+}
+
+/** ----------------------------------------------- */
+
+if ( ! function_exists( 'ip_address' ) ) {
+	/**
+	 * Get the IP address from which the user is viewing the current page.
+	 *
+	 * @return string
+	 */
+	function ip_address(): string {
+
+		if ( class_exists( Whip::class ) ) {
+			$whip          = new Whip( Whip::CLOUDFLARE_HEADERS | Whip::REMOTE_ADDR | Whip::PROXY_HEADERS | Whip::INCAPSULA_HEADERS );
+			$clientAddress = $whip->getValidIpAddress();
+
+			if ( false !== $clientAddress ) {
+				return preg_replace( '/^::1$/', '127.0.0.1', $clientAddress );
+			}
+
+		} else {
+
+			// Get real visitor IP behind CloudFlare network
+			if ( isset( $_SERVER["HTTP_CF_CONNECTING_IP"] ) ) {
+				$_SERVER['REMOTE_ADDR']    = $_SERVER["HTTP_CF_CONNECTING_IP"];
+				$_SERVER['HTTP_CLIENT_IP'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+			}
+
+			$client  = @$_SERVER['HTTP_CLIENT_IP'];
+			$forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+			$remote  = $_SERVER['REMOTE_ADDR'];
+
+			if ( filter_var( $client, FILTER_VALIDATE_IP ) ) {
+				return $client;
+			}
+
+			if ( filter_var( $forward, FILTER_VALIDATE_IP ) ) {
+				return $forward;
+			}
+
+			return $remote;
+		}
+
+		// Fallback local ip.
+		return '127.0.0.1';
+	}
+}
+
+/** ----------------------------------------------- */
+
+if ( ! function_exists( 'redirect' ) ) {
+	/**
+	 * @param string $uri
+	 * @param int $status
+	 *
+	 * @return true|void
+	 */
+	function redirect( string $uri = '', int $status = 301 ) {
+		if ( ! preg_match( '#^(\w+:)?//#i', $uri ) ) {
+			$uri = trailingslashit( esc_url( network_home_url( $uri ) ) );
+		}
+
+		if ( ! headers_sent() ) {
+			wp_safe_redirect( $uri, $status );
+		} else {
+			echo '<script>';
+			echo 'window.location.href="' . $uri . '";';
+			echo '</script>';
+			echo '<noscript>';
+			echo '<meta http-equiv="refresh" content="0;url=' . $uri . '" />';
+			echo '</noscript>';
+
+			return true;
+		}
+	}
+}
+
+/** ----------------------------------------------- */
+
+if ( ! function_exists( 'do_lock_write' ) ) {
+	/**
+	 * Lock file and write something in it.
+	 *
+	 * @param string $content Content to add.
+	 *
+	 * @return bool    True on success, false otherwise.
+	 */
+	function do_lock_write( $path, string $content = '' ): bool {
+		$fp = fopen( $path, 'wb+' );
+
+		if ( flock( $fp, LOCK_EX ) ) {
+			fwrite( $fp, $content );
+			flock( $fp, LOCK_UN );
+			fclose( $fp );
+
+			return true;
+		}
+
+		fclose( $fp );
+
+		return false;
+	}
+}
+
+/** ----------------------------------------------- */
+
+if ( ! function_exists( 'setup_wp_filesystem' ) ) {
+	/**
+	 * @return mixed
+	 */
+	function setup_wp_filesystem(): mixed {
+		global $wp_filesystem;
+
+		// Initialize the WP filesystem, no more using 'file-put-contents' function.
+		// Front-end only. In the back-end; its already included
+		if ( empty( $wp_filesystem ) ) {
+			require_once ABSPATH . '/wp-admin/includes/file.php';
+			WP_Filesystem();
+		}
+
+		return $wp_filesystem;
+	}
+}
 
 /** ----------------------------------------------- */
 
@@ -42,22 +197,6 @@ if ( ! function_exists( 'is_mobile' ) ) {
 
 /** ----------------------------------------------- */
 
-if ( ! function_exists( 'optimizer_options' ) ) {
-	/**
-	 * @param $key
-	 * @param mixed $default
-	 *
-	 * @return mixed|string
-	 */
-	function optimizer_options( $key, mixed $default = '' ): mixed {
-		$optimizer_options = get_option( 'optimizer__options', [] );
-
-		return $optimizer_options[ $key ] ?? $default;
-	}
-}
-
-/** ----------------------------------------------- */
-
 if ( ! function_exists( 'in_array_checked' ) ) {
 	/**
 	 * @param array $checked_arr
@@ -68,7 +207,7 @@ if ( ! function_exists( 'in_array_checked' ) ) {
 	 * @return string
 	 */
 	function in_array_checked( array $checked_arr, $current, bool $display = true, string $type = 'checked' ): string {
-		if ( in_array( $current, $checked_arr ) ) {
+		if ( in_array( $current, $checked_arr, true ) ) {
 			$result = " $type='$type'";
 		} else {
 			$result = '';
@@ -142,7 +281,7 @@ if ( ! function_exists( 'is_amp_enabled' ) ) {
 		$is_amp = substr( $html, 0, 200 );
 
 		// Checks if the document is containing the amp tag.
-		return preg_match( '/<html[^>]+(amp|⚡)[^>]*>/', $is_amp );
+		return preg_match( '/<html[^>]+(amp|⚡)[^>]*>/u', $is_amp );
 	}
 }
 
@@ -202,13 +341,7 @@ if ( ! function_exists( 'check_plugin_active' ) ) {
 	 * @return bool
 	 */
 	function check_plugin_active( $plugin_slug ): bool {
-		if ( check_plugin_installed( $plugin_slug ) ) {
-			if ( is_plugin_active( $plugin_slug ) ) {
-				return true;
-			}
-		}
-
-		return false;
+		return check_plugin_installed( $plugin_slug ) && is_plugin_active( $plugin_slug );
 	}
 }
 
@@ -223,7 +356,7 @@ if ( ! function_exists( 'check_smtp_plugin_active' ) ) {
 
 		$check = true;
 		if ( ! empty( $hd_smtp_plugins_support ) ) {
-			foreach ( $hd_smtp_plugins_support as $key => $plugin_slug ) {
+			foreach ( $hd_smtp_plugins_support as $plugin_slug ) {
 				if ( check_plugin_active( $plugin_slug ) ) {
 					$check = false;
 					break;

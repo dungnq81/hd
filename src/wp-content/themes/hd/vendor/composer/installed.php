@@ -3,7 +3,7 @@
         'name' => 'wordpress/hd',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '846994b29e9528282d8be4d510b6588164bbc5b1',
+        'reference' => 'bcf2c6b2dd48934bdefd14e5eb3648f0f2394fda',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -55,6 +55,17 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'roave/security-advisories' => array(
+            'pretty_version' => 'dev-latest',
+            'version' => 'dev-latest',
+            'reference' => '9e4c9c09230934de3ccbff68623cab7de1b0e80b',
+            'type' => 'metapackage',
+            'install_path' => null,
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'dev_requirement' => true,
+        ),
         'vectorface/whip' => array(
             'pretty_version' => 'v0.5.0',
             'version' => '0.5.0.0',
@@ -67,7 +78,7 @@
         'wordpress/hd' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '846994b29e9528282d8be4d510b6588164bbc5b1',
+            'reference' => 'bcf2c6b2dd48934bdefd14e5eb3648f0f2394fda',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

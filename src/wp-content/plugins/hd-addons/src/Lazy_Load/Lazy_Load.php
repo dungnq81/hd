@@ -65,7 +65,6 @@ final class Lazy_Load {
 	 * @return void
 	 */
 	private function _add_lazy_load_hooks(): void {
-
 		$this->lazyload_hooks = apply_filters( 'hd_lazy_load_hook_content', $this->lazyload_hooks );
 
 		foreach ( $this->lazyload_hooks as $name => $attributes ) {

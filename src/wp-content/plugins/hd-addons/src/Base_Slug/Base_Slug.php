@@ -19,7 +19,7 @@ final class Base_Slug {
 		( new Rewrite_Taxonomy() )->run();
 
 		// rewrite_rules_array
-		if ( ! empty( $this->base_slug_taxonomy ) || in_array( 'product', $this->base_slug_post_type ) ) {
+		if ( ! empty( $this->base_slug_taxonomy ) || in_array( 'product', $this->base_slug_post_type, true ) ) {
 			add_filter( 'rewrite_rules_array', [ &$this, 'add_rewrite_rules' ], 99 );
 		}
 	}
@@ -52,10 +52,10 @@ final class Base_Slug {
 			'objects'
 		);
 
-		foreach ( $taxonomies as $type => $custom_tax ) {
+		foreach ( $taxonomies as $custom_tax ) {
 
 			// built-in
-			if ( $custom_tax->_builtin === true && in_array( $custom_tax->name, $this->base_slug_taxonomy ) ) {
+			if ( $custom_tax->_builtin === true && in_array( $custom_tax->name, $this->base_slug_taxonomy, true ) ) {
 
 				//----------------------------------
 				// category
@@ -69,9 +69,9 @@ final class Base_Slug {
 					foreach ( $categories as $category ) {
 						$category_slug = $category->slug;
 
-						if ( $category->parent == $category->cat_ID ) {
+						if ( $category->parent === $category->cat_ID ) {
 							$category->parent = 0;
-						} elseif ( $category->parent != 0 ) {
+						} elseif ( $category->parent !== 0 ) {
 							$category_slug = get_category_parents( $category->parent, false, '/', true ) . $category_slug;
 						}
 
@@ -88,7 +88,7 @@ final class Base_Slug {
 				//----------------------------------
 				// post_tag
 				//----------------------------------
-				if ( 'post_tag' == $custom_tax->name ) {
+				if ( 'post_tag' === $custom_tax->name ) {
 					$tags = get_tags( [ 'hide_empty' => false ] );
 
 					foreach ( $tags as $tag ) {
@@ -111,7 +111,7 @@ final class Base_Slug {
 				$permalink_structure = wc_get_permalink_structure();
 
 				$old_category_base = trim( $permalink_structure['category_rewrite_slug'], '/' );
-				$category_base     = in_array( 'product_cat', $this->base_slug_taxonomy ) ? '' : $old_category_base . '/';
+				$category_base     = in_array( 'product_cat', $this->base_slug_taxonomy, true ) ? '' : $old_category_base . '/';
 				$use_parent_slug   = str_contains( $permalink_structure['product_rewrite_slug'], '%product_cat%' );
 
 				foreach ( $this->_get_categories( 'product_cat' ) as $category ) {
@@ -126,7 +126,7 @@ final class Base_Slug {
 						$old_category_base . '/(.+)$'                                              => 'index.php?addons_category_redirect=$matches[1]',
 					];
 
-					if ( $use_parent_slug && in_array( 'product', $this->base_slug_post_type ) ) {
+					if ( $use_parent_slug && in_array( 'product', $this->base_slug_post_type, true ) ) {
 						$product_rules += [
 							$cat_path . '/([^/]+)/?$'                                                           => 'index.php?product=$matches[1]',
 							$cat_path . '/([^/]+)/' . $wp_rewrite->comments_pagination_base . '-([0-9]{1,})/?$' => 'index.php?product=$matches[1]&cpage=$matches[2]',
@@ -139,7 +139,7 @@ final class Base_Slug {
 			// product_tag
 			//----------------------------------
 			if ( 'product_tag' === $custom_tax->name &&
-			     in_array( 'product_tag', $this->base_slug_taxonomy ) &&
+			     in_array( 'product_tag', $this->base_slug_taxonomy, true ) &&
 			     check_plugin_active( 'woocommerce/woocommerce.php' )
 			) {
 				$permalink_structure = wc_get_permalink_structure();
@@ -163,7 +163,7 @@ final class Base_Slug {
 			if ( $custom_tax->_builtin === false &&
 			     'product_cat' !== $custom_tax->name &&
 			     'product_tag' !== $custom_tax->name &&
-			     in_array( $custom_tax->name, $this->base_slug_taxonomy )
+			     in_array( $custom_tax->name, $this->base_slug_taxonomy, true )
 			) {
 				// Redirect support from old category base
 				$old_taxonomy_base = trim( str_replace( '%' . $custom_tax->name . '%', '(.+)', $wp_rewrite->get_extra_permastruct( $custom_tax->name ) ), '/' );

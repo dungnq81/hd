@@ -50,12 +50,12 @@ final class Options {
 	 * @return mixed
 	 */
 	public function check_simple_antispam( $commentdata ): mixed {
-		if ( ! isset( $_POST['antispam_input'] ) || ! isset( $_POST['antispam_result'] ) ) {
+		if ( ! isset( $_POST['antispam_input'], $_POST['antispam_result'] ) ) {
 			wp_die( esc_html__( 'Lỗi CAPTCHA. Vui lòng thử lại.', TEXT_DOMAIN ) );
 		}
 
-		$input  = intval( $_POST['antispam_input'] );
-		$result = intval( $_POST['antispam_result'] );
+		$input  = (int) $_POST['antispam_input'];
+		$result = (int) $_POST['antispam_result'];
 
 		if ( $input !== $result ) {
 			wp_die( esc_html__( 'Câu trả lời chưa chính xác. Vui lòng thử lại.', TEXT_DOMAIN ) );
@@ -68,16 +68,16 @@ final class Options {
 
 	/**
 	 * @return void
+	 * @throws \Random\RandomException
 	 */
 	public function add_simple_antispam_field(): void {
 		$comment_options = Helper::getOption( 'comment__options', false, false );
 
-		$simple_antispam = $comment_options['simple_antispam'] ?? '';
-		if ( $simple_antispam ) {
+		if ( $comment_options['simple_antispam'] ?? '' ) {
 
-			$num1     = rand( 1, 10 );
-			$num2     = rand( 1, 10 );
-			$operator = rand( 0, 1 ) ? '+' : '-';
+			$num1     = random_int( 1, 10 );
+			$num2     = random_int( 1, 10 );
+			$operator = random_int( 0, 1 ) ? '+' : '-';
 			$result   = $operator === '+' ? $num1 + $num2 : $num1 - $num2;
 
 			echo '<p class="comment-form-antispam">' . sprintf( esc_html__( 'Để xác minh bạn không phải là robot spam comment, Hãy tính: %1$d %2$s %3$d = ?', TEXT_DOMAIN ), $num1, $operator, $num2 ) . '</p>';
@@ -172,7 +172,7 @@ final class Options {
 			$ratio_class = $ratio_obj->class ?? '';
 			$ratio_style = $ratio_obj->style ?? '';
 
-			if ( ! in_array( $ratio_class, $classes ) && $ratio_style ) {
+			if ( ! in_array( $ratio_class, $classes, true ) && $ratio_style ) {
 				$classes[] = $ratio_class;
 				$styles    .= $ratio_style;
 			}

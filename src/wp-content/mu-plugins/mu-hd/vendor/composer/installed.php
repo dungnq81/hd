@@ -3,7 +3,7 @@
         'name' => 'mu-plugins/mu-hd',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '926000365623a76ac004b4867dd7d98e5fe4bfe9',
+        'reference' => 'bcf2c6b2dd48934bdefd14e5eb3648f0f2394fda',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,11 +13,22 @@
         'mu-plugins/mu-hd' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '926000365623a76ac004b4867dd7d98e5fe4bfe9',
+            'reference' => 'bcf2c6b2dd48934bdefd14e5eb3648f0f2394fda',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'roave/security-advisories' => array(
+            'pretty_version' => 'dev-latest',
+            'version' => 'dev-latest',
+            'reference' => '9e4c9c09230934de3ccbff68623cab7de1b0e80b',
+            'type' => 'metapackage',
+            'install_path' => null,
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'dev_requirement' => true,
         ),
         'roots/wp-password-bcrypt' => array(
             'pretty_version' => '1.1.0',

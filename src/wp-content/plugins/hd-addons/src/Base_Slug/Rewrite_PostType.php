@@ -48,7 +48,7 @@ class Rewrite_PostType {
 			if ( $custom_post->_builtin === false &&
 			     $custom_post->public === true &&
 			     $custom_post->show_ui === true &&
-			     in_array( $custom_post->name, $this->base_slug_post_type )
+			     in_array( $custom_post->name, $this->base_slug_post_type, true )
 			) {
 				// woocommerce
 				if ( 'product' === $post->post_type && check_plugin_active( 'woocommerce/woocommerce.php' ) ) {
@@ -74,13 +74,13 @@ class Rewrite_PostType {
 		     ! is_admin() &&
 		     is_single() &&
 		     is_object( $post ) &&
-		     in_array( $post->post_type, $this->base_slug_post_type )
+		     in_array( $post->post_type, $this->base_slug_post_type, true )
 		) {
 			$new_url  = get_permalink();
 			$real_url = get_current_url();
 
-			if ( substr_count( $new_url, '/' ) != substr_count( $real_url, '/' ) &&
-			     ! strstr( $real_url, $new_url )
+			if ( ! str_contains( $real_url, $new_url ) &&
+			     substr_count( $new_url, '/' ) !== substr_count( $real_url, '/' )
 			) {
 				remove_filter( 'post_type_link', [ &$this, 'post_type_link' ], 10 );
 				$old_url = get_permalink();
@@ -192,7 +192,7 @@ class Rewrite_PostType {
 
 										// rewrites, pagination, etc.
 										foreach ( $url_query as $key => $value ) {
-											if ( $key != 'post_type' && ! str_starts_with( $value, '$matches' ) ) {
+											if ( $key !== 'post_type' && ! str_starts_with( $value, '$matches' ) ) {
 												$replace[ $key ] = $value;
 											}
 										}

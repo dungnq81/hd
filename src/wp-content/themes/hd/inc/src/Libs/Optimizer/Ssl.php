@@ -38,7 +38,7 @@ class Ssl extends Abstract_Htaccess {
 		$site_url = get_option( 'siteurl' );
 
 		// Change siteurl protocol.
-		if ( preg_match( '/^http\:/s', $site_url ) ) {
+		if ( str_starts_with( $site_url, 'http:' ) ) {
 			$site_url = str_replace( 'http', 'https', $site_url );
 		}
 
@@ -93,12 +93,7 @@ class Ssl extends Abstract_Htaccess {
 			$disable_from_htaccess = parent::disable();
 		}
 
-		if ( ! $protocol_switched || ! $disable_from_htaccess ) {
-			return false;
-		}
-
-		// Return success.
-		return true;
+		return ! ( ! $protocol_switched || ! $disable_from_htaccess );
 	}
 
 	// --------------------------------------------------
@@ -124,12 +119,7 @@ class Ssl extends Abstract_Htaccess {
 			$enable_from_htaccess = parent::enable();
 		}
 
-		if ( ! $protocol_switched || ! $enable_from_htaccess ) {
-			return false;
-		}
-
-		// Return success.
-		return true;
+		return ! ( ! $protocol_switched || ! $enable_from_htaccess );
 	}
 
 	// --------------------------------------------------
@@ -159,11 +149,7 @@ class Ssl extends Abstract_Htaccess {
 		exec( $command, $output, $status );
 
 		// Check for errors during the import.
-		if ( ! empty( $status ) ) {
-			return false;
-		}
-
-		return true;
+		return empty( $status );
 	}
 
 	// --------------------------------------------------

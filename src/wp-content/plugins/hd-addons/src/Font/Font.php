@@ -79,15 +79,7 @@ final class Font {
 	 * @return void
 	 */
 	private function _setup_wp_filesystem(): void {
-		global $wp_filesystem;
-
-		// Initialize the WP filesystem, no more using 'file-put-contents' function.
-		if ( empty( $wp_filesystem ) ) {
-			require_once ABSPATH . '/wp-admin/includes/file.php';
-			WP_Filesystem();
-		}
-
-		$this->wp_filesystem = $wp_filesystem;
+		$this->wp_filesystem = setup_wp_filesystem();
 	}
 
 	// ------------------------------------------------------
@@ -105,7 +97,9 @@ final class Font {
 			return $dir;
 		}
 
-		mkdir( $dir, 0775, true );
+		if ( ! mkdir( $dir, 0775, true ) && ! is_dir( $dir ) ) {
+			throw new \RuntimeException( sprintf( 'Directory "%s" was not created', $dir ) );
+		}
 
 		return $dir;
 	}
@@ -144,7 +138,7 @@ final class Font {
 		];
 
 		foreach ( $methods as $method ) {
-			$_fonts = call_user_func( array( $this, $method ), $_fonts );
+			$_fonts = $this->$method( $_fonts );
 		}
 
 		$html = preg_replace( '~<\/title>~', '</title>' . $_fonts, $html, 1 );

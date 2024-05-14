@@ -111,6 +111,7 @@ abstract class Abstract_Widget extends WP_Widget {
 	 * @return string the content that was cached
 	 */
 	public function cache_widget( $args, $content ) {
+
 		// Don't set any cache if widget_id doesn't exist
 		if ( empty( $args['widget_id'] ) ) {
 			return $content;
@@ -168,7 +169,7 @@ abstract class Abstract_Widget extends WP_Widget {
 			return $instance['title'];
 		}
 
-		if ( isset( $this->settings, $this->settings['title'], $this->settings['title']['std'] ) ) {
+		if ( isset( $this->settings['title']['std'] ) ) {
 			return $this->settings['title']['std'];
 		}
 
@@ -361,8 +362,7 @@ abstract class Abstract_Widget extends WP_Widget {
 	/**
 	 * styles_and_scripts
 	 */
-	public function styles_and_scripts() {
-	}
+	public function styles_and_scripts() {}
 
 	// --------------------------------------------------
 
@@ -371,6 +371,7 @@ abstract class Abstract_Widget extends WP_Widget {
 	 * @param $ACF
 	 *
 	 * @return array
+	 * @throws \JsonException
 	 */
 	protected function swiper_acf_options( $instance, $ACF ) {
 		$m_rows           = $ACF->m_rows ?? 1;
@@ -525,7 +526,7 @@ abstract class Abstract_Widget extends WP_Widget {
 
 		return [
 			'class' => $swiper_class,
-			'data'  => json_encode( $_data, JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE ),
+			'data'  => json_encode( $_data, JSON_THROW_ON_ERROR | JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE ),
 		];
 	}
 

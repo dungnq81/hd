@@ -110,7 +110,7 @@ trait Base {
 	 * @return bool
 	 */
 	public static function isInteger( $input ): bool {
-		return ( ctype_digit( strval( $input ) ) );
+		return ( ctype_digit( (string) $input ) );
 	}
 
 	// --------------------------------------------------
@@ -122,7 +122,7 @@ trait Base {
 	 */
 	public static function runClosure( $value ): mixed {
 		if ( $value instanceof \Closure || ( is_array( $value ) && is_callable( $value ) ) ) {
-			return call_user_func( $value );
+			return $value();
 		}
 
 		return $value;
@@ -174,11 +174,11 @@ trait Base {
 	// --------------------------------------------------
 
 	/**
-	 * @param array $array
+	 * @param $array
 	 *
 	 * @return array
 	 */
-	public static function removeEmptyValues( array $array = [] ): array {
+	public static function removeEmptyValues( $array ): array {
 
 		if ( ! is_array( $array ) && $array ) {
 			return [ $array ];
@@ -205,17 +205,17 @@ trait Base {
 	// --------------------------------------------------
 
 	/**
-	 * @param mixed $value
-	 * @param string|int $min
-	 * @param string|int $max
+	 * @param $value
+	 * @param $min
+	 * @param $max
 	 *
 	 * @return bool
 	 */
 	public static function inRange( $value, $min, $max ): bool {
 		$inRange = filter_var( $value, FILTER_VALIDATE_INT, [
 			'options' => [
-				'min_range' => intval( $min ),
-				'max_range' => intval( $max ),
+				'min_range' => (int) $min,
+				'max_range' => (int) $max,
 			],
 		] );
 
@@ -231,11 +231,11 @@ trait Base {
 	 *
 	 * @param string $email the email address
 	 * @param string $title the link title
-	 * @param string $attributes any attributes
+	 * @param array|string $attributes
 	 *
 	 * @return string|null
 	 */
-	public static function safeMailTo( string $email, string $title = '', $attributes = '' ): ?string {
+	public static function safeMailTo( string $email, string $title = '', array|string $attributes = '' ): ?string {
 		if ( ! $email || ! is_email( $email ) ) {
 			return null;
 		}

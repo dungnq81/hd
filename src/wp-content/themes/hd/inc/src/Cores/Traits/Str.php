@@ -73,8 +73,7 @@ trait Str {
 	 */
 	public static function snakeCase( string $string ): string {
 		if ( ! ctype_lower( $string ) ) {
-			$string = preg_replace( '/\s+/u', '', $string );
-			$string = preg_replace( '/(.)(?=[A-Z])/u', '$1_', $string );
+			$string = preg_replace( [ '/\s+/u', '/(.)(?=[A-Z])/u' ], [ '', '$1_' ], $string );
 			$string = mb_strtolower( $string, 'UTF-8' );
 		}
 
@@ -192,7 +191,7 @@ trait Str {
 	 * @return string
 	 */
 	public static function replaceFirst( $search, $replace, $subject ): string {
-		if ( $search == '' ) {
+		if ( $search === '' ) {
 			return $subject;
 		}
 		$position = mb_strpos( $subject, $search );
@@ -272,9 +271,9 @@ trait Str {
 	 * @return string The list of keywords in a comma separated string form.
 	 */
 	public static function keyWords( string $str ): string {
-		$str = preg_replace( '/(\v|\s){1,}/u', ' ', $str );
+		$str = preg_replace( '/(\v\s)+/u', ' ', $str );
 
-		return preg_replace( '/[\s]+/', ', ', trim( $str ) );
+		return preg_replace( '/\s+/', ', ', trim( $str ) );
 	}
 
 	// --------------------------------------------------
@@ -335,15 +334,7 @@ trait Str {
 			$string = strip_tags( $string );
 		}
 
-		$string = preg_replace(
-			'/(\v|\s){1,}/u',
-			$replace,
-			$string
-		);
-
-		$string = preg_replace( '~\x{00a0}~', $replace, $string );
-
-		return preg_replace( '/\s+/', $replace, $string );
+		return preg_replace( [ '~\x{00a0}~', '/\s+/', '/(\v\s)+/u' ], [ $replace, $replace, $replace ], $string );
 	}
 
 	// --------------------------------------------------
@@ -357,10 +348,8 @@ trait Str {
 		$allowedHtml         = wp_kses_allowed_html();
 		$allowedHtml['mark'] = []; // allow using the <mark> tag to highlight text
 
-		$text = wp_kses( $text, $allowedHtml );
-		$text = strip_shortcodes( $text );
-		$text = excerpt_remove_blocks( $text ); // just in case...
-		$text = convert_smilies( $text );
+		// just in case...
+		$text = convert_smilies( excerpt_remove_blocks( strip_shortcodes( wp_kses( $text, $allowedHtml ) ) ) );
 		$text = str_replace( ']]>', ']]&gt;', $text );
 
 		return preg_replace( '/(\v){2,}/u', '$1', $text );
@@ -374,12 +363,10 @@ trait Str {
 	 * @return string
 	 */
 	public static function text( string $text ): string {
-		$text = static::normalize( $text );
-		$text = nl2br( $text );
-		$text = wptexturize( $text );
+		$text = wptexturize( nl2br( self::normalize( $text ) ) );
 
 		// replace all multiple-space and carriage return characters with a space
-		return preg_replace( '/(\v|\s){1,}/u', ' ', $text );
+		return preg_replace( '/(\v\s)+/u', ' ', $text );
 	}
 
 	// --------------------------------------------------
@@ -399,7 +386,7 @@ trait Str {
 				continue;
 			}
 			++ $count;
-			if ( $count != $limit ) {
+			if ( $count !== $limit ) {
 				continue;
 			}
 
@@ -453,10 +440,9 @@ trait Str {
 			$text = ltrim( mb_substr( $text, 0, $splitLength ) ) . $showMore;
 		}
 
-		$text = nl2br( $text );
-		$text = wptexturize( $text );
+		$text = wptexturize( nl2br( $text ) );
 
 		// replace all multiple-space and carriage return characters with a space
-		return preg_replace( '/(\v|\s){1,}/u', ' ', $text );
+		return preg_replace( '/(\v\s)+/u', ' ', $text );
 	}
 }

@@ -56,7 +56,7 @@ class Xmlrpc extends Abstract_Htaccess {
 		// Loop trough active plugins and check if any is present in the known plugins that use XML-RPC.
 		foreach ( $active_plugins as $key => $plugin ) {
 			// Continue if the plugin is not in the list.
-			if ( ! in_array( $plugin, $this->xml_rpc_plugin_list ) ) {
+			if ( ! in_array( $plugin, $this->xml_rpc_plugin_list, true ) ) {
 				continue;
 			}
 

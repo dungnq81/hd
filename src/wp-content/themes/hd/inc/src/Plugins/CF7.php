@@ -53,7 +53,7 @@ final class CF7 {
 						$term_args['taxonomy'] = $matches[1];
 						break;
 					case 'parent':
-						$term_args['parent'] = intval( $matches[1] );
+						$term_args['parent'] = (int) $matches[1];
 						break;
 				}
 			}

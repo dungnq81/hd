@@ -59,7 +59,7 @@ final class SVG {
 	public function fix_missing_width_height_on_image_block( $block_content, $block ): mixed {
 		if ( $block['blockName'] === 'core/image' ) {
 			if ( ! str_contains( $block_content, 'width=' ) && ! str_contains( $block_content, 'height=' ) ) {
-				if ( isset( $block['attrs'], $block['attrs']['id'] ) && get_post_mime_type( $block['attrs']['id'] ) == 'image/svg+xml' ) {
+				if ( isset( $block['attrs']['id'] ) && get_post_mime_type( $block['attrs']['id'] ) === 'image/svg+xml' ) {
 					$svg_path      = get_attached_file( $block['attrs']['id'] );
 					$dimensions    = $this->svg_dimensions( $svg_path );
 					$block_content = str_replace( '<img ', '<img width="' . $dimensions->width . '" height="' . $dimensions->height . '" ', $block_content );
@@ -81,7 +81,7 @@ final class SVG {
 	 * @return mixed
 	 */
 	public function fl_module_upload_regex( $regex, $type, $ext, $file ): mixed {
-		if ( $ext == 'svg' || $ext == 'svgz' ) {
+		if ( $ext === 'svg' || $ext === 'svgz' ) {
 			$regex['photo'] = str_replace( '|png|', '|png|svgz?|', $regex['photo'] );
 		}
 
@@ -97,7 +97,7 @@ final class SVG {
 	 * @return mixed
 	 */
 	public function wp_generate_attachment_metadata( $metadata, $attachment_id ): mixed {
-		if ( get_post_mime_type( $attachment_id ) == 'image/svg+xml' ) {
+		if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
 			$svg_path           = get_attached_file( $attachment_id );
 			$dimensions         = $this->svg_dimensions( $svg_path );
 			$metadata['width']  = $dimensions->width;
@@ -118,7 +118,7 @@ final class SVG {
 	 * @return mixed
 	 */
 	public function wp_check_filetype_and_ext( $filetype_ext_data, $file, $filename, $mimes ): mixed {
-		if ( current_user_can( 'upload_files' ) && 'disable' !== $this->svg_option ) {
+		if ( 'disable' !== $this->svg_option && current_user_can( 'upload_files' ) ) {
 			if ( str_ends_with( $filename, '.svg' ) ) {
 				$filetype_ext_data['ext']  = 'svg';
 				$filetype_ext_data['type'] = 'image/svg+xml';
@@ -139,7 +139,7 @@ final class SVG {
 	 * @return array
 	 */
 	public function add_svg_mime( array $mimes = [] ): array {
-		if ( current_user_can( 'upload_files' ) && 'disable' !== $this->svg_option ) {
+		if ( 'disable' !== $this->svg_option && current_user_can( 'upload_files' ) ) {
 			$mimes['svg']  = 'image/svg+xml';
 			$mimes['svgz'] = 'image/svg+xml';
 		}
@@ -207,7 +207,7 @@ final class SVG {
 	 * @return mixed
 	 */
 	public function wp_prepare_attachment_for_js( $response, $attachment, $meta ): mixed {
-		if ( $response['mime'] == 'image/svg+xml' && empty( $response['sizes'] ) ) {
+		if ( $response['mime'] === 'image/svg+xml' && empty( $response['sizes'] ) ) {
 			$svg_path = get_attached_file( $attachment->ID );
 			if ( ! file_exists( $svg_path ) ) {
 				$svg_path = $response['url'];
@@ -234,24 +234,24 @@ final class SVG {
 	 * @return object
 	 */
 	public function svg_dimensions( $svg ): object {
-		$svg    = simplexml_load_file( $svg );
+		$svg    = simplexml_load_string( file_get_contents( $svg ) );
 		$width  = 0;
 		$height = 0;
 		if ( $svg ) {
 			$attributes = $svg->attributes();
 			if ( isset( $attributes->width, $attributes->height ) ) {
 				if ( ! str_ends_with( trim( $attributes->width ), '%' ) ) {
-					$width = floatval( $attributes->width );
+					$width = (float) $attributes->width;
 				}
 				if ( ! str_ends_with( trim( $attributes->height ), '%' ) ) {
-					$height = floatval( $attributes->height );
+					$height = (float) $attributes->height;
 				}
 			}
 			if ( ( ! $width || ! $height ) && isset( $attributes->viewBox ) ) {
 				$sizes = explode( ' ', $attributes->viewBox );
 				if ( isset( $sizes[2], $sizes[3] ) ) {
-					$width  = floatval( $sizes[2] );
-					$height = floatval( $sizes[3] );
+					$width  = (float) $sizes[2];
+					$height = (float) $sizes[3];
 				}
 			}
 		}
@@ -269,10 +269,11 @@ final class SVG {
 	public function wp_handle_upload_prefilter( $file ): mixed {
 		if ( $file['type'] === 'image/svg+xml' ) {
 
-			if ( current_user_can( 'upload_files' ) && 'sanitized' === $this->svg_option ) {
-				if ( ! $this->sanitize( $file['tmp_name'] ) ) {
-					$file['error'] = __( 'This SVG can not be sanitized!', ADDONS_TEXT_DOMAIN );
-				}
+			if ( 'sanitized' === $this->svg_option &&
+			     current_user_can( 'upload_files' ) &&
+			     ! $this->sanitize( $file['tmp_name'] )
+			) {
+				$file['error'] = __( 'This SVG can not be sanitized!', ADDONS_TEXT_DOMAIN );
 			}
 		}
 
@@ -324,8 +325,8 @@ final class SVG {
 	public function is_gzipped( $svg_code ): bool {
 		if ( function_exists( 'mb_strpos' ) ) {
 			return 0 === mb_strpos( $svg_code, "\x1f" . "\x8b" . "\x08" );
-		} else {
-			return str_starts_with( $svg_code, "\x1f" . "\x8b" . "\x08" );
 		}
+
+		return str_starts_with( $svg_code, "\x1f" . "\x8b" . "\x08" );
 	}
 }

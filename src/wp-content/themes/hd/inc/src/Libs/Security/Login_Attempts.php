@@ -31,7 +31,7 @@ class Login_Attempts {
 	 * The constructor.
 	 */
 	public function __construct() {
-		$security_options           = Helper::getOption( 'security__options', false, false );
+		$security_options           = get_option( 'security__options' );
 		$this->limit_login_attempts = $security_options['limit_login_attempts'] ?? 0;
 	}
 
@@ -97,9 +97,9 @@ class Login_Attempts {
 
 		// Invalid login
 		if (
-			in_array( 'empty_username', $errors->get_error_codes() ) ||
-			in_array( 'invalid_username', $errors->get_error_codes() ) ||
-			in_array( 'empty_password', $errors->get_error_codes() )
+			in_array( 'empty_username', $errors->get_error_codes(), true ) ||
+			in_array( 'invalid_username', $errors->get_error_codes(), true ) ||
+			in_array( 'empty_password', $errors->get_error_codes(), true )
 		) {
 			return $error;
 		}
@@ -124,8 +124,8 @@ class Login_Attempts {
 			$errors->add( 'login_attempts', __( sprintf( '<strong>Alert:</strong> You have entered the wrong credentials <strong>%s</strong> times.', $login_attempts[ $user_ip ]['attempts'] ), TEXT_DOMAIN ) );
 
 			if (
-				in_array( 'incorrect_password', $errors->get_error_codes() ) &&
-				in_array( 'login_attempts', $errors->get_error_codes() )
+				in_array( 'incorrect_password', $errors->get_error_codes(), true ) &&
+				in_array( 'login_attempts', $errors->get_error_codes(), true )
 			) {
 				$error_message = $errors->get_error_messages( 'login_attempts' );
 				$error         .= '	' . $error_message[0] . "<br />\n";
@@ -133,29 +133,14 @@ class Login_Attempts {
 		}
 
 		// Check if we are reaching the limits.
-		switch ( $login_attempts[ $user_ip ]['attempts'] ) {
+		$login_attempts[ $user_ip ]['timestamp'] = match ( $login_attempts[ $user_ip ]['attempts'] ) {
 
-			// Add a restriction time if we reach the limits.
-			case $login_attempts[ $user_ip ]['attempts'] == $this->limit_login_attempts:
-				// Set 1-hour limit.
-				$login_attempts[ $user_ip ]['timestamp'] = time() + 3600;
-				break;
+			$login_attempts[ $user_ip ]['attempts'] === $this->limit_login_attempts => time() + 3600,
+			$login_attempts[ $user_ip ]['attempts'] === $this->limit_login_attempts * 2 => time() + 86400,
+			$login_attempts[ $user_ip ]['attempts'] > $this->limit_login_attempts * 3 => time() + 604800,
 
-			case $login_attempts[ $user_ip ]['attempts'] == $this->limit_login_attempts * 2:
-				// Set 24-hour limit.
-				$login_attempts[ $user_ip ]['timestamp'] = time() + 86400;
-				break;
-
-			case $login_attempts[ $user_ip ]['attempts'] > $this->limit_login_attempts * 3:
-				// Set 7-day limit.
-				$login_attempts[ $user_ip ]['timestamp'] = time() + 604800;
-				break;
-
-			// Do not set restriction if we do not reach any limits.
-			default:
-				$login_attempts[ $user_ip ]['timestamp'] = '';
-				break;
-		}
+			default => '',
+		};
 
 		// Update the login attempts data.
 		Helper::updateOption( 'hd_security_unsuccessful_login', $login_attempts );

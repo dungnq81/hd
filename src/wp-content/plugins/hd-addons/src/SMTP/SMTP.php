@@ -11,7 +11,7 @@ use WP_Error;
 final class SMTP {
 	public function __construct() {
 
-		if ( self::smtpConfigured() && check_smtp_plugin_active() ) {
+		if ( $this->smtpConfigured() && check_smtp_plugin_active() ) {
 			add_filter( 'pre_wp_mail', [ &$this, 'pre_wp_mail' ], 11, 2 );
 		}
 
@@ -29,7 +29,7 @@ final class SMTP {
 	 * @throws Exception
 	 */
 	public function pre_wp_mail( $null, $atts ): void {
-		self::_smtp_pre_wp_mail( $null, $atts, 'smtp__options' );
+		$this->_smtp_pre_wp_mail( $null, $atts, 'smtp__options' );
 	}
 
 	// -------------------------------------------------------------
@@ -41,10 +41,10 @@ final class SMTP {
 	 * @param $atts
 	 * @param string|null $option_name
 	 *
-	 * @return bool
+	 * @return void
 	 * @throws Exception
 	 */
-	protected function _smtp_pre_wp_mail( $null, $atts, ?string $option_name = null ): bool {
+	private function _smtp_pre_wp_mail( $null, $atts, ?string $option_name = null ): void {
 
 		if ( isset( $atts['to'] ) ) {
 			$to = $atts['to'];
@@ -73,8 +73,8 @@ final class SMTP {
 			}
 		}
 
-		$option_name  = $option_name ?: 'smtp__options';
-		$options = get_option( $option_name );
+		$option_name = $option_name ?: 'smtp__options';
+		$options     = get_option( $option_name );
 
 		global $phpmailer;
 
@@ -216,7 +216,7 @@ final class SMTP {
 			/** This filter is documented in wp-includes/pluggable.php */
 			do_action( 'wp_mail_failed', new WP_Error( 'wp_mail_failed', $e->getMessage(), $mail_error_data ) );
 
-			return false;
+			return;
 		}
 
 		// reply_to
@@ -281,7 +281,7 @@ final class SMTP {
 		$phpmailer->Host = $options['smtp_host'];
 
 		// Whether to use SMTP authentication
-		if ( isset( $options['smtp_auth'] ) && $options['smtp_auth'] == "true" ) {
+		if ( isset( $options['smtp_auth'] ) && $options['smtp_auth'] === "true" ) {
 			$phpmailer->SMTPAuth = true;
 			$phpmailer->Username = $options['smtp_username'];
 			$phpmailer->Password = base64_decode( $options['smtp_password'] );
@@ -290,7 +290,7 @@ final class SMTP {
 		// Additional settings
 
 		$type_of_encryption = $options['smtp_encryption'];
-		if ( $type_of_encryption == "none" ) {
+		if ( $type_of_encryption === "none" ) {
 			$type_of_encryption = '';
 		}
 		$phpmailer->SMTPSecure = $type_of_encryption;
@@ -317,7 +317,7 @@ final class SMTP {
 			$content_type = 'text/plain';
 		}
 
-		$content_type = apply_filters( 'wp_mail_content_type', $content_type );
+		$content_type           = apply_filters( 'wp_mail_content_type', $content_type );
 		$phpmailer->ContentType = $content_type;
 
 		// Set whether it's a plaintext, depending on $content_type.
@@ -346,7 +346,9 @@ final class SMTP {
 				}
 			}
 
-			if ( false !== stripos( $content_type, 'multipart' ) && ! empty( $boundary ) ) {
+			if ( ! empty( $boundary ) &&
+			     false !== stripos( $content_type, 'multipart' )
+			) {
 				$phpmailer->addCustomHeader( sprintf( 'Content-Type: %s; boundary="%s"', $content_type, $boundary ) );
 			}
 		}
@@ -357,9 +359,7 @@ final class SMTP {
 
 				try {
 					$phpmailer->addAttachment( $attachment, $filename );
-				} catch ( Exception $e ) {
-					continue;
-				}
+				} catch ( Exception $e ) {}
 			}
 		}
 
@@ -378,14 +378,14 @@ final class SMTP {
 
 			do_action( 'wp_mail_succeeded', $mail_data );
 
-			return $send;
+			return;
 
 		} catch ( Exception $e ) {
 			$mail_data['phpmailer_exception_code'] = $e->getCode();
 
 			do_action( 'wp_mail_failed', new WP_Error( 'wp_mail_failed', $e->getMessage(), $mail_data ) );
 
-			return false;
+			return;
 		}
 	}
 
@@ -398,7 +398,7 @@ final class SMTP {
 		$smtp_options    = get_option( 'smtp__options' );
 		$smtp_configured = true;
 
-		if ( isset( $smtp_options['smtp_auth'] ) && $smtp_options['smtp_auth'] == "true" ) {
+		if ( isset( $smtp_options['smtp_auth'] ) && $smtp_options['smtp_auth'] === "true" ) {
 			if ( empty( $smtp_options['smtp_username'] ) || empty( $smtp_options['smtp_password'] ) ) {
 				$smtp_configured = false;
 			}
@@ -426,7 +426,7 @@ final class SMTP {
 	 */
 	public function options_admin_notice(): void {
 
-		if ( ! self::smtpConfigured() && check_smtp_plugin_active() ) {
+		if ( ! $this->smtpConfigured() && check_smtp_plugin_active() ) {
 			$class   = 'notice notice-error';
 			$message = __( 'You need to configure your SMTP credentials in the settings to send emails.', ADDONS_TEXT_DOMAIN );
 

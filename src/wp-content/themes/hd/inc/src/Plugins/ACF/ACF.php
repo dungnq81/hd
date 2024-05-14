@@ -99,7 +99,7 @@ final class ACF {
 		}
 
 		// Only unique, non-empty values, separated by space, escaped for HTML attributes.
-		$classes = esc_attr( implode( ' ', array_filter( array_unique( $classes ) ) ) );
+		$classes = esc_attr( implode( ' ', array_unique( array_filter( $classes ) ) ) );
 
 		if ( ! empty( $classes ) ) {
 

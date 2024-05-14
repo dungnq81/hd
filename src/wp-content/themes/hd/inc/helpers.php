@@ -57,7 +57,7 @@ if ( ! function_exists( 'in_array_checked' ) ) {
 	 * @return string
 	 */
 	function in_array_checked( array $checked_arr, $current, bool $display = true, string $type = 'checked' ): string {
-		if ( in_array( $current, $checked_arr ) ) {
+		if ( in_array( $current, $checked_arr, true ) ) {
 			$result = " $type='$type'";
 		} else {
 			$result = '';
@@ -84,7 +84,7 @@ if ( ! function_exists( 'sanitize_checkbox' ) ) {
 	 */
 	function sanitize_checkbox( $checked ): bool {
 		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- Intentionally loose.
-		return isset( $checked ) && true == $checked;
+		return isset( $checked ) && true === $checked;
 	}
 }
 
@@ -136,7 +136,7 @@ if ( ! function_exists( 'set_posts_per_page' ) ) {
 				$limit_min = min( $hd_posts_num_per_page );
 			}
 
-			if ( $post_limit != $limit_default && $post_limit != $limit_min ) {
+			if ( $post_limit !== $limit_default && $post_limit !== $limit_min ) {
 				add_action( 'pre_get_posts', function ( $query ) use ( $post_limit ) {
 					$query->set( 'posts_per_page', $post_limit );
 				} );
@@ -166,7 +166,7 @@ if ( ! function_exists( 'the_paginate_links' ) ) {
 
 			// Setting up default values based on the current URL.
 			$pagenum_link = html_entity_decode( get_pagenum_link() );
-			$url_parts    = explode( '?', $pagenum_link );
+			$url_parts    = explode( '?', $pagenum_link, 2 );
 
 			// Append the format placeholder to the base URL.
 			$pagenum_link = trailingslashit( $url_parts[0] ) . '%_%';

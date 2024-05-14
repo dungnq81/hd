@@ -64,6 +64,7 @@ trait Cast {
 	 * @param bool $explode
 	 *
 	 * @return array
+	 * @throws \JsonException
 	 */
 	public static function toArray( mixed $value, bool $explode = true ): array {
 		if ( is_object( $value ) ) {
@@ -72,7 +73,7 @@ trait Cast {
 				? $value->toArray()
 				: get_object_vars( $value );
 
-			return json_decode( json_encode( $properties ), true );
+			return json_decode( json_encode( $properties, JSON_THROW_ON_ERROR ), true, 512, JSON_THROW_ON_ERROR );
 		}
 
 		if ( is_scalar( $value ) && $explode ) {
@@ -124,6 +125,7 @@ trait Cast {
 	 * @param mixed $value
 	 *
 	 * @return object
+	 * @throws \JsonException
 	 */
 	public static function toObject( mixed $value ): object {
 		if ( ! is_object( $value ) ) {

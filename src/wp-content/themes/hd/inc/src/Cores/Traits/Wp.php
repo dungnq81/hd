@@ -14,8 +14,6 @@ use WP_Term;
 \defined( 'ABSPATH' ) || die;
 
 trait Wp {
-	use Arr;
-	use Base;
 	use Cast;
 	use File;
 	use Str;
@@ -181,6 +179,7 @@ trait Wp {
 	 * @param bool $return_object
 	 *
 	 * @return array|object|null
+	 * @throws \JsonException
 	 */
 	public static function getAttachment( $attachment_id, bool $return_object = true ): object|array|null {
 		$attachment = get_post( $attachment_id );
@@ -219,13 +218,16 @@ trait Wp {
 	 * @return array|string|string[]|null
 	 */
 	public static function lazyScriptTag( array $arr_parsed, string $tag, string $handle, string $src ): array|string|null {
+
 		foreach ( $arr_parsed as $str => $value ) {
 			if ( str_contains( $handle, $str ) ) {
 				if ( 'defer' === $value ) {
 					$tag = preg_replace( '/\s+defer\s+/', ' ', $tag );
 
 					return preg_replace( '/\s+src=/', ' defer src=', $tag );
-				} elseif ( 'delay' === $value && ! self::is_admin() ) {
+				}
+
+				if ( 'delay' === $value && ! self::is_admin() ) {
 					$tag = preg_replace( '/\s+defer\s+/', ' ', $tag );
 
 					return preg_replace( '/\s+src=/', ' defer data-type=\'lazy\' data-src=', $tag );
@@ -356,7 +358,7 @@ trait Wp {
 	public static function getTerm( $term_id, string $taxonomy = 'category' ) {
 		//$term = false;
 		if ( is_numeric( $term_id ) ) {
-			$term_id = intval( $term_id );
+			$term_id = (int) $term_id;
 			$term    = get_term( $term_id );
 		} else {
 			$term = get_term_by( 'slug', $term_id, $taxonomy );
@@ -376,18 +378,19 @@ trait Wp {
 	 * @param bool $include_children
 	 *
 	 * @param int $posts_per_page
-	 * @param array $orderby
+	 * @param array|string $orderby
 	 * @param array $meta_query
 	 * @param bool|string $strtotime_recent - strtotime( 'last week' );
 	 *
 	 * @return bool|WP_Query
+	 * @throws \JsonException
 	 */
 	public static function queryByTerm(
 		$term,
 		string $post_type = 'post',
 		bool $include_children = false,
 		int $posts_per_page = 12,
-		array $orderby = [ 'date' => 'DESC' ],
+		array|string $orderby = [ 'date' => 'DESC' ],
 		array $meta_query = [],
 		bool|string $strtotime_recent = false
 	): WP_Query|bool {
@@ -412,7 +415,7 @@ trait Wp {
 			$term = self::toObject( $term );
 		}
 
-		if ( isset( $term->taxonomy ) && isset( $term->term_id ) ) {
+		if ( isset( $term->taxonomy, $term->term_id ) ) {
 			$_args['tax_query'][] = [
 				'taxonomy'         => $term->taxonomy,
 				'terms'            => [ $term->term_id ],
@@ -454,7 +457,7 @@ trait Wp {
 		// woocommerce_hide_out_of_stock_items
 		if ( 'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items', false, true ) &&
 		     self::is_woocommerce_active() &&
-		     'product' == $post_type
+		     'product' === $post_type
 		) {
 			$product_visibility_term_ids = \wc_get_product_visibility_term_ids();
 			$_args['tax_query'][]        = [
@@ -497,7 +500,7 @@ trait Wp {
 		string $taxonomy = 'category',
 		bool $include_children = false,
 		int $posts_per_page = 12,
-		array $orderby = [ 'date' => 'DESC' ],
+		array|string $orderby = [ 'date' => 'DESC' ],
 		array $meta_query = [],
 		bool|string $strtotime_str = false
 	): WP_Query|false {
@@ -562,7 +565,7 @@ trait Wp {
 		// woocommerce_hide_out_of_stock_items
 		if ( 'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items', false, true ) &&
 		     self::is_woocommerce_active() &&
-		     'product' == $post_type
+		     'product' === $post_type
 		) {
 			$product_visibility_term_ids = wc_get_product_visibility_term_ids();
 			$_args['tax_query'][]        = [
@@ -760,14 +763,14 @@ trait Wp {
 		if ( ! $taxonomy ) {
 			$post_type = get_post_type( $post );
 
-			if ( 'post' == $post_type ) {
+			if ( 'post' === $post_type ) {
 				$taxonomy = 'category';
 			}
 
 			$hd_post_type_terms_arr = apply_filters( 'hd_post_type_terms', [] );
 			if ( ! empty( $hd_post_type_terms_arr ) ) {
 				foreach ( $hd_post_type_terms_arr as $_post_type => $_taxonomy ) {
-					if ( $_post_type == $post_type ) {
+					if ( $_post_type === $post_type ) {
 						$taxonomy = $_taxonomy;
 					}
 				}
@@ -781,7 +784,7 @@ trait Wp {
 		// Rank Math SEO
 		// https://vi.wordpress.org/plugins/seo-by-rank-math/
 		$primary_term_id = get_post_meta( get_the_ID(), 'rank_math_primary_' . $taxonomy, true );
-		if ( $primary_term_id && in_array( $primary_term_id, $term_ids ) ) {
+		if ( $primary_term_id && in_array( $primary_term_id, $term_ids, true ) ) {
 			$term = get_term( $primary_term_id, $taxonomy );
 			if ( $term ) {
 				return $term;
@@ -796,7 +799,7 @@ trait Wp {
 			$wpseo_primary_term = new \WPSEO_Primary_Term( $taxonomy, $post );
 			$wpseo_primary_term = $wpseo_primary_term->get_primary_term();
 			$term               = get_term( $wpseo_primary_term, $taxonomy );
-			if ( $term && in_array( $term->term_id, $term_ids ) ) {
+			if ( $term && in_array( $term->term_id, $term_ids, true ) ) {
 				return $term;
 			}
 		}
@@ -850,14 +853,14 @@ trait Wp {
 			$post_type = get_post_type( $post );
 			$taxonomy  = $post_type . '_cat';
 
-			if ( 'post' == $post_type ) {
+			if ( 'post' === $post_type ) {
 				$taxonomy = 'category';
 			}
 
 			$hd_post_type_terms_arr = apply_filters( 'hd_post_type_terms', [] );
 			if ( ! empty( $hd_post_type_terms_arr ) ) {
 				foreach ( $hd_post_type_terms_arr as $_post_type => $_taxonomy ) {
-					if ( $_post_type == $post_type ) {
+					if ( $_post_type === $post_type ) {
 						$taxonomy = $_taxonomy;
 					}
 				}
@@ -945,7 +948,7 @@ trait Wp {
 	/**
 	 * @param $attachment_id
 	 * @param string $size
-	 * @param string $attr
+	 * @param string|array $attr
 	 *
 	 * @return string
 	 */
@@ -1016,7 +1019,7 @@ trait Wp {
 	 * @param null $acf_field_name
 	 * @param string $size
 	 * @param bool $img_wrap
-	 * @param string $attr
+	 * @param string|array $attr
 	 *
 	 * @return string|null
 	 */
@@ -1025,7 +1028,7 @@ trait Wp {
 			$term = get_term( $term );
 		}
 
-		if ( class_exists( '\ACF' ) ) {
+		if ( class_exists( \ACF::class ) ) {
 			$attach_id = \get_field( $acf_field_name, $term ) ?? false;
 			if ( $attach_id ) {
 				$img_src = wp_get_attachment_image_url( $attach_id, $size );
@@ -1062,7 +1065,7 @@ trait Wp {
 		$diff = (int) abs( $to - $from );
 
 		$since = human_time_diff( $from, $to );
-		$since = $since . ' ' . $_ago;
+		$since .= ' ' . $_ago;
 
 		return apply_filters( 'humanize_time', $since, $diff, $from, $to );
 	}
@@ -1249,7 +1252,7 @@ trait Wp {
 			if ( isset( $obj['term_id'] ) ) {
 				return get_term_link( $obj['term_id'] );
 			}
-			if ( isset( $obj['user_login'] ) && isset( $obj['ID'] ) ) {
+			if ( isset( $obj['user_login'], $obj['ID'] ) ) {
 				return self::getUserLink( $obj['ID'] );
 			}
 			if ( isset( $obj['ID'] ) ) {
@@ -1258,13 +1261,13 @@ trait Wp {
 		}
 		if ( is_object( $obj ) ) {
 			$val_class = get_class( $obj );
-			if ( $val_class == 'WP_Post' ) {
+			if ( $val_class === 'WP_Post' ) {
 				return get_permalink( $obj->ID );
 			}
-			if ( $val_class == 'WP_Term' ) {
+			if ( $val_class === 'WP_Term' ) {
 				return get_term_link( $obj->term_id );
 			}
-			if ( $val_class == 'WP_User' ) {
+			if ( $val_class === 'WP_User' ) {
 				return self::getUserLink( $obj->ID );
 			}
 		}
@@ -1285,13 +1288,13 @@ trait Wp {
 			return get_the_ID();
 		}
 		if ( is_numeric( $obj ) ) {
-			return intval( $obj );
+			return (int) $obj;
 		}
 		if ( filter_var( $obj, FILTER_VALIDATE_URL ) ) {
 			return url_to_postid( $obj );
 		}
 		if ( is_string( $obj ) ) {
-			return intval( $obj );
+			return (int) $obj;
 		}
 		if ( is_array( $obj ) ) {
 			if ( isset( $obj['term_id'] ) ) {
@@ -1303,13 +1306,13 @@ trait Wp {
 		}
 		if ( is_object( $obj ) ) {
 			$val_class = get_class( $obj );
-			if ( $val_class == 'WP_Post' ) {
+			if ( $val_class === 'WP_Post' ) {
 				return $obj->ID;
 			}
-			if ( $val_class == 'WP_Term' ) {
+			if ( $val_class === 'WP_Term' ) {
 				return $obj->term_id;
 			}
-			if ( $val_class == 'WP_User' ) {
+			if ( $val_class === 'WP_User' ) {
 				return $obj->ID;
 			}
 		}
@@ -1368,7 +1371,7 @@ trait Wp {
 			$query = new WP_Query( $custom_query_vars );
 			$post  = $query->post;
 
-			set_theme_mod( $post_type . '_option_id', $post ? $post->ID : - 1 );
+			set_theme_mod( $post_type . '_option_id', $post->ID ?? - 1 );
 		}
 
 		return $post;
@@ -1533,7 +1536,7 @@ trait Wp {
 			$ratio_class     = 'ar-' . $ratio_x . '-' . $ratio_y;
 			$ar_default_list = apply_filters( 'hd_aspect_ratio_default_list', [] );
 
-			if ( is_array( $ar_default_list ) && ! in_array( $ratio_x . '-' . $ratio_y, $ar_default_list ) ) {
+			if ( is_array( $ar_default_list ) && ! in_array( $ratio_x . '-' . $ratio_y, $ar_default_list, true ) ) {
 				$css = new CSS();
 
 				$css->set_selector( '.' . $ratio_class );
@@ -1730,12 +1733,6 @@ trait Wp {
 	 * @return bool
 	 */
 	public static function check_plugin_active( $plugin_slug ): bool {
-		if ( self::check_plugin_installed( $plugin_slug ) ) {
-			if ( is_plugin_active( $plugin_slug ) ) {
-				return true;
-			}
-		}
-
-		return false;
+		return self::check_plugin_installed( $plugin_slug ) && is_plugin_active( $plugin_slug );
 	}
 }
