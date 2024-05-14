@@ -68,7 +68,7 @@ final class Addons {
 	 * @return void
 	 */
 	private function _parser(): void {
-		if ( is_admin() || defined( 'WP_CLI' ) ) {
+		if ( defined( 'WP_CLI' ) || is_admin() ) {
 			return;
 		}
 

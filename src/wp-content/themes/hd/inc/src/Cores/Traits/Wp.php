@@ -2,6 +2,7 @@
 
 namespace Cores\Traits;
 
+use Cores\Helper;
 use Libs\CSS;
 use Libs\Horizontal_Nav_Walker;
 use Libs\Vertical_Nav_Walker;
@@ -52,7 +53,7 @@ trait Wp {
 	 * @return bool
 	 */
 	public static function is_wp_cli(): bool {
-		return defined( 'WP_CLI' ) && WP_CLI;
+		return defined( 'WP_CLI' ) && \WP_CLI;
 	}
 
 	// -------------------------------------------------------------
@@ -222,15 +223,14 @@ trait Wp {
 		foreach ( $arr_parsed as $str => $value ) {
 			if ( str_contains( $handle, $str ) ) {
 				if ( 'defer' === $value ) {
-					$tag = preg_replace( '/\s+defer\s+/', ' ', $tag );
-
-					return preg_replace( '/\s+src=/', ' defer src=', $tag );
+					return preg_replace( [ '/\s+defer\s+/', '/\s+src=/' ], [ ' ', ' defer src=' ], $tag );
 				}
 
 				if ( 'delay' === $value && ! self::is_admin() ) {
-					$tag = preg_replace( '/\s+defer\s+/', ' ', $tag );
-
-					return preg_replace( '/\s+src=/', ' defer data-type=\'lazy\' data-src=', $tag );
+					return preg_replace( [ '/\s+defer\s+/', '/\s+src=/' ], [
+						' ',
+						' defer data-type=\'lazy\' data-src='
+					], $tag );
 				}
 			}
 		}
@@ -1290,7 +1290,7 @@ trait Wp {
 		if ( is_numeric( $obj ) ) {
 			return (int) $obj;
 		}
-		if ( filter_var( $obj, FILTER_VALIDATE_URL ) ) {
+		if ( Helper::isUrl( $obj ) ) {
 			return url_to_postid( $obj );
 		}
 		if ( is_string( $obj ) ) {
@@ -1509,9 +1509,9 @@ trait Wp {
 		$ratio_y = $ratio[1] ?? '';
 		if ( ! $ratio_x || ! $ratio_y ) {
 			return $default;
-		} else {
-			return 'ar-' . $ratio_x . '-' . $ratio_y;
 		}
+
+		return 'ar-' . $ratio_x . '-' . $ratio_y;
 	}
 
 	// -------------------------------------------------------------

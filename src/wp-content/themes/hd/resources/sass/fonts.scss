@@ -12,7 +12,7 @@
         font-style: $font-style;
         font-weight: $font-weight;
         font-display: swap;
-        src: //url("#{$base}/WOFF2/#{$file_name}.woff2?v=#{$unique_id}") format("woff2"),
+        src: url("#{$base}/WOFF2/#{$file_name}.woff2?v=#{$unique_id}") format("woff2"),
              url("#{$base}/OTF/#{$file_name}.otf?v=#{$unique_id}") format("opentype"),
              url("#{$base}/TTF/#{$file_name}.ttf?v=#{$unique_id}") format("truetype");
     }

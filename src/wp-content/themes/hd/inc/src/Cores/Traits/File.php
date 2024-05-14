@@ -74,7 +74,7 @@ trait File {
 	public static function isRest(): bool {
 		$prefix = rest_get_url_prefix();
 		if (
-			( defined( 'REST_REQUEST' ) && REST_REQUEST ) ||
+			( defined( 'REST_REQUEST' ) && \REST_REQUEST ) ||
 			(
 				isset( $_GET['rest_route'] ) &&
 				0 === @strpos( trim( $_GET['rest_route'], '\\/' ), $prefix, 0 )

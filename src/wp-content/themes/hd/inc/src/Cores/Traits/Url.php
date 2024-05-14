@@ -11,6 +11,42 @@ trait Url {
 	// --------------------------------------------------
 
 	/**
+	 * @param $url
+	 *
+	 * @return bool
+	 */
+	public static function isUrl( $url ): bool {
+
+		// Basic URL validation using filter_var
+		if ( filter_var( $url, FILTER_VALIDATE_URL ) === false ) {
+			return false;
+		}
+
+		// Parse the URL into components
+		$parsed_url = parse_url( $url );
+
+		// Validate scheme
+		$valid_schemes = [ 'http', 'https' ];
+		if ( ! isset( $parsed_url['scheme'] ) || ! in_array( $parsed_url['scheme'], $valid_schemes, true ) ) {
+			return false;
+		}
+
+		// Validate host
+		if ( ! isset( $parsed_url['host'] ) || ! filter_var( $parsed_url['host'], FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME ) ) {
+			return false;
+		}
+
+		// Validate DNS resolution for the host
+		if ( ! checkdnsrr( $parsed_url['host'], 'A' ) && ! checkdnsrr( $parsed_url['host'], 'AAAA' ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	// --------------------------------------------------
+
+	/**
 	 * @param string $img
 	 *
 	 * @return string
