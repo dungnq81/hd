@@ -70,10 +70,10 @@ class Rewrite_PostType {
 	public function redirect(): void {
 		global $post;
 
-		if ( ! is_preview() &&
+		if ( is_object( $post ) &&
+		     ! is_preview() &&
 		     ! is_admin() &&
 		     is_single() &&
-		     is_object( $post ) &&
 		     in_array( $post->post_type, $this->base_slug_post_type, true )
 		) {
 			$new_url  = get_permalink();
@@ -167,7 +167,7 @@ class Rewrite_PostType {
 								preg_match_all( '#' . $pattern . '#', $query_var . '/' . $url_request, $matches, PREG_SET_ORDER );
 							}
 
-							if ( count( $matches ) !== 0 && isset( $matches[0] ) ) {
+							if (  isset( $matches[0] ) && 0 !== count( $matches ) ) {
 
 								// build URL query array
 								$rewrite = str_replace( 'index.php?', '', $rewrite );

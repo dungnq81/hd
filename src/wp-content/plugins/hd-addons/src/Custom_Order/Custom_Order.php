@@ -321,7 +321,7 @@ final class Custom_Order {
 			return $where;
 		}
 
-		if ( isset( $post->post_type ) && in_array( $post->post_type, $objects ) ) {
+		if ( isset( $post->post_type ) && in_array( $post->post_type, $objects, true ) ) {
 			$where = preg_replace( "/p.post_date > \'[0-9\-\s\:]+\'/i", "p.menu_order < '" . $post->menu_order . "'", $where );
 		}
 
