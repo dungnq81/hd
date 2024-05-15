@@ -60,7 +60,7 @@ $breakpoint-classes: (small medium large xlarge xxlarge);
 // -----------
 
 $grid-row-width: $global-width;
-$grid-column-count: 12;
+$grid-column-count: $grid-columns;
 $grid-column-gutter: (
         "small": rem-calc($gap-xs),
         "medium": rem-calc($gap),
@@ -74,7 +74,7 @@ $block-grid-max: 8;
 
 $xy-grid: true;
 $grid-container: $global-width;
-$grid-columns: 12;
+$grid-columns: $grid-columns;
 $grid-margin-gutters: (
         "small": rem-calc($gap-xs),
         "medium": rem-calc($gap),

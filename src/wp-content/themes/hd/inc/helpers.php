@@ -11,6 +11,29 @@ use Cores\Helper;
 
 // --------------------------------------------------
 
+if ( ! function_exists( 'toggle_container' ) ) {
+	/**
+	 * @param bool $check
+	 * @param string $css1
+	 * @param string $css2
+	 *
+	 * @return void
+	 */
+	function toggle_container( bool $check, string $css1 = 'container', string $css2 = 'container fluid' ): void {
+		$values = '';
+
+		if ( $check && $css1 ) {
+			$values = '<div class="' . $css1 . '">';
+		} else if ( ! $check && $css2 ) {
+			$values = '<div class="' . $css2 . '">';
+		}
+
+		echo $values;
+	}
+}
+
+// --------------------------------------------------
+
 if ( ! function_exists( 'esc_attr_strip_tags' ) ) {
 	/**
 	 * @param string $string
@@ -33,7 +56,7 @@ if ( ! function_exists( 'check_smtp_plugin_active' ) ) {
 
 		$check = true;
 		if ( ! empty( $hd_smtp_plugins_support ) ) {
-			foreach ( $hd_smtp_plugins_support as $key => $plugin_slug ) {
+			foreach ( $hd_smtp_plugins_support as $plugin_slug ) {
 				if ( Helper::check_plugin_active( $plugin_slug ) ) {
 					$check = false;
 					break;

@@ -169,8 +169,8 @@ if ( ! function_exists( '__header' ) ) {
         ?>
         <div class="inside-header" id="inside-header">
 	        <?php
-	        if ( $header_container ) echo '<div class="grid-container">';
-	        else echo '<div class="grid-container fluid">';
+	        if ( $header_container ) {echo '<div class="grid-container">';}
+	        else {echo '<div class="grid-container fluid">';}
 
 	        for ( $i = 1; $i <= $header_cols; $i++ ) :
 		        if ( is_active_sidebar( 'hd-header-' . $i . '-sidebar' )) :

@@ -20,6 +20,35 @@
     }
 }
 
+@mixin flex-basis(
+    $n: 1,
+    $gap: false
+) {
+    @include flex-self($grid-columns, $n, $gap);
+}
+
+@mixin media-flex-basis(
+    $m: 1,
+    $t: false,
+    $d: false,
+    $gap_m: false,
+    $gap: false
+) {
+    @if is-int($m) and $m > 0 {
+        @include flex-basis($m, $gap_m);
+    }
+    @if is-int($t) and $t > 0 {
+        @include mq-min(tablet) {
+            @include flex-basis($t, $gap);
+        }
+    }
+    @if is-int($d) and $d > 0 {
+        @include mq-min(desktop) {
+            @include flex-basis($d, $gap);
+        }
+    }
+}
+
 @mixin media-flex-self(
     $m: 1,
     $t: false,

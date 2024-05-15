@@ -158,6 +158,8 @@ $gutter: 15px !default;
 $gap-xs: $gutter-xs * 2;
 $gap: $gutter * 2;
 
+$grid-columns: 12;
+
 $spacers: (
         gutter-xs: fs($gutter-xs),
         gutter: fs($gutter),

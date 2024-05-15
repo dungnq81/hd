@@ -79,8 +79,8 @@ if ( ! function_exists( '__construct_footer_widgets' ) ) {
             ?>
             <div class="rows row-<?php echo $row; ?>">
                 <?php
-                if ( $footer_container ) echo '<div class="grid-container">';
-                else echo '<div class="grid-container fluid">';
+                if ( $footer_container ) {echo '<div class="grid-container">';}
+                else {echo '<div class="grid-container fluid">';}
 
                 ?>
                 <div class="grid-x">
@@ -123,8 +123,8 @@ if ( ! function_exists( '__construct_footer' ) ) {
 		?>
         <footer class="footer-info" <?php echo Helper::microdata( 'footer' ); ?>>
 	        <?php
-	        if ( $footer_container ) echo '<div class="grid-container">';
-	        else echo '<div class="grid-container fluid">';
+	        if ( $footer_container ) {echo '<div class="grid-container">';}
+	        else {echo '<div class="grid-container fluid">';}
 
             /**
              * @see __hd_before_credits - 15
