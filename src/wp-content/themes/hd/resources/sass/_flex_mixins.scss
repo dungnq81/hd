@@ -51,23 +51,6 @@
     }
 }
 
-@mixin flex-layout-auto(
-    $gap_m: false,
-    $gap: false,
-    $min_width: 0,
-    $max_width: 100%,
-    $class_cell: ".cell"
-) {
-    @include flex-x(true);
-    @include media-gap($gap_m, $gap, false);
-
-    & > #{unquote($class_cell)} {
-        @include flex-auto;
-        min-width: $min_width;
-        max-width: $max_width;
-    }
-}
-
 @mixin media-flex-self(
     $m: 1,
     $t: false,
@@ -87,6 +70,23 @@
         @include mq-min(desktop) {
             @include flex-self($d, 1, $gap);
         }
+    }
+}
+
+@mixin flex-layout-auto(
+    $gap_m: false,
+    $gap: false,
+    $min_width: 0,
+    $max_width: 100%,
+    $class_cell: ".cell"
+) {
+    @include flex-x(true);
+    @include media-gap($gap_m, $gap, false);
+
+    & > #{unquote($class_cell)} {
+        @include flex-auto;
+        min-width: $min_width;
+        max-width: $max_width;
     }
 }
 
