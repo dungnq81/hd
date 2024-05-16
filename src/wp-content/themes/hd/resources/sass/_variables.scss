@@ -74,14 +74,14 @@ $paragraph-margin-bottom: 15px !default;
 // Define the minimum dimensions at which your layout will change,
 // adapting to different screen sizes, for use in media queries.
 
-$xs: 0;
-$sm: 576px;
-$md: 768px;
-$lg: 1024px;
-$xl: 1200px;
-$xxl: 1400px;
-$xxxl: 1880px;
-$wp: 782px;
+$xs: 0 !default;
+$sm: 576px !default;
+$md: 768px !default;
+$lg: 1024px !default;
+$xl: 1200px !default;
+$xxl: 1400px !default;
+$xxxl: 1880px !default;
+$wp: 782px !default;
 
 $mq-breakpoints: (
         xs: 0,
@@ -100,12 +100,12 @@ $mq-breakpoints: (
 //
 // Define the maximum width of `.layout-container` for different screen sizes.
 
-$screen-sm: 540px;
-$screen-md: 720px;
-$screen-lg: 960px;
-$screen-xl: 1140px;
-$screen-xxl: 1320px;
-$screen-xxxl: 1680px;
+$screen-sm: 540px !default;
+$screen-md: 720px !default;
+$screen-lg: 960px !default;
+$screen-xl: 1140px !default;
+$screen-xxl: 1320px !default;
+$screen-xxxl: 1680px !default;
 
 $container-max-widths: (
         sm: fs($screen-sm),
@@ -159,6 +159,7 @@ $gap-xs: $gutter-xs * 2;
 $gap: $gutter * 2;
 
 $grid-columns: 12 !default;
+$grid-columns-max: 8 !default;
 
 $spacers: (
         gutter-xs: fs($gutter-xs),

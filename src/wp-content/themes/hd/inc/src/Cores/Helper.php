@@ -252,6 +252,7 @@ final class Helper {
 	 * @param $escape_html
 	 *
 	 * @return mixed|object
+	 * @throws \JsonException
 	 */
 	public static function acfFields( $post_id = false, $format_value = true, $escape_html = false ) {
 		if ( ! self::is_acf_pro_active() && ! self::is_acf_active() ) {

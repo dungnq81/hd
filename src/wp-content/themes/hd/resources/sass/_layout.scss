@@ -387,7 +387,7 @@ figure {
 }
 
 /** @todo layout */
-@for $i from 1 through 12 {
+@for $i from 1 through $grid-columns-max {
 
     :is(.flex, .\!flex) {
         &.m-up-#{$i} > .cell, & > .cell.m-#{$i} {
@@ -409,7 +409,7 @@ figure {
 }
 
 @include mq-min(tablet) {
-    @for $i from 1 through 12 {
+    @for $i from 1 through $grid-columns-max {
 
         :is(.flex, .\!flex) {
             &.t-up-#{$i} > .cell, & > .cell.t-#{$i} {
@@ -432,7 +432,7 @@ figure {
 }
 
 @include mq-min(desktop) {
-    @for $i from 1 through 12 {
+    @for $i from 1 through $grid-columns-max {
 
         :is(.flex, .\!flex) {
             &.d-up-#{$i} > .cell, & > .cell.d-#{$i} {

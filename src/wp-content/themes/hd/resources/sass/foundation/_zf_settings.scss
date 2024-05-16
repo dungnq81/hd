@@ -67,7 +67,7 @@ $grid-column-gutter: (
 );
 $grid-column-align-edge: true;
 $grid-column-alias: 'columns';
-$block-grid-max: 8;
+$block-grid-max: $grid-columns-max;
 
 // 56. Xy Grid
 // -----------
@@ -82,7 +82,7 @@ $grid-margin-gutters: (
 $grid-padding-gutters: $grid-margin-gutters;
 $grid-container-padding: $grid-padding-gutters;
 $grid-container-max: $global-width;
-$xy-block-grid-max: 8;
+$xy-block-grid-max: $grid-columns-max;
 
 // 4. Base Typography
 // ------------------
