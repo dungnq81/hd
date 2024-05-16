@@ -78,7 +78,7 @@
     $gap: false,
     $min_width: 0,
     $max_width: 100%,
-    $class_cell: ".cell"
+    $class_cell: '.cell'
 ) {
     @include flex-x(true);
     @include media-gap($gap_m, $gap, false);
@@ -96,13 +96,13 @@
     $d: false,
     $gap_m: false,
     $gap: false,
-    $class_cell: ".cell"
+    $class_cell: '.cell'
 ) {
     @include flex-x(true);
     @include media-gap($gap_m, $gap, false);
 
     & > #{unquote($class_cell)} {
-        @if ".cell" != $class_cell {
+        @if '.cell' != $class_cell {
             @include cell(false);
         }
 
@@ -132,7 +132,10 @@
     }
 }
 
-@mixin flex-x( $flex: false, $reverse: false ) {
+@mixin flex-x(
+    $flex: false,
+    $reverse: false
+) {
     @if true == $flex {
         display: flex;
     }
@@ -144,7 +147,10 @@
     }
 }
 
-@mixin flex-y( $flex: false, $reverse: false ) {
+@mixin flex-y(
+    $flex: false,
+    $reverse: false
+) {
     @if true == $flex {
         display: flex;
     }
@@ -156,11 +162,15 @@
     }
 }
 
-@mixin flex-padding-x( $padding_m: $gutter-xs, $padding: $gutter, $class_cell: ".cell" ) {
+@mixin flex-padding-x(
+    $padding_m: $gutter-xs,
+    $padding: $gutter,
+    $class_cell: '.cell'
+) {
     @include mx-gutter($padding_m, $padding);
 
     & > #{unquote($class_cell)} {
-        @if ".cell" != $class_cell {
+        @if '.cell' != $class_cell {
             @include cell();
         }
 
@@ -168,11 +178,15 @@
     }
 }
 
-@mixin flex-padding-y( $padding_m: $gutter-xs, $padding: $gutter, $class_cell: ".cell" ) {
+@mixin flex-padding-y(
+    $padding_m: $gutter-xs,
+    $padding: $gutter,
+    $class_cell: '.cell'
+) {
     @include my-gutter($padding_m, $padding);
 
     & > #{unquote($class_cell)} {
-        @if ".cell" != $class_cell {
+        @if '.cell' != $class_cell {
             @include cell();
         }
 
