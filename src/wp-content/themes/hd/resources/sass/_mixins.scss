@@ -763,7 +763,7 @@
     }
 }
 
-/** keyframes */
+/** keyframe */
 @mixin keyframes( $name ) {
     @-webkit-keyframes #{$name} {
         @content;
