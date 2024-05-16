@@ -309,7 +309,7 @@ figure {
 }
 
 .flex-y {
-    @include flex-y;
+    @include flex-y();
 
     & > .cell {
         height: auto;
@@ -332,27 +332,15 @@ figure {
         @include flex-auto;
     }
 
-    &.shrink {
-        @include flex-shrink;
-    }
-
     @include mq-min(tablet) {
         &.t-auto {
             @include flex-auto;
-        }
-
-        &.t-shrink {
-            @include flex-shrink;
         }
     }
 
     @include mq-min(desktop) {
         &.d-auto {
             @include flex-auto;
-        }
-
-        &.d-shrink {
-            @include flex-shrink;
         }
     }
 }
@@ -584,7 +572,7 @@ $fw_max: 900;
 /** @todo gallery */
 [id^=gallery-] {
     $gap: 10;
-    @include flex-x;
+    @include flex-x(true);
     @include gap($gap);
 
     & > .gallery-item {

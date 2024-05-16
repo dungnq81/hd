@@ -3,13 +3,17 @@
 
 @import "mixins";
 
-@mixin grid-x() {
-    /*display: grid;*/
+@mixin grid-x( $grid: false  ) {
+    @if true == $grid {
+        display: grid;
+    }
     grid-auto-flow: row;
 }
 
-@mixin grid-y() {
-    /*display: grid;*/
+@mixin grid-y( $grid: false  ) {
+    @if true == $grid {
+        display: grid;
+    }
     grid-auto-flow: column
 }
 

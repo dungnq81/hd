@@ -34,6 +34,8 @@
     $gap_m: false,
     $gap: false
 ) {
+    flex: 0 0 auto;
+
     @if is-int($m) and $m > 0 {
         @include flex-basis($m, $gap_m);
     }
@@ -46,6 +48,23 @@
         @include mq-min(desktop) {
             @include flex-basis($d, $gap);
         }
+    }
+}
+
+@mixin flex-layout-auto(
+    $gap_m: false,
+    $gap: false,
+    $min_width: 0,
+    $max_width: 100%,
+    $class_cell: ".cell"
+) {
+    @include flex-x(true);
+    @include media-gap($gap_m, $gap, false);
+
+    & > #{unquote($class_cell)} {
+        @include flex-auto;
+        min-width: $min_width;
+        max-width: $max_width;
     }
 }
 
@@ -79,6 +98,7 @@
     $gap: false,
     $class_cell: ".cell"
 ) {
+    @include flex-x(true);
     @include media-gap($gap_m, $gap, false);
 
     & > #{unquote($class_cell)} {
@@ -90,7 +110,19 @@
     }
 }
 
-@mixin cell( $w: 100% ) {
+@mixin flex-shrink {
+    flex: 0 0 auto;
+    max-width: 100%;
+    min-height: 0;
+    min-width: 0;
+}
+
+@mixin flex-auto {
+    flex: 1 1 0;
+    width: auto;
+}
+
+@mixin cell( $w: false ) {
     flex: 0 0 auto;
     min-height: 0;
     min-width: 0;
@@ -100,8 +132,10 @@
     }
 }
 
-@mixin flex-x( $reverse: false ) {
-    /*display: flex;*/
+@mixin flex-x( $flex: false, $reverse: false ) {
+    @if true == $flex {
+        display: flex;
+    }
 
     @if false == $reverse {
         flex-flow: row wrap;
@@ -110,8 +144,10 @@
     }
 }
 
-@mixin flex-y( $reverse: false ) {
-    /*display: flex;*/
+@mixin flex-y( $flex: false, $reverse: false ) {
+    @if true == $flex {
+        display: flex;
+    }
 
     @if false == $reverse {
         flex-flow: column nowrap;
@@ -171,20 +207,4 @@
     @if true == $direction_column {
         flex-direction: $direction_column;
     }
-}
-
-@mixin flex-shrink( $w: false ) {
-    flex: 0 0 auto;
-    max-width: 100%;
-    min-height: 0;
-    min-width: 0;
-
-    @if type-of($w) != bool {
-        width: fs($w);
-    }
-}
-
-@mixin flex-auto {
-    flex: 1 1 0;
-    width: auto;
 }
