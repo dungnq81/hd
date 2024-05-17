@@ -27,8 +27,8 @@ final class Options {
 		add_action( 'admin_init', [ &$this, 'editor_admin_init' ], 11 );
 
 		/** Comments */
-		add_action( 'comment_form_after_fields', [ &$this, 'add_simple_antispam_field' ] );
-		add_filter( 'preprocess_comment', [ &$this, 'check_simple_antispam' ] );
+		//add_action( 'comment_form_after_fields', [ &$this, 'add_simple_antispam_field' ] );
+		//add_filter( 'preprocess_comment', [ &$this, 'check_simple_antispam' ] );
 
 		/** Custom Scripts */
 		add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // header scripts
