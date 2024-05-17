@@ -17,13 +17,9 @@ trait Arr {
 	 * @return array
 	 */
 	public static function separatedToArray( $string, string $separator = ',' ): array {
-		// Explode on comma
-		$vars = explode( $separator, $string );
 
-		// Trim whitespace
-		foreach ( $vars as $key => $val ) {
-			$vars[ $key ] = trim( $val );
-		}
+		$vars = explode( $separator, $string );
+		$vars = array_map( 'trim', $vars );
 
 		// Return an empty array if no items found
 		// http://php.net/manual/en/function.explode.php#114273

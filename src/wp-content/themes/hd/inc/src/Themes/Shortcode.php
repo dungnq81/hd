@@ -376,8 +376,8 @@ final class Shortcode {
 		ob_start();
 
 		?>
-        <a class="trigger-s" title="<?= esc_attr_strip_tags( $title ); ?>" href="javascript:;" data-toggle="dropdown-<?= $id; ?>" data-glyph=""><span><?php echo $title; ?></span></a>
-        <div role="search" class="dropdown-pane" id="dropdown-<?= $id; ?>" data-dropdown data-auto-focus="true">
+        <a class="trigger-s" title="<?= esc_attr_strip_tags( $title ) ?>" href="javascript:;" data-toggle="dropdown-<?= $id ?>" data-glyph=""><span><?php echo $title; ?></span></a>
+        <div role="search" class="dropdown-pane" id="dropdown-<?= $id ?>" data-dropdown data-auto-focus="true">
             <form action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
                 <div class="frm-container">
                     <label for="<?= $id; ?>" class="screen-reader-text"><?= $title_for; ?></label>

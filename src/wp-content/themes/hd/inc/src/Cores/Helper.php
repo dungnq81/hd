@@ -62,9 +62,9 @@ final class Helper {
 			$content = explode( ' ', substr( $str, $start, $end - $start ) );
 
 			// Get our extra content.
-			$content_extra = explode( ' ', $content_extra );
-			foreach ( $content_extra as $class ) {
+			foreach ( explode( ' ', $content_extra ) as $class ) {
 				if ( ! empty( $class ) && ! in_array( $class, $content, true ) ) {
+
 					// This one can be added!
 					$content[] = $class;
 				}
@@ -110,10 +110,7 @@ final class Helper {
 		}
 
 		if ( class_exists( '\MatthiasMullie\Minify\CSS' ) ) {
-			$minifier = new Minify\CSS();
-			$minifier->add( $css );
-
-			return $minifier->minify();
+			return ( new Minify\CSS() )->add( $css )->minify();
 		}
 
 		return $css;
@@ -216,8 +213,7 @@ final class Helper {
 	public static function FQN_Load( ?string $path, bool $required_path = false, bool $required_new = false, string $FQN = '\\', bool $is_widget = false ): void {
 		if ( ! empty( $path ) && is_dir( $path ) ) {
 
-			$iterator = new DirectoryIterator( $path );
-			foreach ( $iterator as $fileInfo ) {
+			foreach ( new DirectoryIterator( $path ) as $fileInfo ) {
 				if ( $fileInfo->isDot() ) {
 					continue;
 				}
@@ -254,7 +250,7 @@ final class Helper {
 	 * @return mixed|object
 	 * @throws \JsonException
 	 */
-	public static function acfFields( $post_id = false, $format_value = true, $escape_html = false ) {
+	public static function acfFields( $post_id = false, $format_value = true, $escape_html = false ): mixed {
 		if ( ! self::is_acf_pro_active() && ! self::is_acf_active() ) {
 			return (object) [];
 		}
@@ -345,7 +341,7 @@ final class Helper {
 	 * @return true|void
 	 */
 	public static function redirect( string $uri = '', int $status = 301 ) {
-		if ( ! preg_match( '#^(\w+:)?//#i', $uri ) ) {
+		if ( ! preg_match( '#^(\w+:)?//#', $uri ) ) {
 			$uri = self::home( $uri );
 		}
 

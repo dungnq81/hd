@@ -98,8 +98,7 @@ final class Admin {
 		// Hide menu
 		$hide_menu = Helper::getThemeMod( 'remove_menu_setting' );
 		if ( $hide_menu ) {
-			$array_hide_menu = explode( "\n", $hide_menu );
-			foreach ( $array_hide_menu as $menu_slug ) {
+			foreach ( explode( "\n", $hide_menu ) as $menu_slug ) {
 				if ( $menu_slug ) {
 					remove_menu_page( $menu_slug );
 				}

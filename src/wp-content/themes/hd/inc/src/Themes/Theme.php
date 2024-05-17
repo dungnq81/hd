@@ -272,16 +272,13 @@ final class Theme {
 
 	// --------------------------------------------------
 
-	protected function _hooks(): void {
+	private function _hooks(): void {
 		/**
 		 * Use the is-active class of ZURB Foundation on wp_list_pages output.
 		 * From required+ Foundation http://themes.required.ch.
 		 */
 		add_filter( 'wp_list_pages', function ( $input ) {
-			$pattern = '/current_page_item/';
-			$replace = 'current_page_item is-active';
-
-			return preg_replace( $pattern, $replace, $input );
+			return str_replace( 'current_page_item', 'current_page_item is-active', $input );
 		}, 10, 2 );
 
 		/** Add support for buttons in the top-bar menu */

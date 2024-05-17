@@ -30,14 +30,14 @@ trait Base {
 	 * @param string $date_time_2
 	 *
 	 * @return string
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public static function isoDuration( string $date_time_1, string $date_time_2 ): string {
 
-		$date_time_1 = new \DateTime( $date_time_1 );
-		$date_time_2 = new \DateTime( $date_time_2 );
+		$_date_time_1 = new \DateTime( $date_time_1 );
+		$_date_time_2 = new \DateTime( $date_time_2 );
 
-		$interval = $date_time_1->diff( $date_time_2 );
+		$interval = $_date_time_1->diff( $_date_time_2 );
 
 		$isoDuration = 'P';
 		$isoDuration .= ( $interval->y > 0 ) ? $interval->y . 'Y' : '';
@@ -301,7 +301,7 @@ trait Base {
 
 		// improve obfuscation by eliminating newlines & whitespace
 		$output = '<script>'
-		          . 'var l=new Array();';
+		          . 'var l=[];';
 
 		foreach ( $x as $i => $value ) {
 			$output .= 'l[' . $i . "] = '" . $value . "';";
