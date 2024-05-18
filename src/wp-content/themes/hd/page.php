@@ -16,6 +16,8 @@ get_header();
 
 the_content();
 
+echo wp_get_attachment_image( 156 );
+
 // homepage widget
 if ( is_active_sidebar( 'hd-home-sidebar' ) ) :
 	dynamic_sidebar( 'hd-home-sidebar' );

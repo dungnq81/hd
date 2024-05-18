@@ -22,20 +22,34 @@ final class Font {
 	 * @var string[]
 	 */
 	public array $regex_parts = [
-		'~', // The php quotes.
-		'<link', // Match the opening part of link tags.
-		'(?:\s+(?:(?!href\s*=\s*)[^>])+)?', // Negative lookahead asserting the regex does not match href attribute.
-		'(?:\s+href\s*=\s*(?P<quotes>[\'|"]))', // Match the href attribute followed by single or double quotes. Create a `quotes` group, so we can use it later.
-		'(', // Open the capturing group for the href value.
-		'(?:https?:)?', // Match the protocol, which is optional. Sometimes the fons are added. Without protocol i.e. //fonts.googleapi.com/css.
-		'\/\/fonts\.googleapis\.com\/', // Match that the href value is a Google font link.
-		'(?P<type>css2?)', // The type of the fonts CSS/CSS2.
-		'(?:(?!(?P=quotes)).)+', // Match anything in the href attribute until the closing quote.
-		')', // Close the capturing group.
-		'(?P=quotes)', // Match the closing quote.
-		'(?:\s+.*?)?', // Match anything else after the href tag.
-		'[>]', // Until the closing tag if found.
-		'~', // The php quotes.
+		'~',
+		// The php quotes.
+		'<link',
+		// Match the opening part of link tags.
+		'(?:\s+(?:(?!href\s*=\s*)[^>])+)?',
+		// Negative lookahead asserting the regex does not match href attribute.
+		'(?:\s+href\s*=\s*(?P<quotes>[\'|"]))',
+		// Match the href attribute followed by single or double quotes. Create a `quotes` group, so we can use it later.
+		'(',
+		// Open the capturing group for the href value.
+		'(?:https?:)?',
+		// Match the protocol, which is optional. Sometimes the fons are added. Without protocol i.e. //fonts.googleapi.com/css.
+		'\/\/fonts\.googleapis\.com\/',
+		// Match that the href value is a Google font link.
+		'(?P<type>css2?)',
+		// The type of the fonts CSS/CSS2.
+		'(?:(?!(?P=quotes)).)+',
+		// Match anything in the href attribute until the closing quote.
+		')',
+		// Close the capturing group.
+		'(?P=quotes)',
+		// Match the closing quote.
+		'(?:\s+.*?)?',
+		// Match anything else after the href tag.
+		'[>]',
+		// Until the closing tag if found.
+		'~',
+		// The php quotes.
 		'ims',
 	];
 
@@ -65,10 +79,8 @@ final class Font {
 		$directory = $cache_dir . '/addons';
 
 		// Check if a directory exists and try to create it if not.
-		$is_directory_created = is_dir( $directory ) || wp_mkdir_p( $directory );
-
 		// Set the asset dir.
-		if ( $is_directory_created ) {
+		if ( is_dir( $directory ) || wp_mkdir_p( $directory ) ) {
 			$this->assets_dir = trailingslashit( $directory );
 		}
 	}
@@ -225,15 +237,14 @@ final class Font {
 			if ( 'css2' === $key ) {
 				continue;
 			}
-			$type = array_map( function ( $item ) {
-				return array_map(
-					'rawurlencode',
-					array_map(
-						'htmlentities',
-						$item
-					)
-				);
-			}, $type );
+
+			$type = array_map( static fn( $item ) => array_map(
+				'rawurlencode',
+				array_map(
+					static fn( $value ) => htmlentities( $value, ENT_QUOTES, 'UTF-8' ),
+					$item
+				)
+			), $type );
 
 			$parts[ $key ] = $type;
 		}
@@ -277,7 +288,7 @@ final class Font {
 
 		// Implode different fonts into one.
 		foreach ( $fonts as $css_type => $value ) {
-			$url = GOOGLE_API_URL . $css_type;
+			$url     = GOOGLE_API_URL . $css_type;
 			$subsets = ! empty( $value['subset'] ) ? implode( ',', $value['subset'] ) : '';
 			switch ( $css_type ) {
 				case 'css':
@@ -286,7 +297,7 @@ final class Font {
 				case 'css2':
 					$query_string = '';
 					foreach ( $value['fonts'] as $index => $font_family ) {
-						$delimiter = 0 === $index ? '?' : '&';
+						$delimiter    = 0 === $index ? '?' : '&';
 						$query_string .= $delimiter . 'family=' . $font_family;
 					}
 					$url .= $query_string;

@@ -34,14 +34,10 @@ final class Custom_Order {
 	 * @return void
 	 */
 	private function _init(): void {
-		$_custom_order_ = get_theme_mod( '_custom_order_' );
-
-		if ( ! $_custom_order_ ) {
+		if ( ! get_theme_mod( '_custom_order_' ) ) {
 			global $wpdb;
 
-			$result = $wpdb->query( "DESCRIBE {$wpdb->terms} `term_order`" );
-
-			if ( ! $result ) {
+			if ( ! $wpdb->query( "DESCRIBE {$wpdb->terms} `term_order`" ) ) {
 				$query = "ALTER TABLE {$wpdb->terms} ADD `term_order` INT( 4 ) NULL DEFAULT '0'";
 				$wpdb->query( $query );
 			}
@@ -172,7 +168,11 @@ final class Custom_Order {
 				);
 
 				foreach ( $results as $key => $result ) {
-					$wpdb->update( $wpdb->terms, [ 'term_order' => $key + 1 ], [ 'term_id' => $result->term_id ] );
+					$wpdb->update(
+						$wpdb->terms,
+						[ 'term_order' => $key + 1 ],
+						[ 'term_id' => $result->term_id ]
+					);
 				}
 			}
 		}
@@ -198,9 +198,10 @@ final class Custom_Order {
 
 		$id_arr = [];
 		foreach ( $data as $values ) {
-			foreach ( $values as $id ) {
-				$id_arr[] = $id;
-			}
+			$id_arr = array_values( $values );
+//			foreach ( $values as $id ) {
+//				$id_arr[] = $id;
+//			}
 		}
 
 		$menu_order_arr = [];
@@ -208,9 +209,10 @@ final class Custom_Order {
 			$id = (int) $id;
 
 			$results = $wpdb->get_results( $wpdb->prepare( "SELECT `menu_order` FROM {$wpdb->posts} WHERE `ID` = %d", $id ) );
-			foreach ( $results as $result ) {
-				$menu_order_arr[] = $result->menu_order;
-			}
+			$menu_order_arr = array_column($results, 'menu_order');
+//			foreach ( $results as $result ) {
+//				$menu_order_arr[] = $result->menu_order;
+//			}
 		}
 
 		sort( $menu_order_arr );
@@ -229,7 +231,6 @@ final class Custom_Order {
 		}
 
 		do_action( 'hd_update_menu_order_post_type' );
-
 		die();
 	}
 
@@ -250,18 +251,18 @@ final class Custom_Order {
 
 		$id_arr = [];
 		foreach ( $data as $values ) {
-			foreach ( $values as $id ) {
-				$id_arr[] = $id;
-			}
+			$id_arr = array_values( $values );
 		}
 
 		$menu_order_arr = [];
 		foreach ( $id_arr as $id ) {
 			$id      = (int) $id;
 			$results = $wpdb->get_results( $wpdb->prepare( "SELECT `term_order` FROM {$wpdb->terms} WHERE `term_id` = %d", $id ) );
-			foreach ( $results as $result ) {
-				$menu_order_arr[] = $result->term_order;
-			}
+
+			$menu_order_arr = array_column( $results, 'term_order' );
+//			foreach ( $results as $result ) {
+//				$menu_order_arr[] = $result->term_order;
+//			}
 		}
 
 		sort( $menu_order_arr );
@@ -599,7 +600,11 @@ final class Custom_Order {
 				}
 
 				foreach ( $results as $key => $result ) {
-					$wpdb->update( $wpdb->posts, [ 'menu_order' => $key + 1 ], [ 'ID' => $result->ID ] );
+					$wpdb->update(
+						$wpdb->posts,
+						[ 'menu_order' => $key + 1 ],
+						[ 'ID' => $result->ID ]
+					);
 				}
 			}
 		}
@@ -618,7 +623,9 @@ final class Custom_Order {
 					)
 				);
 
-				if ( $result[0]->cnt === 0 || $result[0]->cnt === $result[0]->max ) {
+				if ( $result[0]->cnt === 0 ||
+				     $result[0]->cnt === $result[0]->max
+				) {
 					continue;
 				}
 
@@ -634,7 +641,11 @@ final class Custom_Order {
 				);
 
 				foreach ( $results as $key => $result ) {
-					$wpdb->update( $wpdb->terms, [ 'term_order' => $key + 1 ], [ 'term_id' => $result->term_id ] );
+					$wpdb->update(
+						$wpdb->terms,
+						[ 'term_order' => $key + 1 ],
+						[ 'term_id' => $result->term_id ]
+					);
 				}
 			}
 		}

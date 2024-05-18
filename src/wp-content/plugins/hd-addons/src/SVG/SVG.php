@@ -57,14 +57,16 @@ final class SVG {
 	 * @return array|mixed|string|string[]
 	 */
 	public function fix_missing_width_height_on_image_block( $block_content, $block ): mixed {
-		if ( $block['blockName'] === 'core/image' ) {
-			if ( ! str_contains( $block_content, 'width=' ) && ! str_contains( $block_content, 'height=' ) ) {
-				if ( isset( $block['attrs']['id'] ) && get_post_mime_type( $block['attrs']['id'] ) === 'image/svg+xml' ) {
-					$svg_path      = get_attached_file( $block['attrs']['id'] );
-					$dimensions    = $this->svg_dimensions( $svg_path );
-					$block_content = str_replace( '<img ', '<img width="' . $dimensions->width . '" height="' . $dimensions->height . '" ', $block_content );
-				}
-			}
+		if ( $block['blockName'] === 'core/image' &&
+		     isset( $block['attrs']['id'] ) &&
+		     ! str_contains( $block_content, 'width=' ) &&
+		     ! str_contains( $block_content, 'height=' ) &&
+		     get_post_mime_type( $block['attrs']['id'] ) === 'image/svg+xml'
+		) {
+			$svg_path      = get_attached_file( $block['attrs']['id'] );
+			$dimensions    = $this->svg_dimensions( $svg_path );
+
+			$block_content = str_replace( '<img ', '<img width="' . $dimensions->width . '" height="' . $dimensions->height . '" ', $block_content );
 		}
 
 		return $block_content;
@@ -139,7 +141,9 @@ final class SVG {
 	 * @return array
 	 */
 	public function add_svg_mime( array $mimes = [] ): array {
-		if ( 'disable' !== $this->svg_option && current_user_can( 'upload_files' ) ) {
+		if ( 'disable' !== $this->svg_option &&
+		     current_user_can( 'upload_files' )
+		) {
 			$mimes['svg']  = 'image/svg+xml';
 			$mimes['svgz'] = 'image/svg+xml';
 		}
@@ -178,23 +182,20 @@ final class SVG {
 	 * @return string
 	 */
 	public function final_output( $content ): string {
-		$content = str_replace(
+
+		return str_replace( [
 			'<# } else if ( \'image\' === data.type && data.sizes && data.sizes.full ) { #>',
+			'<# } else if ( \'image\' === data.type && data.sizes ) { #>'
+		], [
 			'<# } else if ( \'svg+xml\' === data.subtype ) { #>
 					<img class="details-image" src="{{ data.url }}" draggable="false" />
 				<# } else if ( \'image\' === data.type && data.sizes && data.sizes.full ) { #>',
-			$content
-		);
-
-		return str_replace(
-			'<# } else if ( \'image\' === data.type && data.sizes ) { #>',
 			'<# } else if ( \'svg+xml\' === data.subtype ) { #>
 					<div class="centered">
 						<img src="{{ data.url }}" class="thumbnail" draggable="false" />
 					</div>
-				<# } else if ( \'image\' === data.type && data.sizes ) { #>',
-			$content
-		);
+				<# } else if ( \'image\' === data.type && data.sizes ) { #>'
+		], $content );
 	}
 
 	// ------------------------------------------------------

@@ -147,6 +147,7 @@ class Products_Widget extends Abstract_Widget {
 	    $ids_arr        = $ACF->ids ?? [];
 
 	    if ( $categories_arr ) {
+
 		    //$category = [];
 		    $category = array_column( $categories_arr, 'slug' );
 //		    foreach ( $categories_arr as $cat ) {
