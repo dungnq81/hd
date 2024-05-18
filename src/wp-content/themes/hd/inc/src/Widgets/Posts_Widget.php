@@ -130,14 +130,15 @@ class Posts_Widget extends Abstract_Widget {
 	    ];
 
 	    $css_class = ! empty( $ACF->css_class ) ? ' ' . esc_attr_strip_tags( $ACF->css_class ) : '';
-	    $uniqid    = esc_attr( uniqid( $this->widget_classname . '-' ) );
+	    $uniqid    = esc_attr( uniqid( $this->widget_classname . '-', true ) );
 
         ob_start();
 
         ?>
         <section class="section posts-section<?= $css_class ?>">
             <?php
-            if ( $container ) echo '<div class="grid-container">';
+
+            toggle_container( $container, 'container', '' );
 
             if ( $title ) {
 	            $args['before_title'] = '<' . $heading_tag . ' class="' . $heading_class . '">';
@@ -159,8 +160,8 @@ class Posts_Widget extends Abstract_Widget {
             </div>
             <?php
 
-            if ( $show_view_more_button ) echo $view_more_link;
-            if ( $container ) echo '</div>';
+            if ( $show_view_more_button ) {echo $view_more_link;}
+            if ( $container ) {echo '</div>';}
 
             ?>
         </section>

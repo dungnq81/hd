@@ -128,13 +128,13 @@ class Products_Widget extends Abstract_Widget {
 
 	    // Product Attributes
 	    $product_attributes = ! empty( $instance['product_attributes'] ) ? sanitize_title( $instance['product_attributes'] ) : $this->settings['product_attributes']['std'];
-	    if ( 'none' != $product_attributes ) {
+	    if ( 'none' !== $product_attributes ) {
 		    $query_args[ $product_attributes ] = true;
 	    }
 
 	    // Toggle Pagination
 	    $paginate = empty( $instance['paginate'] ) ? 'false' : 'true';
-	    if ( 'true' == $paginate ) {
+	    if ( 'true' === $paginate ) {
 		    $query_args['paginate'] = $paginate;
 	    }
 
@@ -147,13 +147,14 @@ class Products_Widget extends Abstract_Widget {
 	    $ids_arr        = $ACF->ids ?? [];
 
 	    if ( $categories_arr ) {
-		    $category = [];
-		    foreach ( $categories_arr as $cat ) {
-			    $category[] = $cat->slug;
-		    }
+		    //$category = [];
+		    $category = array_column( $categories_arr, 'slug' );
+//		    foreach ( $categories_arr as $cat ) {
+//			    $category[] = $cat->slug;
+//		    }
 
 		    if ( $category ) {
-			    $query_args['category ']    = implode( ',', $category );
+			    $query_args['category']    = implode( ',', $category );
 			    $query_args['cat_operator'] = $ACF->cat_operator ?? 'IN';
 		    }
 	    }
@@ -170,7 +171,7 @@ class Products_Widget extends Abstract_Widget {
 	    $view_more_link        = Helper::ACF_Link( $view_more_link );
 
 	    $css_class = ! empty( $ACF->css_class ) ? ' ' . esc_attr_strip_tags( $ACF->css_class ) : '';
-	    $uniqid    = esc_attr_strip_tags( uniqid( $this->widget_classname . '-' ) );
+	    $uniqid    = esc_attr_strip_tags( uniqid( $this->widget_classname . '-', true ) );
 
 	    //-----------------------------------------------------
 
@@ -181,7 +182,8 @@ class Products_Widget extends Abstract_Widget {
         ?>
         <section class="section products-section<?= $css_class ?>">
             <?php
-            if ( $container ) echo '<div class="grid-container">';
+
+            toggle_container( $container, 'container', '' );
 
             if ( $title ) {
 	            $args['before_title'] = '<' . $heading_tag . ' class="' . $heading_class . '">';
@@ -200,8 +202,8 @@ class Products_Widget extends Abstract_Widget {
             </div>
 	        <?php
 
-	        if ( $show_view_more_button ) echo $view_more_link;
-	        if ( $container ) echo '</div>';
+	        if ( $show_view_more_button ) {echo $view_more_link;}
+	        if ( $container ) {echo '</div>';}
 
 	        ?>
         </section>

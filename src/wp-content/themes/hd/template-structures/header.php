@@ -19,10 +19,10 @@ if ( ! function_exists( '__wp_head' ) ) {
 	/**
 	 * @return void
 	 */
-	function __wp_head() : void {
+	function __wp_head(): void {
 
 		// Add viewport to wp_head
-        $meta_viewport = '<meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0" />';
+		$meta_viewport = '<meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0" />';
 		echo apply_filters( 'hd_meta_viewport', $meta_viewport );  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		// Add a ping-back url auto-discovery header for singularly identifiable articles.
@@ -36,7 +36,7 @@ if ( ! function_exists( '__wp_head' ) ) {
 			echo '<meta name="theme-color" content="' . $theme_color . '" />';
 		}
 
-        // Fb
+		// Fb
 		$fb_appid = Helper::getThemeMod( 'social_fb_setting' );
 		if ( $fb_appid ) {
 			echo '<meta property="fb:app_id" content="' . $fb_appid . '" />';
@@ -101,7 +101,7 @@ if ( ! function_exists( '__hd_construct_header' ) ) {
 	 */
 	function __hd_construct_header(): void {
 		?>
-		<header id="masthead" class="site-header" <?php echo Helper::microdata( 'header' ); ?>>
+        <header id="masthead" class="site-header" <?php echo Helper::microdata( 'header' ); ?>>
             <?php
 
             /**
@@ -131,24 +131,25 @@ if ( ! function_exists( '__top_header' ) ) {
 
 		if ( $top_header_cols > 0 ) :
 
-        ?>
-        <div class="top-header" id="top-header">
+			?>
+            <div class="top-header" id="top-header">
 	        <?php
-	        if ( $top_header_container ) echo '<div class="grid-container">';
-	        else echo '<div class="grid-container fluid">';
 
-		    for ( $i = 1; $i <= $top_header_cols; $i++ ) :
-			    if ( is_active_sidebar( 'hd-top-header-' . $i . '-sidebar' )) :
-				    echo '<div class="cell cell-' . $i . '">';
-				    dynamic_sidebar( 'hd-top-header-' . $i . '-sidebar' );
-				    echo '</div>';
-			    endif;
-            endfor;
+	        toggle_container( $top_header_container );
 
-            echo '</div>';
-            ?>
+	        for ( $i = 1; $i <= $top_header_cols; $i ++ ) :
+		        if ( is_active_sidebar( 'hd-top-header-' . $i . '-sidebar' ) ) :
+			        echo '<div class="cell cell-' . $i . '">';
+			        dynamic_sidebar( 'hd-top-header-' . $i . '-sidebar' );
+			        echo '</div>';
+		        endif;
+	        endfor;
+
+	        echo '</div>';
+
+	        ?>
         </div>
-    <?php endif;
+		<?php endif;
 	}
 }
 
@@ -161,29 +162,30 @@ if ( ! function_exists( '__header' ) ) {
 	 * @return void
 	 */
 	function __header(): void {
-		$header_cols = (int) Helper::getThemeMod( 'header_setting' );
+		$header_cols      = (int) Helper::getThemeMod( 'header_setting' );
 		$header_container = Helper::getThemeMod( 'header_container_setting' );
 
 		if ( $header_cols > 0 ) :
 
-        ?>
-        <div class="inside-header" id="inside-header">
+			?>
+            <div class="inside-header" id="inside-header">
 	        <?php
-	        if ( $header_container ) {echo '<div class="grid-container">';}
-	        else {echo '<div class="grid-container fluid">';}
 
-	        for ( $i = 1; $i <= $header_cols; $i++ ) :
-		        if ( is_active_sidebar( 'hd-header-' . $i . '-sidebar' )) :
+	        toggle_container( $header_container );
+
+	        for ( $i = 1; $i <= $header_cols; $i ++ ) :
+		        if ( is_active_sidebar( 'hd-header-' . $i . '-sidebar' ) ) :
 			        echo '<div class="cell cell-' . $i . '">';
 			        dynamic_sidebar( 'hd-header-' . $i . '-sidebar' );
 			        echo '</div>';
 		        endif;
 	        endfor;
 
-            echo '</div>';
-            ?>
+	        echo '</div>';
+
+	        ?>
         </div>
-    <?php endif;
+		<?php endif;
 	}
 }
 
@@ -201,14 +203,14 @@ if ( ! function_exists( '__bottom_header' ) ) {
 
 		if ( $bottom_header_cols > 0 ) :
 
-        ?>
-        <div class="bottom-header header-content" id="bottom-header">
+			?>
+            <div class="bottom-header header-content" id="bottom-header">
             <?php
-            if ( $bottom_header_container ) echo '<div class="grid-container">';
-            else echo '<div class="grid-container fluid">';
 
-            for ( $i = 1; $i <= $bottom_header_cols; $i++ ) :
-	            if ( is_active_sidebar( 'hd-bottom-header-' . $i . '-sidebar' )) :
+            toggle_container( $bottom_header_container );
+
+            for ( $i = 1; $i <= $bottom_header_cols; $i ++ ) :
+	            if ( is_active_sidebar( 'hd-bottom-header-' . $i . '-sidebar' ) ) :
 		            echo '<div class="cell cell-' . $i . '">';
 		            dynamic_sidebar( 'hd-bottom-header-' . $i . '-sidebar' );
 		            echo '</div>';
@@ -216,8 +218,9 @@ if ( ! function_exists( '__bottom_header' ) ) {
             endfor;
 
             echo '</div>';
+
             ?>
         </div>
-    <?php endif;
+		<?php endif;
 	}
 }

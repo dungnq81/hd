@@ -196,6 +196,8 @@ class Products_Carousel_Widget extends Abstract_Widget {
 	 *
 	 * @param array $args Arguments.
 	 * @param array $instance Widget instance.
+	 *
+	 * @throws \JsonException
 	 */
 	public function widget( $args, $instance ) {
 		if ( $this->get_cached_widget( $args ) ) {
@@ -218,7 +220,7 @@ class Products_Carousel_Widget extends Abstract_Widget {
 		$view_more_link        = Helper::ACF_Link( $view_more_link );
 
 		$css_class = ! empty( $ACF->css_class ) ? ' ' . esc_attr_strip_tags( $ACF->css_class ) : '';
-		$uniqid    = esc_attr( uniqid( $this->widget_classname . '-' ) );
+		$uniqid    = esc_attr( uniqid( $this->widget_classname . '-', true ) );
 
 		// products query
 		$products = $this->get_products( $number, $instance, $ACF );
@@ -235,9 +237,8 @@ class Products_Carousel_Widget extends Abstract_Widget {
 		?>
         <section class="section carousel-section products-carousel-section<?= $css_class ?>">
 	        <?php
-	        if ( $container ) {
-		        echo '<div class="grid-container">';
-	        }
+
+	        toggle_container( $container, 'container', '' );
 
 	        if ( $title ) {
 		        $args['before_title'] = '<' . $heading_tag . ' class="' . $heading_class . '">';
@@ -253,7 +254,7 @@ class Products_Carousel_Widget extends Abstract_Widget {
 	                $_data = $this->swiper_acf_options( $instance, $ACF );
 
 	                $swiper_class = $_data['class'] ?? '';
-	                $swiper_data  = $_data['data'] ?? json_encode( [], JSON_FORCE_OBJECT );
+	                $swiper_data  = $_data['data'] ?? json_encode( [], JSON_THROW_ON_ERROR | JSON_FORCE_OBJECT );
 
 	                ?>
                     <div class="w-swiper swiper">
@@ -265,7 +266,10 @@ class Products_Carousel_Widget extends Abstract_Widget {
 							while ( $products->have_posts() && $i < $number ) : $products->the_post();
 								global $product;
 
-								if ( empty( $product ) || false === wc_get_loop_product_visibility( $product->get_id() ) || ! $product->is_visible() ) {
+								if ( empty( $product ) ||
+								     ! $product->is_visible() ||
+								     false === wc_get_loop_product_visibility( $product->get_id() )
+								) {
 									continue;
 								}
 

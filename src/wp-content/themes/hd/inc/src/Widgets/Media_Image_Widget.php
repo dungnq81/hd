@@ -208,6 +208,7 @@ class Media_Image_Widget extends WP_Widget_Media_Image {
 	 * @param $id
 	 *
 	 * @return object|null
+	 * @throws \JsonException
 	 */
 	protected function acfFields( $id ): ?object {
 		return Helper::acfFields( $id );

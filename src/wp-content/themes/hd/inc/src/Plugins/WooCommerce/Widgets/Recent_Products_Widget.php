@@ -189,7 +189,7 @@ class Recent_Products_Widget extends Abstract_Widget {
 		}
 
 		$css_class = ! empty( $ACF->css_class ) ? ' ' . esc_attr_strip_tags( $ACF->css_class ) : '';
-		$uniqid    = esc_attr_strip_tags( uniqid( $this->widget_classname . '-' ) );
+		$uniqid    = esc_attr_strip_tags( uniqid( $this->widget_classname . '-', true ) );
 
 		// has products
 		wc_set_loop_prop( 'name', 'recent_products_widget' );
@@ -217,7 +217,10 @@ class Recent_Products_Widget extends Abstract_Widget {
 					while ( $products->have_posts() && $i < $number ) : $products->the_post();
 						global $product;
 
-						if ( empty( $product ) || false === wc_get_loop_product_visibility( $product->get_id() ) || ! $product->is_visible() ) {
+						if ( empty( $product ) ||
+						     ! $product->is_visible() ||
+						     false === wc_get_loop_product_visibility( $product->get_id() )
+						) {
 							continue;
 						}
 

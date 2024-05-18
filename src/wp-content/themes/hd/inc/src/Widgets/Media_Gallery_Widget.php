@@ -37,9 +37,7 @@ class Media_Gallery_Widget extends WP_Widget_Media_Gallery {
 		$args['after_widget']  = '</div>';
 
 		echo $args['before_widget'];
-		if ( $container ) {
-			echo '<div class="grid-container">';
-		}
+		toggle_container( $container, 'container', '' );
 
 		/** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
 		$title = $instance['title'] ?? '';
@@ -65,9 +63,7 @@ class Media_Gallery_Widget extends WP_Widget_Media_Gallery {
 
 		$this->acf_render_media( $instance, $ACF );
 
-		if ( $container ) {
-			echo '</div>';
-		}
+		if ( $container ) {echo '</div>';}
 
 		echo $args['after_widget'];
 	}

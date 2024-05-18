@@ -22,9 +22,9 @@ if ( ! function_exists( 'toggle_container' ) ) {
 	function toggle_container( bool $check, string $css1 = 'container', string $css2 = 'container fluid' ): void {
 		$values = '';
 
-		if ( $check && $css1 ) {
+		if ( $check && ! empty( $css1 ) ) {
 			$values = '<div class="' . $css1 . '">';
-		} else if ( ! $check && $css2 ) {
+		} else if ( ! $check && ! empty( $css2 ) ) {
 			$values = '<div class="' . $css2 . '">';
 		}
 
@@ -284,7 +284,7 @@ if ( ! function_exists( 'the_post_comment' ) ) {
 			$zalo_comment     = \get_field( 'zalo_comment', $id ) ?? false;
 		}
 
-		if ( comments_open() || $facebook_comment || $zalo_comment ) {
+		if ( $facebook_comment || $zalo_comment || comments_open() ) {
 			echo $wrapper_open;
 			if ( comments_open() ) {
 				//if ( ( class_exists( '\WooCommerce' ) && 'product' != $post_type ) || ! class_exists( '\WooCommerce' ) ) {

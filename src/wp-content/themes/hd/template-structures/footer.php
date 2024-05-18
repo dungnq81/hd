@@ -22,9 +22,7 @@ if ( ! function_exists( '__wp_footer' ) ) {
 	 * @return void
 	 */
 	function __wp_footer(): void {
-
-		$back_to_top = apply_filters( 'hd_back_to_top', true );
-		if ( $back_to_top ) {
+		if ( apply_filters( 'hd_back_to_top', true ) ) {
 			echo apply_filters( // phpcs:ignore
 				'end_back_to_top_output',
 				sprintf(
@@ -75,33 +73,29 @@ if ( ! function_exists( '__construct_footer_widgets' ) ) {
 				}
 
 				if ( isset( $columns ) ) :
+                    echo '<div class="rows row-' . $row . '">';
 
-            ?>
-            <div class="rows row-<?php echo $row; ?>">
-                <?php
-                if ( $footer_container ) {echo '<div class="grid-container">';}
-                else {echo '<div class="grid-container fluid">';}
+					toggle_container( $footer_container );
 
-                ?>
-                <div class="grid-x">
-                    <?php
+                    echo '<div class="flex-x">';
+
                     for ( $column = 1; $column <= $columns; $column ++ ) :
-                        $footer_n = $column + $regions * ( $row - 1 );
-                        if ( is_active_sidebar( 'hd-footer-' . esc_attr( $footer_n ) ) ) :
+	                    $footer_n = $column + $regions * ( $row - 1 );
+	                    if ( is_active_sidebar( 'hd-footer-' . esc_attr( $footer_n ) ) ) :
 
-                            echo sprintf( '<div class="cell cell-%1$s">', esc_attr( $column ) );
-                            dynamic_sidebar( 'hd-footer-' . esc_attr( $footer_n ) );
-                            echo "</div>";
+		                    echo sprintf( '<div class="cell cell-%1$s">', esc_attr( $column ) );
+		                    dynamic_sidebar( 'hd-footer-' . esc_attr( $footer_n ) );
+		                    echo "</div>";
 
-                        endif;
+	                    endif;
                     endfor;
 
-                    ?>
-                </div>
+                    echo '</div>';
+                    echo '</div>';
 
-                <?php echo '</div>'; ?>
-            </div>
-            <?php endif; endfor; ?>
+                endif;
+            endfor;
+           ?>
         </div><!-- #footer-widgets-->
 		<?php
 	}
@@ -123,15 +117,15 @@ if ( ! function_exists( '__construct_footer' ) ) {
 		?>
         <footer class="footer-info" <?php echo Helper::microdata( 'footer' ); ?>>
 	        <?php
-	        if ( $footer_container ) {echo '<div class="grid-container">';}
-	        else {echo '<div class="grid-container fluid">';}
 
-            /**
-             * @see __hd_before_credits - 15
-             */
-            do_action( 'hd_before_credits' );
+	        toggle_container( $footer_container );
 
-            ?>
+	        /**
+	         * @see __hd_before_credits - 15
+	         */
+	        do_action( 'hd_before_credits' );
+
+	        ?>
             <div class="footer-copyright">
                 <?php
 
@@ -143,7 +137,8 @@ if ( ! function_exists( '__construct_footer' ) ) {
                 ?>
             </div>
 
-	        <?php echo '</div>'; ?>
+			<?php echo '</div>'; ?>
+
         </footer>
 		<?php
 	}
