@@ -176,8 +176,7 @@ final class Admin {
 			/** Aspect Ratio */
 
 			$aspect_ratio_options = [];
-			$ar_post_type_list    = apply_filters( 'hd_aspect_ratio_post_type', [] );
-			foreach ( $ar_post_type_list as $i => $ar ) {
+			foreach ( apply_filters( 'hd_aspect_ratio_post_type', [] ) as $i => $ar ) {
 				$aspect_ratio_options[ 'ar-' . $ar . '-width' ]  = ! empty( $_POST[ $ar . '-width' ] ) ? sanitize_text_field( $_POST[ $ar . '-width' ] ) : 4;
 				$aspect_ratio_options[ 'ar-' . $ar . '-height' ] = ! empty( $_POST[ $ar . '-height' ] ) ? sanitize_text_field( $_POST[ $ar . '-height' ] ) : 3;
 			}
@@ -387,8 +386,7 @@ final class Admin {
 			// Socials
 
 			$social_options    = [];
-			$hd_social_follows = apply_filters( 'hd_social_follows', [] );
-			foreach ( $hd_social_follows as $i => $item ) {
+			foreach ( apply_filters( 'hd_social_follows', [] ) as $i => $item ) {
 				$social_options[ $i ] = [
 					'url' => ! empty( $_POST[ $i . '-option' ] ) ? sanitize_url( $_POST[ $i . '-option' ] ) : '',
 				];
@@ -554,12 +552,7 @@ final class Admin {
                                 <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', TEXT_DOMAIN ); ?></a>
                             </li>
 		                        <?php endif; ?>
-
-
-
-
-
-                                <li class="order-settings">
+                            <li class="order-settings">
                                 <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php endif; ?>
@@ -684,7 +677,9 @@ final class Admin {
 	                        <?php
 	                        $openssl_status = 'Available';
 	                        $openssl_text   = '';
-	                        if ( ! extension_loaded( 'openssl' ) && ! defined( 'OPENSSL_ALGO_SHA1' ) ) {
+	                        if ( ! defined( 'OPENSSL_ALGO_SHA1' ) &&
+                                 ! extension_loaded( 'openssl' )
+                            ) {
 		                        $openssl_status = 'Not available';
 		                        $openssl_text   = ' (openssl extension is required in order to use any kind of encryption like TLS or SSL)';
 	                        }

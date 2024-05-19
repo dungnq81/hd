@@ -22,9 +22,7 @@ w_swiper.forEach((el, index) => {
     el.classList.add(_class);
 
     /** swiper controls */
-    let _controls = el
-        .closest('.swiper-section')
-        .querySelector('.swiper-controls');
+    let _controls = el.closest('.swiper-section').querySelector('.swiper-controls');
 
     if (_controls == null) {
         _controls = document.createElement('div');
@@ -177,16 +175,8 @@ w_swiper.forEach((el, index) => {
             _btn_prev = document.createElement('div');
             _btn_next = document.createElement('div');
 
-            _btn_prev.classList.add(
-                'swiper-button',
-                'swiper-button-prev',
-                _prev_class
-            );
-            _btn_next.classList.add(
-                'swiper-button',
-                'swiper-button-next',
-                _next_class
-            );
+            _btn_prev.classList.add('swiper-button', 'swiper-button-prev', _prev_class);
+            _btn_next.classList.add('swiper-button', 'swiper-button-next', _next_class);
 
             _controls.appendChild(_btn_prev);
             _controls.appendChild(_btn_next);
@@ -238,13 +228,7 @@ w_swiper.forEach((el, index) => {
             _result_options.pagination = {
                 el: '.' + _pagination_class,
                 renderBullet: function (index, className) {
-                    return (
-                        '<span class="' +
-                        className +
-                        '">' +
-                        (index + 1) +
-                        '</span>'
-                    );
+                    return '<span class="' + className + '">' + (index + 1) + '</span>';
                 },
             };
         }

@@ -49,6 +49,7 @@ if ( ! function_exists( 'esc_attr_strip_tags' ) ) {
 	function esc_attr_strip_tags( $string ): ?string {
 		$string = strip_tags( $string );
 		$string = preg_replace( '/[\r\n\t ]+/', ' ', $string );
+
 		return esc_attr( $string );
 	}
 }
@@ -81,7 +82,7 @@ if ( ! function_exists( 'ip_address' ) ) {
 
 			$client  = @$_SERVER['HTTP_CLIENT_IP'];
 			$forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
-			$remote  = $_SERVER['REMOTE_ADDR'];
+			$remote  = @$_SERVER['REMOTE_ADDR'];
 
 			if ( filter_var( $client, FILTER_VALIDATE_IP ) ) {
 				return $client;
@@ -109,7 +110,7 @@ if ( ! function_exists( 'redirect' ) ) {
 	 * @return true|void
 	 */
 	function redirect( string $uri = '', int $status = 301 ) {
-		if ( ! preg_match( '#^(\w+:)?//#i', $uri ) ) {
+		if ( ! preg_match( '#^(\w+:)?//#', $uri ) ) {
 			$uri = trailingslashit( esc_url( network_home_url( $uri ) ) );
 		}
 
@@ -194,13 +195,14 @@ if ( ! function_exists( 'is_mobile' ) ) {
 
 		if ( empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
 			$is_mobile = false;
-		} elseif ( @strpos( $_SERVER['HTTP_USER_AGENT'], 'Mobile' ) !== false
-		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'Android' ) !== false
-		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'Silk/' ) !== false
-		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'Kindle' ) !== false
-		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'BlackBerry' ) !== false
-		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'Opera Mini' ) !== false
-		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'Opera Mobi' ) !== false ) {
+		} elseif ( str_contains( $_SERVER['HTTP_USER_AGENT'], 'Mobile' ) ||
+		           str_contains( $_SERVER['HTTP_USER_AGENT'], 'Android' ) ||
+		           str_contains( $_SERVER['HTTP_USER_AGENT'], 'Silk/' ) ||
+		           str_contains( $_SERVER['HTTP_USER_AGENT'], 'Kindle' ) ||
+		           str_contains( $_SERVER['HTTP_USER_AGENT'], 'BlackBerry' ) ||
+		           str_contains( $_SERVER['HTTP_USER_AGENT'], 'Opera Mini' ) ||
+		           str_contains( $_SERVER['HTTP_USER_AGENT'], 'Opera Mobi' )
+		) {
 			$is_mobile = true;
 		} else {
 			$is_mobile = false;

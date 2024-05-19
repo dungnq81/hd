@@ -37,7 +37,7 @@ class Ssl extends Abstract_Htaccess {
 	public function has_certificate() {
 		$site_url = get_option( 'siteurl' );
 
-		// Change siteurl protocol.
+		// Change 'siteurl' protocol.
 		if ( str_starts_with( $site_url, 'http:' ) ) {
 			$site_url = str_replace( 'http', 'https', $site_url );
 		}

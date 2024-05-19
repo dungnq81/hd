@@ -128,7 +128,7 @@ class Dir extends Abstract_Htaccess {
 			$this->set_filepath();
 
 			// Enable the rules.
-			if ( 1 === intval( $rule ) ) {
+			if ( 1 === (int) $rule ) {
 				$this->enable();
 				continue;
 			}

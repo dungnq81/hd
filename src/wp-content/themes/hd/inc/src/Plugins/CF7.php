@@ -31,17 +31,21 @@ final class CF7 {
 	 * Dynamic Select Terms for Contact Form 7
 	 *
 	 * @usage [select name taxonomy:{$taxonomy} ...]
-	 * @param array $tag
+	 * @param $tag
 	 *
 	 * @return array $tag
 	 */
 	public function dynamic_select_terms( $tag ): array {
+
 		// Only run on select lists
 		if ( 'select' !== $tag['type'] && ( 'select*' !== $tag['type'] ) ) {
 			return $tag;
-		} else if ( empty( $tag['options'] ) ) {
+		}
+
+		if ( empty( $tag['options'] ) ) {
 			return $tag;
 		}
+
 		$term_args = [];
 
 		// Loop options to look for our custom options

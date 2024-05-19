@@ -43,6 +43,7 @@ class Login_Attempts {
 	 * @return void
 	 */
 	public function maybe_block_login_access(): void {
+
 		// Get the user ip.
 		$user_ip = Helper::getIpAddress();
 
@@ -72,8 +73,8 @@ class Login_Attempts {
 
 		// Reset the login attempts if the restriction time has ended and the user was banned for maximum amount of time.
 		if (
-			$login_attempts[ $user_ip ]['timestamp'] < time() &&
-			$login_attempts[ $user_ip ]['attempts'] >= $this->limit_login_attempts * 3
+			$login_attempts[ $user_ip ]['attempts'] >= $this->limit_login_attempts * 3 &&
+			$login_attempts[ $user_ip ]['timestamp'] < time()
 		) {
 			unset( $login_attempts[ $user_ip ] );
 			Helper::updateOption( 'hd_security_unsuccessful_login', $login_attempts );

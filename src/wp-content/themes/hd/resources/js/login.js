@@ -1,5 +1,5 @@
-jQuery( function( $ ) {
-    const login = $("#login");
+jQuery(function ($) {
+    const login = $('#login');
 
     //login.find('.forgetmenot').remove();
     login.find('#backtoblog').remove();

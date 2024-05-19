@@ -26,9 +26,7 @@ jQuery(function ($) {
     codemirror_css.each((index, el) => {
         rand_element_init(el);
 
-        let editorSettings = codemirror_settings.codemirror_css
-            ? _.clone(codemirror_settings.codemirror_css)
-            : {};
+        let editorSettings = codemirror_settings.codemirror_css ? _.clone(codemirror_settings.codemirror_css) : {};
 
         editorSettings.codemirror = _.extend({}, editorSettings.codemirror, {
             indentUnit: 3,
@@ -43,9 +41,7 @@ jQuery(function ($) {
     codemirror_html.each((index, el) => {
         rand_element_init(el);
 
-        let editorSettings = codemirror_settings.codemirror_html
-            ? _.clone(codemirror_settings.codemirror_html)
-            : {};
+        let editorSettings = codemirror_settings.codemirror_html ? _.clone(codemirror_settings.codemirror_html) : {};
 
         editorSettings.codemirror = _.extend({}, editorSettings.codemirror, {
             indentUnit: 3,
@@ -73,10 +69,7 @@ jQuery(function ($) {
         _content.find('.tabs-panel').hide();
         let _cookie = 'cookie_' + _id + '_' + index;
 
-        if (
-            Cookies.get(_cookie) === '' ||
-            Cookies.get(_cookie) === 'undefined'
-        ) {
+        if (Cookies.get(_cookie) === '' || Cookies.get(_cookie) === 'undefined') {
             let _hash = _nav.find('a:first').attr('href');
             Cookies.set(_cookie, _hash, { expires: 7, path: '' });
         }
@@ -102,8 +95,5 @@ jQuery(function ($) {
 
     // user
     const create_user = $('#createuser');
-    create_user
-        .find('#send_user_notification')
-        .removeAttr('checked')
-        .attr('disabled', true);
+    create_user.find('#send_user_notification').removeAttr('checked').attr('disabled', true);
 });

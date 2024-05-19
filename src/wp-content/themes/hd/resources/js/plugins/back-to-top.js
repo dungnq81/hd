@@ -51,15 +51,19 @@
             window.addEventListener('scroll', trackScroll);
 
             // Scroll back to top when clicked.
-            goTopBtn.addEventListener('click', function (e) {
-                e.preventDefault();
+            goTopBtn.addEventListener(
+                'click',
+                function (e) {
+                    e.preventDefault();
 
-                if (smooth_scroll_back_to_top) {
-                    smoothScroll(document.body, goTopBtn.getAttribute('data-scroll-speed') || 400);
-                } else {
-                    window.scrollTo(0, 0);
-                }
-            }, false);
+                    if (smooth_scroll_back_to_top) {
+                        smoothScroll(document.body, goTopBtn.getAttribute('data-scroll-speed') || 400);
+                    } else {
+                        window.scrollTo(0, 0);
+                    }
+                },
+                false
+            );
         }
     }
-}());
+})();

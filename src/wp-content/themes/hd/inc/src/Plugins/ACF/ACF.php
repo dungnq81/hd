@@ -195,6 +195,7 @@ final class ACF {
 	 * @param $args
 	 *
 	 * @return mixed
+	 * @throws \JsonException
 	 */
 	public function wp_nav_menu_objects( $items, $args ): mixed {
 		foreach ( $items as &$item ) {

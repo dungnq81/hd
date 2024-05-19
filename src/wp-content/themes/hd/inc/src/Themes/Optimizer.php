@@ -207,7 +207,7 @@ final class Optimizer {
 		// Custom filter which adds proper attributes
 
 		// Fontawesome kit
-		if ( ( 'fontawesome-kit' === $handle ) && ! preg_match( ":\scrossorigin(=|>|\s):", $tag ) ) {
+		if ( ( 'fontawesome-kit' === $handle ) && ! preg_match( ':\scrossorigin([=>\s]):', $tag) ) {
 			$tag = preg_replace( ':(?=></script>):', " crossorigin='anonymous'", $tag, 1 );
 		}
 

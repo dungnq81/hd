@@ -9,10 +9,9 @@ const resources = dir + '/resources';
 const assets = dir + '/assets';
 const storage = dir + '/storage';
 
-const node_modules = "./node_modules";
+const node_modules = './node_modules';
 
-mix
-    .disableNotifications()
+mix.disableNotifications()
 
     .copyDirectory(storage + '/fonts/fontawesome/webfonts', assets + '/webfonts')
     .copyDirectory(resources + '/img', assets + '/img')

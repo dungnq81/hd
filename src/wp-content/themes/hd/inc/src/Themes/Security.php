@@ -86,8 +86,8 @@ final class Security {
 	 * @return void
 	 */
 	private function _xss_protection(): void {
-		$xss_protection = $this->security_options['advanced_xss_protection'] ?? 0;
-		if ( $xss_protection ) {
+
+		if ( $this->security_options['advanced_xss_protection'] ?? 0 ) {
 			$headers = new Headers();
 
 			// Add security headers.
@@ -182,7 +182,7 @@ final class Security {
 	private function _remove_ReadMe(): void {
 		if ( $this->security_options['remove_readme'] ?? 0 ) {
 
-			// Add action to delete the README on WP core update if option is set.
+			// Add action to delete the README on WP core update if the option is set.
 			$readme = new Readme();
 			add_action( '_core_updated_successfully', [ &$readme, 'delete_readme' ] );
 		}

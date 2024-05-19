@@ -118,7 +118,7 @@ class Illegal_Users {
 	 * @return array $result Array containing the result for each username update.
 	 */
 	public function update_common_usernames( array $usernames ): array {
-		// Bail if usernames array is empty.
+		// Bail if 'usernames' array is empty.
 		if ( empty( $usernames ) ) {
 			return [];
 		}
@@ -126,7 +126,7 @@ class Illegal_Users {
 		// Loop the specified usernames.
 		foreach ( $usernames as $key => $username ) {
 
-			// Remove the successfully changes and return the failed only if any.
+			// Remove the successful changes and return the failed only if any.
 			if ( 1 === $this->change_common_username( $username ) ) {
 				unset( $usernames[ $key ] );
 			}

@@ -1,5 +1,4 @@
 jQuery(function ($) {
-
     // let select2_tags = $(".select2-tag");
     // select2_tags.each(function(index, el) {
     //     $(el).select2({
