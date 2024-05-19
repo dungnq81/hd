@@ -40,6 +40,21 @@ if ( ! function_exists( 'optimizer_options' ) ) {
 
 /** ----------------------------------------------- */
 
+if ( ! function_exists( 'esc_attr_strip_tags' ) ) {
+	/**
+	 * @param $string
+	 *
+	 * @return string|null
+	 */
+	function esc_attr_strip_tags( $string ): ?string {
+		$string = strip_tags( $string );
+		$string = preg_replace( '/[\r\n\t ]+/', ' ', $string );
+		return esc_attr( $string );
+	}
+}
+
+/** ----------------------------------------------- */
+
 if ( ! function_exists( 'ip_address' ) ) {
 	/**
 	 * Get the IP address from which the user is viewing the current page.

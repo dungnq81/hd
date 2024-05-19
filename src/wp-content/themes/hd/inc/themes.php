@@ -578,18 +578,6 @@ add_filter( 'hd_smtp_plugins_support', function ( array $arr ) {
 
 // --------------------------------------------------
 
-//add_filter( 'hd_lazy_load_hook_content', function ( array $arr ) {
-//	$update_arr = [
-//		'lazyload_iframes' => [],
-//		'lazyload_videos'  => [],
-//		'lazyload_images'  => [],
-//	];
-//
-//	return array_merge( $arr, $update_arr );
-//} );
-
-// --------------------------------------------------
-
 add_filter( 'hd_lazy_load_exclude', function ( array $arr ) {
 	$update_arr = [
 		'no-lazy',

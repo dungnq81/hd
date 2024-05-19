@@ -48,11 +48,7 @@ abstract class Abstract_Lazy_Load {
 		$excluded_urls = apply_filters( 'hd_lazy_load_exclude_urls', [] );
 
 		// Bail if no excluding are found, or we do not have a match.
-		if ( empty( $excluded_urls ) && ! in_array( get_current_url(), $excluded_urls, true ) ) {
-			return false;
-		}
-
-		return true;
+		return ! ( empty( $excluded_urls ) && ! in_array( get_current_url(), $excluded_urls, true ) );
 	}
 
 	/** ---------------------------------------- */

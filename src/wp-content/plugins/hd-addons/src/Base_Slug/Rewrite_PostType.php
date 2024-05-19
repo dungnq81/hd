@@ -152,6 +152,7 @@ class Rewrite_PostType {
 				/**
 				 * @author KubiQ
 				 */
+
 				global $wp_rewrite;
 
 				foreach ( $this->base_slug_post_type as $post_type ) {

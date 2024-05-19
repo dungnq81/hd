@@ -63,8 +63,8 @@ final class SVG {
 		     ! str_contains( $block_content, 'height=' ) &&
 		     get_post_mime_type( $block['attrs']['id'] ) === 'image/svg+xml'
 		) {
-			$svg_path      = get_attached_file( $block['attrs']['id'] );
-			$dimensions    = $this->svg_dimensions( $svg_path );
+			$svg_path   = get_attached_file( $block['attrs']['id'] );
+			$dimensions = $this->svg_dimensions( $svg_path );
 
 			$block_content = str_replace( '<img ', '<img width="' . $dimensions->width . '" height="' . $dimensions->height . '" ', $block_content );
 		}
@@ -120,7 +120,9 @@ final class SVG {
 	 * @return mixed
 	 */
 	public function wp_check_filetype_and_ext( $filetype_ext_data, $file, $filename, $mimes ): mixed {
-		if ( 'disable' !== $this->svg_option && current_user_can( 'upload_files' ) ) {
+		if ( 'disable' !== $this->svg_option &&
+		     current_user_can( 'upload_files' )
+		) {
 			if ( str_ends_with( $filename, '.svg' ) ) {
 				$filetype_ext_data['ext']  = 'svg';
 				$filetype_ext_data['type'] = 'image/svg+xml';
@@ -268,14 +270,12 @@ final class SVG {
 	 * @return mixed
 	 */
 	public function wp_handle_upload_prefilter( $file ): mixed {
-		if ( $file['type'] === 'image/svg+xml' ) {
-
-			if ( 'sanitized' === $this->svg_option &&
-			     current_user_can( 'upload_files' ) &&
-			     ! $this->sanitize( $file['tmp_name'] )
-			) {
-				$file['error'] = __( 'This SVG can not be sanitized!', ADDONS_TEXT_DOMAIN );
-			}
+		if ( $file['type'] === 'image/svg+xml' &&
+		     'sanitized' === $this->svg_option &&
+		     current_user_can( 'upload_files' ) &&
+		     ! $this->sanitize( $file['tmp_name'] )
+		) {
+			$file['error'] = __( 'This SVG can not be sanitized!', ADDONS_TEXT_DOMAIN );
 		}
 
 		return $file;

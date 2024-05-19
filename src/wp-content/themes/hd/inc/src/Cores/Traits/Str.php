@@ -297,7 +297,7 @@ trait Str {
 	 * @param $string
 	 * @param bool $remove_js
 	 * @param bool $flatten
-	 * @param null $allowed_tags
+	 * @param $allowed_tags
 	 *
 	 * @return string
 	 */

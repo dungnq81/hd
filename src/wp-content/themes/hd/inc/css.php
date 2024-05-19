@@ -5,7 +5,6 @@
  * @author   WEBHD
  */
 
-use Cores\Helper;
 use Libs\CSS;
 
 \defined( 'ABSPATH' ) || die;
