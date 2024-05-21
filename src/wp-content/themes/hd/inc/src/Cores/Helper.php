@@ -385,7 +385,7 @@ final class Helper {
 	 * @return bool
 	 */
 	public static function is_contact_form_7_active(): bool {
-		return self::check_plugin_active( 'woocommerce/woocommerce.php' );
+		return self::check_plugin_active( 'contact-form-7/wp-contact-form-7.php' );
 	}
 
 	// -------------------------------------------------------------

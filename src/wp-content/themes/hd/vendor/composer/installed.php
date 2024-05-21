@@ -3,7 +3,7 @@
         'name' => 'wordpress/hd',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '244fda4a3b15b394b9ac1f165d53622796f835ea',
+        'reference' => '339b58144ea885c32292923a90be6bf502a10b51',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -58,7 +58,7 @@
         'roave/security-advisories' => array(
             'pretty_version' => 'dev-latest',
             'version' => 'dev-latest',
-            'reference' => '4a1ce99ead02e286f024fc7d032c7233ac01091b',
+            'reference' => '7a1a6552ac2f0fd7131d2552be221f2dd6eb19fa',
             'type' => 'metapackage',
             'install_path' => null,
             'aliases' => array(
@@ -78,7 +78,7 @@
         'wordpress/hd' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '244fda4a3b15b394b9ac1f165d53622796f835ea',
+            'reference' => '339b58144ea885c32292923a90be6bf502a10b51',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

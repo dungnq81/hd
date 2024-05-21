@@ -11,7 +11,7 @@ mix.webpackConfig({
     },
     externals: {
         $: 'jQuery',
-        jQuery: 'jQuery',
+        jquery: 'jQuery',
     },
 }).options({
     processCssUrls: false,
@@ -33,6 +33,4 @@ if (!mix.inProduction()) {
 require('./wp-content/plugins/hd-addons/webpack.mix.js');
 
 // Run only for themes.
-globSync('./wp-content/themes/**/webpack.mix.js').forEach((file) =>
-    require(`./${file}`)
-);
+globSync('./wp-content/themes/**/webpack.mix.js').forEach((file) => require(`./${file}`));

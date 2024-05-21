@@ -183,7 +183,7 @@ if ( ! function_exists( '__wp_default_scripts' ) ) {
 	 * @return void
 	 */
 	function __wp_default_scripts( $scripts ): void {
-		if ( ! is_admin() && isset( $scripts->registered['jquery'] ) ) {
+		if ( isset( $scripts->registered['jquery'] ) && ! is_admin() ) {
 			$script = $scripts->registered['jquery'];
 			if ( $script->deps ) {
 

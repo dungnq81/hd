@@ -40,6 +40,50 @@ if ( ! function_exists( 'optimizer_options' ) ) {
 
 /** ----------------------------------------------- */
 
+if ( ! function_exists( 'message_success' ) ) {
+	/**
+	 * @param $message
+	 * @param bool $auto_hide
+	 *
+	 * @return void
+	 */
+	function message_success( $message, bool $auto_hide = false ): void {
+		$message = $message ?: 'Values saved';
+		$message = __( $message, ADDONS_TEXT_DOMAIN );
+
+		$class = 'notice notice-success is-dismissible';
+		if ( $auto_hide ) {
+			$class .= ' dismissible-auto';
+		}
+
+		printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr_strip_tags( $class ), $message );
+	}
+}
+
+/** ----------------------------------------------- */
+
+if ( ! function_exists( 'message_error' ) ) {
+	/**
+	 * @param $message
+	 * @param bool $auto_hide
+	 *
+	 * @return void
+	 */
+	function message_error( $message, bool $auto_hide = false ): void {
+		$message = $message ?: 'Values error';
+		$message = __( $message, ADDONS_TEXT_DOMAIN );
+
+		$class = 'notice notice-error is-dismissible';
+		if ( $auto_hide ) {
+			$class .= ' dismissible-auto';
+		}
+
+		printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr_strip_tags( $class ), $message );
+	}
+}
+
+/** ----------------------------------------------- */
+
 if ( ! function_exists( 'esc_attr_strip_tags' ) ) {
 	/**
 	 * @param $string

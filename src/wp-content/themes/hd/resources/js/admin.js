@@ -1,60 +1,46 @@
 import { nanoid } from 'nanoid';
 import Cookies from 'js-cookie';
 
+Object.assign(window, { Cookies });
+
 jQuery(function ($) {
-    /**
-     * @param el
-     * @return {*|jQuery}
-     */
-    function rand_element_init(el) {
-        const _rand = nanoid(9);
-        $(el).addClass(_rand);
+    // codemirror
+    if (typeof codemirror_settings !== 'undefined') {
+        const codemirror_css = $('.codemirror_css');
+        const codemirror_html = $('.codemirror_html');
 
-        let _id = $(el).attr('id');
-        if (_id === 'undefined' || _id === '') {
-            _id = _rand;
-            $(el).attr('id', _id);
-        }
+        codemirror_css.each((index, el) => {
+            rand_element_init(el);
 
-        return _id;
+            let editorSettings = codemirror_settings.codemirror_css ? _.clone(codemirror_settings.codemirror_css) : {};
+
+            editorSettings.codemirror = _.extend({}, editorSettings.codemirror, {
+                indentUnit: 3,
+                tabSize: 3,
+                lineNumbers: true,
+                autoRefresh: true,
+            });
+
+            wp.codeEditor.initialize($(el), editorSettings);
+        });
+
+        codemirror_html.each((index, el) => {
+            rand_element_init(el);
+
+            let editorSettings = codemirror_settings.codemirror_html ? _.clone(codemirror_settings.codemirror_html) : {};
+
+            editorSettings.codemirror = _.extend({}, editorSettings.codemirror, {
+                indentUnit: 3,
+                tabSize: 3,
+                autoRefresh: true,
+            });
+
+            wp.codeEditor.initialize($(el), editorSettings);
+        });
     }
 
-    // codemirror
-    const codemirror_css = $('.codemirror_css');
-    const codemirror_html = $('.codemirror_html');
-
-    codemirror_css.each((index, el) => {
-        rand_element_init(el);
-
-        let editorSettings = codemirror_settings.codemirror_css ? _.clone(codemirror_settings.codemirror_css) : {};
-
-        editorSettings.codemirror = _.extend({}, editorSettings.codemirror, {
-            indentUnit: 3,
-            tabSize: 3,
-            lineNumbers: true,
-            autoRefresh: true,
-        });
-
-        wp.codeEditor.initialize($(el), editorSettings);
-    });
-
-    codemirror_html.each((index, el) => {
-        rand_element_init(el);
-
-        let editorSettings = codemirror_settings.codemirror_html ? _.clone(codemirror_settings.codemirror_html) : {};
-
-        editorSettings.codemirror = _.extend({}, editorSettings.codemirror, {
-            indentUnit: 3,
-            tabSize: 3,
-            autoRefresh: true,
-        });
-
-        wp.codeEditor.initialize($(el), editorSettings);
-    });
-
-    // notice
-    const notice_dismiss = $('.notice-dismiss');
-    notice_dismiss.on('click', function () {
+    // hide notice
+    $(document).on('click', '.notice-dismiss', function (e) {
         $(this).closest('.notice.is-dismissible').fadeOut();
     });
 
@@ -96,4 +82,71 @@ jQuery(function ($) {
     // user
     const create_user = $('#createuser');
     create_user.find('#send_user_notification').removeAttr('checked').attr('disabled', true);
+
+    /**
+     * @param el
+     * @return {*|jQuery}
+     */
+    function rand_element_init(el) {
+        const _rand = nanoid(9);
+        $(el).addClass(_rand);
+
+        let _id = $(el).attr('id');
+        if (_id === 'undefined' || _id === '') {
+            _id = _rand;
+            $(el).attr('id', _id);
+        }
+
+        return _id;
+    }
+
+    /**
+     * @param speed
+     */
+    $.fn.fadeOutAndRemove = function (speed) {
+        $(this).fadeOut(speed, function () {
+            $(this).remove();
+        });
+    };
+
+    // ajax
+    $(document).ajaxStart(function () {
+        Pace.restart();
+    });
+
+    // ajax submit settings
+    $(document).on('submit', '#hd_form', function (e) {
+        e.preventDefault();
+        let $this = $(this);
+
+        let btn_submit = $this.find('button[name="hd_submit_settings"]');
+        btn_submit.prop('disabled', true);
+
+        let _ignoreFields = ['_wpnonce', '_wp_http_referer'];
+        let _serialize = $this.serializeArray().filter((val) => _ignoreFields.indexOf(val.name) === -1);
+
+        $.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            data: {
+                action: 'submit_settings',
+                _data: _serialize,
+                _ajax_nonce: $this.find('input[name="_wpnonce"]').val(),
+                _wp_http_referer: $this.find('input[name="_wp_http_referer"]').val(),
+            },
+        })
+            .done(function (data) {
+                btn_submit.prop('disabled', false);
+                $this.find('#hd_content').prepend(data);
+
+                // dismissible auto hide
+                setTimeout(function () {
+                    $this.find('#hd_content').find('.dismissible-auto').fadeOutAndRemove(400);
+                }, 3000);
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                btn_submit.prop('disabled', false);
+                console.log(textStatus);
+            });
+    });
 });

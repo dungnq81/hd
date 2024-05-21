@@ -4,6 +4,8 @@ namespace Themes;
 
 use Cores\Helper;
 
+use Libs\CSS;
+
 use Plugins\ACF\ACF;
 use Plugins\CF7;
 use Plugins\Editor\TinyMCE;
@@ -25,6 +27,9 @@ final class Theme {
 	public function __construct() {
 
 		// plugins_loaded -> after_setup_theme -> init -> widgets_init -> wp_loaded -> admin_menu -> admin_init ...
+
+		// Login
+		$this->_admin_login();
 
 		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 10 );
 		add_action( 'after_setup_theme', [ &$this, 'setup' ], 11 );
@@ -118,12 +123,10 @@ final class Theme {
 	 * @return void
 	 */
 	public function setup(): void {
-
 		if ( is_admin() ) {
 			( new Admin() );
 		}
 
-		( new Admin_Login() );
 		( new Customizer() );
 		( new Optimizer() );
 		( new Security() );
@@ -340,5 +343,76 @@ final class Theme {
 		add_filter( 'the_content', function ( $html ) {
 			return preg_replace( '/(<img[^>]+)(style=\"[^\"]+\")([^>]+)(>)/', '${1}${3}${4}', $html );
 		}, 10, 1 );
+	}
+
+	// --------------------------------------------------
+
+	/**
+	 * @return void
+	 */
+	private function _admin_login(): void {
+		add_action( 'login_enqueue_scripts', [ &$this, 'login_enqueue_script' ], 31 );
+
+		// Changing the alt text on the logo to show your site name
+		add_filter( 'login_headertext', function () {
+			$headertext = Helper::getThemeMod( 'login_page_headertext_setting' );
+
+			return $headertext ?: get_bloginfo( 'name' );
+		} );
+
+		// Changing the logo link from WordPress.org to your site
+		add_filter( 'login_headerurl', function () {
+			$headerurl = Helper::getThemeMod( 'login_page_headerurl_setting' );
+
+			return $headerurl ?: Helper::home();
+		} );
+	}
+
+	// --------------------------------------------------
+
+	/**
+	 * @retun void
+	 */
+	public function login_enqueue_script(): void {
+		wp_enqueue_style( "login-style", THEME_URL . "assets/css/admin.css", [], THEME_VERSION );
+		wp_enqueue_script( "login", THEME_URL . "assets/js/login.js", [ "jquery" ], THEME_VERSION, true );
+
+		//$default_logo    = THEME_URL . "storage/img/logo.png";
+		//$default_logo_bg = THEME_URL . "storage/img/login-bg.jpg";
+
+		$default_logo    = '';
+		$default_logo_bg = '';
+
+		// script/style
+		$logo          = ! empty( $logo = Helper::getThemeMod( 'login_page_logo_setting' ) ) ? $logo : $default_logo;
+		$logo_bg       = ! empty( $logo_bg = Helper::getThemeMod( 'login_page_bgimage_setting' ) ) ? $logo_bg : $default_logo_bg;
+		$logo_bg_color = Helper::getThemeMod( 'login_page_bgcolor_setting' );
+
+		$css = new CSS();
+
+		if ( $logo_bg ) {
+			$css->set_selector( 'body.login' );
+			$css->add_property( 'background-image', 'url(' . $logo_bg . ')' );
+		}
+
+		if ( $logo_bg_color ) {
+			$css->set_selector( 'body.login' );
+			$css->add_property( 'background-color', $logo_bg_color );
+
+			$css->set_selector( 'body.login:before' );
+			$css->add_property( 'background', 'none' );
+			$css->add_property( 'opacity', 1 );
+		}
+
+		$css->set_selector( 'body.login #login h1 a' );
+		if ( $logo ) {
+			$css->add_property( 'background-image', 'url(' . $logo . ')' );
+		} //else {
+		//$css->add_property( 'background-image', 'unset' );
+		//}
+
+		if ( $css->css_output() ) {
+			wp_add_inline_style( 'login-style', $css->css_output() );
+		}
 	}
 }

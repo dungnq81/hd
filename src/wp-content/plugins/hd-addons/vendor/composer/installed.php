@@ -3,7 +3,7 @@
         'name' => 'plugins/hd-addons',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '244fda4a3b15b394b9ac1f165d53622796f835ea',
+        'reference' => '339b58144ea885c32292923a90be6bf502a10b51',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -31,7 +31,7 @@
         'plugins/hd-addons' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '244fda4a3b15b394b9ac1f165d53622796f835ea',
+            'reference' => '339b58144ea885c32292923a90be6bf502a10b51',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

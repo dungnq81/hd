@@ -1640,30 +1640,40 @@ trait Wp {
 
 	/**
 	 * @param $message
+	 * @param bool $auto_hide
 	 *
 	 * @return void
 	 */
-	public static function messageSuccess( $message ): void {
+	public static function messageSuccess( $message, bool $auto_hide = false ): void {
 		$message = $message ?: 'Values saved';
 		$message = __( $message, TEXT_DOMAIN );
 
 		$class = 'notice notice-success is-dismissible';
-		printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr( $class ), $message );
+		if ( $auto_hide ) {
+			$class .= ' dismissible-auto';
+		}
+
+		printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr_strip_tags( $class ), $message );
 	}
 
 	// -------------------------------------------------------------
 
 	/**
 	 * @param $message
+	 * @param bool $auto_hide
 	 *
 	 * @return void
 	 */
-	public static function messageError( $message ): void {
+	public static function messageError( $message, bool $auto_hide = false ): void {
 		$message = $message ?: 'Values error';
 		$message = __( $message, TEXT_DOMAIN );
 
 		$class = 'notice notice-error is-dismissible';
-		printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr( $class ), $message );
+		if ( $auto_hide ) {
+			$class .= ' dismissible-auto';
+		}
+
+		printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr_strip_tags( $class ), $message );
 	}
 
 	// -------------------------------------------------------------

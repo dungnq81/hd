@@ -16,6 +16,8 @@ mix.disableNotifications()
     .copyDirectory(storage + '/fonts/fontawesome/webfonts', assets + '/webfonts')
     .copyDirectory(resources + '/img', assets + '/img')
 
+    .copy(node_modules + '/pace-js/pace.min.js', assets + '/js/plugins')
+
     .sass(resources + '/sass/editor-style.scss', assets + '/css')
     .sass(resources + '/sass/admin.scss', assets + '/css')
 

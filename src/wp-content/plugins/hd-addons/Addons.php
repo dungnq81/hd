@@ -82,7 +82,7 @@ final class Addons {
 		     ! empty( $font_preload ) ||
 		     ! empty( $dns_prefetch )
 		) {
-			add_action( 'init', [ &$this, 'start_bufffer' ] );
+			add_action( 'wp_loaded', [ &$this, 'start_bufffer' ] );
 			add_action( 'shutdown', [ &$this, 'end_buffer' ] );
 		}
 	}
@@ -186,16 +186,16 @@ final class Addons {
 	 * @return void
 	 */
 	public function admin_enqueue_scripts(): void {
-		if ( ! wp_style_is( 'woocommerce_admin_styles' ) ) { // tested
-			wp_enqueue_style( "select2-style", ADDONS_URL . "assets/css/select2.min.css", [], ADDONS_VERSION );
-		}
+//		if ( ! wp_style_is( 'woocommerce_admin_styles' ) ) { // tested
+//			wp_enqueue_style( 'select2-style', ADDONS_URL . 'assets/css/select2.min.css', [], ADDONS_VERSION );
+//		}
+//
+//		if ( ! wp_script_is( 'select2', 'registered' ) ) {
+//			wp_register_script( 'select2', ADDONS_URL . 'assets/js/select2.full.min.js', [ 'jquery-core' ], ADDONS_VERSION );
+//		}
 
-		if ( ! wp_script_is( 'select2', 'registered' ) ) {
-			wp_register_script( "select2", ADDONS_URL . "assets/js/select2.full.min.js", [ "jquery-core" ], ADDONS_VERSION );
-		}
-
-		wp_enqueue_style( "addon-style", ADDONS_URL . "assets/css/addon.css", [], ADDONS_VERSION );
-		wp_enqueue_script( "addon", ADDONS_URL . "assets/js/addon.js", [ "jquery-core" ], ADDONS_VERSION, true );
+		wp_enqueue_style( 'addon-style', ADDONS_URL . 'assets/css/addon.css', [], ADDONS_VERSION );
+		wp_enqueue_script( 'addon', ADDONS_URL . 'assets/js/addon.js', [], ADDONS_VERSION, true );
 	}
 
 	// ------------------------------------------------------

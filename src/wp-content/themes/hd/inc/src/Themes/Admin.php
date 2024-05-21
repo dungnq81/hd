@@ -41,6 +41,318 @@ final class Admin {
 
 		add_filter( 'custom_menu_order', '__return_true' );
 		add_filter( 'menu_order', [ &$this, 'options_reorder_submenu' ] );
+
+		// ajax for settings
+		add_action( 'wp_ajax_submit_settings', [ &$this, 'ajax_submit_settings' ] );
+	}
+
+	// --------------------------------------------------
+
+	/**
+	 * @return void
+	 */
+	public function ajax_submit_settings(): void {
+		check_ajax_referer( '_wpnonce_hd_settings_' . get_current_user_id() );
+
+		$tmp  = $_POST['_data'] ?? [];
+		$data = array_column( $tmp, 'value', 'name' );
+
+		/** ---------------------------------------- */
+
+		/** Aspect Ratio */
+		$aspect_ratio_options = [];
+		foreach ( apply_filters( 'hd_aspect_ratio_post_type', [] ) as $ar ) {
+			$aspect_ratio_options[ 'ar-' . $ar . '-width' ]  = ! empty( $data[ $ar . '-width' ] ) ? sanitize_text_field( $data[ $ar . '-width' ] ) : 4;
+			$aspect_ratio_options[ 'ar-' . $ar . '-height' ] = ! empty( $data[ $ar . '-height' ] ) ? sanitize_text_field( $data[ $ar . '-height' ] ) : 3;
+		}
+
+		Helper::updateOption( 'aspect_ratio__options', $aspect_ratio_options );
+
+		/** ---------------------------------------- */
+
+		/** SMTP Settings */
+		if ( Helper::is_addons_active() && check_smtp_plugin_active() ) {
+
+			$smtp_host     = ! empty( $data['smtp_host'] ) ? sanitize_text_field( $data['smtp_host'] ) : '';
+			$smtp_auth     = ! empty( $data['smtp_auth'] ) ? sanitize_text_field( $data['smtp_auth'] ) : '';
+			$smtp_username = ! empty( $data['smtp_username'] ) ? sanitize_text_field( $data['smtp_username'] ) : '';
+
+			if ( ! empty( $data['smtp_password'] ) ) {
+
+				// This removes slash (automatically added by WordPress) from the password when apostrophe is present
+				$smtp_password = base64_encode( wp_unslash( sanitize_text_field( $data['smtp_password'] ) ) );
+			}
+
+			$smtp_encryption               = ! empty( $data['smtp_encryption'] ) ? sanitize_text_field( $data['smtp_encryption'] ) : '';
+			$smtp_port                     = ! empty( $data['smtp_port'] ) ? sanitize_text_field( $data['smtp_port'] ) : '';
+			$smtp_from_email               = ! empty( $data['smtp_from_email'] ) ? sanitize_email( $data['smtp_from_email'] ) : '';
+			$smtp_from_name                = ! empty( $data['smtp_from_name'] ) ? sanitize_text_field( $data['smtp_from_name'] ) : '';
+			$smtp_disable_ssl_verification = ! empty( $data['smtp_disable_ssl_verification'] ) ? sanitize_text_field( $data['smtp_disable_ssl_verification'] ) : '';
+
+			$smtp_options = [
+				'smtp_host'                     => $smtp_host,
+				'smtp_auth'                     => $smtp_auth,
+				'smtp_username'                 => $smtp_username,
+				'smtp_encryption'               => $smtp_encryption,
+				'smtp_port'                     => $smtp_port,
+				'smtp_from_email'               => $smtp_from_email,
+				'smtp_from_name'                => $smtp_from_name,
+				'smtp_disable_ssl_verification' => $smtp_disable_ssl_verification,
+			];
+
+			if ( ! empty( $smtp_password ) ) {
+				$smtp_options['smtp_password'] = $smtp_password;
+			}
+
+			Helper::updateOption( 'smtp__options', $smtp_options, true );
+		}
+
+		/** ---------------------------------------- */
+
+		/** Emails list */
+		if ( Helper::is_addons_active() ) {
+			$email_options = [];
+			$hd_email_list = apply_filters( 'hd_email_list', [] );
+			if ( $hd_email_list ) {
+				foreach ( $hd_email_list as $i => $ar ) {
+					$email_options[ $i ] = ! empty( $data[ $i . '_email' ] ) ? sanitize_text_field( $data[ $i . '_email' ] ) : '';
+				}
+
+				Helper::updateOption( 'emails__options', $email_options );
+			}
+		}
+
+		/** ---------------------------------------- */
+
+		/** Contact info */
+		$contact_info_options = [
+			'hotline' => ! empty( $data['contact_info_hotline'] ) ? sanitize_text_field( $data['contact_info_hotline'] ) : '',
+			'address' => ! empty( $data['contact_info_address'] ) ? sanitize_text_field( $data['contact_info_address'] ) : '',
+			'phones'  => ! empty( $data['contact_info_phones'] ) ? sanitize_text_field( $data['contact_info_phones'] ) : '',
+			'emails'  => ! empty( $data['contact_info_emails'] ) ? sanitize_text_field( $data['contact_info_emails'] ) : '',
+		];
+
+		Helper::updateOption( 'contact_info__options', $contact_info_options, true );
+
+		$html_contact_info_others = $data['contact_info_others'] ?? '';
+		Helper::updateCustomPost( $html_contact_info_others, 'html_others', 'text/html' );
+
+		/** ---------------------------------------- */
+
+		/** Custom Order */
+		if ( Helper::is_addons_active() ) {
+			$order_reset = ! empty( $data['order_reset'] ) ? sanitize_text_field( $data['order_reset'] ) : '';
+
+			if ( empty( $order_reset ) ) {
+				$custom_order_options = [
+					'order_post_type' => ! empty( $data['order_post_type'] ) ? array_map( 'sanitize_text_field', $data['order_post_type'] ) : [],
+					'order_taxonomy'  => ! empty( $data['order_taxonomy'] ) ? array_map( 'sanitize_text_field', $data['order_taxonomy'] ) : [],
+				];
+
+				Helper::updateOption( 'custom_order__options', $custom_order_options );
+
+				( new Custom_Order() )->update_options();
+
+			} else {
+				( new Custom_Order() )->reset_all();
+			}
+		}
+
+		/** ---------------------------------------- */
+
+		/** Contact Button */
+		$contact_btn_options = [
+			'contact_title'        => ! empty( $data['contact_title'] ) ? sanitize_text_field( $data['contact_title'] ) : '',
+			'contact_url'          => ! empty( $data['contact_url'] ) ? sanitize_text_field( $data['contact_url'] ) : '',
+			'contact_window'       => ! empty( $data['contact_window'] ) ? sanitize_text_field( $data['contact_window'] ) : '',
+			'contact_waiting_time' => ! empty( $data['contact_waiting_time'] ) ? sanitize_text_field( $data['contact_waiting_time'] ) : '',
+			'contact_show_repeat'  => ! empty( $data['contact_show_repeat'] ) ? sanitize_text_field( $data['contact_show_repeat'] ) : '',
+		];
+
+		Helper::updateOption( 'contact_btn__options', $contact_btn_options, true );
+
+		$html_contact_popup_content = $data['contact_popup_content'] ?? '';
+		Helper::updateCustomPost( $html_contact_popup_content, 'html_contact', 'text/html' );
+
+		/** ---------------------------------------- */
+
+		/** Block editor */
+		$block_editor_options = [
+			'use_widgets_block_editor_off'           => ! empty( $data['use_widgets_block_editor_off'] ) ? sanitize_text_field( $data['use_widgets_block_editor_off'] ) : '',
+			'gutenberg_use_widgets_block_editor_off' => ! empty( $data['gutenberg_use_widgets_block_editor_off'] ) ? sanitize_text_field( $data['gutenberg_use_widgets_block_editor_off'] ) : '',
+			'use_block_editor_for_post_type_off'     => ! empty( $data['use_block_editor_for_post_type_off'] ) ? sanitize_text_field( $data['use_block_editor_for_post_type_off'] ) : '',
+			'block_style_off'                        => ! empty( $data['block_style_off'] ) ? sanitize_text_field( $data['block_style_off'] ) : '',
+		];
+
+		Helper::updateOption( 'block_editor__options', $block_editor_options, true );
+
+		/** ---------------------------------------- */
+
+		/** Optimizer */
+		$optimizer_options_old = Helper::getOption( 'optimizer__options' );
+		$https_enforce_old     = $optimizer_options_old['https_enforce'] ?? 0;
+
+		$exclude_lazyload = ! empty( $data['exclude_lazyload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $data['exclude_lazyload'] ) : [];
+		$font_preload     = ! empty( $data['font_preload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $data['font_preload'] ) : [];
+		$dns_prefetch     = ! empty( $data['dns_prefetch'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $data['dns_prefetch'] ) : [];
+
+		$exclude_lazyload = array_map( 'esc_textarea', $exclude_lazyload );
+		$font_preload     = array_map( 'sanitize_url', $font_preload );
+		$dns_prefetch     = array_map( 'sanitize_url', $dns_prefetch );
+
+		$optimizer_options = [
+			'https_enforce'    => ! empty( $data['https_enforce'] ) ? sanitize_text_field( $data['https_enforce'] ) : 0,
+			'gzip'             => ! empty( $data['gzip'] ) ? sanitize_text_field( $data['gzip'] ) : 0,
+			'bs_caching'       => ! empty( $data['bs_caching'] ) ? sanitize_text_field( $data['bs_caching'] ) : 0,
+			'heartbeat'        => ! empty( $data['heartbeat'] ) ? sanitize_text_field( $data['heartbeat'] ) : 0,
+			'minify_html'      => ! empty( $data['minify_html'] ) ? sanitize_text_field( $data['minify_html'] ) : 0,
+			'svgs'             => ! empty( $data['svgs'] ) ? sanitize_text_field( $data['svgs'] ) : 'disable',
+			'lazy_load'        => ! empty( $data['lazy_load'] ) ? sanitize_text_field( $data['lazy_load'] ) : 0,
+			'exclude_lazyload' => $exclude_lazyload,
+			'font_optimize'    => ! empty( $data['font_optimize'] ) ? sanitize_text_field( $data['font_optimize'] ) : 0,
+			'font_preload'     => $font_preload,
+			'dns_prefetch'     => $dns_prefetch,
+		];
+
+		Helper::updateOption( 'optimizer__options', $optimizer_options, true );
+
+		// Ssl
+		if ( $https_enforce_old !== $optimizer_options['https_enforce'] ) {
+			( new Ssl() )->toggle_rules( $optimizer_options['https_enforce'] );
+		}
+
+		// Gzip + Caching
+		( new Gzip() )->toggle_rules( $optimizer_options['gzip'] );
+		( new Bs_Cache() )->toggle_rules( $optimizer_options['bs_caching'] );
+
+		/** ---------------------------------------- */
+
+		/** Security */
+		$security_options = [
+			'illegal_users'             => ! empty( $data['illegal_users'] ) ? sanitize_text_field( $data['illegal_users'] ) : '',
+			'hide_wp_version'           => ! empty( $data['hide_wp_version'] ) ? sanitize_text_field( $data['hide_wp_version'] ) : '',
+			'xml_rpc_off'               => ! empty( $data['xml_rpc_off'] ) ? sanitize_text_field( $data['xml_rpc_off'] ) : '',
+			'remove_readme'             => ! empty( $data['remove_readme'] ) ? sanitize_text_field( $data['remove_readme'] ) : '',
+			'rss_feed_off'              => ! empty( $data['rss_feed_off'] ) ? sanitize_text_field( $data['rss_feed_off'] ) : '',
+			'lock_protect_system'       => ! empty( $data['lock_protect_system'] ) ? sanitize_text_field( $data['lock_protect_system'] ) : '',
+			'advanced_xss_protection'   => ! empty( $data['advanced_xss_protection'] ) ? sanitize_text_field( $data['advanced_xss_protection'] ) : '',
+			'limit_login_attempts'      => ! empty( $data['limit_login_attempts'] ) ? sanitize_text_field( $data['limit_login_attempts'] ) : '0',
+			'two_factor_authentication' => ! empty( $data['two_factor_authentication'] ) ? sanitize_text_field( $data['two_factor_authentication'] ) : '',
+		];
+
+		Helper::updateOption( 'security__options', $security_options, true );
+
+		// readme.html
+		if ( $security_options['remove_readme'] ) {
+			$readme = new Readme();
+			$readme->delete_readme();
+		}
+
+		// toggle_rules
+		( new Xmlrpc() )->toggle_rules( $security_options['xml_rpc_off'] );
+		( new Dir() )->toggle_rules( $security_options['lock_protect_system'] );
+		( new Headers() )->toggle_rules( $security_options['advanced_xss_protection'] );
+
+		/** ---------------------------------------- */
+
+		// Socials
+		$social_options = [];
+		foreach ( apply_filters( 'hd_social_follows', [] ) as $i => $item ) {
+			$social_options[ $i ] = [
+				'url' => ! empty( $data[ $i . '-option' ] ) ? sanitize_url( $data[ $i . '-option' ] ) : '',
+			];
+		}
+
+		Helper::updateOption( 'social__options', $social_options );
+
+		/** ---------------------------------------- */
+
+		/** Woocommerce */
+		if ( Helper::is_woocommerce_active() ) {
+			global $wpdb;
+
+			$woocommerce_options = [
+				'remove_legacy_coupon'    => ! empty( $data['remove_legacy_coupon'] ) ? sanitize_text_field( $data['remove_legacy_coupon'] ) : '',
+				'woocommerce_jsonld'      => ! empty( $data['woocommerce_jsonld'] ) ? sanitize_text_field( $data['woocommerce_jsonld'] ) : '',
+				'woocommerce_default_css' => ! empty( $data['woocommerce_default_css'] ) ? sanitize_text_field( $data['woocommerce_default_css'] ) : '',
+			];
+
+			Helper::updateOption( 'woocommerce__options', $woocommerce_options, true );
+
+			// fixed woo db
+			if ( $woocommerce_options['remove_legacy_coupon'] ) {
+				$wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "wc_admin_notes SET status=%s WHERE name=%s", 'actioned', 'wc-admin-coupon-page-moved' ) );
+				$wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "wc_admin_note_actions SET status=%s WHERE name=%s", 'actioned', 'remove-legacy-coupon-menu' ) );
+			}
+		}
+
+		/** ---------------------------------------- */
+
+		/** Remove base slug */
+		if ( Helper::is_addons_active() ) {
+			$base_slug_reset = ! empty( $data['base_slug_reset'] ) ? sanitize_text_field( $data['base_slug_reset'] ) : '';
+
+			if ( empty( $base_slug_reset ) ) {
+				$custom_base_slug_options = [
+					'base_slug_post_type' => ! empty( $data['base_slug_post_type'] ) ? array_map( 'sanitize_text_field', $data['base_slug_post_type'] ) : [],
+					'base_slug_taxonomy'  => ! empty( $data['base_slug_taxonomy'] ) ? array_map( 'sanitize_text_field', $data['base_slug_taxonomy'] ) : [],
+				];
+
+				Helper::updateOption( 'custom_base_slug__options', $custom_base_slug_options );
+
+			} else {
+
+				// reset order
+				( new Base_Slug() )->reset_all();
+			}
+		}
+
+		/** ---------------------------------------- */
+
+		/** Comments */
+//		$comment_options = [
+//			'simple_antispam' => ! empty( $data['simple_antispam'] ) ? sanitize_text_field( $data['simple_antispam'] ) : '',
+//		];
+//
+//		Helper::updateOption( 'comment__options', $comment_options, true );
+
+		/** ---------------------------------------- */
+
+		/** Custom Scripts */
+		$html_header      = $data['html_header'] ?? '';
+		$html_footer      = $data['html_footer'] ?? '';
+		$html_body_top    = $data['html_body_top'] ?? '';
+		$html_body_bottom = $data['html_body_bottom'] ?? '';
+
+		Helper::updateCustomPost( $html_header, 'html_header', 'text/html', true );
+		Helper::updateCustomPost( $html_footer, 'html_footer', 'text/html', true );
+		Helper::updateCustomPost( $html_body_top, 'html_body_top', 'text/html', true );
+		Helper::updateCustomPost( $html_body_bottom, 'html_body_bottom', 'text/html', true );
+
+		/** ---------------------------------------- */
+
+		/** Custom CSS */
+		$html_custom_css = $data['html_custom_css'] ?? '';
+		Helper::updateCustomCssPost( $html_custom_css, 'hd_css', false );
+
+		/** ---------------------------------------- */
+
+
+		/** ---------------------------------------- */
+
+		// Clear LiteSpeed cache, if existing.
+		if ( class_exists( \LiteSpeed\Purge::class ) ) {
+			\LiteSpeed\Purge::purge_all();
+		}
+
+		// Clear wp-rocket cache
+		if ( \defined( 'WP_ROCKET_VERSION' ) && \function_exists( 'rocket_clean_domain' ) ) {
+			\rocket_clean_domain();
+		}
+
+		// Echo message success
+		Helper::messageSuccess( __( 'Settings saved', ADDONS_TEXT_DOMAIN ), true );
+		die();
 	}
 
 	// --------------------------------------------------
@@ -63,17 +375,19 @@ final class Admin {
 	 */
 	public function admin_enqueue_scripts( $hook ): void {
 		wp_enqueue_style( "admin-style", THEME_URL . "assets/css/admin.css", [], THEME_VERSION );
-		wp_enqueue_script( "admin", THEME_URL . "assets/js/admin.js", [ "jquery" ], THEME_VERSION, true );
+
+		wp_enqueue_script( 'pace-js', THEME_URL . 'assets/js/plugins/pace.min.js', [], false, true );
+		wp_enqueue_script( "admin", THEME_URL . "assets/js/admin.js", [ "pace-js" ], THEME_VERSION, true );
+
+		$pace_js_inline = 'paceOptions = {startOnPageLoad:!1}';
+		wp_add_inline_script( 'pace-js', $pace_js_inline, 'before' );
 
 		wp_enqueue_script( "fontawesome-kit", "https://kit.fontawesome.com/09f86c70cd.js", [], false, true );
 		wp_script_add_data( "fontawesome-kit", "defer", true );
 
 		// options_enqueue_assets
-		$allowed_pages = [
-			'toplevel_page_hd-settings',
-		];
-
-		if ( in_array( $hook, $allowed_pages, true ) ) {
+		$allowed_pages = 'toplevel_page_hd-settings';
+		if ( $allowed_pages === $hook ) {
 			$codemirror_settings = [
 				'codemirror_css'  => wp_enqueue_code_editor( [ 'type' => 'text/css' ] ),
 				'codemirror_html' => wp_enqueue_code_editor( [ 'type' => 'text/html' ] ),
@@ -116,7 +430,6 @@ final class Admin {
 //            }
 //		}
 
-		/** ---------------------------------------- */
 		/** ---------------------------------------- */
 
 		// menu page
@@ -166,331 +479,14 @@ final class Admin {
 	 * @return void
 	 */
 	public function options_page(): void {
-		global $wpdb;
-
-		if ( isset( $_POST['hd_submit_settings'] ) ) {
-			check_admin_referer( '_wpnonce_hd_settings_' . get_current_user_id() );
-
-			// ------------------------------------------------------
-
-			/** Aspect Ratio */
-
-			$aspect_ratio_options = [];
-			foreach ( apply_filters( 'hd_aspect_ratio_post_type', [] ) as $i => $ar ) {
-				$aspect_ratio_options[ 'ar-' . $ar . '-width' ]  = ! empty( $_POST[ $ar . '-width' ] ) ? sanitize_text_field( $_POST[ $ar . '-width' ] ) : 4;
-				$aspect_ratio_options[ 'ar-' . $ar . '-height' ] = ! empty( $_POST[ $ar . '-height' ] ) ? sanitize_text_field( $_POST[ $ar . '-height' ] ) : 3;
-			}
-
-			Helper::updateOption( 'aspect_ratio__options', $aspect_ratio_options );
-
-			// ------------------------------------------------------
-
-			/** SMTP Settings */
-
-			if ( Helper::is_addons_active() && check_smtp_plugin_active() ) {
-
-				$smtp_host     = ! empty( $_POST['smtp_host'] ) ? sanitize_text_field( $_POST['smtp_host'] ) : '';
-				$smtp_auth     = ! empty( $_POST['smtp_auth'] ) ? sanitize_text_field( $_POST['smtp_auth'] ) : '';
-				$smtp_username = ! empty( $_POST['smtp_username'] ) ? sanitize_text_field( $_POST['smtp_username'] ) : '';
-
-				if ( ! empty( $_POST['smtp_password'] ) ) {
-
-					// This removes slash (automatically added by WordPress) from the password when apostrophe is present
-					$smtp_password = base64_encode( wp_unslash( sanitize_text_field( $_POST['smtp_password'] ) ) );
-				}
-
-				$smtp_encryption               = ! empty( $_POST['smtp_encryption'] ) ? sanitize_text_field( $_POST['smtp_encryption'] ) : '';
-				$smtp_port                     = ! empty( $_POST['smtp_port'] ) ? sanitize_text_field( $_POST['smtp_port'] ) : '';
-				$smtp_from_email               = ! empty( $_POST['smtp_from_email'] ) ? sanitize_email( $_POST['smtp_from_email'] ) : '';
-				$smtp_from_name                = ! empty( $_POST['smtp_from_name'] ) ? sanitize_text_field( $_POST['smtp_from_name'] ) : '';
-				$smtp_disable_ssl_verification = ! empty( $_POST['smtp_disable_ssl_verification'] ) ? sanitize_text_field( $_POST['smtp_disable_ssl_verification'] ) : '';
-
-				$smtp_options = [
-					'smtp_host'                     => $smtp_host,
-					'smtp_auth'                     => $smtp_auth,
-					'smtp_username'                 => $smtp_username,
-					'smtp_encryption'               => $smtp_encryption,
-					'smtp_port'                     => $smtp_port,
-					'smtp_from_email'               => $smtp_from_email,
-					'smtp_from_name'                => $smtp_from_name,
-					'smtp_disable_ssl_verification' => $smtp_disable_ssl_verification,
-				];
-
-				if ( ! empty( $smtp_password ) ) {
-					$smtp_options['smtp_password'] = $smtp_password;
-				}
-
-				Helper::updateOption( 'smtp__options', $smtp_options, true );
-			}
-
-			// ------------------------------------------------------
-
-			/** Emails list */
-
-			if ( Helper::is_addons_active() ) {
-				$email_options = [];
-				$hd_email_list = apply_filters( 'hd_email_list', [] );
-
-				if ( $hd_email_list ) {
-					foreach ( $hd_email_list as $i => $ar ) {
-						$email_options[ $i ] = ! empty( $_POST[ $i . '_email' ] ) ? sanitize_text_field( $_POST[ $i . '_email' ] ) : '';
-					}
-
-					Helper::updateOption( 'emails__options', $email_options );
-				}
-			}
-
-			// ------------------------------------------------------
-
-			/** Contact info */
-
-			$contact_info_options = [
-				'hotline' => ! empty( $_POST['contact_info_hotline'] ) ? sanitize_text_field( $_POST['contact_info_hotline'] ) : '',
-				'address' => ! empty( $_POST['contact_info_address'] ) ? sanitize_text_field( $_POST['contact_info_address'] ) : '',
-				'phones'  => ! empty( $_POST['contact_info_phones'] ) ? sanitize_text_field( $_POST['contact_info_phones'] ) : '',
-				'emails'  => ! empty( $_POST['contact_info_emails'] ) ? sanitize_text_field( $_POST['contact_info_emails'] ) : '',
-			];
-
-			Helper::updateOption( 'contact_info__options', $contact_info_options, true );
-
-			$html_contact_info_others = $_POST['contact_info_others'] ?? '';
-			Helper::updateCustomPost( $html_contact_info_others, 'html_others', 'text/html' );
-
-			// ------------------------------------------------------
-
-			/** Custom Order */
-
-			if ( Helper::is_addons_active() ) {
-				$order_reset = ! empty( $_POST['order_reset'] ) ? sanitize_text_field( $_POST['order_reset'] ) : '';
-
-				if ( empty( $order_reset ) ) {
-					$custom_order_options = [
-						'order_post_type' => ! empty( $_POST['order_post_type'] ) ? array_map( 'sanitize_text_field', $_POST['order_post_type'] ) : [],
-						'order_taxonomy'  => ! empty( $_POST['order_taxonomy'] ) ? array_map( 'sanitize_text_field', $_POST['order_taxonomy'] ) : [],
-					];
-
-					Helper::updateOption( 'custom_order__options', $custom_order_options );
-
-					// update options
-					( new Custom_Order() )->update_options();
-
-				} else {
-
-					// reset order
-					( new Custom_Order() )->reset_all();
-				}
-			}
-
-			// ------------------------------------------------------
-
-			/** Contact Button */
-
-			$contact_btn_options = [
-				'contact_title'        => ! empty( $_POST['contact_title'] ) ? sanitize_text_field( $_POST['contact_title'] ) : '',
-				'contact_url'          => ! empty( $_POST['contact_url'] ) ? sanitize_text_field( $_POST['contact_url'] ) : '',
-				'contact_window'       => ! empty( $_POST['contact_window'] ) ? sanitize_text_field( $_POST['contact_window'] ) : '',
-				'contact_waiting_time' => ! empty( $_POST['contact_waiting_time'] ) ? sanitize_text_field( $_POST['contact_waiting_time'] ) : '',
-				'contact_show_repeat'  => ! empty( $_POST['contact_show_repeat'] ) ? sanitize_text_field( $_POST['contact_show_repeat'] ) : '',
-			];
-
-			Helper::updateOption( 'contact_btn__options', $contact_btn_options, true );
-
-			$html_contact_popup_content = $_POST['contact_popup_content'] ?? '';
-			Helper::updateCustomPost( $html_contact_popup_content, 'html_contact', 'text/html' );
-
-			// ------------------------------------------------------
-
-			/** Block editor */
-
-			$block_editor_options = [
-				'use_widgets_block_editor_off'           => ! empty( $_POST['use_widgets_block_editor_off'] ) ? sanitize_text_field( $_POST['use_widgets_block_editor_off'] ) : '',
-				'gutenberg_use_widgets_block_editor_off' => ! empty( $_POST['gutenberg_use_widgets_block_editor_off'] ) ? sanitize_text_field( $_POST['gutenberg_use_widgets_block_editor_off'] ) : '',
-				'use_block_editor_for_post_type_off'     => ! empty( $_POST['use_block_editor_for_post_type_off'] ) ? sanitize_text_field( $_POST['use_block_editor_for_post_type_off'] ) : '',
-				'block_style_off'                        => ! empty( $_POST['block_style_off'] ) ? sanitize_text_field( $_POST['block_style_off'] ) : '',
-			];
-
-			Helper::updateOption( 'block_editor__options', $block_editor_options, true );
-
-			// ------------------------------------------------------
-
-			/** Optimizer */
-
-			$optimizer_options_old = Helper::getOption( 'optimizer__options' );
-			$https_enforce_old     = $optimizer_options_old['https_enforce'] ?? 0;
-
-			$exclude_lazyload = ! empty( $_POST['exclude_lazyload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $_POST['exclude_lazyload'] ) : [];
-			$exclude_lazyload = array_map( 'esc_textarea', $exclude_lazyload );
-
-			$font_preload = ! empty( $_POST['font_preload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $_POST['font_preload'] ) : [];
-			$font_preload = array_map( 'sanitize_url', $font_preload );
-
-			$dns_prefetch = ! empty( $_POST['dns_prefetch'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $_POST['dns_prefetch'] ) : [];
-			$dns_prefetch = array_map( 'sanitize_url', $dns_prefetch );
-
-			$optimizer_options = [
-				'https_enforce'    => ! empty( $_POST['https_enforce'] ) ? sanitize_text_field( $_POST['https_enforce'] ) : 0,
-				'gzip'             => ! empty( $_POST['gzip'] ) ? sanitize_text_field( $_POST['gzip'] ) : 0,
-				'bs_caching'       => ! empty( $_POST['bs_caching'] ) ? sanitize_text_field( $_POST['bs_caching'] ) : 0,
-				'heartbeat'        => ! empty( $_POST['heartbeat'] ) ? sanitize_text_field( $_POST['heartbeat'] ) : 0,
-				'minify_html'      => ! empty( $_POST['minify_html'] ) ? sanitize_text_field( $_POST['minify_html'] ) : 0,
-				'svgs'             => ! empty( $_POST['svgs'] ) ? sanitize_text_field( $_POST['svgs'] ) : 'disable',
-				'lazy_load'        => ! empty( $_POST['lazy_load'] ) ? sanitize_text_field( $_POST['lazy_load'] ) : 0,
-				'exclude_lazyload' => $exclude_lazyload,
-				'font_optimize'    => ! empty( $_POST['font_optimize'] ) ? sanitize_text_field( $_POST['font_optimize'] ) : 0,
-				'font_preload'     => $font_preload,
-				'dns_prefetch'     => $dns_prefetch,
-			];
-
-			Helper::updateOption( 'optimizer__options', $optimizer_options, true );
-
-			// Ssl
-			if ( $https_enforce_old !== $optimizer_options['https_enforce'] ) {
-				( new Ssl() )->toggle_rules( $optimizer_options['https_enforce'] );
-			}
-
-			// Gzip + Caching
-			( new Gzip() )->toggle_rules( $optimizer_options['gzip'] );
-			( new Bs_Cache() )->toggle_rules( $optimizer_options['bs_caching'] );
-
-			// ------------------------------------------------------
-
-			/** Security */
-
-			$security_options = [
-				'illegal_users'             => ! empty( $_POST['illegal_users'] ) ? sanitize_text_field( $_POST['illegal_users'] ) : '',
-				'hide_wp_version'           => ! empty( $_POST['hide_wp_version'] ) ? sanitize_text_field( $_POST['hide_wp_version'] ) : '',
-				'xml_rpc_off'               => ! empty( $_POST['xml_rpc_off'] ) ? sanitize_text_field( $_POST['xml_rpc_off'] ) : '',
-				'remove_readme'             => ! empty( $_POST['remove_readme'] ) ? sanitize_text_field( $_POST['remove_readme'] ) : '',
-				'rss_feed_off'              => ! empty( $_POST['rss_feed_off'] ) ? sanitize_text_field( $_POST['rss_feed_off'] ) : '',
-				'lock_protect_system'       => ! empty( $_POST['lock_protect_system'] ) ? sanitize_text_field( $_POST['lock_protect_system'] ) : '',
-				'advanced_xss_protection'   => ! empty( $_POST['advanced_xss_protection'] ) ? sanitize_text_field( $_POST['advanced_xss_protection'] ) : '',
-				'limit_login_attempts'      => ! empty( $_POST['limit_login_attempts'] ) ? sanitize_text_field( $_POST['limit_login_attempts'] ) : '0',
-				'two_factor_authentication' => ! empty( $_POST['two_factor_authentication'] ) ? sanitize_text_field( $_POST['two_factor_authentication'] ) : '',
-			];
-
-			Helper::updateOption( 'security__options', $security_options, true );
-
-			// readme.html
-			if ( $security_options['remove_readme'] ) {
-				$readme = new Readme();
-				$readme->delete_readme();
-			}
-
-			// toggle_rules
-			( new Xmlrpc() )->toggle_rules( $security_options['xml_rpc_off'] );
-			( new Dir() )->toggle_rules( $security_options['lock_protect_system'] );
-			( new Headers() )->toggle_rules( $security_options['advanced_xss_protection'] );
-
-			// ------------------------------------------------------
-
-			// Socials
-
-			$social_options    = [];
-			foreach ( apply_filters( 'hd_social_follows', [] ) as $i => $item ) {
-				$social_options[ $i ] = [
-					'url' => ! empty( $_POST[ $i . '-option' ] ) ? sanitize_url( $_POST[ $i . '-option' ] ) : '',
-				];
-			}
-
-			Helper::updateOption( 'social__options', $social_options );
-
-			// ------------------------------------------------------
-
-			/** Woocommerce */
-
-			if ( Helper::is_woocommerce_active() ) {
-
-				$woocommerce_options = [
-					'remove_legacy_coupon'    => ! empty( $_POST['remove_legacy_coupon'] ) ? sanitize_text_field( $_POST['remove_legacy_coupon'] ) : '',
-					'woocommerce_jsonld'      => ! empty( $_POST['woocommerce_jsonld'] ) ? sanitize_text_field( $_POST['woocommerce_jsonld'] ) : '',
-					'woocommerce_default_css' => ! empty( $_POST['woocommerce_default_css'] ) ? sanitize_text_field( $_POST['woocommerce_default_css'] ) : '',
-				];
-
-				Helper::updateOption( 'woocommerce__options', $woocommerce_options, true );
-
-				// fixed woo db
-				if ( $woocommerce_options['remove_legacy_coupon'] ) {
-					$wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "wc_admin_notes SET status=%s WHERE name=%s", 'actioned', 'wc-admin-coupon-page-moved' ) );
-					$wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "wc_admin_note_actions SET status=%s WHERE name=%s", 'actioned', 'remove-legacy-coupon-menu' ) );
-				}
-			}
-
-			// ------------------------------------------------------
-
-			/** Remove base slug */
-
-			if ( Helper::is_addons_active() ) {
-				$base_slug_reset = ! empty( $_POST['base_slug_reset'] ) ? sanitize_text_field( $_POST['base_slug_reset'] ) : '';
-
-				if ( empty( $base_slug_reset ) ) {
-					$custom_base_slug_options = [
-						'base_slug_post_type' => ! empty( $_POST['base_slug_post_type'] ) ? array_map( 'sanitize_text_field', $_POST['base_slug_post_type'] ) : [],
-						'base_slug_taxonomy'  => ! empty( $_POST['base_slug_taxonomy'] ) ? array_map( 'sanitize_text_field', $_POST['base_slug_taxonomy'] ) : [],
-					];
-					Helper::updateOption( 'custom_base_slug__options', $custom_base_slug_options );
-				} else {
-
-					// reset order
-					( new Base_Slug() )->reset_all();
-				}
-			}
-
-			// ------------------------------------------------------
-
-			/** Comments */
-
-			$comment_options = [
-				'simple_antispam' => ! empty( $_POST['simple_antispam'] ) ? sanitize_text_field( $_POST['simple_antispam'] ) : '',
-			];
-
-			Helper::updateOption( 'comment__options', $comment_options, true );
-
-			// ------------------------------------------------------
-
-			/** Custom Scripts */
-
-			$html_header      = $_POST['html_header'] ?? '';
-			$html_footer      = $_POST['html_footer'] ?? '';
-			$html_body_top    = $_POST['html_body_top'] ?? '';
-			$html_body_bottom = $_POST['html_body_bottom'] ?? '';
-
-			Helper::updateCustomPost( $html_header, 'html_header', 'text/html', true );
-			Helper::updateCustomPost( $html_footer, 'html_footer', 'text/html', true );
-			Helper::updateCustomPost( $html_body_top, 'html_body_top', 'text/html', true );
-			Helper::updateCustomPost( $html_body_bottom, 'html_body_bottom', 'text/html', true );
-
-			// ------------------------------------------------------
-
-			/** Custom CSS */
-
-			$html_custom_css = $_POST['html_custom_css'] ?? '';
-			Helper::updateCustomCssPost( $html_custom_css, 'hd_css', false );
-
-			// ------------------------------------------------------
-
-			/** Echo message success */
-
-			Helper::messageSuccess( 'Settings saved' );
-
-			// Clear LiteSpeed cache, if existing.
-			if ( class_exists( '\LiteSpeed\Purge' ) ) {
-				\LiteSpeed\Purge::purge_all();
-			}
-
-			// Clear wp-rocket cache
-			if ( \defined( 'WP_ROCKET_VERSION' ) && \function_exists( 'rocket_clean_domain' ) ) {
-				\rocket_clean_domain();
-			}
-		}
 
 		?>
         <div class="wrap" id="hd_container">
             <form id="hd_form" method="post" enctype="multipart/form-data">
 
-				<?php wp_nonce_field( '_wpnonce_hd_settings_' . get_current_user_id() ); ?>
+				<?php $nonce_field = wp_nonce_field( '_wpnonce_hd_settings_' . get_current_user_id() ); ?>
 
                 <div id="main" class="filter-tabs clearfix">
-
                     <div id="hd_nav" class="tabs-nav">
                         <div class="logo-title">
                             <h3>
@@ -509,7 +505,7 @@ final class Admin {
                             </li>
 
 	                        <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
-                                <li class="smtp-settings">
+                            <li class="smtp-settings">
                                 <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php endif; ?>
@@ -535,23 +531,24 @@ final class Admin {
                             </li>
 
 	                        <?php if ( Helper::is_woocommerce_active() ) : ?>
-                                <li class="woocommerce-settings">
+                            <li class="woocommerce-settings">
                                 <a title="WooCommerce" href="#woocommerce_settings"><?php _e( 'WooCommerce', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php endif; ?>
 
 	                        <?php if ( Helper::is_addons_active() ) : ?>
-                                <li class="base-slug-settings">
+                            <li class="base-slug-settings">
                                 <a title="Remove base slug" href="#base_slug_settings"><?php _e( 'Remove Base Slug', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php
 		                        $hd_email_list = apply_filters( 'hd_email_list', [] );
 		                        if ( ! empty( $hd_email_list ) ) :
-			                        ?>
-                                    <li class="email-settings">
+                            ?>
+                            <li class="email-settings">
                                 <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', TEXT_DOMAIN ); ?></a>
                             </li>
-		                        <?php endif; ?>
+                            <?php endif; ?>
+
                             <li class="order-settings">
                                 <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', TEXT_DOMAIN ); ?></a>
                             </li>
@@ -621,7 +618,8 @@ final class Admin {
                         <div id="email_settings" class="group tabs-panel">
                             <?php include ADDONS_PATH . 'src/Custom_Email/options.php'; ?>
                         </div>
-                        <?php endif; ?>
+		                    <?php endif; ?>
+
                         <div id="custom_order_settings" class="group tabs-panel">
 		                    <?php include ADDONS_PATH . 'src/Custom_Order/options.php'; ?>
                         </div>
@@ -655,7 +653,6 @@ final class Admin {
 	 * @return void
 	 */
 	public function server_info(): void {
-
 		?>
         <div class="wrap">
             <div id="main">
@@ -668,7 +665,7 @@ final class Admin {
                             <li><?php echo sprintf( '<span>Platform:</span> %s', php_uname() ); ?></li>
 
 	                        <?php if ( $server_software = $_SERVER['SERVER_SOFTWARE'] ?? null ) : ?>
-                                <li><?php echo sprintf( '<span>SERVER:</span> %s', $server_software ); ?></li>
+                            <li><?php echo sprintf( '<span>SERVER:</span> %s', $server_software ); ?></li>
 	                        <?php endif; ?>
 
                             <li><?php echo sprintf( '<span>PHP version:</span> %s', PHP_VERSION ); ?></li>
@@ -678,8 +675,8 @@ final class Admin {
 	                        $openssl_status = 'Available';
 	                        $openssl_text   = '';
 	                        if ( ! defined( 'OPENSSL_ALGO_SHA1' ) &&
-                                 ! extension_loaded( 'openssl' )
-                            ) {
+	                             ! extension_loaded( 'openssl' )
+	                        ) {
 		                        $openssl_status = 'Not available';
 		                        $openssl_text   = ' (openssl extension is required in order to use any kind of encryption like TLS or SSL)';
 	                        }

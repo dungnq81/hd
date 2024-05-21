@@ -3,11 +3,10 @@
 namespace Plugins\WooCommerce\Widgets;
 
 use Cores\Helper;
-use WC_Widget_Cart;
 
 \defined( 'ABSPATH' ) || die;
 
-class MiniCart_Widget extends WC_Widget_Cart {
+class MiniCart_Widget extends \WC_Widget_Cart {
 	/**
 	 * Creating widget front-end
 	 *

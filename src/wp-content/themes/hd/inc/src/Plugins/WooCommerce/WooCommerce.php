@@ -30,12 +30,12 @@ final class WooCommerce {
 			add_action( 'init', [ &$this, 'remove_woocommerce_jsonld' ], 10 );
 		}
 
-		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 31 );
+		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 33 );
 
-		add_action( 'widgets_init', [ &$this, 'unregister_default_widgets' ], 31 );
-		add_action( 'widgets_init', [ &$this, 'register_widgets' ], 31 );
+		add_action( 'widgets_init', [ &$this, 'unregister_default_widgets' ], 33 );
+		add_action( 'widgets_init', [ &$this, 'register_widgets' ], 33 );
 
-		add_action( 'enqueue_block_assets', [ &$this, 'enqueue_block_assets' ], 31 );
+		add_action( 'enqueue_block_assets', [ &$this, 'enqueue_block_assets' ], 41 );
 		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 98 );
 
 		// hooks
