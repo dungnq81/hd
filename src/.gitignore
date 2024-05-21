@@ -43,20 +43,13 @@ Thumbs.db
 *.mov
 *.wmv
 
-# WordPress template
+# WordPress
 wp-content/uploads/
-
-# ignore specific themes
 wp-content/themes/twenty*/
-
-# Project exclude paths
 wp-content/themes/hd/assets/
 
 # ignore these plugins
-
 wp-content/plugins/*
 !wp-content/plugins/advanced-custom-fields-pro/
 !wp-content/plugins/contact-form-7/
 !wp-content/plugins/hd-addons/
-
-wp-content/sgo-config.php
