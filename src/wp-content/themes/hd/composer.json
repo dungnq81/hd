@@ -26,6 +26,7 @@
 	}
 	,
 	"require-dev": {
+		"symfony/var-dumper": "^v7.0.7",
 		"roave/security-advisories": "dev-latest"
 	}
 }

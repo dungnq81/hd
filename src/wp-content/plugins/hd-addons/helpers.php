@@ -100,52 +100,6 @@ if ( ! function_exists( 'esc_attr_strip_tags' ) ) {
 
 /** ----------------------------------------------- */
 
-if ( ! function_exists( 'ip_address' ) ) {
-	/**
-	 * Get the IP address from which the user is viewing the current page.
-	 *
-	 * @return string
-	 */
-	function ip_address(): string {
-
-		if ( class_exists( Whip::class ) ) {
-			$whip          = new Whip( Whip::CLOUDFLARE_HEADERS | Whip::REMOTE_ADDR | Whip::PROXY_HEADERS | Whip::INCAPSULA_HEADERS );
-			$clientAddress = $whip->getValidIpAddress();
-
-			if ( false !== $clientAddress ) {
-				return preg_replace( '/^::1$/', '127.0.0.1', $clientAddress );
-			}
-
-		} else {
-
-			// Get real visitor IP behind CloudFlare network
-			if ( isset( $_SERVER["HTTP_CF_CONNECTING_IP"] ) ) {
-				$_SERVER['REMOTE_ADDR']    = $_SERVER["HTTP_CF_CONNECTING_IP"];
-				$_SERVER['HTTP_CLIENT_IP'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
-			}
-
-			$client  = @$_SERVER['HTTP_CLIENT_IP'];
-			$forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
-			$remote  = @$_SERVER['REMOTE_ADDR'];
-
-			if ( filter_var( $client, FILTER_VALIDATE_IP ) ) {
-				return $client;
-			}
-
-			if ( filter_var( $forward, FILTER_VALIDATE_IP ) ) {
-				return $forward;
-			}
-
-			return $remote;
-		}
-
-		// Fallback local ip.
-		return '127.0.0.1';
-	}
-}
-
-/** ----------------------------------------------- */
-
 if ( ! function_exists( 'redirect' ) ) {
 	/**
 	 * @param string $uri

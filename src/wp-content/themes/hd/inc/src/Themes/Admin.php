@@ -785,7 +785,7 @@ final class Admin {
 	 * @return array|mixed
 	 */
 	public function term_header( $columns ): mixed {
-		if ( Helper::is_acf_active() || Helper::is_acf_pro_active() ) {
+		if ( Helper::is_acf_active() ) {
 
 			// thumb
 			$thumb   = [

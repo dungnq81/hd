@@ -251,7 +251,7 @@ final class Helper {
 	 * @throws \JsonException
 	 */
 	public static function acfFields( $post_id = false, $format_value = true, $escape_html = false ): mixed {
-		if ( ! self::is_acf_pro_active() && ! self::is_acf_active() ) {
+		if ( ! self::is_acf_active() ) {
 			return (object) [];
 		}
 
@@ -402,17 +402,8 @@ final class Helper {
 	/**
 	 * @return bool
 	 */
-	public static function is_acf_pro_active(): bool {
-		return self::check_plugin_active( 'advanced-custom-fields-pro/acf.php' );
-	}
-
-	// -------------------------------------------------------------
-
-	/**
-	 * @return bool
-	 */
 	public static function is_acf_active(): bool {
-		return self::check_plugin_active( 'advanced-custom-fields/acf.php' );
+		return self::check_plugin_active( 'advanced-custom-fields/acf.php' ) || self::check_plugin_active( 'advanced-custom-fields-pro/acf.php' );
 	}
 
 	// -------------------------------------------------------------

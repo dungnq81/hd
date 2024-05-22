@@ -116,62 +116,6 @@
             "install-path": "../mobiledetect/mobiledetectlib"
         },
         {
-            "name": "psr/http-message",
-            "version": "2.0",
-            "version_normalized": "2.0.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/http-message.git",
-                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/402d35bcb92c70c026d1a6a9883f06b2ead23d71",
-                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2 || ^8.0"
-            },
-            "time": "2023-04-04T09:54:51+00:00",
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "installation-source": "dist",
-            "autoload": {
-                "psr-4": {
-                    "Psr\\Http\\Message\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "https://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interface for HTTP messages",
-            "homepage": "https://github.com/php-fig/http-message",
-            "keywords": [
-                "http",
-                "http-message",
-                "psr",
-                "psr-7",
-                "request",
-                "response"
-            ],
-            "support": {
-                "source": "https://github.com/php-fig/http-message/tree/2.0"
-            },
-            "install-path": "../psr/http-message"
-        },
-        {
             "name": "psr/simple-cache",
             "version": "3.0.0",
             "version_normalized": "3.0.0.0",
@@ -232,12 +176,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "4a1ce99ead02e286f024fc7d032c7233ac01091b"
+                "reference": "7a1a6552ac2f0fd7131d2552be221f2dd6eb19fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/4a1ce99ead02e286f024fc7d032c7233ac01091b",
-                "reference": "4a1ce99ead02e286f024fc7d032c7233ac01091b",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/7a1a6552ac2f0fd7131d2552be221f2dd6eb19fa",
+                "reference": "7a1a6552ac2f0fd7131d2552be221f2dd6eb19fa",
                 "shasum": ""
             },
             "conflict": {
@@ -805,7 +749,7 @@
                 "sylius/grid-bundle": "<1.10.1",
                 "sylius/paypal-plugin": ">=1,<1.2.4|>=1.3,<1.3.1",
                 "sylius/resource-bundle": ">=1,<1.3.14|>=1.4,<1.4.7|>=1.5,<1.5.2|>=1.6,<1.6.4",
-                "sylius/sylius": "<1.12.16|>=1.13.0.0-alpha1,<1.13.1",
+                "sylius/sylius": "<1.9.10|>=1.10,<1.10.11|>=1.11,<1.11.2|>=1.12.0.0-alpha1,<1.12.16|>=1.13.0.0-alpha1,<1.13.1",
                 "symbiote/silverstripe-multivaluefield": ">=3,<3.0.99",
                 "symbiote/silverstripe-queuedjobs": ">=3,<3.0.2|>=3.1,<3.1.4|>=4,<4.0.7|>=4.1,<4.1.2|>=4.2,<4.2.4|>=4.3,<4.3.3|>=4.4,<4.4.3|>=4.5,<4.5.1|>=4.6,<4.6.4",
                 "symbiote/silverstripe-seed": "<6.0.3",
@@ -894,6 +838,7 @@
                 "uvdesk/core-framework": "<=1.1.1",
                 "vanilla/safecurl": "<0.9.2",
                 "verbb/comments": "<1.5.5",
+                "verbb/formie": "<2.1.6",
                 "verbb/image-resizer": "<2.0.9",
                 "verbb/knock-knock": "<1.2.8",
                 "verot/class.upload.php": "<=2.1.6",
@@ -925,7 +870,7 @@
                 "wpanel/wpanel4-cms": "<=4.3.1",
                 "wpcloud/wp-stateless": "<3.2",
                 "wpglobus/wpglobus": "<=1.9.6",
-                "wwbn/avideo": "<=12.4",
+                "wwbn/avideo": "<14.3",
                 "xataface/xataface": "<3",
                 "xpressengine/xpressengine": "<3.0.15",
                 "yab/quarx": "<2.4.5",
@@ -984,7 +929,7 @@
                 "zfr/zfr-oauth2-server-module": "<0.1.2",
                 "zoujingli/thinkadmin": "<=6.1.53"
             },
-            "time": "2024-05-18T00:15:00+00:00",
+            "time": "2024-05-20T21:04:23+00:00",
             "default-branch": true,
             "type": "metapackage",
             "notification-url": "https://packagist.org/downloads/",
@@ -1022,235 +967,6 @@
                 }
             ],
             "install-path": null
-        },
-        {
-            "name": "symfony/polyfill-mbstring",
-            "version": "v1.29.0",
-            "version_normalized": "1.29.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "9773676c8a1bb1f8d4340a62efe641cf76eda7ec"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/9773676c8a1bb1f8d4340a62efe641cf76eda7ec",
-                "reference": "9773676c8a1bb1f8d4340a62efe641cf76eda7ec",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1"
-            },
-            "provide": {
-                "ext-mbstring": "*"
-            },
-            "suggest": {
-                "ext-mbstring": "For best performance"
-            },
-            "time": "2024-01-29T20:11:03+00:00",
-            "type": "library",
-            "extra": {
-                "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
-                }
-            },
-            "installation-source": "dist",
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Polyfill\\Mbstring\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill for the Mbstring extension",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "mbstring",
-                "polyfill",
-                "portable",
-                "shim"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.29.0"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "install-path": "../symfony/polyfill-mbstring"
-        },
-        {
-            "name": "symfony/var-dumper",
-            "version": "v7.0.7",
-            "version_normalized": "7.0.7.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "d1627b66fd87c8b4d90cabe5671c29d575690924"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/d1627b66fd87c8b4d90cabe5671c29d575690924",
-                "reference": "d1627b66fd87c8b4d90cabe5671c29d575690924",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.2",
-                "symfony/polyfill-mbstring": "~1.0"
-            },
-            "conflict": {
-                "symfony/console": "<6.4"
-            },
-            "require-dev": {
-                "ext-iconv": "*",
-                "symfony/console": "^6.4|^7.0",
-                "symfony/http-kernel": "^6.4|^7.0",
-                "symfony/process": "^6.4|^7.0",
-                "symfony/uid": "^6.4|^7.0",
-                "twig/twig": "^3.0.4"
-            },
-            "time": "2024-04-18T09:29:19+00:00",
-            "bin": [
-                "Resources/bin/var-dump-server"
-            ],
-            "type": "library",
-            "installation-source": "dist",
-            "autoload": {
-                "files": [
-                    "Resources/functions/dump.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Component\\VarDumper\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Provides mechanisms for walking through any arbitrary PHP variable",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "debug",
-                "dump"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v7.0.7"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "install-path": "../symfony/var-dumper"
-        },
-        {
-            "name": "vectorface/whip",
-            "version": "v0.5.0",
-            "version_normalized": "0.5.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Vectorface/whip.git",
-                "reference": "0d0f4648cfb29777f0ae9f2dc6a3853e16674f78"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Vectorface/whip/zipball/0d0f4648cfb29777f0ae9f2dc6a3853e16674f78",
-                "reference": "0d0f4648cfb29777f0ae9f2dc6a3853e16674f78",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.0",
-                "psr/http-message": "^1.0 || ^2.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^9.0",
-                "squizlabs/php_codesniffer": "~2.0"
-            },
-            "time": "2024-01-22T01:03:59+00:00",
-            "type": "library",
-            "installation-source": "dist",
-            "autoload": {
-                "psr-4": {
-                    "Vectorface\\Whip\\": "./src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Daniel Bruce",
-                    "email": "dbruce@vectorface.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Cory Darby",
-                    "email": "ckdarby@vectorface.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A PHP class for retrieving accurate IP address information for the client.",
-            "homepage": "https://github.com/Vectorface/whip",
-            "keywords": [
-                "IP",
-                "cdn",
-                "cloudflare"
-            ],
-            "support": {
-                "issues": "https://github.com/Vectorface/whip/issues",
-                "source": "https://github.com/Vectorface/whip"
-            },
-            "install-path": "../vectorface/whip"
         }
     ],
     "dev": true,

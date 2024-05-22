@@ -279,7 +279,7 @@ if ( ! function_exists( 'the_post_comment' ) ) {
 		$facebook_comment = false;
 		$zalo_comment     = false;
 
-		if ( Helper::is_acf_active() || Helper::is_acf_pro_active() ) {
+		if ( Helper::is_acf_active() ) {
 			$facebook_comment = \get_field( 'facebook_comment', $id ) ?? false;
 			$zalo_comment     = \get_field( 'zalo_comment', $id ) ?? false;
 		}

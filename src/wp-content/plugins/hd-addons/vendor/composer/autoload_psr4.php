@@ -7,11 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'enshrined\\svgSanitize\\' => array($vendorDir . '/enshrined/svg-sanitize/src'),
-    'Vectorface\\Whip\\' => array($vendorDir . '/vectorface/whip/src'),
-    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
-    'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),
     'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
-    'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'Detection\\' => array($vendorDir . '/mobiledetect/mobiledetectlib/src'),
     'Addons\\' => array($baseDir . '/src'),
 );

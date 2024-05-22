@@ -167,24 +167,14 @@ final class Theme {
 	 */
 	public function plugins_setup(): void {
 
-		/** TinyMCE Editor */
 		( new TinyMCE() );
 
-		/** WooCommerce */
 		Helper::is_woocommerce_active() && ( new WooCommerce() );
+		Helper::is_acf_active() && ( new ACF() );
 
-		/** ACF */
-		if ( Helper::is_acf_active() || Helper::is_acf_pro_active() ) {
-			( new ACF() );
-		}
+		defined( 'WP_ROCKET_PATH' ) && ( new WpRocket() );
 
-		/** Wp-Rocket */
-		defined( 'WP_ROCKET_VERSION' ) && ( new WpRocket() );
-
-		/** RankMath */
 		class_exists( \RankMath::class ) && ( new RankMath() );
-
-		/** Contact form 7 */
 		class_exists( \WPCF7::class ) && ( new CF7() );
 	}
 

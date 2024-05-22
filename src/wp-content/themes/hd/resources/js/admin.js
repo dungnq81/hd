@@ -110,7 +110,7 @@ jQuery(function ($) {
     };
 
     // ajax
-    $(document).ajaxStart(function () {
+    $(document).ajaxStart(() => {
         Pace.restart();
     });
 
@@ -120,10 +120,13 @@ jQuery(function ($) {
         let $this = $(this);
 
         let btn_submit = $this.find('button[name="hd_submit_settings"]');
-        btn_submit.prop('disabled', true);
+        let button_text = btn_submit.html();
+        let button_text_loading = '<i class="fa-solid fa-spinner fa-spin-pulse"></i>';
 
         let _ignoreFields = ['_wpnonce', '_wp_http_referer'];
         let _serialize = $this.serializeArray().filter((val) => _ignoreFields.indexOf(val.name) === -1);
+
+        btn_submit.prop('disabled', true).html(button_text_loading);
 
         $.ajax({
             type: 'POST',
@@ -136,17 +139,17 @@ jQuery(function ($) {
             },
         })
             .done(function (data) {
-                btn_submit.prop('disabled', false);
+                btn_submit.prop('disabled', false).html(button_text);
                 $this.find('#hd_content').prepend(data);
 
                 // dismissible auto hide
-                setTimeout(function () {
+                setTimeout(() => {
                     $this.find('#hd_content').find('.dismissible-auto').fadeOutAndRemove(400);
                 }, 3000);
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
-                btn_submit.prop('disabled', false);
-                console.log(textStatus);
+                btn_submit.prop('disabled', false).html(button_text);
+                console.log(errorThrown);
             });
     });
 });

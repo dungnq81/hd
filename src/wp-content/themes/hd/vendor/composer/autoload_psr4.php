@@ -9,6 +9,8 @@ return array(
     'Widgets\\' => array($baseDir . '/inc/src/Widgets'),
     'Vectorface\\Whip\\' => array($vendorDir . '/vectorface/whip/src'),
     'Themes\\' => array($baseDir . '/inc/src/Themes'),
+    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
+    'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),
     'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'Plugins\\' => array($baseDir . '/inc/src/Plugins'),
