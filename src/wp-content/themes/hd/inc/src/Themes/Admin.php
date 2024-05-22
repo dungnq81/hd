@@ -53,9 +53,7 @@ final class Admin {
 	 */
 	public function ajax_submit_settings(): void {
 		check_ajax_referer( '_wpnonce_hd_settings_' . get_current_user_id() );
-
-		$tmp  = $_POST['_data'] ?? [];
-		$data = array_column( $tmp, 'value', 'name' );
+		$data  = $_POST['_data'] ?? [];
 
 		/** ---------------------------------------- */
 
@@ -136,27 +134,6 @@ final class Admin {
 
 		$html_contact_info_others = $data['contact_info_others'] ?? '';
 		Helper::updateCustomPost( $html_contact_info_others, 'html_others', 'text/html' );
-
-		/** ---------------------------------------- */
-
-		/** Custom Order */
-		if ( Helper::is_addons_active() ) {
-			$order_reset = ! empty( $data['order_reset'] ) ? sanitize_text_field( $data['order_reset'] ) : '';
-
-			if ( empty( $order_reset ) ) {
-				$custom_order_options = [
-					'order_post_type' => ! empty( $data['order_post_type'] ) ? array_map( 'sanitize_text_field', $data['order_post_type'] ) : [],
-					'order_taxonomy'  => ! empty( $data['order_taxonomy'] ) ? array_map( 'sanitize_text_field', $data['order_taxonomy'] ) : [],
-				];
-
-				Helper::updateOption( 'custom_order__options', $custom_order_options );
-
-				( new Custom_Order() )->update_options();
-
-			} else {
-				( new Custom_Order() )->reset_all();
-			}
-		}
 
 		/** ---------------------------------------- */
 
@@ -309,6 +286,27 @@ final class Admin {
 
 		/** ---------------------------------------- */
 
+		/** Custom Order */
+		if ( Helper::is_addons_active() ) {
+			$order_reset = ! empty( $data['order_reset'] ) ? sanitize_text_field( $data['order_reset'] ) : '';
+
+			if ( empty( $order_reset ) ) {
+				$custom_order_options = [
+					'order_post_type' => ! empty( $data['order_post_type'] ) ? array_map( 'sanitize_text_field', $data['order_post_type'] ) : [],
+					'order_taxonomy'  => ! empty( $data['order_taxonomy'] ) ? array_map( 'sanitize_text_field', $data['order_taxonomy'] ) : [],
+				];
+
+				Helper::updateOption( 'custom_order__options', $custom_order_options );
+
+				( new Custom_Order() )->update_options();
+
+			} else {
+				( new Custom_Order() )->reset_all();
+			}
+		}
+
+		/** ---------------------------------------- */
+
 		/** Comments */
 //		$comment_options = [
 //			'simple_antispam' => ! empty( $data['simple_antispam'] ) ? sanitize_text_field( $data['simple_antispam'] ) : '',
@@ -334,9 +332,6 @@ final class Admin {
 		/** Custom CSS */
 		$html_custom_css = $data['html_custom_css'] ?? '';
 		Helper::updateCustomCssPost( $html_custom_css, 'hd_css', false );
-
-		/** ---------------------------------------- */
-
 
 		/** ---------------------------------------- */
 

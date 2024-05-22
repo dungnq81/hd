@@ -100,13 +100,74 @@ jQuery(function ($) {
         return _id;
     }
 
-    /**
-     * @param speed
-     */
     $.fn.fadeOutAndRemove = function (speed) {
         $(this).fadeOut(speed, function () {
             $(this).remove();
         });
+    };
+
+    $.fn.serializeObject = function () {
+        let data = {};
+
+        function buildInputObject(arr, val) {
+            if (arr.length < 1) {
+                return val;
+            }
+            let objkey = arr[0];
+            if (objkey.slice(-1) === ']') {
+                objkey = objkey.slice(0, -1);
+            }
+            let result = {};
+            if (arr.length === 1) {
+                result[objkey] = val;
+            } else {
+                arr.shift();
+                result[objkey] = buildInputObject(arr, val);
+            }
+            return result;
+        }
+
+        function gatherMultipleValues(that) {
+            let final_array = [];
+            $.each(that.serializeArray(), function (key, field) {
+                // Copy normal fields to a final array without changes
+                if (field.name.indexOf('[]') < 0) {
+                    final_array.push(field);
+                    return true;
+                }
+
+                // Remove "[]" from the field name
+                let field_name = field.name.split('[]')[0];
+
+                // Add the field value in its array of values
+                let has_value = false;
+                $.each(final_array, function (final_key, final_field) {
+                    if (final_field.name === field_name) {
+                        has_value = true;
+                        final_array[final_key]['value'].push(field.value);
+                    }
+                });
+
+                // If it doesn't exist yet, create the field's array of values
+                if (!has_value) {
+                    final_array.push({ name: field_name, value: [field.value] });
+                }
+            });
+            return final_array;
+        }
+
+        // Manage fields allowing multiple values first (they contain "[]" in their name)
+        let final_array = gatherMultipleValues(this);
+
+        // Then, create the object
+        $.each(final_array, function () {
+            let val = this.value;
+            let c = this.name.split('[');
+            let a = buildInputObject(c, val);
+            $.extend(true, data, a);
+        });
+
+        return data;
     };
 
     // ajax
@@ -123,9 +184,6 @@ jQuery(function ($) {
         let button_text = btn_submit.html();
         let button_text_loading = '<i class="fa-solid fa-spinner fa-spin-pulse"></i>';
 
-        let _ignoreFields = ['_wpnonce', '_wp_http_referer'];
-        let _serialize = $this.serializeArray().filter((val) => _ignoreFields.indexOf(val.name) === -1);
-
         btn_submit.prop('disabled', true).html(button_text_loading);
 
         $.ajax({
@@ -133,7 +191,7 @@ jQuery(function ($) {
             url: ajaxurl,
             data: {
                 action: 'submit_settings',
-                _data: _serialize,
+                _data: $this.serializeObject(),
                 _ajax_nonce: $this.find('input[name="_wpnonce"]').val(),
                 _wp_http_referer: $this.find('input[name="_wp_http_referer"]').val(),
             },
