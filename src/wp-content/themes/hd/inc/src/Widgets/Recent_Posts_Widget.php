@@ -128,7 +128,7 @@ class Recent_Posts_Widget extends Abstract_Widget {
 
 		$ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
 		$css_class = ! empty( $ACF->css_class ) ? esc_attr_strip_tags( $ACF->css_class ) : '';
-		$uniqid    = esc_attr( uniqid( $this->widget_classname . '-', true ) );
+		$uniqid    = esc_attr( uniqid( $this->widget_classname . '-', false ) );
 
 		if ( ! $r->have_posts() ) {
 			return;

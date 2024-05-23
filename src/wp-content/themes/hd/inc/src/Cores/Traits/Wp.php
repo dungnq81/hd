@@ -488,7 +488,7 @@ trait Wp {
 	 * @param string $taxonomy
 	 * @param bool $include_children
 	 * @param int $posts_per_page
-	 * @param array $orderby
+	 * @param array|string $orderby
 	 * @param array $meta_query
 	 * @param bool|string $strtotime_str
 	 *
@@ -1009,7 +1009,7 @@ trait Wp {
 			$html .= ' />';
 		}
 
-		return $html;
+		return apply_filters( 'hd_icon_image_html', $html, $attachment_id, $size, $attr );
 	}
 
 	// -------------------------------------------------------------
@@ -1171,7 +1171,7 @@ trait Wp {
 				$cat_obj = $wp_query->get_queried_object();
 				$thisCat = get_term( $cat_obj->term_id );
 
-				if ( isset( $thisCat->parent ) && 0 != $thisCat->parent ) {
+				if ( isset( $thisCat->parent ) && 0 !== $thisCat->parent ) {
 					$parentCat = get_term( $thisCat->parent );
 					if ( $cat_code = get_term_parents_list( $parentCat->term_id, $parentCat->taxonomy, [ 'separator' => '' ] ) ) {
 						$cat_code = str_replace( '<a', '<li><a', $cat_code );
@@ -1368,8 +1368,7 @@ trait Wp {
 
 		// `-1` indicates no post exists; no query necessary.
 		if ( ! $post && - 1 !== $post_id ) {
-			$query = new WP_Query( $custom_query_vars );
-			$post  = $query->post;
+			$post  = ( new WP_Query( $custom_query_vars ) )->post;
 
 			set_theme_mod( $post_type . '_option_id', $post->ID ?? - 1 );
 		}

@@ -188,7 +188,7 @@ class Products_Carousel_Widget extends Abstract_Widget {
 	public function styles_and_scripts(): void {
 		wp_enqueue_style( "swiper-style", ASSETS_URL . "css/plugins/swiper.css", [], THEME_VERSION );
 		wp_enqueue_script( "swiper", ASSETS_URL . "js/plugins/swiper.js", [], THEME_VERSION, true );
-		//wp_script_add_data( "swiper", "defer", true );
+		wp_script_add_data( "swiper", "defer", true );
 	}
 
 	/**
@@ -220,7 +220,7 @@ class Products_Carousel_Widget extends Abstract_Widget {
 		$view_more_link        = Helper::ACF_Link( $view_more_link );
 
 		$css_class = ! empty( $ACF->css_class ) ? ' ' . esc_attr_strip_tags( $ACF->css_class ) : '';
-		$uniqid    = esc_attr( uniqid( $this->widget_classname . '-', true ) );
+		$uniqid    = esc_attr( uniqid( $this->widget_classname . '-', false ) );
 
 		// products query
 		$products = $this->get_products( $number, $instance, $ACF );

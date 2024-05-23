@@ -172,7 +172,7 @@ class Products_Widget extends Abstract_Widget {
 	    $view_more_link        = Helper::ACF_Link( $view_more_link );
 
 	    $css_class = ! empty( $ACF->css_class ) ? ' ' . esc_attr_strip_tags( $ACF->css_class ) : '';
-	    $uniqid    = esc_attr_strip_tags( uniqid( $this->widget_classname . '-', true ) );
+	    $uniqid    = esc_attr_strip_tags( uniqid( $this->widget_classname . '-', false ) );
 
 	    //-----------------------------------------------------
 

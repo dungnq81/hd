@@ -414,7 +414,7 @@ abstract class Abstract_Widget extends WP_Widget {
 			$_data['navigation'] = Helper::toBool( $navigation );
 		}
 
-		if ( 'none' != $pagination && $pagination ) {
+		if ( 'none' !== $pagination && $pagination ) {
 			$_data['pagination'] = Helper::toString( $pagination );
 			$swiper_class        .= ' pagination-' . $pagination;
 		}
@@ -437,12 +437,12 @@ abstract class Abstract_Widget extends WP_Widget {
 			$swiper_class       .= ' scrollbar';
 		}
 
-		if ( 'default' != $direction && $direction ) {
+		if ( 'default' !== $direction && $direction ) {
 			$_data['direction'] = Helper::toString( $direction );
 			$swiper_class       .= ' direction-' . $direction;
 		}
 
-		if ( 'default' != $effect_slide && $effect_slide ) {
+		if ( 'default' !== $effect_slide && $effect_slide ) {
 			$_data['effect_slide'] = Helper::toString( $effect_slide );
 			$swiper_class          .= ' effect-' . $effect_slide;
 		}
@@ -536,6 +536,7 @@ abstract class Abstract_Widget extends WP_Widget {
 	 * @param $id
 	 *
 	 * @return object|mixed|null
+	 * @throws \JsonException
 	 */
 	protected function acfFields( $id ) {
 		return Helper::acfFields( $id );

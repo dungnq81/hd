@@ -156,7 +156,7 @@ final class WooCommerce {
 	/**
 	 * @return void
 	 */
-	protected function _hooks(): void {
+	private function _hooks(): void {
 
 		// https://stackoverflow.com/questions/57321805/remove-header-from-the-woocommerce-administrator-panel
 		add_action( 'admin_head', function () {

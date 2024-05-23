@@ -302,7 +302,7 @@ trait Base {
 
 		// improve obfuscation by eliminating newlines & whitespace
 		$output = '<script>'
-		          . 'var l=[];';
+		          . 'let l=[];';
 
 		foreach ( $x as $i => $value ) {
 			$output .= 'l[' . $i . "] = '" . $value . "';";

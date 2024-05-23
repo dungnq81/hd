@@ -9,8 +9,13 @@ import Swiper from 'swiper/bundle';
 // const is_desktop = () => device.desktop();
 
 // Initialize Swiper instances
-const initializeSwiper = (el, options) => {
-    const swiper = new Swiper(el, options);
+const initializeSwiper = (el, swiper_class, options) => {
+    if (!(el instanceof Element)) {
+        console.error('Error: The provided element is not a DOM element.');
+        return;
+    }
+
+    const swiper = new Swiper(swiper_class, options);
 
     el.addEventListener('mouseover', () => {
         swiper.autoplay.stop();
@@ -27,7 +32,7 @@ const initializeSwiper = (el, options) => {
 
 // Generate unique class names
 const generateClasses = () => {
-    const rand = nanoid(12);
+    const rand = nanoid(9);
     return {
         swiperClass: 'swiper-' + rand,
         nextClass: 'next-' + rand,
@@ -52,7 +57,7 @@ const getDefaultOptions = () => ({
 const initializeSwipers = () => {
     const swiperElements = [...document.querySelectorAll('.w-swiper')];
 
-    swiperElements.forEach((el) => {
+    swiperElements.forEach((el, index) => {
         const classes = generateClasses();
         el.classList.add(classes.swiperClass);
 
@@ -200,7 +205,7 @@ const initializeSwipers = () => {
             swiperOptions.allowTouchMove = !0;
         }
 
-        initializeSwiper('.' + classes.swiperClass, swiperOptions);
+        initializeSwiper(el, '.' + classes.swiperClass, swiperOptions);
     });
 };
 

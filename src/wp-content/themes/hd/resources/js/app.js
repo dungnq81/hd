@@ -39,11 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // javascript disable right click
     //document.addEventListener('contextmenu', event => event.preventDefault());
-    document.addEventListener('contextmenu', function (event) {
-        if (event.target.nodeName === 'IMG') {
-            event.preventDefault();
-        }
-    });
+    // document.addEventListener('contextmenu', function (event) {
+    //     if (event.target.nodeName === 'IMG') {
+    //         event.preventDefault();
+    //     }
+    // });
 
     /** remove style img tag */
     document.querySelectorAll('img').forEach((el) => el.removeAttribute('style'));
