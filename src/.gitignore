@@ -50,6 +50,11 @@ wp-content/themes/hd/assets/
 
 # ignore these plugins
 wp-content/plugins/*
+
 !wp-content/plugins/advanced-custom-fields-pro/
 !wp-content/plugins/contact-form-7/
 !wp-content/plugins/hd-addons/
+!wp-content/plugins/wp-svg-images/
+!wp-content/plugins/smtp-mailer/
+!wp-content/plugins/simple-custom-post-order/
+!wp-content/plugins/sg-cachepress/

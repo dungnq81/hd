@@ -1,6 +1,8 @@
+// Import jQuery and assign to window
 // import $ from 'jquery';
 Object.assign(window, { $: jQuery, jQuery });
 
+// Import Foundation core and utilities
 import { Foundation } from 'foundation-sites/js/foundation.core';
 import * as CoreUtils from 'foundation-sites/js/foundation.core.utils';
 
@@ -15,25 +17,27 @@ import { Move, Motion } from 'foundation-sites/js/foundation.util.motion';
 import { onImagesLoaded } from 'foundation-sites/js/foundation.util.imageLoader';
 import { Timer } from 'foundation-sites/js/foundation.util.timer';
 
-// Foundation Utilities Functions
-Foundation.rtl = CoreUtils.rtl;
-Foundation.GetYoDigits = CoreUtils.GetYoDigits;
-Foundation.RegExpEscape = CoreUtils.RegExpEscape;
-Foundation.transitionend = CoreUtils.transitionend;
-Foundation.onLoad = CoreUtils.onLoad;
-Foundation.ignoreMousedisappear = CoreUtils.ignoreMousedisappear;
+// Assign Foundation utilities
+Object.assign(Foundation, {
+    rtl: CoreUtils.rtl,
+    GetYoDigits: CoreUtils.GetYoDigits,
+    RegExpEscape: CoreUtils.RegExpEscape,
+    transitionend: CoreUtils.transitionend,
+    onLoad: CoreUtils.onLoad,
+    ignoreMousedisappear: CoreUtils.ignoreMousedisappear,
+    Keyboard,
+    Box,
+    Nest,
+    onImagesLoaded,
+    MediaQuery,
+    Motion,
+    Move,
+    Touch,
+    Triggers,
+    Timer,
+});
 
-Foundation.Keyboard = Keyboard;
-Foundation.Box = Box;
-Foundation.Nest = Nest;
-Foundation.onImagesLoaded = onImagesLoaded;
-Foundation.MediaQuery = MediaQuery;
-Foundation.Motion = Motion;
-Foundation.Move = Move;
-Foundation.Touch = Touch;
-Foundation.Triggers = Triggers;
-Foundation.Timer = Timer;
-
+// Initialize utilities
 Touch.init($);
 Triggers.init($, Foundation);
 MediaQuery._init();
@@ -42,82 +46,46 @@ MediaQuery._init();
 //require('motion-ui');
 //require('what-input');
 
-// https://get.foundation/sites/docs/dropdown.html
+// Import and initialize Foundation plugins
 import { Dropdown } from 'foundation-sites/js/foundation.dropdown';
-
-Foundation.plugin(Dropdown, 'Dropdown');
-
-// https://get.foundation/sites/docs/dropdown-menu.html
 import { DropdownMenu } from 'foundation-sites/js/foundation.dropdownMenu';
-
-Foundation.plugin(DropdownMenu, 'DropdownMenu');
-
-// https://get.foundation/sites/docs/accordion.html
 import { Accordion } from 'foundation-sites/js/foundation.accordion';
-
-Foundation.plugin(Accordion, 'Accordion');
-
-// https://get.foundation/sites/docs/accordion-menu.html
 import { AccordionMenu } from 'foundation-sites/js/foundation.accordionMenu';
-
-Foundation.plugin(AccordionMenu, 'AccordionMenu');
-
-// https://get.foundation/sites/docs/responsive-navigation.html
 import { ResponsiveMenu } from 'foundation-sites/js/foundation.responsiveMenu';
 import { ResponsiveToggle } from 'foundation-sites/js/foundation.responsiveToggle';
-
-Foundation.plugin(ResponsiveMenu, 'ResponsiveMenu');
-Foundation.plugin(ResponsiveToggle, 'ResponsiveToggle');
-
-// https://get.foundation/sites/docs/off-canvas.html
 import { OffCanvas } from 'foundation-sites/js/foundation.offcanvas';
-
-Foundation.plugin(OffCanvas, 'OffCanvas');
-
-// https://get.foundation/sites/docs/reveal.html
 import { Reveal } from 'foundation-sites/js/foundation.reveal';
-
-Foundation.plugin(Reveal, 'Reveal');
-
-// https://get.foundation/sites/docs/tooltip.html
 import { Tooltip } from 'foundation-sites/js/foundation.tooltip';
-
-Foundation.plugin(Tooltip, 'Tooltip');
-
-// https://get.foundation/sites/docs/smooth-scroll.html
 import { SmoothScroll } from 'foundation-sites/js/foundation.smoothScroll';
-
-Foundation.plugin(SmoothScroll, 'SmoothScroll');
-
-// https://get.foundation/sites/docs/magellan.html
 import { Magellan } from 'foundation-sites/js/foundation.magellan';
-
-Foundation.plugin(Magellan, 'Magellan');
-
-// https://get.foundation/sites/docs/sticky.html
 import { Sticky } from 'foundation-sites/js/foundation.sticky';
-
-Foundation.plugin(Sticky, 'Sticky');
-
-// https://get.foundation/sites/docs/toggler.html#
 import { Toggler } from 'foundation-sites/js/foundation.toggler';
-
-Foundation.plugin(Toggler, 'Toggler');
-
-// https://get.foundation/sites/docs/equalizer.html
 import { Equalizer } from 'foundation-sites/js/foundation.equalizer';
-
-Foundation.plugin(Equalizer, 'Equalizer');
-
-// https://get.foundation/sites/docs/interchange.html
 import { Interchange } from 'foundation-sites/js/foundation.interchange';
-
-Foundation.plugin(Interchange, 'Interchange');
-
-// https://get.foundation/sites/docs/abide.html
 import { Abide } from 'foundation-sites/js/foundation.abide';
 
-Foundation.plugin(Abide, 'Abide');
+const plugins = [
+    { plugin: Dropdown, name: 'Dropdown' },
+    { plugin: DropdownMenu, name: 'DropdownMenu' },
+    { plugin: Accordion, name: 'Accordion' },
+    { plugin: AccordionMenu, name: 'AccordionMenu' },
+    { plugin: ResponsiveMenu, name: 'ResponsiveMenu' },
+    { plugin: ResponsiveToggle, name: 'ResponsiveToggle' },
+    { plugin: OffCanvas, name: 'OffCanvas' },
+    { plugin: Reveal, name: 'Reveal' },
+    { plugin: Tooltip, name: 'Tooltip' },
+    { plugin: SmoothScroll, name: 'SmoothScroll' },
+    { plugin: Magellan, name: 'Magellan' },
+    { plugin: Sticky, name: 'Sticky' },
+    { plugin: Toggler, name: 'Toggler' },
+    { plugin: Equalizer, name: 'Equalizer' },
+    { plugin: Interchange, name: 'Interchange' },
+    { plugin: Abide, name: 'Abide' },
+];
+
+plugins.forEach(({ plugin, name }) => {
+    Foundation.plugin(plugin, name);
+});
 
 Foundation.addToJquery($);
 $(() => $(document).foundation());

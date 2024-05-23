@@ -6,37 +6,24 @@ Object.assign(window, { Cookies });
 jQuery(function ($) {
     // codemirror
     if (typeof codemirror_settings !== 'undefined') {
-        const codemirror_css = $('.codemirror_css');
-        const codemirror_html = $('.codemirror_html');
+        const initializeCodeMirror = (selector, settingsKey) => {
+            $(selector).each((index, el) => {
+                rand_element_init(el);
+                let editorSettings = codemirror_settings[settingsKey] ? { ...codemirror_settings[settingsKey] } : {};
 
-        codemirror_css.each((index, el) => {
-            rand_element_init(el);
+                editorSettings.codemirror = {
+                    indentUnit: 3,
+                    tabSize: 3,
+                    autoRefresh: true,
+                    lineNumbers: true,
+                };
 
-            let editorSettings = codemirror_settings.codemirror_css ? _.clone(codemirror_settings.codemirror_css) : {};
-
-            editorSettings.codemirror = _.extend({}, editorSettings.codemirror, {
-                indentUnit: 3,
-                tabSize: 3,
-                lineNumbers: true,
-                autoRefresh: true,
+                wp.codeEditor.initialize($(el), editorSettings);
             });
+        };
 
-            wp.codeEditor.initialize($(el), editorSettings);
-        });
-
-        codemirror_html.each((index, el) => {
-            rand_element_init(el);
-
-            let editorSettings = codemirror_settings.codemirror_html ? _.clone(codemirror_settings.codemirror_html) : {};
-
-            editorSettings.codemirror = _.extend({}, editorSettings.codemirror, {
-                indentUnit: 3,
-                tabSize: 3,
-                autoRefresh: true,
-            });
-
-            wp.codeEditor.initialize($(el), editorSettings);
-        });
+        initializeCodeMirror('.codemirror_css', 'codemirror_css');
+        initializeCodeMirror('.codemirror_html', 'codemirror_html');
     }
 
     // hide notice
@@ -45,35 +32,34 @@ jQuery(function ($) {
     });
 
     // filter tabs
-    const tabs_wrapper = $('.filter-tabs');
-    tabs_wrapper.each((index, el) => {
-        let _id = rand_element_init(el);
+    const filter_tabs = $('.filter-tabs');
+    filter_tabs.each(function (i, el) {
+        const $el = $(el),
+            _id = rand_element_init(el),
+            $nav = $el.find('.tabs-nav'),
+            $content = $el.find('.tabs-content');
 
-        const _nav = $(el).find('.tabs-nav');
-        const _content = $(el).find('.tabs-content');
+        const _cookie = `cookie_${_id}_${i}`;
+        let cookieValue = Cookies.get(_cookie);
 
-        _content.find('.tabs-panel').hide();
-        let _cookie = 'cookie_' + _id + '_' + index;
-
-        if (Cookies.get(_cookie) === '' || Cookies.get(_cookie) === 'undefined') {
-            let _hash = _nav.find('a:first').attr('href');
-            Cookies.set(_cookie, _hash, { expires: 7, path: '' });
+        if (!cookieValue) {
+            cookieValue = $nav.find('a:first').attr('href');
+            Cookies.set(_cookie, cookieValue, { expires: 7, path: '' });
         }
-
-        _nav.find('a[href="' + Cookies.get(_cookie) + '"]').addClass('current');
-        _nav.find('a')
+        $nav.find(`a[href="${cookieValue}"]`).addClass('current');
+        $nav.find('a')
             .on('click', function (e) {
                 e.preventDefault();
-                Cookies.set(_cookie, $(this).attr('href'), {
-                    expires: 7,
-                    path: '',
-                });
 
-                _nav.find('a.current').removeClass('current');
-                _content.find('.tabs-panel:visible').removeClass('show').hide();
+                const $this = $(this);
+                const hash = $this.attr('href');
+                Cookies.set(_cookie, hash, { expires: 7, path: '' });
 
-                $(this.hash).addClass('show').show();
-                $(this).addClass('current');
+                $nav.find('a.current').removeClass('current');
+                $content.find('.tabs-panel:visible').removeClass('show').hide();
+
+                $($this.attr('href')).addClass('show').show();
+                $this.addClass('current');
             })
             .filter('.current')
             .trigger('click');
@@ -88,86 +74,59 @@ jQuery(function ($) {
      * @return {*|jQuery}
      */
     function rand_element_init(el) {
+        const $el = $(el);
         const _rand = nanoid(9);
-        $(el).addClass(_rand);
+        $el.addClass(_rand);
 
-        let _id = $(el).attr('id');
-        if (_id === 'undefined' || _id === '') {
+        let _id = $el.attr('id');
+        if (!_id) {
             _id = _rand;
-            $(el).attr('id', _id);
+            $el.attr('id', _id);
         }
 
         return _id;
     }
 
     $.fn.fadeOutAndRemove = function (speed) {
-        $(this).fadeOut(speed, function () {
+        return this.fadeOut(speed, function () {
             $(this).remove();
         });
     };
 
     $.fn.serializeObject = function () {
-        let data = {};
+        let obj = {};
+        let array = this.serializeArray();
 
-        function buildInputObject(arr, val) {
-            if (arr.length < 1) {
-                return val;
-            }
-            let objkey = arr[0];
-            if (objkey.slice(-1) === ']') {
-                objkey = objkey.slice(0, -1);
-            }
-            let result = {};
-            if (arr.length === 1) {
-                result[objkey] = val;
+        $.each(array, function () {
+            let name = this.name;
+            let value = this.value || '';
+
+            // Check if the name ends with []
+            if (name.indexOf('[]') > -1) {
+                // Remove the trailing []
+                name = name.replace('[]', '');
+
+                // Ensure the object property is an array
+                if (!obj[name]) {
+                    obj[name] = [];
+                }
+
+                // Push the value into the array
+                obj[name].push(value);
             } else {
-                arr.shift();
-                result[objkey] = buildInputObject(arr, val);
-            }
-            return result;
-        }
-
-        function gatherMultipleValues(that) {
-            let final_array = [];
-            $.each(that.serializeArray(), function (key, field) {
-                // Copy normal fields to a final array without changes
-                if (field.name.indexOf('[]') < 0) {
-                    final_array.push(field);
-                    return true;
-                }
-
-                // Remove "[]" from the field name
-                let field_name = field.name.split('[]')[0];
-
-                // Add the field value in its array of values
-                let has_value = false;
-                $.each(final_array, function (final_key, final_field) {
-                    if (final_field.name === field_name) {
-                        has_value = true;
-                        final_array[final_key]['value'].push(field.value);
+                // Check if the object already has a property with the given name
+                if (obj[name] !== undefined) {
+                    if (!Array.isArray(obj[name])) {
+                        obj[name] = [obj[name]];
                     }
-                });
-
-                // If it doesn't exist yet, create the field's array of values
-                if (!has_value) {
-                    final_array.push({ name: field_name, value: [field.value] });
+                    obj[name].push(value);
+                } else {
+                    obj[name] = value;
                 }
-            });
-            return final_array;
-        }
-
-        // Manage fields allowing multiple values first (they contain "[]" in their name)
-        let final_array = gatherMultipleValues(this);
-
-        // Then, create the object
-        $.each(final_array, function () {
-            let val = this.value;
-            let c = this.name.split('[');
-            let a = buildInputObject(c, val);
-            $.extend(true, data, a);
+            }
         });
 
-        return data;
+        return obj;
     };
 
     // ajax
@@ -185,7 +144,6 @@ jQuery(function ($) {
         let button_text_loading = '<i class="fa-solid fa-spinner fa-spin-pulse"></i>';
 
         btn_submit.prop('disabled', true).html(button_text_loading);
-
         $.ajax({
             type: 'POST',
             url: ajaxurl,

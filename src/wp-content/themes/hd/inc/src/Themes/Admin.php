@@ -335,17 +335,16 @@ final class Admin {
 
 		/** ---------------------------------------- */
 
-		// Clear LiteSpeed cache, if existing.
+		// LiteSpeed cache
 		if ( class_exists( \LiteSpeed\Purge::class ) ) {
 			\LiteSpeed\Purge::purge_all();
 		}
 
-		// Clear wp-rocket cache
+		// wp-rocket cache
 		if ( \defined( 'WP_ROCKET_VERSION' ) && \function_exists( 'rocket_clean_domain' ) ) {
 			\rocket_clean_domain();
 		}
 
-		// Echo message success
 		Helper::messageSuccess( __( 'Settings saved', ADDONS_TEXT_DOMAIN ), true );
 		die();
 	}
@@ -404,7 +403,6 @@ final class Admin {
 		//dump($menu);
 		//dump($submenu);
 
-		// Hide menu
 		$hide_menu = Helper::getThemeMod( 'remove_menu_setting' );
 		if ( $hide_menu ) {
 			foreach ( explode( "\n", $hide_menu ) as $menu_slug ) {
@@ -427,7 +425,6 @@ final class Admin {
 
 		/** ---------------------------------------- */
 
-		// menu page
 		add_menu_page(
 			__( 'HD Settings', TEXT_DOMAIN ),
 			__( 'HD', TEXT_DOMAIN ),
@@ -438,7 +435,6 @@ final class Admin {
 			80
 		);
 
-		// submenu page
 		add_submenu_page( 'hd-settings', __( 'Advanced', TEXT_DOMAIN ), __( 'Advanced', TEXT_DOMAIN ), 'manage_options', 'customize.php' );
 		add_submenu_page( 'hd-settings', __( 'Server Info', TEXT_DOMAIN ), __( 'Server Info', TEXT_DOMAIN ), 'manage_options', 'server-info', [
 			&$this,

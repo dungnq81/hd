@@ -1,296 +1,207 @@
 import { nanoid } from 'nanoid';
 import { random, isEmpty, toString } from 'lodash';
-
-import device from 'current-device';
-
-const is_mobile = () => device.mobile();
-const is_tablet = () => device.tablet();
-
-/** import a Swiper bundle with all modules installed */
+//import device from 'current-device';
 import Swiper from 'swiper/bundle';
 
-/** swiper container */
-const w_swiper = [...document.querySelectorAll('.w-swiper')];
-w_swiper.forEach((el, index) => {
-    const _rand = nanoid(12),
-        _class = 'swiper-' + _rand,
-        _next_class = 'next-' + _rand,
-        _prev_class = 'prev-' + _rand,
-        _pagination_class = 'pagination-' + _rand,
-        _scrollbar_class = 'scrollbar-' + _rand;
+// Determine device type
+// const is_mobile = () => device.mobile();
+// const is_tablet = () => device.tablet();
+// const is_desktop = () => device.desktop();
 
-    el.classList.add(_class);
+// Initialize Swiper instances
+const initializeSwiper = (el, options) => {
+    const swiper = new Swiper(el, options);
 
-    /** swiper controls */
-    let _controls = el.closest('.swiper-section').querySelector('.swiper-controls');
-
-    if (_controls == null) {
-        _controls = document.createElement('div');
-        _controls.classList.add('swiper-controls');
-        el.after(_controls);
-    }
-
-    /** swiper options */
-    const el_swiper_wrapper = el.querySelector('.swiper-wrapper');
-    let _obj_options = JSON.parse(el_swiper_wrapper.dataset.options);
-
-    //---------------------------------------
-
-    if (isEmpty(_obj_options)) {
-        _obj_options = {
-            autoview: !0,
-            autoplay: !0,
-            navigation: !0,
-        };
-    }
-
-    // default options
-    let _result_options = {
-        grabCursor: !0,
-        allowTouchMove: !0,
-        threshold: 5,
-        hashNavigation: !1,
-        mousewheel: !1,
-        wrapperClass: 'swiper-wrapper',
-        slideClass: 'swiper-slide',
-        slideActiveClass: 'swiper-slide-active',
-    };
-
-    //---------------------------------------
-
-    if ('autoview' in _obj_options) {
-        _result_options.slidesPerView = 'auto';
-
-        if ('gap' in _obj_options) {
-            _result_options.spaceBetween = 20;
-            _result_options.breakpoints = {
-                640: {
-                    spaceBetween: 30,
-                },
-            };
-        }
-    } else {
-        let _desktop_data = {},
-            _tablet_data = {},
-            _mobile_data = {};
-
-        if ('mobile' in _obj_options) {
-            _mobile_data = _obj_options.mobile;
-        }
-
-        if ('tablet' in _obj_options) {
-            _tablet_data = _obj_options.tablet;
-        }
-
-        if ('desktop' in _obj_options) {
-            _desktop_data = _obj_options.desktop;
-        }
-
-        _result_options.breakpoints = {
-            0: _mobile_data,
-            640: _tablet_data,
-            1024: _desktop_data,
-        };
-    }
-
-    //---------------------------------------
-
-    /** centered */
-    if ('centered' in _obj_options) {
-        _result_options.centeredSlides = !0;
-    }
-
-    /** speed */
-    if ('speed' in _obj_options) {
-        _result_options.speed = parseInt(_obj_options.speed);
-    } else {
-        _result_options.speed = random(300, 900);
-    }
-
-    /** observer */
-    if ('observer' in _obj_options) {
-        _result_options.observer = !0;
-        _result_options.observeParents = !0;
-    }
-
-    /** effect */
-    if ('effect' in _obj_options) {
-        _result_options.effect = toString(_obj_options.effect);
-        if ('fade' === _result_options.effect) {
-            _result_options.fadeEffect = { crossFade: !0 };
-        }
-    }
-
-    /** autoheight */
-    if ('autoheight' in _obj_options) {
-        _result_options.autoHeight = !0;
-    }
-
-    /** freemode */
-    if ('freemode' in _obj_options) {
-        _result_options.freeMode = !0;
-    }
-
-    /** loop */
-    if ('loop' in _obj_options) {
-        _result_options.loop = !0;
-    }
-
-    /** autoplay */
-    if ('autoplay' in _obj_options) {
-        if ('delay' in _obj_options) {
-            _result_options.autoplay = {
-                disableOnInteraction: !1,
-                delay: parseInt(_obj_options.delay),
-            };
-        } else {
-            _result_options.autoplay = {
-                disableOnInteraction: !1,
-                delay: random(3000, 6000),
-            };
-        }
-
-        if ('reverse' in _obj_options) {
-            _result_options.reverseDirection = !0;
-        }
-    }
-
-    /** direction */
-    if ('direction' in _obj_options) {
-        _result_options.direction = toString(_obj_options.direction);
-    }
-
-    //---------------------------------------
-
-    /** navigation */
-    if ('navigation' in _obj_options) {
-        const _section = el.closest('.swiper-section');
-        let _btn_prev = _section.querySelector('.swiper-button-prev');
-        let _btn_next = _section.querySelector('.swiper-button-next');
-
-        if (_btn_prev && _btn_next) {
-            _btn_prev.classList.add(_prev_class);
-            _btn_next.classList.add(_next_class);
-        } else {
-            _btn_prev = document.createElement('div');
-            _btn_next = document.createElement('div');
-
-            _btn_prev.classList.add('swiper-button', 'swiper-button-prev', _prev_class);
-            _btn_next.classList.add('swiper-button', 'swiper-button-next', _next_class);
-
-            _controls.appendChild(_btn_prev);
-            _controls.appendChild(_btn_next);
-
-            _btn_prev.setAttribute('data-glyph', '');
-            _btn_next.setAttribute('data-glyph', '');
-        }
-
-        _result_options.navigation = {
-            nextEl: '.' + _next_class,
-            prevEl: '.' + _prev_class,
-        };
-    }
-
-    //---------------------------------------
-
-    /** pagination */
-    if ('pagination' in _obj_options) {
-        const _section = el.closest('.swiper-section');
-        let _pagination = _section.querySelector('.swiper-pagination');
-        if (_pagination) {
-            _pagination.classList.add(_pagination_class);
-        } else {
-            let _pagination = document.createElement('div');
-            _pagination.classList.add('swiper-pagination', _pagination_class);
-            _controls.appendChild(_pagination);
-        }
-
-        //...
-        if (_obj_options.pagination === 'bullets') {
-            _result_options.pagination = {
-                dynamicBullets: !0,
-                el: '.' + _pagination_class,
-                type: 'bullets',
-            };
-        } else if (_obj_options.pagination === 'fraction') {
-            _result_options.pagination = {
-                el: '.' + _pagination_class,
-                type: 'fraction',
-            };
-        } else if (_obj_options.pagination === 'progressbar') {
-            _result_options.pagination = {
-                el: '.' + _pagination_class,
-                type: 'progressbar',
-            };
-        } else if (_obj_options.pagination === 'custom') {
-            let _pagination = _section.querySelector('.swiper-pagination');
-            _pagination.classList.add('swiper-pagination-custom');
-            _result_options.pagination = {
-                el: '.' + _pagination_class,
-                renderBullet: function (index, className) {
-                    return '<span class="' + className + '">' + (index + 1) + '</span>';
-                },
-            };
-        }
-
-        _result_options.pagination.clickable = !0;
-    }
-
-    //---------------------------------------
-
-    /** scrollbar */
-    if ('scrollbar' in _obj_options) {
-        const _section = el.closest('.swiper-section');
-        let _scrollbar = _section.querySelector('.swiper-scrollbar');
-        if (_scrollbar) {
-            _scrollbar.classList.add(_scrollbar_class);
-        } else {
-            _scrollbar = document.createElement('div');
-            _scrollbar.classList.add('swiper-scrollbar', _scrollbar_class);
-            _controls.appendChild(_scrollbar);
-        }
-
-        _result_options.scrollbar = {
-            hide: !0,
-            draggable: !0,
-            el: '.' + _scrollbar_class,
-        };
-    }
-
-    //---------------------------------------
-
-    /** parallax */
-    if ('parallax' in _obj_options) {
-        _result_options.parallax = !0;
-    }
-
-    /** marquee **/
-    if ('marquee' in _obj_options) {
-        _result_options.centeredSlides = !1;
-        _result_options.autoplay = {
-            delay: 1,
-            disableOnInteraction: !1,
-        };
-        _result_options.loop = !0;
-        _result_options.allowTouchMove = !0;
-    }
-
-    /** cssMode */
-    if ('cssmode' in _obj_options) {
-        _result_options.cssMode = !0; /* API CSS Scroll Snap */
-    }
-
-    console.log(_result_options);
-    let _swiper = new Swiper('.' + _class, _result_options);
-
-    /** now add mouseover and mouseout events to pause and resume the autoplay; */
     el.addEventListener('mouseover', () => {
-        _swiper.autoplay.stop();
+        swiper.autoplay.stop();
     });
 
     el.addEventListener('mouseout', () => {
-        if ('autoplay' in _obj_options) {
-            _swiper.autoplay.start();
+        if (options.autoplay) {
+            swiper.autoplay.start();
         }
     });
+
+    return swiper;
+};
+
+// Generate unique class names
+const generateClasses = () => {
+    const rand = nanoid(12);
+    return {
+        swiperClass: 'swiper-' + rand,
+        nextClass: 'next-' + rand,
+        prevClass: 'prev-' + rand,
+        paginationClass: 'pagination-' + rand,
+        scrollbarClass: 'scrollbar-' + rand,
+    };
+};
+
+// Default Swiper options
+const getDefaultOptions = () => ({
+    grabCursor: !0,
+    allowTouchMove: !0,
+    threshold: 5,
+    hashNavigation: !1,
+    mousewheel: !1,
+    wrapperClass: 'swiper-wrapper',
+    slideClass: 'swiper-slide',
+    slideActiveClass: 'swiper-slide-active',
 });
+
+const initializeSwipers = () => {
+    const swiperElements = [...document.querySelectorAll('.w-swiper')];
+
+    swiperElements.forEach((el) => {
+        const classes = generateClasses();
+        el.classList.add(classes.swiperClass);
+
+        let controls = el.closest('.swiper-section')?.querySelector('.swiper-controls');
+        if (!controls) {
+            controls = document.createElement('div');
+            controls.classList.add('swiper-controls');
+            el.after(controls);
+        }
+
+        const swiperWrapper = el.querySelector('.swiper-wrapper');
+        let options = JSON.parse(swiperWrapper.dataset.options) || {};
+
+        if (isEmpty(options)) {
+            options = {
+                autoview: !0,
+                autoplay: !0,
+                navigation: !0,
+            };
+        }
+
+        const swiperOptions = { ...getDefaultOptions() };
+
+        if (options.autoview) {
+            swiperOptions.slidesPerView = 'auto';
+            if (options.gap) {
+                swiperOptions.spaceBetween = 20;
+                swiperOptions.breakpoints = {
+                    640: { spaceBetween: 30 },
+                };
+            }
+        } else {
+            swiperOptions.breakpoints = {
+                0: options.mobile || {},
+                640: options.tablet || {},
+                1024: options.desktop || {},
+            };
+        }
+
+        if (options.observer) {
+            swiperOptions.observer = !0;
+            swiperOptions.observeParents = !0;
+        }
+
+        if (options.effect) {
+            swiperOptions.effect = toString(options.effect);
+            if (swiperOptions.effect === 'fade') {
+                swiperOptions.fadeEffect = { crossFade: !0 };
+            }
+        }
+
+        if (options.autoheight) swiperOptions.autoHeight = !0;
+        if (options.loop) swiperOptions.loop = !0;
+        if (options.parallax) swiperOptions.parallax = !0;
+        if (options.direction) swiperOptions.direction = toString(options.direction);
+        if (options.centered) swiperOptions.centeredSlides = !0;
+        if (options.freemode) swiperOptions.freeMode = !0;
+        if (options.cssmode) swiperOptions.cssMode = !0;
+
+        swiperOptions.speed = options.speed ? parseInt(options.speed) : random(300, 900);
+
+        if (options.autoplay) {
+            swiperOptions.autoplay = {
+                disableOnInteraction: !1,
+                delay: options.delay ? parseInt(options.delay) : random(3000, 6000),
+            };
+            if (options.reverse) swiperOptions.reverseDirection = !0;
+        }
+
+        // Navigation
+        if (options.navigation) {
+            const section = el.closest('.swiper-section');
+            let btnPrev = section.querySelector('.swiper-button-prev');
+            let btnNext = section.querySelector('.swiper-button-next');
+
+            if (btnPrev && btnNext) {
+                btnPrev.classList.add(classes.prevClass);
+                btnNext.classList.add(classes.nextClass);
+            } else {
+                btnPrev = document.createElement('div');
+                btnNext = document.createElement('div');
+                btnPrev.classList.add('swiper-button', 'swiper-button-prev', classes.prevClass);
+                btnNext.classList.add('swiper-button', 'swiper-button-next', classes.nextClass);
+                controls.append(btnPrev, btnNext);
+
+                btnPrev.setAttribute('data-glyph', '');
+                btnNext.setAttribute('data-glyph', '');
+            }
+
+            swiperOptions.navigation = {
+                nextEl: '.' + classes.nextClass,
+                prevEl: '.' + classes.prevClass,
+            };
+        }
+
+        // Pagination
+        if (options.pagination) {
+            const section = el.closest('.swiper-section');
+            let pagination = section.querySelector('.swiper-pagination');
+            if (pagination) {
+                pagination.classList.add(classes.paginationClass);
+            } else {
+                pagination = document.createElement('div');
+                pagination.classList.add('swiper-pagination', classes.paginationClass);
+                controls.appendChild(pagination);
+            }
+
+            const paginationType = options.pagination;
+            swiperOptions.pagination = {
+                el: '.' + classes.paginationClass,
+                clickable: !0,
+                ...(paginationType === 'bullets' && { dynamicBullets: !0, type: 'bullets' }),
+                ...(paginationType === 'fraction' && { type: 'fraction' }),
+                ...(paginationType === 'progressbar' && { type: 'progressbar' }),
+                ...(paginationType === 'custom' && {
+                    renderBullet: (index, className) => `<span class="${className}">${index + 1}</span>`,
+                }),
+            };
+        }
+
+        // Scrollbar
+        if (options.scrollbar) {
+            const section = el.closest('.swiper-section');
+            let scrollbar = section.querySelector('.swiper-scrollbar');
+            if (scrollbar) {
+                scrollbar.classList.add(classes.scrollbarClass);
+            } else {
+                scrollbar = document.createElement('div');
+                scrollbar.classList.add('swiper-scrollbar', classes.scrollbarClass);
+                controls.appendChild(scrollbar);
+            }
+
+            swiperOptions.scrollbar = {
+                el: '.' + classes.scrollbarClass,
+                hide: !0,
+                draggable: !0,
+            };
+        }
+
+        // Marquee
+        if (options.marquee) {
+            swiperOptions.centeredSlides = !1;
+            swiperOptions.autoplay = { delay: 1, disableOnInteraction: !0 };
+            swiperOptions.loop = !0;
+            swiperOptions.allowTouchMove = !0;
+        }
+
+        initializeSwiper('.' + classes.swiperClass, swiperOptions);
+    });
+};
+
+document.addEventListener('DOMContentLoaded', initializeSwipers);

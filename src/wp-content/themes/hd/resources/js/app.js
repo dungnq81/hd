@@ -29,28 +29,24 @@ jQuery(($) => {
 /** DOMContentLoaded */
 document.addEventListener('DOMContentLoaded', () => {
     /*attribute target="_blank" is not W3C compliant*/
-    const _blanks = [...document.querySelectorAll('a._blank, a.blank, a[target="_blank"]')];
-    _blanks.forEach((el, index) => {
+    document.querySelectorAll('a._blank, a.blank, a[target="_blank"]').forEach((el) => {
         el.removeAttribute('target');
         el.setAttribute('target', '_blank');
-        if (!1 === el.hasAttribute('rel')) {
+        if (!el.hasAttribute('rel')) {
             el.setAttribute('rel', 'noopener nofollow');
         }
     });
 
     // javascript disable right click
     //document.addEventListener('contextmenu', event => event.preventDefault());
-    /*document.addEventListener("contextmenu", function(e) {
-        if (e.target.nodeName === "IMG") {
-            e.preventDefault();
+    document.addEventListener('contextmenu', function (event) {
+        if (event.target.nodeName === 'IMG') {
+            event.preventDefault();
         }
-    }, false);*/
+    });
 
     /** remove style img tag */
-    const _img = document.querySelectorAll('img');
-    Array.prototype.forEach.call(_img, (el) => {
-        el.removeAttribute('style');
-    });
+    document.querySelectorAll('img').forEach((el) => el.removeAttribute('style'));
 });
 
 //------------------------------------
@@ -60,13 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
  * @returns {*|jQuery}
  */
 function rand_element_init(el) {
+    const $el = $(el);
     const _rand = nanoid(9);
-    $(el).addClass(_rand);
+    $el.addClass(_rand);
 
-    let _id = $(el).attr('id');
-    if (_id === 'undefined' || _id === '') {
+    let _id = $el.attr('id');
+    if (!_id) {
         _id = _rand;
-        $(el).attr('id', _id);
+        $el.attr('id', _id);
     }
 
     return _id;
