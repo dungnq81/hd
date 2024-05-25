@@ -455,9 +455,9 @@ trait Wp {
 		}
 
 		// woocommerce_hide_out_of_stock_items
-		if ( 'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items', false, true ) &&
-		     self::is_woocommerce_active() &&
-		     'product' === $post_type
+		if ( 'product' === $post_type &&
+		     'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items', false, true ) &&
+		     self::is_woocommerce_active()
 		) {
 			$product_visibility_term_ids = \wc_get_product_visibility_term_ids();
 			$_args['tax_query'][]        = [
@@ -563,9 +563,9 @@ trait Wp {
 		}
 
 		// woocommerce_hide_out_of_stock_items
-		if ( 'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items', false, true ) &&
-		     self::is_woocommerce_active() &&
-		     'product' === $post_type
+		if ( 'product' === $post_type &&
+		     'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items', false, true ) &&
+		     self::is_woocommerce_active()
 		) {
 			$product_visibility_term_ids = wc_get_product_visibility_term_ids();
 			$_args['tax_query'][]        = [
@@ -1127,12 +1127,12 @@ trait Wp {
 						echo '<li><a href="' . self::home() . $slug['slug'] . '/">' . $post_type->labels->singular_name . '</a></span>';
 					}
 				} else {
-					$term = self::primaryTerm( $post );
-					if ( $term ) {
-						if ( $cat_code = get_term_parents_list( $term->term_id, $term->taxonomy, [ 'separator' => '' ] ) ) {
-							$cat_code = str_replace( '<a', '<li><a', $cat_code );
-							echo str_replace( '</a>', '</a></li>', $cat_code );
-						}
+					$term     = self::primaryTerm( $post );
+					$cat_code = get_term_parents_list( $term->term_id, $term->taxonomy, [ 'separator' => '' ] );
+
+					if ( $term && $cat_code ) {
+						$cat_code = str_replace( '<a', '<li><a', $cat_code );
+						echo str_replace( '</a>', '</a></li>', $cat_code );
 					}
 				}
 
@@ -1368,7 +1368,7 @@ trait Wp {
 
 		// `-1` indicates no post exists; no query necessary.
 		if ( ! $post && - 1 !== $post_id ) {
-			$post  = ( new WP_Query( $custom_query_vars ) )->post;
+			$post = ( new WP_Query( $custom_query_vars ) )->post;
 
 			set_theme_mod( $post_type . '_option_id', $post->ID ?? - 1 );
 		}

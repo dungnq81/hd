@@ -23,6 +23,37 @@ final class Helper {
 	// --------------------------------------------------
 
 	/**
+	 * @return void
+	 */
+	public static function clearAllCache(): void {
+
+		// LiteSpeed cache
+		if ( class_exists( \LiteSpeed\Purge::class ) ) {
+			\LiteSpeed\Purge::purge_all();
+		}
+
+		// wp-rocket cache
+		if ( \defined( 'WP_ROCKET_VERSION' ) && \function_exists( 'rocket_clean_domain' ) ) {
+			\rocket_clean_domain();
+		}
+
+		// Jetpack
+		if ( self::check_plugin_active( 'jetpack/jetpack.php' ) ) {
+			global $wpdb;
+
+			$wpdb->query( "DELETE FROM {$wpdb->options} WHERE `option_name` LIKE '_transient_jetpack_%'" );
+			$wpdb->query( "DELETE FROM {$wpdb->options} WHERE `option_name` LIKE '_transient_timeout_jetpack_%'" );
+
+			// Clear Photon cache locally
+			if ( class_exists( \Jetpack_Photon::class ) ) {
+				\Jetpack_Photon::instance()->purge_cache();
+			}
+		}
+	}
+
+	// --------------------------------------------------
+
+	/**
 	 * Find an attribute and add the data as an HTML string.
 	 *
 	 * @param string $str The HTML string.
@@ -64,8 +95,6 @@ final class Helper {
 			// Get our extra content.
 			foreach ( explode( ' ', $content_extra ) as $class ) {
 				if ( ! empty( $class ) && ! in_array( $class, $content, true ) ) {
-
-					// This one can be added!
 					$content[] = $class;
 				}
 			}
@@ -77,9 +106,7 @@ final class Helper {
 			$before_content = substr( $str, 0, $start );
 			$after_content  = substr( $str, $end );
 
-			// Combine the string again.
 			$str = $before_content . $content . $after_content;
-
 		} else {
 			$str = preg_replace(
 				'/' . preg_quote( $attr, '/' ) . '/',
@@ -109,7 +136,7 @@ final class Helper {
 			return $css;
 		}
 
-		if ( class_exists( '\MatthiasMullie\Minify\CSS' ) ) {
+		if ( class_exists( Minify\CSS::class ) ) {
 			return ( new Minify\CSS() )->add( $css )->minify();
 		}
 
@@ -166,7 +193,7 @@ final class Helper {
 	 *
 	 * @return string
 	 */
-	public static function ACF_Link( array|string $link, string $class = '', string $label = '', string $extra_title = '' ): string {
+	public static function ACF_Link( $link, string $class = '', string $label = '', string $extra_title = '' ): string {
 		$link_return = '';
 
 		// string
@@ -202,7 +229,7 @@ final class Helper {
 	// --------------------------------------------------
 
 	/**
-	 * @param ?string $path - full-path dir
+	 * @param ?string $path
 	 * @param bool $required_path
 	 * @param bool $required_new
 	 * @param string $FQN
@@ -348,12 +375,8 @@ final class Helper {
 		if ( ! headers_sent() ) {
 			wp_safe_redirect( $uri, $status );
 		} else {
-			echo '<script>';
-			echo 'window.location.href="' . $uri . '";';
-			echo '</script>';
-			echo '<noscript>';
-			echo '<meta http-equiv="refresh" content="0;url=' . $uri . '" />';
-			echo '</noscript>';
+			echo '<script>window.location.href="' . $uri . '";</script>';
+			echo '<noscript><meta http-equiv="refresh" content="0;url=' . $uri . '" /></noscript>';
 
 			return true;
 		}

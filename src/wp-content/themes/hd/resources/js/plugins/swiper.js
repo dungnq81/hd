@@ -130,8 +130,8 @@ const initializeSwipers = () => {
         // Navigation
         if (options.navigation) {
             const section = el.closest('.swiper-section');
-            let btnPrev = section.querySelector('.swiper-button-prev');
-            let btnNext = section.querySelector('.swiper-button-next');
+            let btnPrev = section?.querySelector('.swiper-button-prev');
+            let btnNext = section?.querySelector('.swiper-button-next');
 
             if (btnPrev && btnNext) {
                 btnPrev.classList.add(classes.prevClass);
@@ -156,7 +156,7 @@ const initializeSwipers = () => {
         // Pagination
         if (options.pagination) {
             const section = el.closest('.swiper-section');
-            let pagination = section.querySelector('.swiper-pagination');
+            let pagination = section?.querySelector('.swiper-pagination');
             if (pagination) {
                 pagination.classList.add(classes.paginationClass);
             } else {
@@ -181,7 +181,7 @@ const initializeSwipers = () => {
         // Scrollbar
         if (options.scrollbar) {
             const section = el.closest('.swiper-section');
-            let scrollbar = section.querySelector('.swiper-scrollbar');
+            let scrollbar = section?.querySelector('.swiper-scrollbar');
             if (scrollbar) {
                 scrollbar.classList.add(classes.scrollbarClass);
             } else {

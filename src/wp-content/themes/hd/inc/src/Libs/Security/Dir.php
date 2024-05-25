@@ -96,7 +96,7 @@ class Dir extends Abstract_Htaccess {
 		// Add custom whitelist.
 		$this->types[ $this->type ]['whitelist'] = apply_filters( 'hd_whitelist_wp_' . $this->type, $this->types[ $this->type ]['whitelist'] );
 
-		// Bail the there is nothing to whitelist.
+		// Bail: there is nothing to whitelist.
 		if ( empty( $this->types[ $this->type ]['whitelist'] ) ) {
 			return str_replace( '{REPLACEMENT}', '', $content );
 		}

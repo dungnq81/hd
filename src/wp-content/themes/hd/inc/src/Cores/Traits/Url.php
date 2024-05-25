@@ -236,11 +236,8 @@ trait Url {
 	 */
 	public static function query( string $url, $param, $fallback = null ): int|string|null {
 		$queries = self::queries( $url );
-		if ( ! isset( $queries[ $param ] ) ) {
-			return $fallback;
-		}
 
-		return $queries[ $param ];
+		return $queries[ $param ] ?? $fallback;
 	}
 
 	// --------------------------------------------------

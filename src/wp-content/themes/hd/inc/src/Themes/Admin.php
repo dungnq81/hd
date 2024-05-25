@@ -53,7 +53,7 @@ final class Admin {
 	 */
 	public function ajax_submit_settings(): void {
 		check_ajax_referer( '_wpnonce_hd_settings_' . get_current_user_id() );
-		$data  = $_POST['_data'] ?? [];
+		$data = $_POST['_data'] ?? [];
 
 		/** ---------------------------------------- */
 
@@ -169,7 +169,7 @@ final class Admin {
 		$optimizer_options_old = Helper::getOption( 'optimizer__options' );
 		$https_enforce_old     = $optimizer_options_old['https_enforce'] ?? 0;
 
-		$exclude_lazyload = ! empty( $data['exclude_lazyload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $data['exclude_lazyload'] ) : [];
+		$exclude_lazyload = ! empty( $data['exclude_lazyload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $data['exclude_lazyload'] ) : [ 'no-lazy' ];
 		$font_preload     = ! empty( $data['font_preload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $data['font_preload'] ) : [];
 		$dns_prefetch     = ! empty( $data['dns_prefetch'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $data['dns_prefetch'] ) : [];
 
@@ -185,6 +185,7 @@ final class Admin {
 			'minify_html'      => ! empty( $data['minify_html'] ) ? sanitize_text_field( $data['minify_html'] ) : 0,
 			'svgs'             => ! empty( $data['svgs'] ) ? sanitize_text_field( $data['svgs'] ) : 'disable',
 			'lazy_load'        => ! empty( $data['lazy_load'] ) ? sanitize_text_field( $data['lazy_load'] ) : 0,
+			'lazy_load_mobile' => ! empty( $data['lazy_load_mobile'] ) ? sanitize_text_field( $data['lazy_load_mobile'] ) : 0,
 			'exclude_lazyload' => $exclude_lazyload,
 			'font_optimize'    => ! empty( $data['font_optimize'] ) ? sanitize_text_field( $data['font_optimize'] ) : 0,
 			'font_preload'     => $font_preload,
@@ -335,17 +336,9 @@ final class Admin {
 
 		/** ---------------------------------------- */
 
-		// LiteSpeed cache
-		if ( class_exists( \LiteSpeed\Purge::class ) ) {
-			\LiteSpeed\Purge::purge_all();
-		}
-
-		// wp-rocket cache
-		if ( \defined( 'WP_ROCKET_VERSION' ) && \function_exists( 'rocket_clean_domain' ) ) {
-			\rocket_clean_domain();
-		}
-
+		Helper::clearAllCache();
 		Helper::messageSuccess( __( 'Settings saved', ADDONS_TEXT_DOMAIN ), true );
+
 		die();
 	}
 
@@ -496,7 +489,7 @@ final class Admin {
                             </li>
 
 	                        <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
-                            <li class="smtp-settings">
+                                <li class="smtp-settings">
                                 <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php endif; ?>
@@ -522,25 +515,24 @@ final class Admin {
                             </li>
 
 	                        <?php if ( Helper::is_woocommerce_active() ) : ?>
-                            <li class="woocommerce-settings">
+                                <li class="woocommerce-settings">
                                 <a title="WooCommerce" href="#woocommerce_settings"><?php _e( 'WooCommerce', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php endif; ?>
 
 	                        <?php if ( Helper::is_addons_active() ) : ?>
-                            <li class="base-slug-settings">
+                                <li class="base-slug-settings">
                                 <a title="Remove base slug" href="#base_slug_settings"><?php _e( 'Remove Base Slug', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php
 		                        $hd_email_list = apply_filters( 'hd_email_list', [] );
 		                        if ( ! empty( $hd_email_list ) ) :
-                            ?>
-                            <li class="email-settings">
+			                        ?>
+                                    <li class="email-settings">
                                 <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', TEXT_DOMAIN ); ?></a>
                             </li>
-                            <?php endif; ?>
-
-                            <li class="order-settings">
+		                        <?php endif; ?>
+                                <li class="order-settings">
                                 <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php endif; ?>
@@ -565,7 +557,7 @@ final class Admin {
                         </div>
 
 	                    <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
-                        <div id="smtp_settings" class="group tabs-panel">
+                            <div id="smtp_settings" class="group tabs-panel">
 							<?php include ADDONS_PATH . 'src/SMTP/options.php'; ?>
                         </div>
 	                    <?php endif; ?>
@@ -595,23 +587,24 @@ final class Admin {
                         </div>
 
 	                    <?php if ( Helper::is_woocommerce_active() ) : ?>
-                        <div id="woocommerce_settings" class="group tabs-panel">
+                            <div id="woocommerce_settings" class="group tabs-panel">
                             <?php include INC_PATH . 'src/Plugins/WooCommerce/options.php'; ?>
                         </div>
 	                    <?php endif; ?>
 
 	                    <?php if ( Helper::is_addons_active() ) : ?>
-                        <div id="base_slug_settings" class="group tabs-panel">
+                            <div id="base_slug_settings" class="group tabs-panel">
                             <?php include ADDONS_PATH . 'src/Base_Slug/options.php'; ?>
                         </div>
 
 	                    <?php if ( ! empty( $hd_email_list ) ) : ?>
-                        <div id="email_settings" class="group tabs-panel">
+                                <div id="email_settings" class="group tabs-panel">
                             <?php include ADDONS_PATH . 'src/Custom_Email/options.php'; ?>
                         </div>
 		                    <?php endif; ?>
 
-                        <div id="custom_order_settings" class="group tabs-panel">
+
+                            <div id="custom_order_settings" class="group tabs-panel">
 		                    <?php include ADDONS_PATH . 'src/Custom_Order/options.php'; ?>
                         </div>
 	                    <?php endif; ?>
@@ -656,7 +649,7 @@ final class Admin {
                             <li><?php echo sprintf( '<span>Platform:</span> %s', php_uname() ); ?></li>
 
 	                        <?php if ( $server_software = $_SERVER['SERVER_SOFTWARE'] ?? null ) : ?>
-                            <li><?php echo sprintf( '<span>SERVER:</span> %s', $server_software ); ?></li>
+                                <li><?php echo sprintf( '<span>SERVER:</span> %s', $server_software ); ?></li>
 	                        <?php endif; ?>
 
                             <li><?php echo sprintf( '<span>PHP version:</span> %s', PHP_VERSION ); ?></li>

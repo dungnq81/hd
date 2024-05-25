@@ -160,7 +160,7 @@ jQuery(function ($) {
 
                 // dismissible auto hide
                 setTimeout(() => {
-                    $this.find('#hd_content').find('.dismissible-auto').fadeOutAndRemove(400);
+                    $this.find('#hd_content').find('.dismissible-auto')?.fadeOutAndRemove(400);
                 }, 3000);
             })
             .fail(function (jqXHR, textStatus, errorThrown) {

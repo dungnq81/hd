@@ -1,5 +1,5 @@
-const { globSync } = require('glob');
 const mix = require('laravel-mix');
+const { globSync } = require('glob');
 
 mix.webpackConfig({
     stats: {

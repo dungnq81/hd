@@ -5,7 +5,6 @@ namespace Cores\Traits;
 use DateTimeInterface;
 use Detection\Exception\MobileDetectException;
 use Detection\MobileDetect;
-use Exception;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -61,7 +60,7 @@ trait Base {
 	 */
 	public static function is_mobile(): bool {
 
-		if ( class_exists( '\Detection\MobileDetect' ) ) {
+		if ( class_exists( MobileDetect::class ) ) {
 			return ( new MobileDetect() )->isMobile();
 		}
 

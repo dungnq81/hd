@@ -40,13 +40,14 @@ final class Lazy_Load {
 	 */
 	public function __construct() {
 		$lazy_load = optimizer_options( 'lazy_load', 0 );
+		$lazy_load_mobile = optimizer_options( 'lazy_load_mobile', 0 );
 
 		if ( empty( $lazy_load ) ) {
 			return;
 		}
 
 		// Bail if the current browser runs on a mobile device and the lazy-load on mobile is deactivated.
-		if ( is_mobile() ) {
+		if ( ! $lazy_load_mobile && is_mobile() ) {
 			return;
 		}
 

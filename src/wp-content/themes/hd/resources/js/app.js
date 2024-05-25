@@ -19,6 +19,7 @@ jQuery(($) => {
     $(window).on('load', () => {
         onload_events();
     });
+
     device.onChangeOrientation(() => {
         onload_events();
     });
@@ -28,12 +29,15 @@ jQuery(($) => {
 
 /** DOMContentLoaded */
 document.addEventListener('DOMContentLoaded', () => {
-    /*attribute target="_blank" is not W3C compliant*/
     document.querySelectorAll('a._blank, a.blank, a[target="_blank"]').forEach((el) => {
-        el.removeAttribute('target');
-        el.setAttribute('target', '_blank');
-        if (!el.hasAttribute('rel')) {
-            el.setAttribute('rel', 'noopener nofollow');
+        if (!el.hasAttribute('target') || el.getAttribute('target') !== '_blank') {
+            el.setAttribute('target', '_blank');
+        }
+
+        const relValue = el.getAttribute('rel');
+        if (!relValue || !relValue.includes('noopener') || !relValue.includes('nofollow')) {
+            const newRelValue = (relValue ? relValue + ' ' : '') + 'noopener nofollow';
+            el.setAttribute('rel', newRelValue);
         }
     });
 
