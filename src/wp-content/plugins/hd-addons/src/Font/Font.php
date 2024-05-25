@@ -22,34 +22,20 @@ final class Font {
 	 * @var string[]
 	 */
 	public array $regex_parts = [
-		'~',
-		// The php quotes.
-		'<link',
-		// Match the opening part of link tags.
-		'(?:\s+(?:(?!href\s*=\s*)[^>])+)?',
-		// Negative lookahead asserting the regex does not match href attribute.
-		'(?:\s+href\s*=\s*(?P<quotes>[\'|"]))',
-		// Match the href attribute followed by single or double quotes. Create a `quotes` group, so we can use it later.
-		'(',
-		// Open the capturing group for the href value.
-		'(?:https?:)?',
-		// Match the protocol, which is optional. Sometimes the fons are added. Without protocol i.e. //fonts.googleapi.com/css.
-		'\/\/fonts\.googleapis\.com\/',
-		// Match that the href value is a Google font link.
-		'(?P<type>css2?)',
-		// The type of the fonts CSS/CSS2.
-		'(?:(?!(?P=quotes)).)+',
-		// Match anything in the href attribute until the closing quote.
-		')',
-		// Close the capturing group.
-		'(?P=quotes)',
-		// Match the closing quote.
-		'(?:\s+.*?)?',
-		// Match anything else after the href tag.
-		'[>]',
-		// Until the closing tag if found.
-		'~',
-		// The php quotes.
+		'~', // The php quotes.
+		'<link', // Match the opening part of link tags.
+		'(?:\s+(?:(?!href\s*=\s*)[^>])+)?', // Negative lookahead asserting the regex does not match href attribute.
+		'(?:\s+href\s*=\s*(?P<quotes>[\'|"]))', // Match the href attribute followed by single or double quotes. Create a `quotes` group, so we can use it later.
+		'(', // Open the capturing group for the href value.
+		'(?:https?:)?', // Match the protocol, which is optional. Sometimes the fons are added. Without protocol i.e. //fonts.googleapi.com/css.
+		'\/\/fonts\.googleapis\.com\/', // Match that the href value is a Google font link.
+		'(?P<type>css2?)', // The type of the fonts CSS/CSS2.
+		'(?:(?!(?P=quotes)).)+', // Match anything in the href attribute until the closing quote.
+		')', // Close the capturing group.
+		'(?P=quotes)', // Match the closing quote.
+		'(?:\s+.*?)?', // Match anything else after the href tag.
+		'[>]', // Until the closing tag if found.
+		'~', // The php quotes.
 		'ims',
 	];
 
@@ -79,7 +65,6 @@ final class Font {
 		$directory = $cache_dir . '/addons';
 
 		// Check if a directory exists and try to create it if not.
-		// Set the asset dir.
 		if ( is_dir( $directory ) || wp_mkdir_p( $directory ) ) {
 			$this->assets_dir = trailingslashit( $directory );
 		}
