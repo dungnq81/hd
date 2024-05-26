@@ -212,7 +212,7 @@ final class Optimizer {
 		}
 
 		// Add script handles to the array
-		$str_parsed = apply_filters( 'hd_defer_script', [] );
+		$str_parsed = Helper::filter_setting_options( 'defer_script', [] );
 
 		return Helper::lazyScriptTag( $str_parsed, $tag, $handle, $src );
 	}
@@ -228,7 +228,7 @@ final class Optimizer {
 	 * @return string
 	 */
 	public function style_loader_tag( string $html, string $handle ): string {
-		$styles = apply_filters( 'hd_defer_style', [] );
+		$styles = Helper::filter_setting_options( 'defer_style', [] );
 
 		return Helper::lazyStyleTag( $styles, $html, $handle );
 	}
@@ -243,20 +243,20 @@ final class Optimizer {
 
 			// get default value
 			$posts_per_page_default    = $posts_per_page = get_option( 'posts_per_page' );
-			$hd_posts_num_per_page_arr = apply_filters( 'hd_posts_num_per_page', [] );
+			$posts_num_per_page_arr = Helper::filter_setting_options( 'posts_num_per_page', [] );
 
-			if ( ! empty( $hd_posts_num_per_page_arr ) ) {
-				$posts_per_page = min( $hd_posts_num_per_page_arr );
+			if ( ! empty( $posts_num_per_page_arr ) ) {
+				$posts_per_page = min( $posts_num_per_page_arr );
 
 				if ( isset( $_GET['pagenum'] ) ) {
-
 					$pagenum = esc_sql( $_GET['pagenum'] );
-					if ( in_array( $pagenum, $hd_posts_num_per_page_arr, true ) ) {
+
+					if ( in_array( $pagenum, $posts_num_per_page_arr, true ) ) {
 						$posts_per_page = $pagenum;
 					}
 
-					if ( $pagenum > max( $hd_posts_num_per_page_arr ) ) {
-						$posts_per_page = max( $hd_posts_num_per_page_arr );
+					if ( $pagenum > max( $posts_num_per_page_arr ) ) {
+						$posts_per_page = max( $posts_num_per_page_arr );
 					}
 				}
 			}

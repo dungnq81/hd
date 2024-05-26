@@ -210,11 +210,14 @@ final class SVG {
 	 * @return mixed
 	 */
 	public function wp_prepare_attachment_for_js( $response, $attachment, $meta ): mixed {
-		if ( $response['mime'] === 'image/svg+xml' && empty( $response['sizes'] ) ) {
+		if ( $response['mime'] === 'image/svg+xml' &&
+		     empty( $response['sizes'] )
+		) {
 			$svg_path = get_attached_file( $attachment->ID );
 			if ( ! file_exists( $svg_path ) ) {
 				$svg_path = $response['url'];
 			}
+
 			$dimensions        = $this->svg_dimensions( $svg_path );
 			$response['sizes'] = [
 				'full' => [

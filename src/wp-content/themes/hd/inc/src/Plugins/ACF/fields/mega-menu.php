@@ -10,9 +10,9 @@ add_action( 'acf/include_fields', function () {
 	}
 
 	$location                = [];
-	$hd_location_menu_items = apply_filters( 'hd_location_mega_menu', [] );
+	$acf_mega_menu_locations = Helper::filter_setting_options( 'acf_mega_menu_locations', [] );
 
-	foreach ( $hd_location_menu_items as $menu_items ) {
+	foreach ( $acf_mega_menu_locations as $menu_items ) {
 		if ( $menu_items ) {
 			$location[] = [
 				[

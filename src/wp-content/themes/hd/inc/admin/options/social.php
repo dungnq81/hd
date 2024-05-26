@@ -1,11 +1,13 @@
-<h2><?php _e( 'Social Settings', ADDONS_TEXT_DOMAIN ); ?></h2>
+<h2><?php use Cores\Helper;
+
+	_e( 'Social Settings', ADDONS_TEXT_DOMAIN ); ?></h2>
 
 <?php
 $social_options    = get_option( 'social__options' );
-$hd_social_follows = apply_filters( 'hd_social_follows', [] );
+$social_follows_links = Helper::filter_setting_options( 'social_follows_links', [] );
 
-if ( ! empty( $hd_social_follows ) ) :
-	foreach ( $hd_social_follows as $key => $social ) :
+if ( ! empty( $social_follows_links ) ) :
+	foreach ( $social_follows_links as $key => $social ) :
 
 		if ( empty( $social['name'] ) || empty( $social['icon'] ) ) {
 			continue;
@@ -21,9 +23,7 @@ if ( ! empty( $hd_social_follows ) ) :
         <div class="controls control-img">
             <label for="<?= $key ?>">
                 <?php
-                if ( filter_var( $icon, FILTER_VALIDATE_URL ) ||
-                     str_starts_with( $icon, 'data:' )
-                ) :
+                if ( filter_var( $icon, FILTER_VALIDATE_URL ) || str_starts_with( $icon, 'data:' ) ) :
 	                echo '<img src="' . $icon . '" alt="' . esc_attr( $name ) . '">';
                 elseif ( str_starts_with( $icon, '<svg' ) ) :
 	                echo $icon;

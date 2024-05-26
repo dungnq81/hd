@@ -97,7 +97,7 @@ abstract class Abstract_Widget extends WP_Widget {
 			$widget_id_for_cache = $widget_id . '-' . ( is_ssl() ? 'https' : 'http' );
 		}
 
-		return apply_filters( 'w_cached_widget_id', $widget_id_for_cache );
+		return apply_filters( 'hd_cached_widget_id', $widget_id_for_cache );
 	}
 
 	// --------------------------------------------------
@@ -223,7 +223,7 @@ abstract class Abstract_Widget extends WP_Widget {
 			}
 
 			// Sanitize the value of a setting.
-			$instance[ $key ] = apply_filters( 'w_widget_settings_sanitize_option', $instance[ $key ], $new_instance, $key, $setting );
+			$instance[ $key ] = apply_filters( 'hd_widget_settings_sanitize_option', $instance[ $key ], $new_instance, $key, $setting );
 		}
 
 		$this->flush_widget_cache();

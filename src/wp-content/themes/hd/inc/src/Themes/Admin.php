@@ -59,7 +59,9 @@ final class Admin {
 
 		/** Aspect Ratio */
 		$aspect_ratio_options = [];
-		foreach ( apply_filters( 'hd_aspect_ratio_post_type', [] ) as $ar ) {
+		$aspect_ratio_post_type = Helper::filter_setting_options( 'aspect_ratio_post_type', [] );
+
+		foreach ( $aspect_ratio_post_type as $ar ) {
 			$aspect_ratio_options[ 'ar-' . $ar . '-width' ]  = ! empty( $data[ $ar . '-width' ] ) ? sanitize_text_field( $data[ $ar . '-width' ] ) : 4;
 			$aspect_ratio_options[ 'ar-' . $ar . '-height' ] = ! empty( $data[ $ar . '-height' ] ) ? sanitize_text_field( $data[ $ar . '-height' ] ) : 3;
 		}
@@ -110,9 +112,9 @@ final class Admin {
 		/** Emails list */
 		if ( Helper::is_addons_active() ) {
 			$email_options = [];
-			$hd_email_list = apply_filters( 'hd_email_list', [] );
-			if ( $hd_email_list ) {
-				foreach ( $hd_email_list as $i => $ar ) {
+			$custom_emails = Helper::filter_setting_options( 'custom_emails', [] );
+			if ( $custom_emails ) {
+				foreach ( $custom_emails as $i => $ar ) {
 					$email_options[ $i ] = ! empty( $data[ $i . '_email' ] ) ? sanitize_text_field( $data[ $i . '_email' ] ) : '';
 				}
 
@@ -235,7 +237,9 @@ final class Admin {
 
 		// Socials
 		$social_options = [];
-		foreach ( apply_filters( 'hd_social_follows', [] ) as $i => $item ) {
+        $social_follows_links = Helper::filter_setting_options( 'social_follows_links', [] );
+
+		foreach ( $social_follows_links as $i => $item ) {
 			$social_options[ $i ] = [
 				'url' => ! empty( $data[ $i . '-option' ] ) ? sanitize_url( $data[ $i . '-option' ] ) : '',
 			];
@@ -525,8 +529,8 @@ final class Admin {
                                 <a title="Remove base slug" href="#base_slug_settings"><?php _e( 'Remove Base Slug', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php
-		                        $hd_email_list = apply_filters( 'hd_email_list', [] );
-		                        if ( ! empty( $hd_email_list ) ) :
+		                        $custom_emails = Helper::filter_setting_options( 'custom_emails', [] );
+		                        if ( ! empty( $custom_emails ) ) :
 			                        ?>
                                     <li class="email-settings">
                                 <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', TEXT_DOMAIN ); ?></a>
@@ -714,7 +718,7 @@ final class Admin {
 			'post_tag',
 		];
 
-		$taxonomy_arr = apply_filters( 'hd_term_row_actions', $taxonomy_arr );
+		$taxonomy_arr = Helper::filter_setting_options( 'term_row_actions', $taxonomy_arr );
 
 		foreach ( $taxonomy_arr as $term ) {
 			add_filter( "{$term}_row_actions", [ &$this, 'term_action_links' ], 11, 2 );
@@ -726,7 +730,8 @@ final class Admin {
 			'post',
 			'page',
 		];
-		$post_type_arr = apply_filters( 'hd_post_row_actions', $post_type_arr );
+
+		$post_type_arr = Helper::filter_setting_options( 'post_row_actions', $post_type_arr );
 
 		foreach ( $post_type_arr as $post_type ) {
 			add_filter( "{$post_type}_row_actions", [ &$this, 'post_type_action_links' ], 11, 2 );
@@ -741,7 +746,7 @@ final class Admin {
 
 		// exclude post columns
 		$exclude_thumb_posts = [];
-		$exclude_thumb_posts = apply_filters( 'hd_post_exclude_columns', $exclude_thumb_posts );
+		$exclude_thumb_posts = Helper::filter_setting_options( 'post_type_exclude_thumb_columns', $exclude_thumb_posts );
 
 		foreach ( $exclude_thumb_posts as $post ) {
 			add_filter( "manage_{$post}_posts_columns", [ $this, 'post_exclude_header' ], 12, 1 );
@@ -753,7 +758,7 @@ final class Admin {
 			'post_tag',
 		];
 
-		$thumb_terms = apply_filters( 'hd_term_columns', $thumb_terms );
+		$thumb_terms = Helper::filter_setting_options( 'term_thumb_columns', $thumb_terms );
 
 		foreach ( $thumb_terms as $term ) {
 			add_filter( "manage_edit-{$term}_columns", [ &$this, 'term_header' ], 11, 1 );

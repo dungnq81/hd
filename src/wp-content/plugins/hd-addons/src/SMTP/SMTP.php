@@ -141,13 +141,11 @@ final class SMTP {
 								// Text before the bracketed email is the "From" name.
 								if ( $bracket_pos > 0 ) {
 									$from_name = substr( $content, 0, $bracket_pos );
-									$from_name = str_replace( '"', '', $from_name );
-									$from_name = trim( $from_name );
+									$from_name = trim( str_replace( '"', '', $from_name ) );
 								}
 
 								$from_email = substr( $content, $bracket_pos + 1 );
-								$from_email = str_replace( '>', '', $from_email );
-								$from_email = trim( $from_email );
+								$from_email = trim( str_replace( '>', '', $from_email ) );
 
 								// Avoid setting an empty $from_email.
 							} elseif ( '' !== trim( $content ) ) {
@@ -228,8 +226,7 @@ final class SMTP {
 			$reply_to                = [];
 
 			foreach ( $temp_reply_to_addresses as $temp_reply_to_address ) {
-				$reply_to_address = trim( $temp_reply_to_address );
-				$reply_to[]       = $reply_to_address;
+				$reply_to[]       = trim( $temp_reply_to_address );
 			}
 		}
 
@@ -250,11 +247,11 @@ final class SMTP {
 					// Break $recipient into name and address parts if in the format "Foo <bar@baz.com>".
 					$recipient_name = '';
 
-					if ( preg_match( '/(.*)<(.+)>/', $address, $matches ) ) {
-						if ( count( $matches ) === 3 ) {
-							$recipient_name = $matches[1];
-							$address        = $matches[2];
-						}
+					if ( preg_match( '/(.*)<(.+)>/', $address, $matches ) &&
+					     count( $matches ) === 3
+					) {
+						$recipient_name = $matches[1];
+						$address        = $matches[2];
 					}
 
 					switch ( $address_header ) {

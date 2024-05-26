@@ -137,7 +137,6 @@ final class Options {
 	 * @return void
 	 */
 	public function editor_enqueue_scripts(): void {
-
 		$block_editor_options = Helper::getOption( 'block_editor__options', false, false );
 		$block_style_off      = $block_editor_options['block_style_off'] ?? '';
 
@@ -165,13 +164,14 @@ final class Options {
 		$classes = [];
 		$styles  = '';
 
-		foreach ( apply_filters( 'hd_aspect_ratio_post_type', [] ) as $ar_post_type ) {
+		$aspect_ratio_post_type = Helper::filter_setting_options( 'aspect_ratio_post_type', [] );
+		foreach ( $aspect_ratio_post_type as $ar_post_type ) {
 
 			$ratio_obj   = Helper::getAspectRatio( $ar_post_type );
 			$ratio_class = $ratio_obj->class ?? '';
 			$ratio_style = $ratio_obj->style ?? '';
 
-			if ( ! in_array( $ratio_class, $classes, true ) && $ratio_style ) {
+			if ( $ratio_style && ! in_array( $ratio_class, $classes, true )  ) {
 				$classes[] = $ratio_class;
 				$styles    .= $ratio_style;
 			}

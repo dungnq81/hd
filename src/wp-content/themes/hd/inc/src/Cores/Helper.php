@@ -54,6 +54,24 @@ final class Helper {
 	// --------------------------------------------------
 
 	/**
+	 * @param $name
+	 * @param mixed $default
+	 *
+	 * @return array|mixed
+	 */
+	public static function filter_setting_options( $name, mixed $default = [] ): mixed {
+		$filters = apply_filters( 'hd_theme_setting_options', [] );
+
+		if ( isset( $filters[$name] ) ) {
+			return $filters[$name] ?: $default;
+		}
+
+		return [];
+	}
+
+	// --------------------------------------------------
+
+	/**
 	 * Find an attribute and add the data as an HTML string.
 	 *
 	 * @param string $str The HTML string.

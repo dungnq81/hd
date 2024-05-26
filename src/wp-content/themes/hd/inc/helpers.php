@@ -52,11 +52,11 @@ if ( ! function_exists( 'check_smtp_plugin_active' ) ) {
 	 * @return bool
 	 */
 	function check_smtp_plugin_active(): bool {
-		$hd_smtp_plugins_support = apply_filters( 'hd_smtp_plugins_support', [] );
+		$smtp_plugins_support = Helper::filter_setting_options( 'smtp_plugins_support', [] );
 
 		$check = true;
-		if ( ! empty( $hd_smtp_plugins_support ) ) {
-			foreach ( $hd_smtp_plugins_support as $plugin_slug ) {
+		if ( ! empty( $smtp_plugins_support ) ) {
+			foreach ( $smtp_plugins_support as $plugin_slug ) {
 				if ( Helper::check_plugin_active( $plugin_slug ) ) {
 					$check = false;
 					break;
@@ -153,10 +153,10 @@ if ( ! function_exists( 'set_posts_per_page' ) ) {
 		if ( ! is_admin() && ! is_main_query() ) {
 
 			$limit_default         = $limit_min = get_option( 'posts_per_page' );
-			$hd_posts_num_per_page = apply_filters( 'hd_posts_num_per_page', [] );
+			$posts_num_per_page = Helper::filter_setting_options( 'posts_num_per_page', [] );
 
-			if ( ! empty( $hd_posts_num_per_page ) ) {
-				$limit_min = min( $hd_posts_num_per_page );
+			if ( ! empty( $posts_num_per_page ) ) {
+				$limit_min = min( $posts_num_per_page );
 			}
 
 			if ( $post_limit !== $limit_default && $post_limit !== $limit_min ) {

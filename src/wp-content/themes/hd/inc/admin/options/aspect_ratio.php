@@ -2,12 +2,12 @@
 
 use Cores\Helper;
 
-$ar_post_type_list = apply_filters( 'hd_aspect_ratio_post_type', [] );
+$aspect_ratio_post_type = Helper::filter_setting_options( 'aspect_ratio_post_type', [] );
 
 ?>
 <h2><?php _e( 'Aspect Ratio Settings', TEXT_DOMAIN ); ?></h2>
 <?php
-foreach ( $ar_post_type_list as $ar ) :
+foreach ( $aspect_ratio_post_type as $ar ) :
 	$title = Helper::mbUcFirst( $ar );
 
 	if ( ! $title ) {

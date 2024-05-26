@@ -767,9 +767,9 @@ trait Wp {
 				$taxonomy = 'category';
 			}
 
-			$hd_post_type_terms_arr = apply_filters( 'hd_post_type_terms', [] );
-			if ( ! empty( $hd_post_type_terms_arr ) ) {
-				foreach ( $hd_post_type_terms_arr as $_post_type => $_taxonomy ) {
+			$post_type_terms_arr = Helper::filter_setting_options( 'post_type_terms', [] );
+			if ( ! empty( $post_type_terms_arr ) ) {
+				foreach ( $post_type_terms_arr as $_post_type => $_taxonomy ) {
 					if ( $_post_type === $post_type ) {
 						$taxonomy = $_taxonomy;
 					}
@@ -857,9 +857,9 @@ trait Wp {
 				$taxonomy = 'category';
 			}
 
-			$hd_post_type_terms_arr = apply_filters( 'hd_post_type_terms', [] );
-			if ( ! empty( $hd_post_type_terms_arr ) ) {
-				foreach ( $hd_post_type_terms_arr as $_post_type => $_taxonomy ) {
+			$post_type_terms_arr = Helper::filter_setting_options( 'post_type_terms', [] );
+			if ( ! empty( $post_type_terms_arr ) ) {
+				foreach ( $post_type_terms_arr as $_post_type => $_taxonomy ) {
 					if ( $_post_type === $post_type ) {
 						$taxonomy = $_taxonomy;
 					}
@@ -1532,10 +1532,11 @@ trait Wp {
 		if ( ! $ratio_x || ! $ratio_y ) {
 			$ratio_class = $default;
 		} else {
-			$ratio_class     = 'ar-' . $ratio_x . '-' . $ratio_y;
-			$ar_default_list = apply_filters( 'hd_aspect_ratio_default_list', [] );
 
-			if ( is_array( $ar_default_list ) && ! in_array( $ratio_x . '-' . $ratio_y, $ar_default_list, true ) ) {
+			$ratio_class     = 'ar-' . $ratio_x . '-' . $ratio_y;
+			$ar_aspect_ratio_css = Helper::filter_setting_options( 'aspect_ratio_css', [] );
+
+			if ( is_array( $ar_aspect_ratio_css ) && ! in_array( $ratio_x . '-' . $ratio_y, $ar_aspect_ratio_css, true ) ) {
 				$css = new CSS();
 
 				$css->set_selector( '.' . $ratio_class );

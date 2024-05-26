@@ -45,7 +45,7 @@ abstract class Abstract_Lazy_Load {
 	public function is_lazy_url_excluded(): bool {
 
 		// Get the urls where a lazy load is excluded.
-		$excluded_urls = apply_filters( 'hd_lazy_load_exclude_urls', [] );
+		$excluded_urls = filter_setting_options( 'lazy_load_exclude_urls', [] );
 
 		// Bail if no excluding are found, or we do not have a match.
 		return ! ( empty( $excluded_urls ) && ! in_array( get_current_url(), $excluded_urls, true ) );
@@ -74,7 +74,7 @@ abstract class Abstract_Lazy_Load {
 		// Check for specific asset being excluded.
 		$excluded_all = array_unique(
 			(array) array_merge(
-				apply_filters( 'hd_lazy_load_exclude', [] ),
+				filter_setting_options( 'lazy_load_exclude', [] ),
 				optimizer_options( 'exclude_lazyload', [] )
 			)
 		);

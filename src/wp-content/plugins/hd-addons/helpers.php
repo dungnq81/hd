@@ -40,6 +40,26 @@ if ( ! function_exists( 'optimizer_options' ) ) {
 
 /** ----------------------------------------------- */
 
+if ( ! function_exists( 'filter_setting_options' ) ) {
+	/**
+	 * @param $name
+	 * @param mixed $default
+	 *
+	 * @return array|mixed
+	 */
+	function filter_setting_options( $name, mixed $default = [] ): mixed {
+		$filters = apply_filters( 'hd_theme_setting_options', [] );
+
+		if ( isset( $filters[ $name ] ) ) {
+			return $filters[ $name ] ?: $default;
+		}
+
+		return [];
+	}
+}
+
+/** ----------------------------------------------- */
+
 if ( ! function_exists( 'message_success' ) ) {
 	/**
 	 * @param $message
@@ -367,11 +387,11 @@ if ( ! function_exists( 'check_smtp_plugin_active' ) ) {
 	 * @return bool
 	 */
 	function check_smtp_plugin_active(): bool {
-		$hd_smtp_plugins_support = apply_filters( 'hd_smtp_plugins_support', [] );
+		$smtp_plugins_support = filter_setting_options( 'smtp_plugins_support', [] );
 
 		$check = true;
-		if ( ! empty( $hd_smtp_plugins_support ) ) {
-			foreach ( $hd_smtp_plugins_support as $plugin_slug ) {
+		if ( ! empty( $smtp_plugins_support ) ) {
+			foreach ( $smtp_plugins_support as $plugin_slug ) {
 				if ( check_plugin_active( $plugin_slug ) ) {
 					$check = false;
 					break;

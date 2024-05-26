@@ -10,9 +10,9 @@ add_action( 'acf/include_fields', function () {
 	}
 
 	$location         = [];
-	$hd_term_columns = apply_filters( 'hd_term_columns', [] );
+	$term_thumb_columns = Helper::filter_setting_options( 'term_thumb_columns', [] );
 
-	foreach ( $hd_term_columns as $term_column ) {
+	foreach ( $term_thumb_columns as $term_column ) {
 		if ( $term_column ) {
 			$location[] = [
 				[
