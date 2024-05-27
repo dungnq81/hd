@@ -476,6 +476,9 @@ function __hd_theme_setting_options( array $arr ): array {
 		// Custom post_per_page
 		'posts_num_per_page'              => [],
 
+		// Custom post-type & taxonomy
+		'post_type_terms'                 => [],
+
 		// smtp_plugins_support
 		'smtp_plugins_support'            => [
 			'wp_mail_smtp'     => 'wp-mail-smtp/wp_mail_smtp.php',
@@ -520,7 +523,7 @@ function __hd_theme_setting_options( array $arr ): array {
 				'name'  => 'X (Twitter)',
 				'icon'  => '<svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></g></svg>',
 				'color' => 'rgb(239, 243, 244)',
-				'url'   => 'https://twitter.com/home?lang=vi',
+				'url'   => 'https://twitter.com',
 			],
 			'tiktok'    => [
 				'name'  => 'Tiktok',
@@ -538,13 +541,13 @@ function __hd_theme_setting_options( array $arr ): array {
 				'name'  => 'Zalo',
 				'icon'  => THEME_URL . 'storage/img/zlogo.png',
 				'color' => '#0068FF',
-				'url'   => 'https://chat.zalo.me',
+				'url'   => 'https://chat.zalo.me/?phone=xxx',
 			],
 			'skype'     => [
 				'name'  => 'Skype',
 				'icon'  => 'fa-brands fa-skype',
 				'color' => '#0092E0',
-				'url'   => 'https://www.skype.com/en/features/skype-web/',
+				'url'   => 'https://www.skype.com',
 			],
 			'hotline'   => [
 				'name'  => 'Hotline',
@@ -558,10 +561,7 @@ function __hd_theme_setting_options( array $arr ): array {
 				'color' => '',
 				'url'   => '',
 			],
-		],
-
-		// Custom post-type & taxonomy
-		'post_type_terms'                 => [],
+		]
 	];
 
 	//------------------------------

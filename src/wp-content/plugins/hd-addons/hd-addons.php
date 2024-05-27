@@ -1,16 +1,16 @@
 <?php
-/**
- * Plugin Name: HD Addons
- * Plugin URI: https://webhd.vn
- * Description: Addons plugin for HD Theme
- * Version: 0.24.05
- * Requires PHP: 8.2
- * Author: HD Team
- * Author URI: https://webhd.vn
- * Text Domain: hd-addons
- * License: GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
- */
+/*!
+Plugin Name: HD Addons
+Plugin URI: https://webhd.vn
+Version: 0.24.5
+Requires PHP: 8.2
+Author: HD Team
+Author URI: https://webhd.vn
+Text Domain: hd-addons
+Description: Addons plugin for HD Theme
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+*/
 
 \defined( 'ABSPATH' ) || die;
 

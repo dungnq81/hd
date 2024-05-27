@@ -248,14 +248,14 @@ final class Helper {
 
 	/**
 	 * @param ?string $path
-	 * @param bool $required_path
-	 * @param bool $required_new
+	 * @param bool $include_path
+	 * @param bool $init_class
 	 * @param string $FQN
 	 * @param bool $is_widget
 	 *
 	 * @return void
 	 */
-	public static function FQN_Load( ?string $path, bool $required_path = false, bool $required_new = false, string $FQN = '\\', bool $is_widget = false ): void {
+	public static function FQN_Load( ?string $path, bool $include_path = false, bool $init_class = false, string $FQN = '\\', bool $is_widget = false ): void {
 		if ( ! empty( $path ) && is_dir( $path ) ) {
 
 			foreach ( new DirectoryIterator( $path ) as $fileInfo ) {
@@ -269,11 +269,11 @@ final class Helper {
 
 				if ( '.php' === strtolower( $fileExt ) ) {
 
-					if ( $required_path ) {
-						require $path . DIRECTORY_SEPARATOR . $filename . $fileExt;
+					if ( $include_path ) {
+						include $path . DIRECTORY_SEPARATOR . $filename . $fileExt;
 					}
 
-					if ( $required_new ) {
+					if ( $init_class ) {
 						if ( ! $is_widget ) {
 							class_exists( $filenameFQN ) && ( new $filenameFQN() );
 						} else {
