@@ -150,7 +150,7 @@ final class Helper {
 			return $css;
 		}
 
-		if ( true === $debug_check && WP_DEBUG ) {
+		if ( $debug_check && WP_DEBUG ) {
 			return $css;
 		}
 

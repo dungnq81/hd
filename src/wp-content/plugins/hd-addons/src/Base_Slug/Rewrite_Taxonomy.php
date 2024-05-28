@@ -61,8 +61,8 @@ class Rewrite_Taxonomy {
 				continue;
 			}
 
-			if ( $custom_tax->public === true &&
-			     $custom_tax->show_ui === true &&
+			if ( $custom_tax->public &&
+			     $custom_tax->show_ui &&
 			     in_array( $custom_tax->name, $this->base_slug_taxonomy, true )
 			) {
 				$category_base = trim( str_replace( '%' . $custom_tax->name . '%', '', $wp_rewrite->get_extra_permastruct( $custom_tax->name ) ), '/' );

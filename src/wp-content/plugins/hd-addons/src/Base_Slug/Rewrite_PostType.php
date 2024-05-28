@@ -45,9 +45,9 @@ class Rewrite_PostType {
 				continue;
 			}
 
-			if ( $custom_post->_builtin === false &&
-			     $custom_post->public === true &&
-			     $custom_post->show_ui === true &&
+			if ( ! $custom_post->_builtin &&
+			     $custom_post->public &&
+			     $custom_post->show_ui &&
 			     in_array( $custom_post->name, $this->base_slug_post_type, true )
 			) {
 				// woocommerce

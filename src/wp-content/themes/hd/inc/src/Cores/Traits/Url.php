@@ -18,7 +18,7 @@ trait Url {
 	public static function isUrl( $url ): bool {
 
 		// Basic URL validation using filter_var
-		if ( filter_var( $url, FILTER_VALIDATE_URL ) === false ) {
+		if ( ! filter_var( $url, FILTER_VALIDATE_URL ) ) {
 			return false;
 		}
 

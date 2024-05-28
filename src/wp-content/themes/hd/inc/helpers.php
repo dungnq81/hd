@@ -291,10 +291,10 @@ if ( ! function_exists( 'the_post_comment' ) ) {
 				comments_template();
 				//}
 			}
-			if ( true === $facebook_comment ) {
+			if ( $facebook_comment ) {
 				get_template_part( 'template-parts/comments/facebook' );
 			}
-			if ( true === $zalo_comment ) {
+			if ( $zalo_comment ) {
 				get_template_part( 'template-parts/comments/zalo' );
 			}
 

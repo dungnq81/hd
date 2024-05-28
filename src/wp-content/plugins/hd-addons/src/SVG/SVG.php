@@ -210,9 +210,7 @@ final class SVG {
 	 * @return mixed
 	 */
 	public function wp_prepare_attachment_for_js( $response, $attachment, $meta ): mixed {
-		if ( $response['mime'] === 'image/svg+xml' &&
-		     empty( $response['sizes'] )
-		) {
+		if ( (string) $response['mime'] === 'image/svg+xml' && empty( $response['sizes'] ) ) {
 			$svg_path = get_attached_file( $attachment->ID );
 			if ( ! file_exists( $svg_path ) ) {
 				$svg_path = $response['url'];
@@ -273,8 +271,8 @@ final class SVG {
 	 * @return mixed
 	 */
 	public function wp_handle_upload_prefilter( $file ): mixed {
-		if ( $file['type'] === 'image/svg+xml' &&
-		     'sanitized' === $this->svg_option &&
+		if ( (string) $file['type'] === 'image/svg+xml' &&
+		     'sanitized' === (string) $this->svg_option &&
 		     current_user_can( 'upload_files' ) &&
 		     ! $this->sanitize( $file['tmp_name'] )
 		) {
@@ -296,7 +294,7 @@ final class SVG {
 		if ( $is_zipped = $this->is_gzipped( $svg_code ) ) {
 			$svg_code = gzdecode( $svg_code );
 
-			if ( $svg_code === false ) {
+			if ( ! $svg_code ) {
 				return false;
 			}
 		}
@@ -306,7 +304,7 @@ final class SVG {
 
 		$clean_svg_code = $this->sanitizer->sanitize( $svg_code );
 
-		if ( $clean_svg_code === false ) {
+		if ( ! $clean_svg_code ) {
 			return false;
 		}
 

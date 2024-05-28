@@ -121,7 +121,7 @@ trait Arr {
 	 */
 	public static function insert( array $array, array $insert_array, string $key, string $position = 'before' ): array {
 		$keyPosition = array_search( $key, array_keys( $array ), true );
-		if ( $keyPosition === false ) {
+		if ( ! $keyPosition ) {
 			return array_merge( $array, $insert_array );
 		}
 

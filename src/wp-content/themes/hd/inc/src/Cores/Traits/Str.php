@@ -307,13 +307,13 @@ trait Str {
 			return '';
 		}
 
-		if ( true === $remove_js ) {
+		if ( $remove_js ) {
 			$string = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', ' ', $string );
 		}
 
 		$string = strip_tags( $string, $allowed_tags );
 
-		if ( true === $flatten ) {
+		if ( $flatten ) {
 			$string = preg_replace( '/[\r\n\t ]+/', ' ', $string );
 		}
 
@@ -330,7 +330,7 @@ trait Str {
 	 * @return array|string|string[]|null
 	 */
 	public static function stripSpace( $string, bool $strip_tags = true, string $replace = '' ): array|string|null {
-		if ( true === $strip_tags ) {
+		if ( $strip_tags ) {
 			$string = strip_tags( $string );
 		}
 

@@ -274,7 +274,7 @@ if ( ! function_exists( 'explode_multi' ) ) {
 		if ( is_array( $delimiters ) ) {
 			$ready  = str_replace( $delimiters, $delimiters[0], $string );
 			$launch = explode( $delimiters[0], $ready );
-			if ( true === $remove_empty ) {
+			if ( $remove_empty ) {
 				$launch = array_filter( $launch );
 			}
 

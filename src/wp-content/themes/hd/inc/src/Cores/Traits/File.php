@@ -187,7 +187,7 @@ trait File {
 	 */
 	public static function fileExtension( $filename, bool $include_dot = false ): string {
 		$dot = '';
-		if ( $include_dot === true ) {
+		if ( $include_dot ) {
 			$dot = '.';
 		}
 
@@ -242,7 +242,7 @@ trait File {
 		$is_directory_created = wp_mkdir_p( $directory );
 
 		// Bail if you cannot create temp dir.
-		if ( false === $is_directory_created ) {
+		if ( ! $is_directory_created ) {
 			// translators: `$directory` is the name of directory that should be created.
 			error_log( sprintf( 'Cannot create directory: %s.', $directory ) );
 		}

@@ -59,7 +59,7 @@ final class Heartbeat {
 		foreach ( $this->options as $location => $interval_data ) {
 
 			// Bail if the location doesn't match the specific location.
-			if (  0 === $interval_data['selected'] && $this->check_location( $location ) ) {
+			if (  0 === (int) $interval_data['selected'] && $this->check_location( $location ) ) {
 
 				// Deregister the script.
 				wp_deregister_script( 'heartbeat' );
@@ -98,7 +98,7 @@ final class Heartbeat {
 	 */
 	public function check_location( $location ): bool|int {
 		return match ( $location ) {
-			'dashboard' => ( is_admin() && false === @strpos( $_SERVER['REQUEST_URI'], '/wp-admin/post.php' ) ),
+			'dashboard' => ( is_admin() && ! @strpos( $_SERVER['REQUEST_URI'], '/wp-admin/post.php' ) ),
 			'frontend' => ! is_admin(),
 			'post' => @strpos( $_SERVER['REQUEST_URI'], '/wp-admin/post.php' ),
 

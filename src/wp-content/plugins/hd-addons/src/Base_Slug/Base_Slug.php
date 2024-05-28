@@ -15,13 +15,13 @@ final class Base_Slug {
 		$this->base_slug_post_type = $custom_base_slug_options['base_slug_post_type'] ?? [];
 		$this->base_slug_taxonomy  = $custom_base_slug_options['base_slug_taxonomy'] ?? [];
 
-		( new Rewrite_PostType() )->run();
-		( new Rewrite_Taxonomy() )->run();
-
 		// rewrite_rules_array
 		if ( ! empty( $this->base_slug_taxonomy ) || in_array( 'product', $this->base_slug_post_type, true ) ) {
 			add_filter( 'rewrite_rules_array', [ &$this, 'add_rewrite_rules' ], 99 );
 		}
+
+		( new Rewrite_PostType() )->run();
+		( new Rewrite_Taxonomy() )->run();
 	}
 
 	// ------------------------------------------------------
@@ -55,7 +55,7 @@ final class Base_Slug {
 		foreach ( $taxonomies as $custom_tax ) {
 
 			// built-in
-			if ( $custom_tax->_builtin === true && in_array( $custom_tax->name, $this->base_slug_taxonomy, true ) ) {
+			if ( $custom_tax->_builtin && in_array( $custom_tax->name, $this->base_slug_taxonomy, true ) ) {
 
 				//----------------------------------
 				// category
@@ -69,9 +69,9 @@ final class Base_Slug {
 					foreach ( $categories as $category ) {
 						$category_slug = $category->slug;
 
-						if ( $category->parent === $category->cat_ID ) {
+						if ( (int) $category->parent === (int) $category->cat_ID ) {
 							$category->parent = 0;
-						} elseif ( $category->parent !== 0 ) {
+						} elseif ( (int) $category->parent !== 0 ) {
 							$category_slug = get_category_parents( $category->parent, false, '/', true ) . $category_slug;
 						}
 
@@ -160,7 +160,7 @@ final class Base_Slug {
 			//----------------------------------
 			// Custom taxonomy
 			//----------------------------------
-			if ( $custom_tax->_builtin === false &&
+			if ( ! $custom_tax->_builtin &&
 			     'product_cat' !== $custom_tax->name &&
 			     'product_tag' !== $custom_tax->name &&
 			     in_array( $custom_tax->name, $this->base_slug_taxonomy, true )
@@ -266,6 +266,10 @@ final class Base_Slug {
 			add_filter( 'get_terms_args', [ $sitepress, 'get_terms_args_filter' ], 10, 2 );
 		}
 	}
+
+	// ------------------------------------------------------
+
+
 
 	// ------------------------------------------------------
 

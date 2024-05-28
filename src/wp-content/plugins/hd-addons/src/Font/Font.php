@@ -219,7 +219,7 @@ final class Font {
 
 		// URL encode & convert characters to HTML entities.
 		foreach ( $parts as $key => $type ) {
-			if ( 'css2' === $key ) {
+			if ( 'css2' === (string) $key ) {
 				continue;
 			}
 
@@ -236,7 +236,7 @@ final class Font {
 
 		// Remove duplicates.
 		foreach ( $parts as $key => $type ) {
-			if ( 'css2' === $key ) {
+			if ( 'css2' === (string) $key ) {
 				continue;
 			}
 
@@ -282,7 +282,7 @@ final class Font {
 				case 'css2':
 					$query_string = '';
 					foreach ( $value['fonts'] as $index => $font_family ) {
-						$delimiter    = 0 === $index ? '?' : '&';
+						$delimiter    = ( 0 === $index ) ? '?' : '&';
 						$query_string .= $delimiter . 'family=' . $font_family;
 					}
 					$url .= $query_string;
@@ -409,7 +409,7 @@ final class Font {
 		}
 
 		// Try to create the file and bail if for some reason it's not created.
-		if ( false === $this->wp_filesystem->touch( $file_path ) ) {
+		if ( ! $this->wp_filesystem->touch( $file_path ) ) {
 			return false;
 		}
 
