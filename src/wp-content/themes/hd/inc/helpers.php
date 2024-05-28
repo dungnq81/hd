@@ -151,18 +151,12 @@ if ( ! function_exists( 'set_posts_per_page' ) ) {
 	 */
 	function set_posts_per_page( int $post_limit = 12 ): void {
 		if ( ! is_admin() && ! is_main_query() ) {
+			$limit_default = Helper::getOption( 'posts_per_page' );
 
-			$limit_default         = $limit_min = get_option( 'posts_per_page' );
-			$posts_num_per_page = Helper::filter_setting_options( 'posts_num_per_page', [] );
-
-			if ( ! empty( $posts_num_per_page ) ) {
-				$limit_min = min( $posts_num_per_page );
-			}
-
-			if ( $post_limit !== $limit_default && $post_limit !== $limit_min ) {
+			if ( $post_limit > (int) $limit_default ) {
 				add_action( 'pre_get_posts', function ( $query ) use ( $post_limit ) {
 					$query->set( 'posts_per_page', $post_limit );
-				} );
+				}, 9999 );
 			}
 		}
 	}

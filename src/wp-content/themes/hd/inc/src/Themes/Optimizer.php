@@ -102,6 +102,7 @@ final class Optimizer {
 		// Filters the rel values that are added to links with `target` attribute.
 		add_filter( 'wp_targeted_link_rel', function ( $rel, $link_target ) {
 			$rel .= ' nofollow';
+
 			return $rel;
 		}, 999, 2 );
 
@@ -207,7 +208,7 @@ final class Optimizer {
 		// Custom filter which adds proper attributes
 
 		// Fontawesome kit
-		if ( ( 'fontawesome-kit' === $handle ) && ! preg_match( ':\scrossorigin([=>\s]):', $tag) ) {
+		if ( ( 'fontawesome-kit' === $handle ) && ! preg_match( ':\scrossorigin([=>\s]):', $tag ) ) {
 			$tag = preg_replace( ':(?=></script>):', " crossorigin='anonymous'", $tag, 1 );
 		}
 
@@ -239,10 +240,10 @@ final class Optimizer {
 	 * @param $query
 	 */
 	public function set_posts_per_page( $query ): void {
-		if ( ! is_admin() && $query->is_main_query() ) {
+		if ( ! is_admin() ) {
 
 			// get default value
-			$posts_per_page_default    = $posts_per_page = get_option( 'posts_per_page' );
+			$posts_per_page_default = $posts_per_page = Helper::getOption( 'posts_per_page' );
 			$posts_num_per_page_arr = Helper::filter_setting_options( 'posts_num_per_page', [] );
 
 			if ( ! empty( $posts_num_per_page_arr ) ) {
@@ -261,7 +262,7 @@ final class Optimizer {
 				}
 			}
 
-			if ( $posts_per_page_default !== $posts_per_page ) {
+			if ( (int) $posts_per_page_default < (int) $posts_per_page ) {
 				$query->set( 'posts_per_page', $posts_per_page );
 			}
 		}
@@ -339,5 +340,6 @@ final class Optimizer {
 	/**
 	 * @return void
 	 */
-	public function deferred_scripts() {}
+	public function deferred_scripts() {
+	}
 }

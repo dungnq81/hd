@@ -1,12 +1,12 @@
 <?php
 
 $options = [
+	'disable' => esc_html__( 'Disable SVG images', ADDONS_TEXT_DOMAIN ),
 	'sanitized' => esc_html__( 'Sanitized SVG images', ADDONS_TEXT_DOMAIN ),
 	'unrestricted' => esc_html__( 'Unrestricted SVG images', ADDONS_TEXT_DOMAIN ),
-	'disable' => esc_html__( 'Disable SVG images', ADDONS_TEXT_DOMAIN ),
 ];
 
-$svgs = $svgs ?? '';
+$svgs = $svgs ?? 'disable';
 
 ?>
 <div class="section section-radio" id="section_svg">
