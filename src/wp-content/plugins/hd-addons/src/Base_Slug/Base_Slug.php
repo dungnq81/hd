@@ -15,13 +15,13 @@ final class Base_Slug {
 		$this->base_slug_post_type = $custom_base_slug_options['base_slug_post_type'] ?? [];
 		$this->base_slug_taxonomy  = $custom_base_slug_options['base_slug_taxonomy'] ?? [];
 
+		( new Rewrite_PostType() )->run();
+		( new Rewrite_Taxonomy() )->run();
+
 		// rewrite_rules_array
 		if ( ! empty( $this->base_slug_taxonomy ) || in_array( 'product', $this->base_slug_post_type, true ) ) {
 			add_filter( 'rewrite_rules_array', [ &$this, 'add_rewrite_rules' ], 99 );
 		}
-
-		( new Rewrite_PostType() )->run();
-		( new Rewrite_Taxonomy() )->run();
 	}
 
 	// ------------------------------------------------------
@@ -269,7 +269,12 @@ final class Base_Slug {
 
 	// ------------------------------------------------------
 
-
+	/**
+	 * @return void
+	 */
+	public function flush_rules(): void {
+		( new Rewrite_Taxonomy() )->flush_rules();
+	}
 
 	// ------------------------------------------------------
 
@@ -285,5 +290,7 @@ final class Base_Slug {
 		];
 
 		update_option( 'custom_base_slug__options', $custom_base_slug_options );
+
+		$this->flush_rules();
 	}
 }

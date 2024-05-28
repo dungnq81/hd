@@ -23,16 +23,16 @@ class Rewrite_Taxonomy {
 
 			add_filter( 'term_link', [ &$this, 'term_link' ], 10, 3 );
 
-			if ( ! is_admin() ) {
-				add_filter( 'query_vars', [ &$this, 'query_vars' ] );
-				add_filter( 'request', [ &$this, 'request' ] );
-
+			//if ( ! is_admin() ) {
 				foreach ( $this->base_slug_taxonomy as $base_slug ) {
 					add_action( 'created_' . $base_slug, [ &$this, 'flush_rules' ] );
 					add_action( 'delete_' . $base_slug, [ &$this, 'flush_rules' ] );
 					add_action( 'edited_' . $base_slug, [ &$this, 'flush_rules' ] );
 				}
-			}
+
+				add_filter( 'query_vars', [ &$this, 'query_vars' ] );
+				add_filter( 'request', [ &$this, 'request' ] );
+			//}
 		}
 	}
 

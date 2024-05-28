@@ -22,10 +22,10 @@ class Rewrite_PostType {
 
 			add_filter( 'post_type_link', [ &$this, 'post_type_link' ], 10, 2 ); // remove base slug from URLs
 
-			if ( ! is_admin() ) {
+			//if ( ! is_admin() ) {
 				add_action( 'wp', [ &$this, 'redirect' ] ); // auto redirect old URLs to non-base versions
 				add_action( 'request', [ &$this, 'request' ], 11, 1 ); // Permalink Manager.
-			}
+			//}
 		}
 	}
 

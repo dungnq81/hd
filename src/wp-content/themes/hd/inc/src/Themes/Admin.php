@@ -282,6 +282,8 @@ final class Admin {
 
 				Helper::updateOption( 'custom_base_slug__options', $custom_base_slug_options );
 
+				( new Base_Slug() )->flush_rules();
+
 			} else {
 
 				// reset order
