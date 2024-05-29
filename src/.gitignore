@@ -46,7 +46,6 @@ Thumbs.db
 # WordPress
 wp-content/uploads/
 wp-content/themes/twenty*/
-wp-content/themes/hd/assets/
 
 # ignore these plugins
 wp-content/plugins/*
@@ -58,5 +57,3 @@ wp-content/plugins/*
 !wp-content/plugins/smtp-mailer/
 !wp-content/plugins/simple-custom-post-order/
 !wp-content/plugins/sg-cachepress/
-
-wp-content/plugins/hd-addons/assets/
