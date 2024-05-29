@@ -161,7 +161,7 @@ jQuery(function ($) {
                 // dismissible auto hide
                 setTimeout(() => {
                     $this.find('#hd_content').find('.dismissible-auto')?.fadeOutAndRemove(400);
-                }, 3000);
+                }, 4000);
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
                 btn_submit.prop('disabled', false).html(button_text);

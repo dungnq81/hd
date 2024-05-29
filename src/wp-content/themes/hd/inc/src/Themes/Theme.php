@@ -31,6 +31,7 @@ final class Theme {
 		// Login
 		$this->_admin_login();
 
+		add_action( 'after_setup_theme', [ &$this, 'i18n' ], 1 );
 		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 10 );
 		add_action( 'after_setup_theme', [ &$this, 'setup' ], 11 );
 		add_action( 'after_setup_theme', [ &$this, 'plugins_setup' ], 12 );
@@ -45,13 +46,12 @@ final class Theme {
 	// --------------------------------------------------
 
 	/**
-	 * Sets up theme defaults and register support for various WordPress features.
+	 * Load localization file
 	 *
-	 * Note that this function is hooked into the after_setup_theme hook, which
-	 * runs before the init hook. The init hook is too late for some features, such
-	 * as indicating support for post-thumbnails.
+	 * @return void
 	 */
-	public function after_setup_theme(): void {
+	public function i18n(): void {
+		
 		/**
 		 * Make theme available for translation.
 		 * Translations can be filed at WordPress.org.
@@ -60,6 +60,19 @@ final class Theme {
 		load_theme_textdomain( TEXT_DOMAIN, trailingslashit( WP_LANG_DIR ) . 'themes/' );
 		load_theme_textdomain( TEXT_DOMAIN, get_template_directory() . '/languages' );
 		load_theme_textdomain( TEXT_DOMAIN, get_stylesheet_directory() . '/languages' );
+	}
+	
+	// --------------------------------------------------
+
+	/**
+	 * Sets up theme defaults and register support for various WordPress features.
+	 *
+	 * Note that this function is hooked into the after_setup_theme hook, which
+	 * runs before the init hook.
+	 * The init hook is too late for some features, such
+	 * as indicating support for post-thumbnails.
+	 */
+	public function after_setup_theme(): void {
 
 		/** Add theme support for various features. */
 		add_theme_support( 'automatic-feed-links' );

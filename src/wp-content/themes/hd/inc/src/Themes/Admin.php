@@ -343,7 +343,7 @@ final class Admin {
 		/** ---------------------------------------- */
 
 		Helper::clearAllCache();
-		Helper::messageSuccess( __( 'Settings saved', ADDONS_TEXT_DOMAIN ), true );
+		Helper::messageSuccess( __( 'Your settings have been saved.', ADDONS_TEXT_DOMAIN ), true );
 
 		die();
 	}

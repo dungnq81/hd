@@ -55,13 +55,13 @@ const jsFiles = [
 
 mix.disableNotifications();
 
-// Process Sass files
+// Process SASS
 sassFiles.forEach((file) => {
     let outputDir = file.includes('/') ? file.split('/')[0] : '';
     mix.sass(`${resources}/sass/${file}.scss`, `${assets}/css${outputDir ? '/' + outputDir : ''}`);
 });
 
-// Process JS files
+// Process JS
 jsFiles.forEach((file) => {
     let outputDir = file.includes('/') ? file.split('/')[0] : '';
     mix.js(`${resources}/js/${file}.js`, `${assets}/js${outputDir ? '/' + outputDir : ''}`);
@@ -70,5 +70,5 @@ jsFiles.forEach((file) => {
 // Copy directories
 directoriesToCopy.forEach((dir) => mix.copyDirectory(dir.from, dir.to));
 
-// Additional JS file
+// Additional JS
 mix.copy(`${node_modules}/pace-js/pace.min.js`, `${assets}/js/plugins`);

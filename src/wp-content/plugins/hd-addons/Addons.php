@@ -24,7 +24,7 @@ final class Addons {
 	public function __construct() {
 		$this->optimizer_options = get_option( 'optimizer__options', [] );
 
-		add_action( 'plugins_loaded', [ &$this, 'i18n' ] );
+		add_action( 'plugins_loaded', [ &$this, 'i18n' ], 1 );
 		add_action( 'plugins_loaded', [ &$this, 'plugins_loaded' ] );
 
 		add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 39 );

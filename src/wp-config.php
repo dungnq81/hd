@@ -31,6 +31,7 @@ if ( ! defined( 'FS_METHOD' ) ) {
 /** PHP Memory */
 const WP_MEMORY_LIMIT     = '512M';
 const WP_MAX_MEMORY_LIMIT = '512M';
+
 const DISALLOW_FILE_EDIT  = true;
 const DISALLOW_FILE_MODS  = false;
 

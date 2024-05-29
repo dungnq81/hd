@@ -2,7 +2,6 @@
 
 use Detection\Exception\MobileDetectException;
 use Detection\MobileDetect;
-use Vectorface\Whip\Whip;
 
 defined( 'ABSPATH' ) || die;
 

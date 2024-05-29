@@ -394,6 +394,7 @@ trait Wp {
 		array $meta_query = [],
 		bool|string $strtotime_recent = false
 	): WP_Query|bool {
+
 		if ( ! $term ) {
 			return false;
 		}
@@ -504,6 +505,7 @@ trait Wp {
 		array $meta_query = [],
 		bool|string $strtotime_str = false
 	): WP_Query|false {
+
 		$posts_per_page = $posts_per_page ?: 12;
 		$_args          = [
 			'post_type'              => $post_type ?: 'post',

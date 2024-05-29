@@ -414,7 +414,7 @@ final class Helper {
 			$src = THEME_URL . 'storage/img/placeholder-320x320.png';
 		}
 		if ( $img_wrap ) {
-			$src = "<img loading=\"lazy\" src=\"{$src}\" alt=\"placeholder\" class=\"wp-placeholder\">";
+			$src = "<img loading=\"lazy\" src=\"{$src}\" alt=\"place-holder\" class=\"wp-placeholder\">";
 		}
 
 		return $src;

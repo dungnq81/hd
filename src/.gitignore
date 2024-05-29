@@ -58,3 +58,5 @@ wp-content/plugins/*
 !wp-content/plugins/smtp-mailer/
 !wp-content/plugins/simple-custom-post-order/
 !wp-content/plugins/sg-cachepress/
+
+wp-content/plugins/hd-addons/assets/
