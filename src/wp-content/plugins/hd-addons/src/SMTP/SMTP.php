@@ -226,7 +226,7 @@ final class SMTP {
 			$reply_to                = [];
 
 			foreach ( $temp_reply_to_addresses as $temp_reply_to_address ) {
-				$reply_to[]       = trim( $temp_reply_to_address );
+				$reply_to[] = trim( $temp_reply_to_address );
 			}
 		}
 
@@ -247,11 +247,10 @@ final class SMTP {
 					// Break $recipient into name and address parts if in the format "Foo <bar@baz.com>".
 					$recipient_name = '';
 
-					if ( preg_match( '/(.*)<(.+)>/', $address, $matches ) &&
-					     count( $matches ) === 3
-					) {
-						$recipient_name = $matches[1];
-						$address        = $matches[2];
+					if ( preg_match( '/(.*)<(.+)>/', $address, $matches ) && count( $matches ) === 3 ) {
+						[ $recipient_name, $address ] = $matches;
+						//$recipient_name = $matches[1];
+						//$address        = $matches[2];
 					}
 
 					switch ( $address_header ) {
@@ -356,7 +355,9 @@ final class SMTP {
 
 				try {
 					$phpmailer->addAttachment( $attachment, $filename );
-				} catch ( Exception $e ) {}
+				} catch ( Exception $e ) {
+					continue;
+				}
 			}
 		}
 
@@ -372,7 +373,6 @@ final class SMTP {
 		// Send!
 		try {
 			$send = $phpmailer->send();
-
 			do_action( 'wp_mail_succeeded', $mail_data );
 
 			return;
@@ -422,13 +422,11 @@ final class SMTP {
 	 * @return void
 	 */
 	public function options_admin_notice(): void {
-
 		if ( ! $this->smtpConfigured() && check_smtp_plugin_active() ) {
 			$class   = 'notice notice-error';
 			$message = __( 'You need to configure your SMTP credentials in the settings to send emails.', ADDONS_TEXT_DOMAIN );
 
 			printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), $message );
 		}
-
 	}
 }

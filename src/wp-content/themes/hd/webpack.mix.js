@@ -8,37 +8,67 @@ const dir = './wp-content/themes/' + directory;
 const resources = dir + '/resources';
 const assets = dir + '/assets';
 const storage = dir + '/storage';
-
 const node_modules = './node_modules';
 
-mix.disableNotifications()
+// Directories to copy
+const directoriesToCopy = [
+    { from: `${storage}/fonts/fontawesome/webfonts`, to: `${assets}/webfonts` },
+    { from: `${resources}/img`, to: `${assets}/img` },
+];
 
-    .copyDirectory(storage + '/fonts/fontawesome/webfonts', assets + '/webfonts')
-    .copyDirectory(resources + '/img', assets + '/img')
+// SASS
+const sassFiles = [
+    // admin
+    'editor-style',
+    'admin',
 
-    .copy(node_modules + '/pace-js/pace.min.js', assets + '/js/plugins')
+    // plugin
+    'plugins/swiper',
+    'plugins/woocommerce',
 
-    .sass(resources + '/sass/editor-style.scss', assets + '/css')
-    .sass(resources + '/sass/admin.scss', assets + '/css')
+    // site
+    'fonts',
+    'plugins',
+    'app',
+];
 
-    .sass(resources + '/sass/plugins/swiper.scss', assets + '/css/plugins')
-    .sass(resources + '/sass/plugins/woocommerce.scss', assets + '/css/plugins')
+// JS
+const jsFiles = [
+    // admin
+    'login',
+    'admin',
 
-    .sass(resources + '/sass/fonts.scss', assets + '/css')
-    .sass(resources + '/sass/plugins.scss', assets + '/css')
-    .sass(resources + '/sass/app.scss', assets + '/css')
+    // plugin
+    'plugins/back-to-top',
+    'plugins/social-share',
+    'plugins/skip-link-focus',
+    'plugins/flex-gap',
+    'plugins/load-scripts',
+    'plugins/passive-events',
+    'plugins/mark',
+    'plugins/swiper',
+    'plugins/woocommerce',
 
-    .js(resources + '/js/plugins/back-to-top.js', assets + '/js/plugins')
-    .js(resources + '/js/plugins/social-share.js', assets + '/js/plugins')
-    .js(resources + '/js/plugins/skip-link-focus.js', assets + '/js/plugins')
-    .js(resources + '/js/plugins/flex-gap.js', assets + '/js/plugins')
-    .js(resources + '/js/plugins/load-scripts.js', assets + '/js/plugins')
-    .js(resources + '/js/plugins/passive-events.js', assets + '/js/plugins')
-    .js(resources + '/js/plugins/mark.js', assets + '/js/plugins')
+    // site
+    'app',
+];
 
-    .js(resources + '/js/plugins/swiper.js', assets + '/js/plugins')
-    .js(resources + '/js/plugins/woocommerce.js', assets + '/js/plugins')
+mix.disableNotifications();
 
-    .js(resources + '/js/login.js', assets + '/js')
-    .js(resources + '/js/admin.js', assets + '/js')
-    .js(resources + '/js/app.js', assets + '/js');
+// Process Sass files
+sassFiles.forEach((file) => {
+    let outputDir = file.includes('/') ? file.split('/')[0] : '';
+    mix.sass(`${resources}/sass/${file}.scss`, `${assets}/css${outputDir ? '/' + outputDir : ''}`);
+});
+
+// Process JS files
+jsFiles.forEach((file) => {
+    let outputDir = file.includes('/') ? file.split('/')[0] : '';
+    mix.js(`${resources}/js/${file}.js`, `${assets}/js${outputDir ? '/' + outputDir : ''}`);
+});
+
+// Copy directories
+directoriesToCopy.forEach((dir) => mix.copyDirectory(dir.from, dir.to));
+
+// Additional JS file
+mix.copy(`${node_modules}/pace-js/pace.min.js`, `${assets}/js/plugins`);

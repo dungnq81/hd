@@ -208,8 +208,8 @@ final class Custom_Order {
 		foreach ( $id_arr as $id ) {
 			$id = (int) $id;
 
-			$results = $wpdb->get_results( $wpdb->prepare( "SELECT `menu_order` FROM {$wpdb->posts} WHERE `ID` = %d", $id ) );
-			$menu_order_arr = array_column($results, 'menu_order');
+			$results        = $wpdb->get_results( $wpdb->prepare( "SELECT `menu_order` FROM {$wpdb->posts} WHERE `ID` = %d", $id ) );
+			$menu_order_arr = array_column( $results, 'menu_order' );
 //			foreach ( $results as $result ) {
 //				$menu_order_arr[] = $result->menu_order;
 //			}
@@ -389,14 +389,16 @@ final class Custom_Order {
 
 		if ( is_admin() && ! wp_doing_ajax() ) {
 
-			if ( isset( $wp_query->query['post_type'] ) && ! isset( $_GET['orderby'] ) ) {
-				if ( in_array( $wp_query->query['post_type'], $objects, true ) ) {
-					if ( ! $wp_query->get( 'orderby' ) ) {
-						$wp_query->set( 'orderby', 'menu_order' );
-					}
-					if ( ! $wp_query->get( 'order' ) ) {
-						$wp_query->set( 'order', 'ASC' );
-					}
+			if ( isset( $wp_query->query['post_type'] ) &&
+			     ! isset( $_GET['orderby'] ) &&
+			     in_array( $wp_query->query['post_type'], $objects, true )
+			) {
+				if ( ! $wp_query->get( 'orderby' ) ) {
+					$wp_query->set( 'orderby', 'menu_order' );
+				}
+
+				if ( ! $wp_query->get( 'order' ) ) {
+					$wp_query->set( 'order', 'ASC' );
 				}
 			}
 

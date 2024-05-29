@@ -52,7 +52,6 @@ final class Addons {
 	 * @return void
 	 */
 	public function plugins_loaded(): void {
-
 		( new Custom_Order() );
 		( new Custom_Email() );
 		( new SMTP() );
