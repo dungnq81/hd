@@ -10,8 +10,9 @@ use Plugins\ACF\ACF;
 use Plugins\CF7;
 use Plugins\Editor\TinyMCE;
 use Plugins\RankMath;
-use Plugins\WooCommerce\WooCommerce;
 use Plugins\WpRocket;
+use Plugins\Elementor;
+use Plugins\WooCommerce\WooCommerce;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -182,6 +183,7 @@ final class Theme {
 
 		( new TinyMCE() );
 
+		Helper::is_elementor_active() && ( new Elementor() );
 		Helper::is_woocommerce_active() && ( new WooCommerce() );
 		Helper::is_acf_active() && ( new ACF() );
 

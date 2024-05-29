@@ -80,7 +80,7 @@ if ( ! function_exists( 'in_array_checked' ) ) {
 	 * @return string
 	 */
 	function in_array_checked( array $checked_arr, $current, bool $display = true, string $type = 'checked' ): string {
-		if ( in_array( $current, $checked_arr, true ) ) {
+		if ( in_array( $current, $checked_arr, false ) ) {
 			$result = " $type='$type'";
 		} else {
 			$result = '';

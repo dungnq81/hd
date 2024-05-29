@@ -48,7 +48,7 @@ abstract class Abstract_Lazy_Load {
 		$excluded_urls = filter_setting_options( 'lazy_load_exclude_urls', [] );
 
 		// Bail if no excluding are found, or we do not have a match.
-		return ! ( empty( $excluded_urls ) && ! in_array( get_current_url(), $excluded_urls, true ) );
+		return ! ( empty( $excluded_urls ) && ! in_array( get_current_url(), $excluded_urls, false ) );
 	}
 
 	/** ---------------------------------------- */
@@ -95,7 +95,7 @@ abstract class Abstract_Lazy_Load {
 				// If we have a match and the array is part of the excluded assets bail from lazy loading.
 				if ( ! empty( $src_match ) ) {
 					$item_filename = basename( $src_match[1] );
-					if ( in_array( $item_filename, $excluded_all, true ) ) {
+					if ( in_array( $item_filename, $excluded_all, false ) ) {
 						continue;
 					}
 				}

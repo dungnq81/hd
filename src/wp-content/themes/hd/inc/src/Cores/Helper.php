@@ -5,6 +5,7 @@ namespace Cores;
 use DirectoryIterator;
 use MatthiasMullie\Minify;
 
+use Cores\Traits\Elementor;
 use Cores\Traits\WooCommerce;
 use Cores\Traits\Wp;
 
@@ -18,6 +19,7 @@ use Cores\Traits\Wp;
 final class Helper {
 
 	use WooCommerce;
+	use Elementor;
 	use Wp;
 
 	// --------------------------------------------------
@@ -112,7 +114,7 @@ final class Helper {
 
 			// Get our extra content.
 			foreach ( explode( ' ', $content_extra ) as $class ) {
-				if ( ! empty( $class ) && ! in_array( $class, $content, true ) ) {
+				if ( ! empty( $class ) && ! in_array( $class, $content, false ) ) {
 					$content[] = $class;
 				}
 			}
@@ -445,6 +447,15 @@ final class Helper {
 	 */
 	public static function is_acf_active(): bool {
 		return self::check_plugin_active( 'advanced-custom-fields/acf.php' ) || self::check_plugin_active( 'advanced-custom-fields-pro/acf.php' );
+	}
+
+	// -------------------------------------------------------------
+
+	/**
+	 * @return bool
+	 */
+	public static function is_elementor_active(): bool {
+		return self::check_plugin_active( 'elementor/elementor.php' ) || self::check_plugin_active( 'elementor-pro/elementor-pro.php' );
 	}
 
 	// -------------------------------------------------------------

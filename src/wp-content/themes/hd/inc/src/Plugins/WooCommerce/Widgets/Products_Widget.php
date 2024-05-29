@@ -140,22 +140,19 @@ class Products_Widget extends Abstract_Widget {
 
         //-----------------------------------------------------
 
-	    // ACF
 	    $ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
 
 	    $categories_arr = $ACF->category ?? [];
 	    $ids_arr        = $ACF->ids ?? [];
 
 	    if ( $categories_arr ) {
-
-		    //$category = [];
-		    $category = array_column( $categories_arr, 'slug' );
-//		    foreach ( $categories_arr as $cat ) {
-//			    $category[] = $cat->slug;
-//		    }
+		    $category = [];
+		    foreach ( $categories_arr as $cat ) {
+			    $category[] = $cat->slug;
+		    }
 
 		    if ( $category ) {
-			    $query_args['category']    = implode( ',', $category );
+			    $query_args['category']     = implode( ',', $category );
 			    $query_args['cat_operator'] = $ACF->cat_operator ?? 'IN';
 		    }
 	    }

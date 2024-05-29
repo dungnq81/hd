@@ -31,7 +31,7 @@ $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
 
 	foreach ( $post_types as $post_type ) :
 
-		if ( in_array( $post_type->name, $exclude_post_type ) ) {
+		if ( in_array( $post_type->name, $exclude_post_type, false ) ) {
 			continue;
 		}
 
@@ -64,11 +64,7 @@ $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
 	$taxonomies = get_taxonomies( [ 'show_ui' => true ], 'objects' );
 
 	foreach ( $taxonomies as $taxonomy ) :
-		if ( in_array( $taxonomy->name, [
-			'link_category',
-			'wp_pattern_category',
-			'product_cat',
-		] ) ) {
+		if ( in_array( $taxonomy->name, [ 'link_category', 'wp_pattern_category', 'product_cat' ], false ) ) {
 			continue;
 		}
 

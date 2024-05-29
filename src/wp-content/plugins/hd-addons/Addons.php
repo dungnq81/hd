@@ -194,7 +194,7 @@ final class Addons {
 //		}
 
 		wp_enqueue_style( 'addon-style', ADDONS_URL . 'assets/css/addon.css', [], ADDONS_VERSION );
-		wp_enqueue_script( 'addon', ADDONS_URL . 'assets/js/addon.js', [], ADDONS_VERSION, true );
+		wp_enqueue_script( 'addon', ADDONS_URL . 'assets/js/addon.js', [ 'jquery-core', 'admin' ], ADDONS_VERSION, true );
 	}
 
 	// ------------------------------------------------------

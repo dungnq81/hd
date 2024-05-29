@@ -245,7 +245,7 @@ add_filter( 'post_class', '__post_classes_filter', 11, 1 );
 function __post_classes_filter( array $classes ): array {
 
 	// remove_sticky_class
-	if ( in_array( 'sticky', $classes, true ) ) {
+	if ( in_array( 'sticky', $classes, false ) ) {
 		$classes   = array_diff( $classes, [ "sticky" ] );
 		$classes[] = 'wp-sticky';
 	}

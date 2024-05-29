@@ -98,9 +98,9 @@ class Login_Attempts {
 
 		// Invalid login
 		if (
-			in_array( 'empty_username', $errors->get_error_codes(), true ) ||
-			in_array( 'invalid_username', $errors->get_error_codes(), true ) ||
-			in_array( 'empty_password', $errors->get_error_codes(), true )
+			in_array( 'empty_username', $errors->get_error_codes(), false ) ||
+			in_array( 'invalid_username', $errors->get_error_codes(), false ) ||
+			in_array( 'empty_password', $errors->get_error_codes(), false )
 		) {
 			return $error;
 		}
@@ -125,8 +125,8 @@ class Login_Attempts {
 			$errors->add( 'login_attempts', __( sprintf( '<strong>Alert:</strong> You have entered the wrong credentials <strong>%s</strong> times.', $login_attempts[ $user_ip ]['attempts'] ), TEXT_DOMAIN ) );
 
 			if (
-				in_array( 'incorrect_password', $errors->get_error_codes(), true ) &&
-				in_array( 'login_attempts', $errors->get_error_codes(), true )
+				in_array( 'incorrect_password', $errors->get_error_codes(), false ) &&
+				in_array( 'login_attempts', $errors->get_error_codes(), false )
 			) {
 				$error_message = $errors->get_error_messages( 'login_attempts' );
 				$error         .= '	' . $error_message[0] . "<br />\n";

@@ -27,7 +27,7 @@ trait Url {
 
 		// Validate scheme
 		$valid_schemes = [ 'http', 'https' ];
-		if ( ! isset( $parsed_url['scheme'] ) || ! in_array( $parsed_url['scheme'], $valid_schemes, true ) ) {
+		if ( ! isset( $parsed_url['scheme'] ) || ! in_array( $parsed_url['scheme'], $valid_schemes, false ) ) {
 			return false;
 		}
 

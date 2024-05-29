@@ -48,7 +48,7 @@ class Rewrite_PostType {
 			if ( ! $custom_post->_builtin &&
 			     $custom_post->public &&
 			     $custom_post->show_ui &&
-			     in_array( $custom_post->name, $this->base_slug_post_type, true )
+			     in_array( $custom_post->name, $this->base_slug_post_type, false )
 			) {
 				// woocommerce
 				if ( 'product' === $post->post_type && check_plugin_active( 'woocommerce/woocommerce.php' ) ) {
@@ -74,7 +74,7 @@ class Rewrite_PostType {
 		     ! is_preview() &&
 		     ! is_admin() &&
 		     is_single() &&
-		     in_array( $post->post_type, $this->base_slug_post_type, true )
+		     in_array( $post->post_type, $this->base_slug_post_type, false )
 		) {
 			$new_url  = get_permalink();
 			$real_url = get_current_url();

@@ -241,7 +241,7 @@ if ( ! function_exists( 'in_array_checked' ) ) {
 	 * @return string
 	 */
 	function in_array_checked( array $checked_arr, $current, bool $display = true, string $type = 'checked' ): string {
-		if ( in_array( $current, $checked_arr, true ) ) {
+		if ( in_array( $current, $checked_arr, false ) ) {
 			$result = " $type='$type'";
 		} else {
 			$result = '';
@@ -360,7 +360,7 @@ if ( ! function_exists( 'check_plugin_installed' ) ) {
 
 		$installed_plugins = get_plugins();
 
-		return array_key_exists( $plugin_slug, $installed_plugins ) || in_array( $plugin_slug, $installed_plugins, true );
+		return array_key_exists( $plugin_slug, $installed_plugins ) || in_array( $plugin_slug, $installed_plugins, false );
 	}
 }
 

@@ -252,7 +252,7 @@ final class Optimizer {
 				if ( isset( $_GET['pagenum'] ) ) {
 					$pagenum = esc_sql( $_GET['pagenum'] );
 
-					if ( in_array( $pagenum, $posts_num_per_page_arr, true ) ) {
+					if ( in_array( $pagenum, $posts_num_per_page_arr, false ) ) {
 						$posts_per_page = $pagenum;
 					}
 

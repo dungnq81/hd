@@ -333,7 +333,7 @@ final class SMTP {
 			foreach ( (array) $headers as $name => $content ) {
 
 				// Only add custom headers, not added automatically by PHPMailer.
-				if ( ! in_array( $name, [ 'MIME-Version', 'X-Mailer' ], true ) ) {
+				if ( ! in_array( $name, [ 'MIME-Version', 'X-Mailer' ], false ) ) {
 					try {
 						$phpmailer->addCustomHeader( sprintf( '%1$s: %2$s', $name, $content ) );
 					} catch ( Exception $e ) {

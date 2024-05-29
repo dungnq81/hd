@@ -786,7 +786,7 @@ trait Wp {
 		// Rank Math SEO
 		// https://vi.wordpress.org/plugins/seo-by-rank-math/
 		$primary_term_id = get_post_meta( get_the_ID(), 'rank_math_primary_' . $taxonomy, true );
-		if ( $primary_term_id && in_array( $primary_term_id, $term_ids, true ) ) {
+		if ( $primary_term_id && in_array( $primary_term_id, $term_ids, false ) ) {
 			$term = get_term( $primary_term_id, $taxonomy );
 			if ( $term ) {
 				return $term;
@@ -801,7 +801,7 @@ trait Wp {
 			$wpseo_primary_term = new \WPSEO_Primary_Term( $taxonomy, $post );
 			$wpseo_primary_term = $wpseo_primary_term->get_primary_term();
 			$term               = get_term( $wpseo_primary_term, $taxonomy );
-			if ( $term && in_array( $term->term_id, $term_ids, true ) ) {
+			if ( $term && in_array( $term->term_id, $term_ids, false ) ) {
 				return $term;
 			}
 		}
@@ -984,7 +984,7 @@ trait Wp {
 			$attr = array_merge( $attr, $loading_optimization_attr );
 
 			// Omit the `decoding` attribute if the value is invalid according to the spec.
-			if ( empty( $attr['decoding'] ) || ! in_array( $attr['decoding'], [ 'async', 'sync', 'auto' ], true ) ) {
+			if ( empty( $attr['decoding'] ) || ! in_array( $attr['decoding'], [ 'async', 'sync', 'auto' ], false ) ) {
 				unset( $attr['decoding'] );
 			}
 
@@ -1538,7 +1538,7 @@ trait Wp {
 			$ratio_class     = 'ar-' . $ratio_x . '-' . $ratio_y;
 			$ar_aspect_ratio_css = Helper::filter_setting_options( 'aspect_ratio_css', [] );
 
-			if ( is_array( $ar_aspect_ratio_css ) && ! in_array( $ratio_x . '-' . $ratio_y, $ar_aspect_ratio_css, true ) ) {
+			if ( is_array( $ar_aspect_ratio_css ) && ! in_array( $ratio_x . '-' . $ratio_y, $ar_aspect_ratio_css, false ) ) {
 				$css = new CSS();
 
 				$css->set_selector( '.' . $ratio_class );
@@ -1732,7 +1732,7 @@ trait Wp {
 
 		$installed_plugins = get_plugins();
 
-		return array_key_exists( $plugin_slug, $installed_plugins ) || in_array( $plugin_slug, $installed_plugins, true );
+		return array_key_exists( $plugin_slug, $installed_plugins ) || in_array( $plugin_slug, $installed_plugins, false );
 	}
 
 	// -------------------------------------------------------------

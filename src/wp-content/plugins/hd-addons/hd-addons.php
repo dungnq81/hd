@@ -36,8 +36,21 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 require_once __DIR__ . '/vendor/autoload.php';
-
 require_once __DIR__ . '/helpers.php';
+
+register_activation_hook( __FILE__, 'activation' );
+register_deactivation_hook( __FILE__, 'deactivation' );
+register_uninstall_hook( __FILE__, 'uninstall' );
+
 require_once __DIR__ . '/Addons.php';
 
 ( new Addons() );
+
+// The code that runs during plugin activation.
+function activation() {}
+
+// The code that runs during plugin deactivation.
+function deactivation() {}
+
+// The code that will be executed when the plugin is uninstalled.
+function uninstall() {}

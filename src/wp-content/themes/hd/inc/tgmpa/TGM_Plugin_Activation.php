@@ -2133,7 +2133,7 @@ if ( ! class_exists( 'TGMPA_List_Table' ) ) {
 				)
 			);
 
-			if ( isset( $_REQUEST['plugin_status'] ) && in_array( $_REQUEST['plugin_status'], array( 'install', 'update', 'activate' ), true ) ) {
+			if ( isset( $_REQUEST['plugin_status'] ) && in_array( $_REQUEST['plugin_status'], array( 'install', 'update', 'activate' ), false ) ) {
 				$this->view_context = sanitize_key( $_REQUEST['plugin_status'] );
 			}
 
@@ -3741,9 +3741,9 @@ if ( ! class_exists( 'TGMPA_Utils' ) ) {
 				return (bool) $value;
 			} elseif ( is_string( $value ) ) {
 				$value = trim( $value );
-				if ( in_array( $value, $true, true ) ) {
+				if ( in_array( $value, $true, false ) ) {
 					return true;
-				} elseif ( in_array( $value, $false, true ) ) {
+				} elseif ( in_array( $value, $false, false ) ) {
 					return false;
 				} else {
 					return false;

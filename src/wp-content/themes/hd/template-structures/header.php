@@ -22,7 +22,8 @@ if ( ! function_exists( '__wp_head' ) ) {
 	function __wp_head(): void {
 
 		// Add viewport to wp_head
-		$meta_viewport = '<meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0" />';
+		//$meta_viewport = '<meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0" />';
+		$meta_viewport = '<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />';
 		echo apply_filters( 'hd_meta_viewport', $meta_viewport );  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		// Add a ping-back url auto-discovery header for singularly identifiable articles.
@@ -78,7 +79,7 @@ if ( ! function_exists( '__off_canvas_menu' ) ) {
 	function __off_canvas_menu(): void {
 
 		$position = Helper::getThemeMod( 'offcanvas_menu_setting' );
-		if ( ! in_array( $position, [ 'left', 'right', 'top', 'bottom' ] ) ) {
+		if ( ! in_array( $position, [ 'left', 'right', 'top', 'bottom' ], false ) ) {
 			$position = 'right';
 		}
 

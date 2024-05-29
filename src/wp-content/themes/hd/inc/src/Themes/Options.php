@@ -171,7 +171,7 @@ final class Options {
 			$ratio_class = $ratio_obj->class ?? '';
 			$ratio_style = $ratio_obj->style ?? '';
 
-			if ( $ratio_style && ! in_array( $ratio_class, $classes, true )  ) {
+			if ( $ratio_style && ! in_array( $ratio_class, $classes, false )  ) {
 				$classes[] = $ratio_class;
 				$styles    .= $ratio_style;
 			}

@@ -30,7 +30,7 @@ trait File {
 	public static function htAccess(): bool {
 
 		// Apache
-		if ( function_exists( 'apache_get_modules' ) && in_array( 'mod_rewrite', apache_get_modules(), true ) ) {
+		if ( function_exists( 'apache_get_modules' ) && in_array( 'mod_rewrite', apache_get_modules(), false ) ) {
 			return true;
 		}
 
