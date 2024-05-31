@@ -5,7 +5,7 @@ $base_slug_post_type      = $custom_base_slug_options['base_slug_post_type'] ?? 
 $base_slug_taxonomy       = $custom_base_slug_options['base_slug_taxonomy'] ?? [];
 
 ?>
-<h2><?php _e( 'Remove Base Slug', ADDONS_TEXT_DOMAIN ); ?></h2>
+<h2><?php _e( 'Remove Base-Slug Settings', ADDONS_TEXT_DOMAIN ); ?></h2>
 
 <div class="section section-checkbox" id="section_base_slug_post_type">
 	<span class="heading block !fw-700"><?php _e( 'Post Types', ADDONS_TEXT_DOMAIN ); ?></span>
@@ -22,7 +22,7 @@ $base_slug_taxonomy       = $custom_base_slug_options['base_slug_taxonomy'] ?? [
 	);
 
 	foreach ( $post_types as $post_type ) :
-		if ( $post_type->name == 'attachment' ) {
+		if ( $post_type->name === 'attachment' ) {
 			continue;
 		}
 

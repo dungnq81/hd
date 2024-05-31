@@ -21,12 +21,7 @@ $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
 	];
 
 	if ( ! current_user_can( 'manage_options' ) ) {
-		$exclude_post_type = array_merge( $exclude_post_type, [
-			'acf-taxonomy',
-			'acf-post-type',
-			'acf-ui-options-page',
-			'acf-field-group',
-		] );
+		array_push( $exclude_post_type, 'acf-taxonomy', 'acf-post-type', 'acf-ui-options-page', 'acf-field-group' );
 	}
 
 	foreach ( $post_types as $post_type ) :

@@ -12,6 +12,8 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
+use Addons\Activator\Activator;
+
 \defined( 'ABSPATH' ) || die;
 
 $default_headers = [
@@ -47,10 +49,16 @@ require_once __DIR__ . '/Addons.php';
 ( new Addons() );
 
 // The code that runs during plugin activation.
-function activation() {}
+function activation() {
+	Activator::activation();
+}
 
 // The code that runs during plugin deactivation.
-function deactivation() {}
+function deactivation() {
+	Activator::deactivation();
+}
 
 // The code that will be executed when the plugin is uninstalled.
-function uninstall() {}
+function uninstall() {
+	Activator::uninstall();
+}

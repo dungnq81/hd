@@ -282,8 +282,6 @@ final class Base_Slug {
 	 * @return void
 	 */
 	public function reset_all(): void {
-
-		// reset
 		$custom_base_slug_options = [
 			'base_slug_post_type' => [],
 			'base_slug_taxonomy'  => [],

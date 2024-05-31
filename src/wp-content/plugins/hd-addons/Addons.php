@@ -7,6 +7,7 @@ use Addons\Font\Font;
 use Addons\Heartbeat\Heartbeat;
 use Addons\Lazy_Load\Lazy_Load;
 use Addons\Minifier\Minify_Html;
+use Addons\reCAPTCHA\reCAPTCHA;
 use Addons\SMTP\SMTP;
 use Addons\SVG\SVG;
 
@@ -59,6 +60,7 @@ final class Addons {
 		( new Base_Slug() );
 		( new Heartbeat() );
 		( new Lazy_Load() );
+		( new reCAPTCHA() );
 	}
 
 	/** ---------------------------------------- */

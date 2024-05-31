@@ -25,6 +25,17 @@ final class Helper {
 	// --------------------------------------------------
 
 	/**
+	 * @return bool
+	 */
+	public static function Lighthouse(): bool {
+		$header = $_SERVER['HTTP_USER_AGENT'];
+
+		return mb_strpos( $header, "Lighthouse", 0, "UTF-8" ) > 0;
+	}
+
+	// --------------------------------------------------
+
+	/**
 	 * @return void
 	 */
 	public static function clearAllCache(): void {
@@ -35,8 +46,13 @@ final class Helper {
 		}
 
 		// wp-rocket cache
-		if ( \defined( 'WP_ROCKET_VERSION' ) && \function_exists( 'rocket_clean_domain' ) ) {
+		if ( \defined( 'WP_ROCKET_PATH' ) && \function_exists( 'rocket_clean_domain' ) ) {
 			\rocket_clean_domain();
+		}
+
+		// Clear minified CSS and JavaScript files.
+		if ( function_exists( 'rocket_clean_minify' ) ) {
+			\rocket_clean_minify();
 		}
 
 		// Jetpack
@@ -64,8 +80,8 @@ final class Helper {
 	public static function filter_setting_options( $name, mixed $default = [] ): mixed {
 		$filters = apply_filters( 'hd_theme_setting_options', [] );
 
-		if ( isset( $filters[$name] ) ) {
-			return $filters[$name] ?: $default;
+		if ( isset( $filters[ $name ] ) ) {
+			return $filters[ $name ] ?: $default;
 		}
 
 		return [];
@@ -250,14 +266,14 @@ final class Helper {
 
 	/**
 	 * @param ?string $path
-	 * @param bool $include_path
+	 * @param bool $require_path
 	 * @param bool $init_class
 	 * @param string $FQN
 	 * @param bool $is_widget
 	 *
 	 * @return void
 	 */
-	public static function FQN_Load( ?string $path, bool $include_path = false, bool $init_class = false, string $FQN = '\\', bool $is_widget = false ): void {
+	public static function FQN_Load( ?string $path, bool $require_path = false, bool $init_class = false, string $FQN = '\\', bool $is_widget = false ): void {
 		if ( ! empty( $path ) && is_dir( $path ) ) {
 
 			foreach ( new DirectoryIterator( $path ) as $fileInfo ) {
@@ -269,17 +285,20 @@ final class Helper {
 				$filenameFQN = $FQN . $filename;
 				$fileExt     = self::fileExtension( $fileInfo, true ); // true: include dot
 
-				if ( '.php' === strtolower( $fileExt ) ) {
+				if ( '.php' === mb_strtolower( $fileExt ) ) {
+					$file_path = $path . DIRECTORY_SEPARATOR . $filename . $fileExt;
+					if ( is_readable( $file_path ) ) {
 
-					if ( $include_path ) {
-						include $path . DIRECTORY_SEPARATOR . $filename . $fileExt;
-					}
+						if ( $require_path ) {
+							require_once $file_path;
+						}
 
-					if ( $init_class ) {
-						if ( ! $is_widget ) {
-							class_exists( $filenameFQN ) && ( new $filenameFQN() );
-						} else {
-							class_exists( $filenameFQN ) && register_widget( new $filenameFQN() );
+						if ( $init_class ) {
+							if ( ! $is_widget ) {
+								class_exists( $filenameFQN ) && ( new $filenameFQN() );
+							} else {
+								class_exists( $filenameFQN ) && register_widget( new $filenameFQN() );
+							}
 						}
 					}
 				}
@@ -290,14 +309,14 @@ final class Helper {
 	// -------------------------------------------------------------
 
 	/**
-	 * @param $post_id
-	 * @param $format_value
-	 * @param $escape_html
+	 * @param mixed $post_id
+	 * @param bool $format_value
+	 * @param bool $escape_html
 	 *
 	 * @return mixed|object
 	 * @throws \JsonException
 	 */
-	public static function acfFields( $post_id = false, $format_value = true, $escape_html = false ): mixed {
+	public static function acfFields( $post_id = false, bool $format_value = true, bool $escape_html = false ): mixed {
 		if ( ! self::is_acf_active() ) {
 			return (object) [];
 		}

@@ -46,6 +46,25 @@ final class SVG {
 		add_filter( 'wp_generate_attachment_metadata', [ &$this, 'wp_generate_attachment_metadata' ], 10, 2 );
 		add_filter( 'fl_module_upload_regex', [ &$this, 'fl_module_upload_regex' ], 10, 4 );
 		add_filter( 'render_block', [ &$this, 'fix_missing_width_height_on_image_block' ], 10, 2 );
+		add_filter( 'intermediate_image_sizes_advanced', [ &$this, 'disable_upload_sizes' ], 101, 3 );
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @param array $sizes
+	 * @param array $metadata
+	 * @param int $attachment_id
+	 *
+	 * @return array
+	 */
+	public function disable_upload_sizes( array $sizes, array $metadata, int $attachment_id ): array {
+		if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
+			$sizes = [];
+		}
+
+		// Return sizes you want to create from image (None if image is svg, svgz.)
+		return $sizes;
 	}
 
 	// ------------------------------------------------------
