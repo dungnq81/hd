@@ -319,11 +319,11 @@ trait Wp {
 
 	/**
 	 * @param string $mod_name
-	 * @param bool|mixed $default
+	 * @param mixed $default
 	 *
 	 * @return false|mixed
 	 */
-	public static function getThemeMod( string $mod_name, $default = false ): mixed {
+	public static function getThemeMod( string $mod_name, mixed $default = false ): mixed {
 		static $_is_loaded;
 		if ( empty( $_is_loaded ) ) {
 
@@ -1347,7 +1347,7 @@ trait Wp {
 	 */
 	public static function getCustomPost( string $post_type = 'hd_css' ): array|WP_Post|null {
 		if ( empty( $post_type ) ) {
-			$post_type = 'hd_css';
+			return null;
 		}
 
 		$custom_query_vars = [
@@ -1386,7 +1386,11 @@ trait Wp {
 	 *
 	 * @return array|string
 	 */
-	public static function getCustomPostContent( string $post_type = 'hd_css', bool $encode = false ): array|string {
+	public static function getCustomPostContent( string $post_type, bool $encode = false ): array|string {
+		if ( empty( $post_type ) ) {
+			return '';
+		}
+
 		$post = self::getCustomPost( $post_type );
 		if ( isset( $post->post_content ) ) {
 			$post_content = wp_unslash( $post->post_content );
@@ -1655,7 +1659,7 @@ trait Wp {
 			$class .= ' dismissible-auto';
 		}
 
-		printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr_strip_tags( $class ), $message );
+		printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', self::esc_attr_strip_tags( $class ), $message );
 	}
 
 	// -------------------------------------------------------------
@@ -1675,7 +1679,7 @@ trait Wp {
 			$class .= ' dismissible-auto';
 		}
 
-		printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr_strip_tags( $class ), $message );
+		printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', self::esc_attr_strip_tags( $class ), $message );
 	}
 
 	// -------------------------------------------------------------

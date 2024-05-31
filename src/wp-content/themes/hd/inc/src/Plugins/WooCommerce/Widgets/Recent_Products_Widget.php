@@ -188,8 +188,8 @@ class Recent_Products_Widget extends Abstract_Widget {
 			return;
 		}
 
-		$css_class = ! empty( $ACF->css_class ) ? ' ' . esc_attr_strip_tags( $ACF->css_class ) : '';
-		$uniqid    = esc_attr_strip_tags( uniqid( $this->widget_classname . '-', false ) );
+		$css_class = ! empty( $ACF->css_class ) ? ' ' . Helper::esc_attr_strip_tags( $ACF->css_class ) : '';
+		$uniqid    = Helper::esc_attr_strip_tags( uniqid( $this->widget_classname . '-', false ) );
 
 		// has products
 		wc_set_loop_prop( 'name', 'recent_products_widget' );
@@ -203,7 +203,7 @@ class Recent_Products_Widget extends Abstract_Widget {
 				echo '<h2 class="heading-title">' . $title . '</h2>';
 			} ?>
 
-            <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr_strip_tags( $title ); ?>">
+            <div class="<?= $uniqid ?>" aria-label="<?php echo Helper::esc_attr_strip_tags( $title ); ?>">
                 <div class="grid-products">
 					<?php
 					$i = 0;

@@ -35,7 +35,7 @@ class Search_Widget extends Abstract_Widget {
 
 		$ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
 
-		$css_class = ! empty( $ACF->css_class ) ? esc_attr_strip_tags( $ACF->css_class ) : '';
+		$css_class = ! empty( $ACF->css_class ) ? Helper::esc_attr_strip_tags( $ACF->css_class ) : '';
 		$title = $this->get_instance_title( $instance );
 
 		$shortcode_content = Helper::doShortcode(

@@ -27,12 +27,12 @@ foreach ( $aspect_ratio_post_type as $ar ) :
             <div class="inline-group">
                 <label>
                     Width:
-                    <input class="hd-input hd-control" name="<?=$ar?>-width" type="number" pattern="\d*" size="3" min="0" value="<?php echo esc_attr_strip_tags($width); ?>">
+                    <input class="hd-input hd-control" name="<?=$ar?>-width" type="number" pattern="\d*" size="3" min="0" value="<?php echo Helper::esc_attr_strip_tags($width); ?>">
                 </label>
                 <span>x</span>
                 <label>
                     Height:
-                    <input class="hd-input hd-control" name="<?=$ar?>-height" type="number" pattern="\d*" size="3" min="0" value="<?php echo esc_attr_strip_tags($height); ?>">
+                    <input class="hd-input hd-control" name="<?=$ar?>-height" type="number" pattern="\d*" size="3" min="0" value="<?php echo Helper::esc_attr_strip_tags($height); ?>">
                 </label>
             </div>
         </div>

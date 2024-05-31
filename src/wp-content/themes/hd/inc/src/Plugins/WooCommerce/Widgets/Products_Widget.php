@@ -161,15 +161,15 @@ class Products_Widget extends Abstract_Widget {
 		    $query_args['ids'] = implode( ',', $ids_arr );
 	    }
 
-	    $heading_tag   = ! empty( $ACF->title_tag ) ? esc_attr_strip_tags( $ACF->title_tag ) : 'span';
-	    $heading_class = ! empty( $ACF->title_classes ) ? esc_attr_strip_tags( $ACF->title_classes ) : 'heading-title';
+	    $heading_tag   = ! empty( $ACF->title_tag ) ? Helper::esc_attr_strip_tags( $ACF->title_tag ) : 'span';
+	    $heading_class = ! empty( $ACF->title_classes ) ? Helper::esc_attr_strip_tags( $ACF->title_classes ) : 'heading-title';
 
 	    $show_view_more_button = $ACF->show_view_more_button ?? false;
 	    $view_more_link        = $ACF->view_more_link ?? '';
 	    $view_more_link        = Helper::ACF_Link( $view_more_link );
 
-	    $css_class = ! empty( $ACF->css_class ) ? ' ' . esc_attr_strip_tags( $ACF->css_class ) : '';
-	    $uniqid    = esc_attr_strip_tags( uniqid( $this->widget_classname . '-', false ) );
+	    $css_class = ! empty( $ACF->css_class ) ? ' ' . Helper::esc_attr_strip_tags( $ACF->css_class ) : '';
+	    $uniqid    = Helper::esc_attr_strip_tags( uniqid( $this->widget_classname . '-', false ) );
 
 	    //-----------------------------------------------------
 
@@ -190,7 +190,7 @@ class Products_Widget extends Abstract_Widget {
 	            echo $args['before_title'] . $title . $args['after_title'];
             }
             ?>
-            <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr_strip_tags( $title ); ?>">
+            <div class="<?= $uniqid ?>" aria-label="<?php echo Helper::esc_attr_strip_tags( $title ); ?>">
                 <?php
                 echo Helper::doShortcode(
                     'products',

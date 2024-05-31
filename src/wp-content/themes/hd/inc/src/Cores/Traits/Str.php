@@ -294,6 +294,17 @@ trait Str {
 	// --------------------------------------------------
 
 	/**
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	public static function esc_attr_strip_tags( string $string ): string {
+		return esc_attr( self::stripAllTags( $string ) );
+	}
+
+	// --------------------------------------------------
+
+	/**
 	 * @param $string
 	 * @param bool $remove_js
 	 * @param bool $flatten

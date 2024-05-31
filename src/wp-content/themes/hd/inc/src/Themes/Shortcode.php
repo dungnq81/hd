@@ -104,7 +104,7 @@ final class Shortcode {
 			$post_title     = get_the_title( $post->ID );
 			$post_title     = ( ! empty( $post_title ) ) ? $post_title : __( '(no title)', TEXT_DOMAIN );
 
-            $attr_post_title = esc_attr_strip_tags( $post_title );
+            $attr_post_title = Helper::esc_attr_strip_tags( $post_title );
 			$post_thumbnail = get_the_post_thumbnail( $post, $thumbnail_size, [ 'alt' => $attr_post_title ] );
 
 			echo $wrapper_open . '<div class="cell">';
@@ -178,7 +178,7 @@ final class Shortcode {
 		);
 
 		$location = $atts['location'] ?: 'mobile-nav';
-		$class    = $atts['class'] ? esc_attr_strip_tags( $atts['class'] ) : 'mobile-menu';
+		$class    = $atts['class'] ? Helper::esc_attr_strip_tags( $atts['class'] ) : 'mobile-menu';
 		$depth    = $atts['depth'] ? absint( $atts['depth'] ) : 1;
 		$id       = $atts['id'] ?: esc_attr( uniqid( 'menu-', false ) );
 
@@ -211,7 +211,7 @@ final class Shortcode {
 		);
 
 		$location = $atts['location'] ?: 'main-nav';
-		$class    = $atts['class'] ? esc_attr_strip_tags( $atts['class'] ) : 'desktop-menu';
+		$class    = $atts['class'] ? Helper::esc_attr_strip_tags( $atts['class'] ) : 'desktop-menu';
 		$depth    = $atts['depth'] ? absint( $atts['depth'] ) : 1;
 		$id       = $atts['id'] ?: esc_attr( uniqid( 'menu-', false ) );
 
@@ -244,7 +244,7 @@ final class Shortcode {
 
 		$title = $atts['title'] ?: __( 'Menu', TEXT_DOMAIN );
 		$class = $atts['hide_if_desktop'] ? ' !lg:hidden' : '';
-		$class = $atts['class'] ? ' ' . esc_attr_strip_tags( $atts['class'] ) . $class : '';
+		$class = $atts['class'] ? ' ' . Helper::esc_attr_strip_tags( $atts['class'] ) . $class : '';
 
 		ob_start();
 
@@ -276,11 +276,11 @@ final class Shortcode {
 			'safe_mail'
 		);
 
-		$attributes['title'] = $atts['title'] ? esc_attr_strip_tags( $atts['title'] ) : esc_attr_strip_tags( $atts['email'] );
-		$attributes['id']    = $atts['id'] ? esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'mail-', false ) );
+		$attributes['title'] = $atts['title'] ? Helper::esc_attr_strip_tags( $atts['title'] ) : esc_attr_strip_tags( $atts['email'] );
+		$attributes['id']    = $atts['id'] ? Helper::esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'mail-', false ) );
 
 		if ( $atts['class'] ) {
-			$attributes['class'] = esc_attr_strip_tags( $atts['class'] );
+			$attributes['class'] = Helper::esc_attr_strip_tags( $atts['class'] );
 		}
 
 		return Helper::safeMailTo( $atts['email'], $atts['title'], $attributes );
@@ -327,8 +327,8 @@ final class Shortcode {
 		$title             = $atts['title'] ?: __( 'Search', TEXT_DOMAIN );
 		$title_for         = __( 'Search for', TEXT_DOMAIN );
 		$placeholder_title = esc_attr( __( 'Search ...', TEXT_DOMAIN ) );
-		$id                = $atts['id'] ? esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'search-', false ) );
-        $class = $atts['class'] ? ' ' . esc_attr_strip_tags( $atts['class'] ) : '';
+		$id                = $atts['id'] ? Helper::esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'search-', false ) );
+        $class = $atts['class'] ? ' ' . Helper::esc_attr_strip_tags( $atts['class'] ) : '';
 
 		ob_start();
 
@@ -370,13 +370,13 @@ final class Shortcode {
 		$title_for         = __( 'Search for', TEXT_DOMAIN );
 		$placeholder_title = esc_attr( __( 'Search ...', TEXT_DOMAIN ) );
 		$close_title       = __( 'Close', TEXT_DOMAIN );
-		$id                = $atts['id'] ? esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'search-', false ) );
-		$class             = $atts['class'] ? ' ' . esc_attr_strip_tags( $atts['class'] ) : '';
+		$id                = $atts['id'] ? Helper::esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'search-', false ) );
+		$class             = $atts['class'] ? ' ' . Helper::esc_attr_strip_tags( $atts['class'] ) : '';
 
 		ob_start();
 
 		?>
-        <a class="trigger-s" title="<?= esc_attr_strip_tags( $title ) ?>" href="javascript:;" data-toggle="dropdown-<?= $id ?>" data-glyph=""><span><?php echo $title; ?></span></a>
+        <a class="trigger-s" title="<?= Helper::esc_attr_strip_tags( $title ) ?>" href="javascript:;" data-toggle="dropdown-<?= $id ?>" data-glyph=""><span><?php echo $title; ?></span></a>
         <div role="search" class="dropdown-pane" id="dropdown-<?= $id ?>" data-dropdown data-auto-focus="true">
             <form action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
                 <div class="frm-container">

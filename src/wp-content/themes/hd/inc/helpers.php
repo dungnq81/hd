@@ -34,19 +34,6 @@ if ( ! function_exists( 'toggle_container' ) ) {
 
 // --------------------------------------------------
 
-if ( ! function_exists( 'esc_attr_strip_tags' ) ) {
-	/**
-	 * @param string $string
-	 *
-	 * @return string
-	 */
-	function esc_attr_strip_tags( string $string ): string {
-		return esc_attr( Helper::stripAllTags( $string ) );
-	}
-}
-
-// --------------------------------------------------
-
 if ( ! function_exists( 'check_smtp_plugin_active' ) ) {
 	/**
 	 * @return bool

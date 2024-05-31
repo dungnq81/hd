@@ -35,7 +35,7 @@ class offCanvas_Widget extends Abstract_Widget {
 
 		$ACF             = $this->acfFields( 'widget_' . $args['widget_id'] );
 		$hide_if_desktop = empty( $instance['hide_if_desktop'] ) ? 0 : 1;
-		$css_class       = ! empty( $ACF->css_class ) ? esc_attr_strip_tags( $ACF->css_class ) : '';
+		$css_class       = ! empty( $ACF->css_class ) ? Helper::esc_attr_strip_tags( $ACF->css_class ) : '';
 
 		$shortcode_content = Helper::doShortcode(
 			'off_canvas_button',

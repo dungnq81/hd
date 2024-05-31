@@ -1,10 +1,8 @@
-<h2><?php use Cores\Helper;
-
-	_e( 'Social Settings', ADDONS_TEXT_DOMAIN ); ?></h2>
-
+<h2><?php _e( 'Social Settings', ADDONS_TEXT_DOMAIN ); ?></h2>
 <?php
-$social_options    = get_option( 'social__options' );
-$social_follows_links = Helper::filter_setting_options( 'social_follows_links', [] );
+
+$social_options       = get_option( 'social__options' );
+$social_follows_links = filter_setting_options( 'social_follows_links', [] );
 
 if ( ! empty( $social_follows_links ) ) :
 	foreach ( $social_follows_links as $key => $social ) :

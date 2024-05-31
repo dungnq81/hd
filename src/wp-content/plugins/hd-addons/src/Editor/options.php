@@ -1,8 +1,6 @@
 <?php
 
-use Cores\Helper;
-
-$block_editor_options = Helper::getOption( 'block_editor__options', false, false );
+$block_editor_options = get_option( 'block_editor__options', false, false );
 
 $use_widgets_block_editor_off           = $block_editor_options['use_widgets_block_editor_off'] ?? '';
 $gutenberg_use_widgets_block_editor_off = $block_editor_options['gutenberg_use_widgets_block_editor_off'] ?? '';
@@ -10,40 +8,40 @@ $use_block_editor_for_post_type_off     = $block_editor_options['use_block_edito
 $block_style_off                        = $block_editor_options['block_style_off'] ?? '';
 
 ?>
-<h2><?php _e( 'Block Editor Settings', TEXT_DOMAIN ); ?></h2>
+<h2><?php _e( 'Editor Settings', ADDONS_TEXT_DOMAIN ); ?></h2>
 <div class="section section-checkbox" id="section_use_widgets_block_editor_off">
-    <label class="heading" for="use_widgets_block_editor_off"><?php _e( 'Disable widgets block editor', TEXT_DOMAIN ); ?></label>
+    <label class="heading" for="use_widgets_block_editor_off"><?php _e( 'Disable widgets block editor', ADDONS_TEXT_DOMAIN ); ?></label>
     <div class="option">
         <div class="controls">
             <input type="checkbox" class="hd-checkbox hd-control" name="use_widgets_block_editor_off" id="use_widgets_block_editor_off" <?php checked( $use_widgets_block_editor_off, 1 ); ?> value="1">
         </div>
-        <div class="explain"><?php _e( 'Disables the block editor from managing widgets.', TEXT_DOMAIN ); ?></div>
+        <div class="explain"><?php _e( 'Disables the block editor from managing widgets.', ADDONS_TEXT_DOMAIN ); ?></div>
     </div>
 </div>
 <div class="section section-checkbox" id="section_gutenberg_use_widgets_block_editor_off">
-    <label class="heading" for="gutenberg_use_widgets_block_editor_off"><?php _e( 'Disable Gutenberg widgets', TEXT_DOMAIN ); ?></label>
+    <label class="heading" for="gutenberg_use_widgets_block_editor_off"><?php _e( 'Disable Gutenberg widgets', ADDONS_TEXT_DOMAIN ); ?></label>
     <div class="option">
         <div class="controls">
             <input type="checkbox" class="hd-checkbox hd-control" name="gutenberg_use_widgets_block_editor_off" id="gutenberg_use_widgets_block_editor_off" <?php checked( $gutenberg_use_widgets_block_editor_off, 1 ); ?> value="1">
         </div>
-        <div class="explain"><?php _e( 'Disables the block editor from managing widgets in the Gutenberg.', TEXT_DOMAIN ); ?></div>
+        <div class="explain"><?php _e( 'Disables the block editor from managing widgets in the Gutenberg.', ADDONS_TEXT_DOMAIN ); ?></div>
     </div>
 </div>
 <div class="section section-checkbox" id="section_use_block_editor_for_post_type_off">
-    <label class="heading" for="use_block_editor_for_post_type_off"><?php _e( 'Disable Block Editor', TEXT_DOMAIN ); ?></label>
+    <label class="heading" for="use_block_editor_for_post_type_off"><?php _e( 'Disable Block Editor', ADDONS_TEXT_DOMAIN ); ?></label>
     <div class="option">
         <div class="controls">
             <input type="checkbox" class="hd-checkbox hd-control" name="use_block_editor_for_post_type_off" id="use_block_editor_for_post_type_off" <?php checked( $use_block_editor_for_post_type_off, 1 ); ?> value="1">
         </div>
-        <div class="explain"><?php _e( 'Use Classic Editor - Disable Block Editor.', TEXT_DOMAIN ); ?></div>
+        <div class="explain"><?php _e( 'Use Classic Editor - Disable Block Editor.', ADDONS_TEXT_DOMAIN ); ?></div>
     </div>
 </div>
 <div class="section section-checkbox" id="section_block_style_off">
-    <label class="heading" for="block_style_off"><?php _e( 'Remove block CSS', TEXT_DOMAIN ); ?></label>
+    <label class="heading" for="block_style_off"><?php _e( 'Remove block CSS', ADDONS_TEXT_DOMAIN ); ?></label>
     <div class="option">
         <div class="controls">
             <input type="checkbox" class="hd-checkbox hd-control" name="block_style_off" id="block_style_off" <?php checked( $block_style_off, 1 ); ?> value="1">
         </div>
-        <div class="explain"><?php _e( 'Remove block library styles.', TEXT_DOMAIN ); ?></div>
+        <div class="explain"><?php _e( 'Remove block library styles.', ADDONS_TEXT_DOMAIN ); ?></div>
     </div>
 </div>

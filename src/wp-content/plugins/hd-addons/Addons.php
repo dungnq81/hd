@@ -3,6 +3,8 @@
 use Addons\Base_Slug\Base_Slug;
 use Addons\Custom_Email\Custom_Email;
 use Addons\Custom_Order\Custom_Order;
+use Addons\Editor\Editor;
+use Addons\Editor\TinyMCE;
 use Addons\Font\Font;
 use Addons\Heartbeat\Heartbeat;
 use Addons\Lazy_Load\Lazy_Load;
@@ -53,6 +55,9 @@ final class Addons {
 	 * @return void
 	 */
 	public function plugins_loaded(): void {
+
+		( new Editor() );
+		( new TinyMCE() );
 		( new Custom_Order() );
 		( new Custom_Email() );
 		( new SMTP() );

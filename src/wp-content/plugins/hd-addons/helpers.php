@@ -343,6 +343,76 @@ if ( ! function_exists( 'get_current_url' ) ) {
 
 /** ----------------------------------------------- */
 
+if ( ! function_exists( 'get_custom_post_option_content' ) ) {
+	/**
+	 * @param string $post_type - max 20 characters
+	 * @param bool $encode
+	 *
+	 * @return array|string
+	 */
+	function get_custom_post_option_content( string $post_type, bool $encode = false ): array|string {
+		if ( empty( $post_type ) ) {
+			return '';
+		}
+
+		$post = get_custom_post_option( $post_type );
+		if ( isset( $post->post_content ) ) {
+			$post_content = wp_unslash( $post->post_content );
+			if ( $encode ) {
+				$post_content = wp_unslash( base64_decode( $post->post_content ) );
+			}
+
+			return $post_content;
+		}
+
+		return '';
+	}
+}
+
+/** ----------------------------------------------- */
+
+if ( ! function_exists( 'get_custom_post_option' ) ) {
+	/**
+	 * @param string $post_type - max 20 characters
+	 *
+	 * @return array|WP_Post|null
+	 */
+	function get_custom_post_option( string $post_type ): array|WP_Post|null {
+		if ( empty( $post_type ) ) {
+			return null;
+		}
+
+		$custom_query_vars = [
+			'post_type'              => $post_type,
+			'post_status'            => get_post_stati(),
+			'posts_per_page'         => 1,
+			'no_found_rows'          => true,
+			'cache_results'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'lazy_load_term_meta'    => false,
+		];
+
+		$post    = null;
+		$post_id = get_theme_mod( $post_type . '_option_id' );
+
+		if ( $post_id > 0 && get_post( $post_id ) ) {
+			$post = get_post( $post_id );
+		}
+
+		// `-1` indicates no post exists; no query necessary.
+		if ( ! $post && - 1 !== $post_id ) {
+			$post = ( new \WP_Query( $custom_query_vars ) )->post;
+
+			set_theme_mod( $post_type . '_option_id', $post->ID ?? - 1 );
+		}
+
+		return $post;
+	}
+}
+
+/** ----------------------------------------------- */
+
 if ( ! function_exists( 'check_plugin_installed' ) ) {
 	/**
 	 * Check if plugin is installed by getting all plugins from the plugins dir

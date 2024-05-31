@@ -127,7 +127,7 @@ class Recent_Posts_Widget extends Abstract_Widget {
 		);
 
 		$ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
-		$css_class = ! empty( $ACF->css_class ) ? esc_attr_strip_tags( $ACF->css_class ) : '';
+		$css_class = ! empty( $ACF->css_class ) ? Helper::esc_attr_strip_tags( $ACF->css_class ) : '';
 		$uniqid    = esc_attr( uniqid( $this->widget_classname . '-', false ) );
 
 		if ( ! $r->have_posts() ) {
@@ -143,7 +143,7 @@ class Recent_Posts_Widget extends Abstract_Widget {
 			<?php endif;
 
 			// The title may be filtered: Strip out HTML and make sure the aria-label is never empty.
-			$aria_label = $title ? esc_attr_strip_tags( $title ) : __( 'Recent Posts', TEXT_DOMAIN );
+			$aria_label = $title ? Helper::esc_attr_strip_tags( $title ) : __( 'Recent Posts', TEXT_DOMAIN );
 
 			?>
             <nav class="<?= $uniqid ?>" aria-label="<?php echo $aria_label; ?>">
@@ -156,7 +156,7 @@ class Recent_Posts_Widget extends Abstract_Widget {
 						$post_title = get_the_title( $recent_post->ID );
 						$post_title     = ( ! empty( $post_title ) ) ? $post_title : __( '(no title)', TEXT_DOMAIN );
 
-                        $attr_post_title = esc_attr_strip_tags( $post_title );
+                        $attr_post_title = Helper::esc_attr_strip_tags( $post_title );
 
                         $post_thumbnail = get_the_post_thumbnail( $recent_post, 'medium', [ 'alt' => $attr_post_title ] );
 

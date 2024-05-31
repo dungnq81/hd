@@ -18,14 +18,6 @@ final class Options {
 	public function __construct() {
 		add_action( 'wp_enqueue_scripts', [ &$this, 'aspect_ratio_enqueue_scripts' ], 98 );
 
-		/** Contact Info */
-
-		/** Contact Button */
-
-		/** Block Editor */
-		add_action( 'wp_enqueue_scripts', [ &$this, 'editor_enqueue_scripts' ], 98 );
-		add_action( 'admin_init', [ &$this, 'editor_admin_init' ], 11 );
-
 		/** Comments */
 		//add_action( 'comment_form_after_fields', [ &$this, 'add_simple_antispam_field' ] );
 		//add_filter( 'preprocess_comment', [ &$this, 'check_simple_antispam' ] );
@@ -49,20 +41,20 @@ final class Options {
 	 *
 	 * @return mixed
 	 */
-	public function check_simple_antispam( $commentdata ): mixed {
-		if ( ! isset( $_POST['antispam_input'], $_POST['antispam_result'] ) ) {
-			wp_die( esc_html__( 'Lỗi CAPTCHA. Vui lòng thử lại.', TEXT_DOMAIN ) );
-		}
-
-		$input  = (int) $_POST['antispam_input'];
-		$result = (int) $_POST['antispam_result'];
-
-		if ( $input !== $result ) {
-			wp_die( esc_html__( 'Câu trả lời chưa chính xác. Vui lòng thử lại.', TEXT_DOMAIN ) );
-		}
-
-		return $commentdata;
-	}
+//	public function check_simple_antispam( $commentdata ): mixed {
+//		if ( ! isset( $_POST['antispam_input'], $_POST['antispam_result'] ) ) {
+//			wp_die( esc_html__( 'Lỗi CAPTCHA. Vui lòng thử lại.', TEXT_DOMAIN ) );
+//		}
+//
+//		$input  = (int) $_POST['antispam_input'];
+//		$result = (int) $_POST['antispam_result'];
+//
+//		if ( $input !== $result ) {
+//			wp_die( esc_html__( 'Câu trả lời chưa chính xác. Vui lòng thử lại.', TEXT_DOMAIN ) );
+//		}
+//
+//		return $commentdata;
+//	}
 
 	// ------------------------------------------------------
 
@@ -70,21 +62,21 @@ final class Options {
 	 * @return void
 	 * @throws \Random\RandomException
 	 */
-	public function add_simple_antispam_field(): void {
-		$comment_options = Helper::getOption( 'comment__options', false, false );
-
-		if ( $comment_options['simple_antispam'] ?? '' ) {
-
-			$num1     = random_int( 1, 10 );
-			$num2     = random_int( 1, 10 );
-			$operator = random_int( 0, 1 ) ? '+' : '-';
-			$result   = $operator === '+' ? $num1 + $num2 : $num1 - $num2;
-
-			echo '<p class="comment-form-antispam">' . sprintf( esc_html__( 'Để xác minh bạn không phải là robot spam comment, Hãy tính: %1$d %2$s %3$d = ?', TEXT_DOMAIN ), $num1, $operator, $num2 ) . '</p>';
-			echo '<input type="hidden" name="antispam_result" value="' . $result . '" />';
-			echo '<p class="comment-form-antispam-answer"><label for="antispam_input">' . esc_html__( 'Câu trả lời:', TEXT_DOMAIN ) . '</label> <input type="text" name="antispam_input" id="antispam_input" required /></p>';
-		}
-	}
+//	public function add_simple_antispam_field(): void {
+//		$comment_options = Helper::getOption( 'comment__options', false, false );
+//
+//		if ( $comment_options['simple_antispam'] ?? '' ) {
+//
+//			$num1     = random_int( 1, 10 );
+//			$num2     = random_int( 1, 10 );
+//			$operator = random_int( 0, 1 ) ? '+' : '-';
+//			$result   = $operator === '+' ? $num1 + $num2 : $num1 - $num2;
+//
+//			echo '<p class="comment-form-antispam">' . sprintf( esc_html__( 'Để xác minh bạn không phải là robot spam comment, Hãy tính: %1$d %2$s %3$d = ?', TEXT_DOMAIN ), $num1, $operator, $num2 ) . '</p>';
+//			echo '<input type="hidden" name="antispam_result" value="' . $result . '" />';
+//			echo '<p class="comment-form-antispam-answer"><label for="antispam_input">' . esc_html__( 'Câu trả lời:', TEXT_DOMAIN ) . '</label> <input type="text" name="antispam_input" id="antispam_input" required /></p>';
+//		}
+//	}
 
 	// ------------------------------------------------------
 
@@ -100,58 +92,6 @@ final class Options {
 
 			echo "<style id='custom-style-inline-css'>" . $css . "</style>";
 			// wp_add_inline_style( 'app-style', $css );
-		}
-	}
-
-	// ------------------------------------------------------
-
-	/**
-	 * @return void
-	 */
-	public function editor_admin_init(): void {
-		$block_editor_options = Helper::getOption( 'block_editor__options', false, false );
-
-		$use_widgets_block_editor_off           = $block_editor_options['use_widgets_block_editor_off'] ?? '';
-		$gutenberg_use_widgets_block_editor_off = $block_editor_options['gutenberg_use_widgets_block_editor_off'] ?? '';
-		$use_block_editor_for_post_type_off     = $block_editor_options['use_block_editor_for_post_type_off'] ?? '';
-
-		// Disables the block editor from managing widgets.
-		if ( $use_widgets_block_editor_off ) {
-			add_filter( 'use_widgets_block_editor', '__return_false' );
-		}
-
-		// Disables the block editor from managing widgets in the Gutenberg plugin.
-		if ( $gutenberg_use_widgets_block_editor_off ) {
-			add_filter( 'gutenberg_use_widgets_block_editor', '__return_false' );
-		}
-
-		// Use Classic Editor - Disable Gutenberg Editor
-		if ( $use_block_editor_for_post_type_off ) {
-			add_filter( 'use_block_editor_for_post_type', '__return_false' );
-		}
-	}
-
-	// ------------------------------------------------------
-
-	/**
-	 * @return void
-	 */
-	public function editor_enqueue_scripts(): void {
-		$block_editor_options = Helper::getOption( 'block_editor__options', false, false );
-		$block_style_off      = $block_editor_options['block_style_off'] ?? '';
-
-		/** Remove block CSS */
-		if ( $block_style_off ) {
-			wp_dequeue_style( 'global-styles' );
-
-			wp_dequeue_style( 'wp-block-library' );
-			wp_dequeue_style( 'wp-block-library-theme' );
-
-			// Remove WooCommerce block CSS
-			if ( Helper::is_woocommerce_active() ) {
-				wp_deregister_style( 'wc-blocks-vendors-style' );
-				wp_deregister_style( 'wc-block-style' );
-			}
 		}
 	}
 

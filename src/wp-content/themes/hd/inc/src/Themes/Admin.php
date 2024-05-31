@@ -125,33 +125,37 @@ final class Admin {
 		/** ---------------------------------------- */
 
 		/** Contact info */
-		$contact_info_options = [
-			'hotline' => ! empty( $data['contact_info_hotline'] ) ? sanitize_text_field( $data['contact_info_hotline'] ) : '',
-			'address' => ! empty( $data['contact_info_address'] ) ? sanitize_text_field( $data['contact_info_address'] ) : '',
-			'phones'  => ! empty( $data['contact_info_phones'] ) ? sanitize_text_field( $data['contact_info_phones'] ) : '',
-			'emails'  => ! empty( $data['contact_info_emails'] ) ? sanitize_text_field( $data['contact_info_emails'] ) : '',
-		];
+		if ( Helper::is_addons_active() ) {
+			$contact_info_options = [
+				'hotline' => ! empty( $data['contact_info_hotline'] ) ? sanitize_text_field( $data['contact_info_hotline'] ) : '',
+				'address' => ! empty( $data['contact_info_address'] ) ? sanitize_text_field( $data['contact_info_address'] ) : '',
+				'phones'  => ! empty( $data['contact_info_phones'] ) ? sanitize_text_field( $data['contact_info_phones'] ) : '',
+				'emails'  => ! empty( $data['contact_info_emails'] ) ? sanitize_text_field( $data['contact_info_emails'] ) : '',
+			];
 
-		Helper::updateOption( 'contact_info__options', $contact_info_options, true );
+			Helper::updateOption( 'contact_info__options', $contact_info_options, true );
 
-		$html_contact_info_others = $data['contact_info_others'] ?? '';
-		Helper::updateCustomPost( $html_contact_info_others, 'html_others', 'text/html' );
+			$html_contact_info_others = $data['contact_info_others'] ?? '';
+			Helper::updateCustomPost( $html_contact_info_others, 'html_others', 'text/html' );
+		}
 
 		/** ---------------------------------------- */
 
 		/** Contact Button */
-		$contact_btn_options = [
-			'contact_title'        => ! empty( $data['contact_title'] ) ? sanitize_text_field( $data['contact_title'] ) : '',
-			'contact_url'          => ! empty( $data['contact_url'] ) ? sanitize_text_field( $data['contact_url'] ) : '',
-			'contact_window'       => ! empty( $data['contact_window'] ) ? sanitize_text_field( $data['contact_window'] ) : '',
-			'contact_waiting_time' => ! empty( $data['contact_waiting_time'] ) ? sanitize_text_field( $data['contact_waiting_time'] ) : '',
-			'contact_show_repeat'  => ! empty( $data['contact_show_repeat'] ) ? sanitize_text_field( $data['contact_show_repeat'] ) : '',
-		];
+		if ( Helper::is_addons_active() ) {
+			$contact_btn_options = [
+				'contact_title'        => ! empty( $data['contact_title'] ) ? sanitize_text_field( $data['contact_title'] ) : '',
+				'contact_url'          => ! empty( $data['contact_url'] ) ? sanitize_text_field( $data['contact_url'] ) : '',
+				'contact_window'       => ! empty( $data['contact_window'] ) ? sanitize_text_field( $data['contact_window'] ) : '',
+				'contact_waiting_time' => ! empty( $data['contact_waiting_time'] ) ? sanitize_text_field( $data['contact_waiting_time'] ) : '',
+				'contact_show_repeat'  => ! empty( $data['contact_show_repeat'] ) ? sanitize_text_field( $data['contact_show_repeat'] ) : '',
+			];
 
-		Helper::updateOption( 'contact_btn__options', $contact_btn_options, true );
+			Helper::updateOption( 'contact_btn__options', $contact_btn_options, true );
 
-		$html_contact_popup_content = $data['contact_popup_content'] ?? '';
-		Helper::updateCustomPost( $html_contact_popup_content, 'html_contact', 'text/html' );
+			$html_contact_popup_content = $data['contact_popup_content'] ?? '';
+			Helper::updateCustomPost( $html_contact_popup_content, 'html_contact', 'text/html' );
+		}
 
 		/** ---------------------------------------- */
 
@@ -514,6 +518,7 @@ final class Admin {
                             </li>
 	                        <?php endif; ?>
 
+	                        <?php if ( Helper::is_addons_active() ) : ?>
                             <li class="contact-info-settings">
                                 <a title="Contact Info" href="#contact_info_settings"><?php _e( 'Contact Info', TEXT_DOMAIN ); ?></a>
                             </li>
@@ -521,8 +526,10 @@ final class Admin {
                                 <a title="Contact Button" href="#contact_button_settings"><?php _e( 'Contact Button', TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="gutenberg-settings">
-                                <a title="Block Editor" href="#block_editor_settings"><?php _e( 'Block Editor', TEXT_DOMAIN ); ?></a>
+                                <a title="Editor" href="#block_editor_settings"><?php _e( 'Editor', TEXT_DOMAIN ); ?></a>
                             </li>
+	                        <?php endif; ?>
+
                             <li class="optimizer-settings">
                                 <a title="Optimizer" href="#optimizer_settings"><?php _e( 'Optimizer', TEXT_DOMAIN ); ?></a>
                             </li>
@@ -530,9 +537,11 @@ final class Admin {
                                 <a title="Security" href="#security_settings"><?php _e( 'Security', TEXT_DOMAIN ); ?></a>
                             </li>
 
+		                    <?php if ( Helper::is_addons_active() ) : ?>
                             <li class="social-settings">
                                 <a title="Social" href="#social_settings"><?php _e( 'Social', TEXT_DOMAIN ); ?></a>
                             </li>
+		                    <?php endif; ?>
 
 	                        <?php if ( Helper::is_woocommerce_active() ) : ?>
                                 <li class="woocommerce-settings">
@@ -587,17 +596,17 @@ final class Admin {
                         </div>
 	                    <?php endif; ?>
 
+	                    <?php if ( Helper::is_addons_active() ) : ?>
                         <div id="contact_info_settings" class="group tabs-panel">
-							<?php include INC_PATH . 'admin/options/contact_info.php'; ?>
+							<?php include ADDONS_PATH . 'src/Contact_Info/options.php'; ?>
                         </div>
-
                         <div id="contact_button_settings" class="group tabs-panel">
-							<?php include INC_PATH . 'admin/options/contact_button.php'; ?>
+							<?php include ADDONS_PATH . 'src/Contact_Button/options.php'; ?>
                         </div>
-
                         <div id="block_editor_settings" class="group tabs-panel">
-							<?php include INC_PATH . 'admin/options/block_editor.php'; ?>
+							<?php include ADDONS_PATH . 'src/Editor/options.php'; ?>
                         </div>
+	                    <?php endif; ?>
 
                         <div id="optimizer_settings" class="group tabs-panel">
 							<?php include INC_PATH . 'admin/options/optimizer.php'; ?>
@@ -607,9 +616,11 @@ final class Admin {
 							<?php include INC_PATH . 'admin/options/security.php'; ?>
                         </div>
 
+		                <?php if ( Helper::is_addons_active() ) : ?>
                         <div id="social_settings" class="group tabs-panel">
-							<?php include INC_PATH . 'admin/options/social.php'; ?>
+							<?php include ADDONS_PATH . 'src/Social/options.php'; ?>
                         </div>
+		                <?php endif; ?>
 
 	                    <?php if ( Helper::is_woocommerce_active() ) : ?>
                         <div id="woocommerce_settings" class="group tabs-panel">

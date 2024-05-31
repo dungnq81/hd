@@ -8,7 +8,6 @@ use Libs\CSS;
 
 use Plugins\ACF\ACF;
 use Plugins\CF7;
-use Plugins\Editor\TinyMCE;
 use Plugins\RankMath;
 use Plugins\WpRocket;
 use Plugins\Elementor;
@@ -180,8 +179,6 @@ final class Theme {
 	 * @return void
 	 */
 	public function plugins_setup(): void {
-
-		( new TinyMCE() );
 
 		Helper::is_elementor_active() && ( new Elementor() );
 		Helper::is_woocommerce_active() && ( new WooCommerce() );

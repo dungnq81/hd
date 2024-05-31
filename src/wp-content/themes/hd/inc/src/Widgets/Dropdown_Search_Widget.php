@@ -42,7 +42,7 @@ class Dropdown_Search_Widget extends Abstract_Widget {
 		$ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
 
 		$title = $this->get_instance_title( $instance );
-		$css_class = ! empty( $ACF->css_class ) ? esc_attr_strip_tags( $ACF->css_class ) : '';
+		$css_class = ! empty( $ACF->css_class ) ? Helper::esc_attr_strip_tags( $ACF->css_class ) : '';
 		$popup_overlay = ! empty( $instance['popup_overlay'] );
 
 		if ( $popup_overlay ) {
