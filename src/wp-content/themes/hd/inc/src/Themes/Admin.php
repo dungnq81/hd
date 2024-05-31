@@ -160,14 +160,16 @@ final class Admin {
 		/** ---------------------------------------- */
 
 		/** Block editor */
-		$block_editor_options = [
-			'use_widgets_block_editor_off'           => ! empty( $data['use_widgets_block_editor_off'] ) ? sanitize_text_field( $data['use_widgets_block_editor_off'] ) : '',
-			'gutenberg_use_widgets_block_editor_off' => ! empty( $data['gutenberg_use_widgets_block_editor_off'] ) ? sanitize_text_field( $data['gutenberg_use_widgets_block_editor_off'] ) : '',
-			'use_block_editor_for_post_type_off'     => ! empty( $data['use_block_editor_for_post_type_off'] ) ? sanitize_text_field( $data['use_block_editor_for_post_type_off'] ) : '',
-			'block_style_off'                        => ! empty( $data['block_style_off'] ) ? sanitize_text_field( $data['block_style_off'] ) : '',
-		];
+		if ( Helper::is_addons_active() ) {
+			$block_editor_options = [
+				'use_widgets_block_editor_off'           => ! empty( $data['use_widgets_block_editor_off'] ) ? sanitize_text_field( $data['use_widgets_block_editor_off'] ) : '',
+				'gutenberg_use_widgets_block_editor_off' => ! empty( $data['gutenberg_use_widgets_block_editor_off'] ) ? sanitize_text_field( $data['gutenberg_use_widgets_block_editor_off'] ) : '',
+				'use_block_editor_for_post_type_off'     => ! empty( $data['use_block_editor_for_post_type_off'] ) ? sanitize_text_field( $data['use_block_editor_for_post_type_off'] ) : '',
+				'block_style_off'                        => ! empty( $data['block_style_off'] ) ? sanitize_text_field( $data['block_style_off'] ) : '',
+			];
 
-		Helper::updateOption( 'block_editor__options', $block_editor_options, true );
+			Helper::updateOption( 'block_editor__options', $block_editor_options, true );
+		}
 
 		/** ---------------------------------------- */
 
@@ -240,16 +242,18 @@ final class Admin {
 		/** ---------------------------------------- */
 
 		// Socials
-		$social_options = [];
-        $social_follows_links = Helper::filter_setting_options( 'social_follows_links', [] );
+		if ( Helper::is_addons_active() ) {
+			$social_options       = [];
+			$social_follows_links = Helper::filter_setting_options( 'social_follows_links', [] );
 
-		foreach ( $social_follows_links as $i => $item ) {
-			$social_options[ $i ] = [
-				'url' => ! empty( $data[ $i . '-option' ] ) ? sanitize_url( $data[ $i . '-option' ] ) : '',
-			];
+			foreach ( $social_follows_links as $i => $item ) {
+				$social_options[ $i ] = [
+					'url' => ! empty( $data[ $i . '-option' ] ) ? sanitize_url( $data[ $i . '-option' ] ) : '',
+				];
+			}
+
+			Helper::updateOption( 'social__options', $social_options );
 		}
-
-		Helper::updateOption( 'social__options', $social_options );
 
 		/** ---------------------------------------- */
 
