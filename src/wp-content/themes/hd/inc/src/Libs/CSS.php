@@ -10,7 +10,6 @@ namespace Libs;
  * Modified by Tom Usborne for GeneratePress
  * Modified by HD Team
  */
-
 final class CSS {
 	/**
 	 * The css selector that you're currently adding rules to
@@ -18,7 +17,7 @@ final class CSS {
 	 * @access protected
 	 * @var string
 	 */
-	protected string $_selector = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+	protected $_selector = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
 	/**
 	 * Stores the final css output with all of its rules for the current selector.
@@ -26,7 +25,7 @@ final class CSS {
 	 * @access protected
 	 * @var string
 	 */
-	protected string $_selector_output = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+	protected $_selector_output = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
 	/**
 	 * Stores all the rules that will be added to the selector
@@ -34,7 +33,7 @@ final class CSS {
 	 * @access protected
 	 * @var string
 	 */
-	protected string $_css = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+	protected $_css = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
 	/**
 	 * The string that holds all the css to output
@@ -42,7 +41,7 @@ final class CSS {
 	 * @access protected
 	 * @var string
 	 */
-	protected string $_output = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+	protected $_output = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
 	/**
 	 * Stores media queries
@@ -57,7 +56,7 @@ final class CSS {
 	 * @access protected
 	 * @var string
 	 */
-	protected string $_media_query_output = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+	protected $_media_query_output = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
 	/**
 	 * Sets a selector to the object and changes the current selector to a new one
@@ -68,9 +67,8 @@ final class CSS {
 	 *
 	 * @return $this
 	 * @since  1.0
-	 *
 	 */
-	public function set_selector( string $selector = '' ) {
+	public function set_selector( $selector = '' ) {
 		// Render the css in the output string everytime the selector changes.
 		if ( '' !== $this->_selector ) {
 			$this->add_selector_rules_to_output();
@@ -91,9 +89,8 @@ final class CSS {
 	 * @param string $og_default Check to see if the value matches the default.
 	 * @param string $unit The unit for the value (px).
 	 *
-	 * @return $this|false
+	 * @return $this
 	 * @since  1.0
-	 *
 	 */
 	public function add_property( $property, $value, $og_default = false, $unit = false ) {
 		// Setting font-size to 0 is rarely ever a good thing.
@@ -102,7 +99,7 @@ final class CSS {
 		}
 
 		// Add our unit to our value if it exists.
-		if ( $unit && '' !== $unit ) {
+		if ( $unit && '' !== $unit && is_numeric( $value ) ) {
 			$value = $value . $unit;
 			if ( '' !== $og_default ) {
 				$og_default = $og_default . $unit;
@@ -148,7 +145,6 @@ final class CSS {
 	 * @return $this
 	 * @since  1.1
 	 * @see    start_media_query()
-	 *
 	 */
 	public function stop_media_query() {
 		return $this->start_media_query( null );
@@ -177,7 +173,6 @@ final class CSS {
 	 * @access private
 	 * @return $this
 	 * @since  1.0
-	 *
 	 */
 	private function add_selector_rules_to_output() {
 		if ( ! empty( $this->_css ) ) {

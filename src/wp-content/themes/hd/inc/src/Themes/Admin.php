@@ -394,6 +394,12 @@ final class Admin {
 		wp_enqueue_script( 'pace-js', THEME_URL . 'assets/js/plugins/pace.min.js', [], false, true );
 		wp_enqueue_script( "admin", THEME_URL . "assets/js/admin.js", [ "pace-js" ], THEME_VERSION, true );
 
+		$pace_js_inline = 'paceOptions = {startOnPageLoad:!1}';
+		wp_add_inline_script( 'pace-js', $pace_js_inline, 'before' );
+
+		wp_enqueue_script( "fontawesome-kit", "https://kit.fontawesome.com/09f86c70cd.js", [], false, true );
+		wp_script_add_data( "fontawesome-kit", "defer", true );
+
 		// options_enqueue_assets
 		$allowed_pages = 'toplevel_page_hd-settings';
 		if ( $allowed_pages === $hook ) {
@@ -405,12 +411,6 @@ final class Admin {
 			wp_enqueue_style( 'wp-codemirror' );
 			wp_localize_script( 'admin', 'codemirror_settings', $codemirror_settings );
 		}
-
-		$pace_js_inline = 'paceOptions = {startOnPageLoad:!1}';
-		wp_add_inline_script( 'pace-js', $pace_js_inline, 'before' );
-
-		wp_enqueue_script( "fontawesome-kit", "https://kit.fontawesome.com/09f86c70cd.js", [], false, true );
-		wp_script_add_data( "fontawesome-kit", "defer", true );
 	}
 
 	// --------------------------------------------------

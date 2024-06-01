@@ -46,6 +46,7 @@ Thumbs.db
 # WordPress
 wp-content/uploads/
 wp-content/themes/twenty*/
+wp-content/themes/generatepress/
 
 # ignore these plugins
 wp-content/plugins/*

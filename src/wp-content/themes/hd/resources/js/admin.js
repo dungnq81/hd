@@ -23,33 +23,49 @@ jQuery(function ($) {
     }
 
     if (typeof codemirror_settings !== 'undefined') {
-        // codemirror css
+        /**
+         * codemirror css
+         * @type {jQuery|HTMLElement|*}
+         */
         const codemirror_css = $('.codemirror_css');
-        codemirror_css.each((index, el) => {
+        _.each(codemirror_css, function (el, index) {
+            // Initialize the random element
             rand_element_init(el);
 
+            // Clone the settings if they exist, otherwise create an empty object
             let editorSettings = codemirror_settings.codemirror_css ? _.clone(codemirror_settings.codemirror_css) : {};
+
+            // Extend the settings with additional CodeMirror options
             editorSettings.codemirror = _.extend({}, editorSettings.codemirror, {
                 indentUnit: 3,
                 tabSize: 3,
                 autoRefresh: true,
             });
 
+            // Initialize the CodeMirror editor
             wp.codeEditor.initialize($(el), editorSettings);
         });
 
-        // codemirror html
+        /**
+         * codemirror html
+         * @type {jQuery|HTMLElement|*}
+         */
         const codemirror_html = $('.codemirror_html');
-        codemirror_html.each((index, el) => {
+        _.each(codemirror_html, function (el, index) {
+            // Initialize the random element
             rand_element_init(el);
 
+            // Clone the settings if they exist, otherwise create an empty object
             let editorSettings = codemirror_settings.codemirror_html ? _.clone(codemirror_settings.codemirror_html) : {};
+
+            // Extend the settings with additional CodeMirror options
             editorSettings.codemirror = _.extend({}, editorSettings.codemirror, {
                 indentUnit: 3,
                 tabSize: 3,
                 autoRefresh: true,
             });
 
+            // Initialize the CodeMirror editor
             wp.codeEditor.initialize($(el), editorSettings);
         });
     }
