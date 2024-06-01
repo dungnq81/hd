@@ -1,10 +1,9 @@
 <?php
-
 /**
  * The template for displaying the footer.
  * Contains the body & html closing tags.
  *
- * @package hd
+ * @package HD
  */
 
 \defined( 'ABSPATH' ) || die;

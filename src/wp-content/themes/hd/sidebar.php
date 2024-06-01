@@ -1,10 +1,8 @@
 <?php
-
 /**
  * The template for displaying sidebar.
  *
  * @package HD
- * @since 1.0.0
  */
 
 \defined( 'ABSPATH' ) || die;
