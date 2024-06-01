@@ -14,6 +14,7 @@ mix.disableNotifications();
 mix.copy(`${node_modules}/select2/dist/css/select2.min.css`, `${assets}/css`);
 mix.copy(`${node_modules}/select2/dist/js/select2.full.min.js`, `${assets}/js`);
 
+mix.sass(resources + '/sass/editor-style.scss', assets + '/css');
 mix.sass(resources + '/sass/addon.scss', assets + '/css');
 
 mix.js(resources + '/js/admin_custom_order.js', assets + '/js')

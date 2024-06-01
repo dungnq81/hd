@@ -4,71 +4,6 @@ import Cookies from 'js-cookie';
 Object.assign(window, { Cookies });
 
 jQuery(function ($) {
-    // codemirror
-    if (typeof codemirror_settings !== 'undefined') {
-        const initializeCodeMirror = (selector, settingsKey) => {
-            $(selector).each((index, el) => {
-                rand_element_init(el);
-                let editorSettings = codemirror_settings[settingsKey] ? { ...codemirror_settings[settingsKey] } : {};
-
-                editorSettings.codemirror = {
-                    indentUnit: 3,
-                    tabSize: 3,
-                    autoRefresh: true,
-                    lineNumbers: true,
-                };
-
-                wp.codeEditor.initialize($(el), editorSettings);
-            });
-        };
-
-        initializeCodeMirror('.codemirror_css', 'codemirror_css');
-        initializeCodeMirror('.codemirror_html', 'codemirror_html');
-    }
-
-    // hide notice
-    $(document).on('click', '.notice-dismiss', function (e) {
-        $(this).closest('.notice.is-dismissible').fadeOut();
-    });
-
-    // filter tabs
-    const filter_tabs = $('.filter-tabs');
-    filter_tabs.each(function (i, el) {
-        const $el = $(el),
-            _id = rand_element_init(el),
-            $nav = $el.find('.tabs-nav'),
-            $content = $el.find('.tabs-content');
-
-        const _cookie = `cookie_${_id}_${i}`;
-        let cookieValue = Cookies.get(_cookie);
-
-        if (!cookieValue) {
-            cookieValue = $nav.find('a:first').attr('href');
-            Cookies.set(_cookie, cookieValue, { expires: 7, path: '' });
-        }
-        $nav.find(`a[href="${cookieValue}"]`).addClass('current');
-        $nav.find('a')
-            .on('click', function (e) {
-                e.preventDefault();
-
-                const $this = $(this);
-                const hash = $this.attr('href');
-                Cookies.set(_cookie, hash, { expires: 7, path: '' });
-
-                $nav.find('a.current').removeClass('current');
-                $content.find('.tabs-panel:visible').removeClass('show').hide();
-
-                $($this.attr('href')).addClass('show').show();
-                $this.addClass('current');
-            })
-            .filter('.current')
-            .trigger('click');
-    });
-
-    // user
-    const create_user = $('#createuser');
-    create_user.find('#send_user_notification').removeAttr('checked').attr('disabled', true);
-
     /**
      * @param el
      * @return {*|jQuery}
@@ -85,6 +20,38 @@ jQuery(function ($) {
         }
 
         return _id;
+    }
+
+    if (typeof codemirror_settings !== 'undefined') {
+        // codemirror css
+        const codemirror_css = $('.codemirror_css');
+        codemirror_css.each((index, el) => {
+            rand_element_init(el);
+
+            let editorSettings = codemirror_settings.codemirror_css ? _.clone(codemirror_settings.codemirror_css) : {};
+            editorSettings.codemirror = _.extend({}, editorSettings.codemirror, {
+                indentUnit: 3,
+                tabSize: 3,
+                autoRefresh: true,
+            });
+
+            wp.codeEditor.initialize($(el), editorSettings);
+        });
+
+        // codemirror html
+        const codemirror_html = $('.codemirror_html');
+        codemirror_html.each((index, el) => {
+            rand_element_init(el);
+
+            let editorSettings = codemirror_settings.codemirror_html ? _.clone(codemirror_settings.codemirror_html) : {};
+            editorSettings.codemirror = _.extend({}, editorSettings.codemirror, {
+                indentUnit: 3,
+                tabSize: 3,
+                autoRefresh: true,
+            });
+
+            wp.codeEditor.initialize($(el), editorSettings);
+        });
     }
 
     $.fn.fadeOutAndRemove = function (speed) {
@@ -133,6 +100,49 @@ jQuery(function ($) {
     $(document).ajaxStart(() => {
         Pace.restart();
     });
+
+    // hide notice
+    $(document).on('click', '.notice-dismiss', function (e) {
+        $(this).closest('.notice.is-dismissible').fadeOut();
+    });
+
+    // filter tabs
+    const filter_tabs = $('.filter-tabs');
+    filter_tabs.each(function (i, el) {
+        const $el = $(el),
+            _id = rand_element_init(el),
+            $nav = $el.find('.tabs-nav'),
+            $content = $el.find('.tabs-content');
+
+        const _cookie = `cookie_${_id}_${i}`;
+        let cookieValue = Cookies.get(_cookie);
+
+        if (!cookieValue) {
+            cookieValue = $nav.find('a:first').attr('href');
+            Cookies.set(_cookie, cookieValue, { expires: 7, path: '' });
+        }
+        $nav.find(`a[href="${cookieValue}"]`).addClass('current');
+        $nav.find('a')
+            .on('click', function (e) {
+                e.preventDefault();
+
+                const $this = $(this);
+                const hash = $this.attr('href');
+                Cookies.set(_cookie, hash, { expires: 7, path: '' });
+
+                $nav.find('a.current').removeClass('current');
+                $content.find('.tabs-panel:visible').removeClass('show').hide();
+
+                $($this.attr('href')).addClass('show').show();
+                $this.addClass('current');
+            })
+            .filter('.current')
+            .trigger('click');
+    });
+
+    // user
+    const create_user = $('#createuser');
+    create_user.find('#send_user_notification').removeAttr('checked').attr('disabled', true);
 
     // ajax submit settings
     $(document).on('submit', '#hd_form', function (e) {
