@@ -1,12 +1,13 @@
 const mix = require('laravel-mix');
-const { globSync } = require('glob');
+const { sync: globSync } = require('glob');
 
+// Laravel Mix configuration
 mix.webpackConfig({
     stats: {
         children: true,
     },
     watchOptions: {
-        ignored: '/node_modules/',
+        ignored: /node_modules/,
         poll: false,
     },
     externals: {
@@ -24,12 +25,12 @@ mix.webpackConfig({
     },
 });
 
-// Source maps when not in production.
+// Source maps when not in production
 if (!mix.inProduction()) {
     mix.sourceMaps(false, 'source-map');
 }
 
-// Run only for a plugin.
+// Run only for a plugin
 require('./wp-content/plugins/hd-addons/webpack.mix.js');
 
 // Run only for themes.

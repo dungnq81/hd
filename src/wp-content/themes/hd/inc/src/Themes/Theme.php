@@ -51,7 +51,7 @@ final class Theme {
 	 * @return void
 	 */
 	public function i18n(): void {
-		
+
 		/**
 		 * Make theme available for translation.
 		 * Translations can be filed at WordPress.org.
@@ -61,7 +61,7 @@ final class Theme {
 		load_theme_textdomain( TEXT_DOMAIN, get_template_directory() . '/languages' );
 		load_theme_textdomain( TEXT_DOMAIN, get_stylesheet_directory() . '/languages' );
 	}
-	
+
 	// --------------------------------------------------
 
 	/**
@@ -143,7 +143,6 @@ final class Theme {
 		( new Customizer() );
 		( new Optimizer() );
 		( new Security() );
-		( new Options() );
 
 		/** template hooks */
 		$this->_hooks();

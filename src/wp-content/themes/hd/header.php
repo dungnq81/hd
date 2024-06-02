@@ -51,8 +51,6 @@ use Cores\Helper;
 
 	        ?>
             <div class="site-content" id="site-content">
-                <?php
+            <?php
 
-                do_action( 'hd_inside_site_content' );
-
-
+            do_action( 'hd_inside_site_content' );

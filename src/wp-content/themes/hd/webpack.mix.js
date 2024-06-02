@@ -1,7 +1,7 @@
 const mix = require('laravel-mix');
 
 const path = require('path');
-let directory = path.basename(path.resolve(__dirname));
+const directory = path.basename(path.resolve(__dirname));
 
 const dir = './wp-content/themes/' + directory;
 

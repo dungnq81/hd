@@ -316,7 +316,7 @@ final class Helper {
 	 * @return mixed|object
 	 * @throws \JsonException
 	 */
-	public static function acfFields( $post_id = false, bool $format_value = true, bool $escape_html = false ): mixed {
+	public static function acfFields( mixed $post_id = false, bool $format_value = true, bool $escape_html = false ): mixed {
 		if ( ! self::is_acf_active() ) {
 			return (object) [];
 		}

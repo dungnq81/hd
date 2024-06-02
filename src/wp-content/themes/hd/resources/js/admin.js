@@ -43,7 +43,7 @@ jQuery(function ($) {
             });
 
             // Initialize the CodeMirror editor
-            wp.codeEditor.initialize($(el), editorSettings);
+            wp.codeEditor.initialize(el, editorSettings);
         });
 
         /**
@@ -66,7 +66,7 @@ jQuery(function ($) {
             });
 
             // Initialize the CodeMirror editor
-            wp.codeEditor.initialize($(el), editorSettings);
+            wp.codeEditor.initialize(el, editorSettings);
         });
     }
 
@@ -124,7 +124,7 @@ jQuery(function ($) {
 
     // filter tabs
     const filter_tabs = $('.filter-tabs');
-    filter_tabs.each(function (i, el) {
+    $.each(filter_tabs, function (i, el) {
         const $el = $(el),
             _id = rand_element_init(el),
             $nav = $el.find('.tabs-nav'),

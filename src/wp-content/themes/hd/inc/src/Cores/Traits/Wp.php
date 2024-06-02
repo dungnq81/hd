@@ -211,6 +211,23 @@ trait Wp {
 	// -------------------------------------------------------------
 
 	/**
+	 * @param array $arr_parsed
+	 *
+	 * @return bool
+	 */
+	public static function hasDelayScriptTag( array $arr_parsed ): bool {
+		foreach ( $arr_parsed as $str => $value ) {
+			if ( 'delay' === $value ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	// -------------------------------------------------------------
+
+	/**
 	 * @param array $arr_parsed [ $handle: $value ] -- $value[ 'defer', 'delay' ]
 	 * @param string $tag
 	 * @param string $handle
@@ -285,12 +302,12 @@ trait Wp {
 
 	/**
 	 * @param string $option
-	 * @param bool|mixed $default
+	 * @param mixed $default
 	 * @param bool $static_cache
 	 *
 	 * @return false|mixed
 	 */
-	public static function getOption( string $option, $default = false, bool $static_cache = false ): mixed {
+	public static function getOption( string $option, mixed $default = false, bool $static_cache = false ): mixed {
 		static $_is_option_loaded;
 		if ( empty( $_is_option_loaded ) ) {
 
@@ -350,10 +367,10 @@ trait Wp {
 	// -------------------------------------------------------------
 
 	/**
-	 * @param        $term_id
+	 * @param $term_id
 	 * @param string $taxonomy
 	 *
-	 * @return array|false|WP_Error|WP_Term|null
+	 * @return array|false|\WP_Error|\WP_Term|null
 	 */
 	public static function getTerm( $term_id, string $taxonomy = 'category' ) {
 		//$term = false;
@@ -457,7 +474,7 @@ trait Wp {
 
 		// woocommerce_hide_out_of_stock_items
 		if ( 'product' === $post_type &&
-		     'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items', false, true ) &&
+		     'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items' ) &&
 		     self::is_woocommerce_active()
 		) {
 			$product_visibility_term_ids = \wc_get_product_visibility_term_ids();
@@ -566,7 +583,7 @@ trait Wp {
 
 		// woocommerce_hide_out_of_stock_items
 		if ( 'product' === $post_type &&
-		     'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items', false, true ) &&
+		     'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items' ) &&
 		     self::is_woocommerce_active()
 		) {
 			$product_visibility_term_ids = wc_get_product_visibility_term_ids();
@@ -737,7 +754,7 @@ trait Wp {
 	 *
 	 * @return string|null
 	 */
-	public static function termExcerpt( $term = 0, string $class = 'excerpt' ): ?string {
+	public static function termExcerpt( int $term = 0, string $class = 'excerpt' ): ?string {
 		$description = term_description( $term );
 		if ( ! self::stripSpace( $description ) ) {
 			return null;
@@ -905,7 +922,7 @@ trait Wp {
 		// Get Tags for posts.
 		$hashtag_list = get_the_term_list( $id, $taxonomy, '', $sep );
 
-		// We don't want to output .entry-footer if it will be empty, so make sure its not.
+		// We don't want to output if it is empty, so make sure it's not.
 		if ( $hashtag_list ) {
 			echo '<div class="hashtags">';
 			printf(
@@ -954,7 +971,7 @@ trait Wp {
 	 *
 	 * @return string
 	 */
-	public static function iconImage( $attachment_id, string $size = 'thumbnail', $attr = '' ): string {
+	public static function iconImage( $attachment_id, string $size = 'thumbnail', string|array $attr = '' ): string {
 
 		$html  = '';
 		$image = wp_get_attachment_image_src( $attachment_id, $size, true );
@@ -1025,7 +1042,7 @@ trait Wp {
 	 *
 	 * @return string|null
 	 */
-	public static function acfTermThumb( $term, $acf_field_name = null, string $size = "thumbnail", bool $img_wrap = false, $attr = '' ): ?string {
+	public static function acfTermThumb( $term, $acf_field_name = null, string $size = "thumbnail", bool $img_wrap = false, string|array $attr = '' ): ?string {
 		if ( is_numeric( $term ) ) {
 			$term = get_term( $term );
 		}
@@ -1237,9 +1254,9 @@ trait Wp {
 	 * @param mixed|null $obj
 	 * @param mixed $fallback
 	 *
-	 * @return array|false|int|mixed|string|WP_Error|WP_Term|null
+	 * @return mixed
 	 */
-	public static function getPermalink( mixed $obj = null, $fallback = false ): mixed {
+	public static function getPermalink( mixed $obj = null, mixed $fallback = false ): mixed {
 		if ( empty( $obj ) && ! empty( $fallback ) ) {
 			return $fallback;
 		}
@@ -1283,9 +1300,9 @@ trait Wp {
 	 * @param mixed|null $obj
 	 * @param mixed $fallback
 	 *
-	 * @return false|int|mixed
+	 * @return mixed
 	 */
-	public static function getId( mixed $obj = null, $fallback = false ): mixed {
+	public static function getId( mixed $obj = null, mixed $fallback = false ): mixed {
 		if ( empty( $obj ) && $fallback ) {
 			return get_the_ID();
 		}

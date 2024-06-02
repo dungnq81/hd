@@ -27,8 +27,10 @@ final class Optimizer {
 
 		$this->_cleanup();
 		$this->_optimizer();
+		$this->_options();
 	}
 
+	// ------------------------------------------------------
 	// ------------------------------------------------------
 
 	/**
@@ -70,6 +72,7 @@ final class Optimizer {
 	}
 
 	// ------------------------------------------------------
+	// ------------------------------------------------------
 
 	/**
 	 * @return void
@@ -80,10 +83,8 @@ final class Optimizer {
 		add_filter( 'widget_text', 'do_shortcode' );
 		add_filter( 'widget_text', 'shortcode_unautop' );
 
+		/** Dequeue classic theme styles */
 		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue' ], 11 );
-
-		add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 12, 3 );
-		add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
 
 		add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 );
 		//add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 );
@@ -137,8 +138,6 @@ final class Optimizer {
 	 * @return void
 	 */
 	public function enqueue(): void {
-
-		/** Dequeue classic theme styles */
 		wp_dequeue_style( 'classic-theme-styles' );
 	}
 
@@ -172,66 +171,14 @@ final class Optimizer {
 			echo '</script>';
 		}
 
-		if ( is_file( $load_scripts = THEME_PATH . 'assets/js/plugins/load-scripts.js' ) ) {
+		$str_parsed = Helper::filter_setting_options( 'defer_script', [] );
+		if ( Helper::hasDelayScriptTag( $str_parsed ) &&
+		     is_file( $load_scripts = THEME_PATH . 'assets/js/plugins/load-scripts.js' )
+		) {
 			echo '<script>';
 			include $load_scripts;
 			echo '</script>';
 		}
-	}
-
-	// ------------------------------------------------------
-
-	/**
-	 * @param string $tag
-	 * @param string $handle
-	 * @param string $src
-	 *
-	 * @return string
-	 */
-	public function script_loader_tag( string $tag, string $handle, string $src ): string {
-
-		// Adds `async`, `defer` and attribute support for scripts registered or enqueued by the theme.
-		foreach ( [ 'async', 'defer' ] as $attr ) {
-			if ( ! wp_scripts()->get_data( $handle, $attr ) ) {
-				continue;
-			}
-
-			// Prevent adding attribute when already added in #12009.
-			if ( ! preg_match( ":\s$attr(=|>|\s):", $tag ) ) {
-				$tag = preg_replace( ':(?=></script>):', " $attr", $tag, 1 );
-			}
-
-			// Only allow async or defer, not both.
-			break;
-		}
-
-		// Custom filter which adds proper attributes
-
-		// Fontawesome kit
-		if ( ( 'fontawesome-kit' === $handle ) && ! preg_match( ':\scrossorigin([=>\s]):', $tag ) ) {
-			$tag = preg_replace( ':(?=></script>):', " crossorigin='anonymous'", $tag, 1 );
-		}
-
-		// Add script handles to the array
-		$str_parsed = Helper::filter_setting_options( 'defer_script', [] );
-
-		return Helper::lazyScriptTag( $str_parsed, $tag, $handle, $src );
-	}
-
-	/** ---------------------------------------- */
-
-	/**
-	 * Add style handles to the array below
-	 *
-	 * @param string $html
-	 * @param string $handle
-	 *
-	 * @return string
-	 */
-	public function style_loader_tag( string $html, string $handle ): string {
-		$styles = Helper::filter_setting_options( 'defer_style', [] );
-
-		return Helper::lazyStyleTag( $styles, $html, $handle );
 	}
 
 	// ------------------------------------------------------
@@ -340,6 +287,233 @@ final class Optimizer {
 	/**
 	 * @return void
 	 */
-	public function deferred_scripts() {
+	public function deferred_scripts(): void {
 	}
+
+	// ------------------------------------------------------
+	// ------------------------------------------------------
+
+	/**
+	 * @return void
+	 */
+	private function _options(): void {
+		add_action( 'wp_enqueue_scripts', [ &$this, 'aspect_ratio_enqueue_scripts' ], 98 );
+
+		add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 12, 3 );
+		add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
+
+		/** Comments */
+		//add_action( 'comment_form_after_fields', [ &$this, 'add_simple_antispam_field' ] );
+		//add_filter( 'preprocess_comment', [ &$this, 'check_simple_antispam' ] );
+
+		/** Custom CSS */
+		// add_action('wp_enqueue_scripts', [ &$this, 'header_custom_css' ], 99);
+		add_action( 'wp_head', [ &$this, 'header_custom_css' ], 98 );
+
+		/** Custom Scripts */
+		add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // header scripts
+		add_action( 'wp_body_open', [ &$this, 'body_scripts_top__hook' ], 99 ); // body scripts - TOP
+
+		add_action( 'wp_footer', [ &$this, 'footer_scripts__hook' ], 1 ); // footer scripts
+		add_action( 'wp_footer', [ &$this, 'body_scripts_bottom__hook' ], 998 ); // body scripts - BOTTOM
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @return void
+	 */
+	public function header_custom_css(): void {
+		/** Custom CSS */
+		$css = Helper::getCustomPostContent( 'hd_css', false );
+
+		if ( $css ) {
+			$css = Helper::CSS_Minify( $css, true );
+
+			echo "<style id='custom-style-inline-css'>" . $css . "</style>";
+			// wp_add_inline_style( 'app-style', $css );
+		}
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * Body scripts - BOTTOM
+	 *
+	 * @return void
+	 */
+	public function body_scripts_bottom__hook(): void {
+		$html_body_bottom = Helper::getCustomPostContent( 'html_body_bottom', true );
+		if ( $html_body_bottom ) {
+			echo $html_body_bottom;
+		}
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * Footer scripts
+	 *
+	 * @return void
+	 */
+	public function footer_scripts__hook(): void {
+		$html_footer = Helper::getCustomPostContent( 'html_footer', true );
+		if ( $html_footer ) {
+			echo $html_footer;
+		}
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * Body scripts - TOP
+	 *
+	 * @return void
+	 */
+	public function body_scripts_top__hook(): void {
+		$html_body_top = Helper::getCustomPostContent( 'html_body_top', true );
+		if ( $html_body_top ) {
+			echo $html_body_top;
+		}
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * Header scripts
+	 *
+	 * @return void
+	 */
+	public function header_scripts__hook(): void {
+		$html_header = Helper::getCustomPostContent( 'html_header', true );
+		if ( $html_header ) {
+			echo $html_header;
+		}
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @return void
+	 */
+	public function aspect_ratio_enqueue_scripts(): void {
+		$classes = [];
+		$styles  = '';
+
+		$aspect_ratio_post_type = Helper::filter_setting_options( 'aspect_ratio_post_type', [] );
+		foreach ( $aspect_ratio_post_type as $ar_post_type ) {
+
+			$ratio_obj   = Helper::getAspectRatio( $ar_post_type );
+			$ratio_class = $ratio_obj->class ?? '';
+			$ratio_style = $ratio_obj->style ?? '';
+
+			if ( $ratio_style && ! in_array( $ratio_class, $classes, false ) ) {
+				$classes[] = $ratio_class;
+				$styles    .= $ratio_style;
+			}
+		}
+
+		if ( $styles ) {
+			wp_add_inline_style( 'app-style', $styles );
+		}
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @param string $tag
+	 * @param string $handle
+	 * @param string $src
+	 *
+	 * @return string
+	 */
+	public function script_loader_tag( string $tag, string $handle, string $src ): string {
+
+		// Adds `async`, `defer` and attribute support for scripts registered or enqueued by the theme.
+		foreach ( [ 'async', 'defer' ] as $attr ) {
+			if ( ! wp_scripts()->get_data( $handle, $attr ) ) {
+				continue;
+			}
+
+			// Prevent adding attribute when already added in #12009.
+			if ( ! preg_match( ":\s$attr(=|>|\s):", $tag ) ) {
+				$tag = preg_replace( ':(?=></script>):', " $attr", $tag, 1 );
+			}
+
+			// Only allow async or defer, not both.
+			break;
+		}
+
+		// Custom filter which adds proper attributes
+
+		// Fontawesome kit
+		if ( ( 'fontawesome-kit' === $handle ) && ! preg_match( ':\scrossorigin([=>\s]):', $tag ) ) {
+			$tag = preg_replace( ':(?=></script>):', " crossorigin='anonymous'", $tag, 1 );
+		}
+
+		// Add script handles to the array
+		$str_parsed = Helper::filter_setting_options( 'defer_script', [] );
+
+		return Helper::lazyScriptTag( $str_parsed, $tag, $handle, $src );
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * Add style handles to the array below
+	 *
+	 * @param string $html
+	 * @param string $handle
+	 *
+	 * @return string
+	 */
+	public function style_loader_tag( string $html, string $handle ): string {
+		$styles = Helper::filter_setting_options( 'defer_style', [] );
+
+		return Helper::lazyStyleTag( $styles, $html, $handle );
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @param $commentdata
+	 *
+	 * @return mixed
+	 */
+//	public function check_simple_antispam( $commentdata ): mixed {
+//		if ( ! isset( $_POST['antispam_input'], $_POST['antispam_result'] ) ) {
+//			wp_die( esc_html__( 'Lỗi CAPTCHA. Vui lòng thử lại.', TEXT_DOMAIN ) );
+//		}
+//
+//		$input  = (int) $_POST['antispam_input'];
+//		$result = (int) $_POST['antispam_result'];
+//
+//		if ( $input !== $result ) {
+//			wp_die( esc_html__( 'Câu trả lời chưa chính xác. Vui lòng thử lại.', TEXT_DOMAIN ) );
+//		}
+//
+//		return $commentdata;
+//	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @return void
+	 * @throws \Random\RandomException
+	 */
+//	public function add_simple_antispam_field(): void {
+//		$comment_options = Helper::getOption( 'comment__options', false, false );
+//
+//		if ( $comment_options['simple_antispam'] ?? '' ) {
+//
+//			$num1     = random_int( 1, 10 );
+//			$num2     = random_int( 1, 10 );
+//			$operator = random_int( 0, 1 ) ? '+' : '-';
+//			$result   = $operator === '+' ? $num1 + $num2 : $num1 - $num2;
+//
+//			echo '<p class="comment-form-antispam">' . sprintf( esc_html__( 'Để xác minh bạn không phải là robot spam comment, Hãy tính: %1$d %2$s %3$d = ?', TEXT_DOMAIN ), $num1, $operator, $num2 ) . '</p>';
+//			echo '<input type="hidden" name="antispam_result" value="' . $result . '" />';
+//			echo '<p class="comment-form-antispam-answer"><label for="antispam_input">' . esc_html__( 'Câu trả lời:', TEXT_DOMAIN ) . '</label> <input type="text" name="antispam_input" id="antispam_input" required /></p>';
+//		}
+//	}
 }

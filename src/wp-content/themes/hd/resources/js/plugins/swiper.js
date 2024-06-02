@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import { random, isEmpty, toString } from 'lodash';
-//import device from 'current-device';
 import Swiper from 'swiper/bundle';
+//import device from 'current-device';
 
 // Determine device type
 // const is_mobile = () => device.mobile();
