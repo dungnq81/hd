@@ -182,7 +182,6 @@ final class Theme {
 		Helper::is_woocommerce_active() && ( new WooCommerce\WooCommerce() );
 		Helper::is_acf_active() && ( new ACF\ACF() );
 
-		class_exists( \RankMath::class ) && ( new RankMath() );
 		class_exists( \WPCF7::class ) && ( new CF7() );
 	}
 

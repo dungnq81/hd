@@ -69,7 +69,8 @@ final class Addons {
 		( new Lazy_Load() );
 		( new reCAPTCHA() );
 
-		defined( 'WP_ROCKET_PATH' ) && ( new Third_Party\WpRocket() );
+		check_plugin_active( 'wp-rocket/wp-rocket.php' ) && ( new Third_Party\WpRocket() );
+		check_plugin_active( 'seo-by-rank-math/rank-math.php' ) && ( new Third_Party\RankMath() );
 		check_plugin_active( 'advanced-custom-fields-pro/acf.php' ) && ( new Third_Party\ACF() );
 	}
 
