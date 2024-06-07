@@ -71,7 +71,6 @@ final class Addons {
 		( new reCAPTCHA() );
 
 		defined( 'WP_ROCKET_PATH' ) && ( new WpRocket() );
-		check_plugin_active( 'wordfence/wordfence.php' ) && ( new Wordfence() );
 	}
 
 	/** ----------------------------------------------- */

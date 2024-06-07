@@ -19,24 +19,24 @@ final class reCAPTCHA {
 		$default_forms = [
 
 			// default
-			'login_form'                => [ 'form_name' => __( 'Login Form', ADDONS_TEXT_DOMAIN ) ],
-			'registration_form'         => [ 'form_name' => __( 'Registration Form', ADDONS_TEXT_DOMAIN ) ],
-			'reset_pwd_form'            => [ 'form_name' => __( 'Reset Password Form', ADDONS_TEXT_DOMAIN ) ],
-			'password_form'             => [ 'form_name' => __( 'Protected Post Password Form', ADDONS_TEXT_DOMAIN ) ],
-			'comments_form'             => [ 'form_name' => __( 'Comments Form', ADDONS_TEXT_DOMAIN ) ],
-
-			// woocommerce
-			'woocommerce_login'         => [ 'form_name' => __( 'WooCommerce Login Form', ADDONS_TEXT_DOMAIN ) ],
-			'woocommerce_register'      => [ 'form_name' => __( 'WooCommerce Registration Form', ADDONS_TEXT_DOMAIN ) ],
-			'woocommerce_lost_password' => [ 'form_name' => __( 'WooCommerce Reset Password Form', ADDONS_TEXT_DOMAIN ) ],
-			'woocommerce_checkout'      => [ 'form_name' => __( 'WooCommerce Checkout Form', ADDONS_TEXT_DOMAIN ) ],
-
-			// other
-			'cf7'                       => [ 'form_name' => __( 'Contact Form 7', ADDONS_TEXT_DOMAIN ) ],
-			'wpforms'                   => [ 'form_name' => __( 'WPForms', ADDONS_TEXT_DOMAIN ) ],
-			'jetpack_contact_form'      => [ 'form_name' => __( 'Jetpack Contact Form', ADDONS_TEXT_DOMAIN ) ],
-			'mailchimp'                 => [ 'form_name' => __( 'MailChimp for Wordpress', ADDONS_TEXT_DOMAIN ) ],
-			'elementor_contact_form'    => [ 'form_name' => __( 'Elementor Contact Form', ADDONS_TEXT_DOMAIN ) ],
+//			'login_form'                => [ 'form_name' => __( 'Login Form', ADDONS_TEXT_DOMAIN ) ],
+//			'registration_form'         => [ 'form_name' => __( 'Registration Form', ADDONS_TEXT_DOMAIN ) ],
+//			'reset_pwd_form'            => [ 'form_name' => __( 'Reset Password Form', ADDONS_TEXT_DOMAIN ) ],
+//			'password_form'             => [ 'form_name' => __( 'Protected Post Password Form', ADDONS_TEXT_DOMAIN ) ],
+//			'comments_form'             => [ 'form_name' => __( 'Comments Form', ADDONS_TEXT_DOMAIN ) ],
+//
+//			// woocommerce
+//			'woocommerce_login'         => [ 'form_name' => __( 'WooCommerce Login Form', ADDONS_TEXT_DOMAIN ) ],
+//			'woocommerce_register'      => [ 'form_name' => __( 'WooCommerce Registration Form', ADDONS_TEXT_DOMAIN ) ],
+//			'woocommerce_lost_password' => [ 'form_name' => __( 'WooCommerce Reset Password Form', ADDONS_TEXT_DOMAIN ) ],
+//			'woocommerce_checkout'      => [ 'form_name' => __( 'WooCommerce Checkout Form', ADDONS_TEXT_DOMAIN ) ],
+//
+//			// other
+//			'cf7'                       => [ 'form_name' => __( 'Contact Form 7', ADDONS_TEXT_DOMAIN ) ],
+//			'wpforms'                   => [ 'form_name' => __( 'WPForms', ADDONS_TEXT_DOMAIN ) ],
+//			'jetpack_contact_form'      => [ 'form_name' => __( 'Jetpack Contact Form', ADDONS_TEXT_DOMAIN ) ],
+//			'mailchimp'                 => [ 'form_name' => __( 'MailChimp for Wordpress', ADDONS_TEXT_DOMAIN ) ],
+//			'elementor_contact_form'    => [ 'form_name' => __( 'Elementor Contact Form', ADDONS_TEXT_DOMAIN ) ],
 		];
 
 		$custom_forms = apply_filters( 'recaptcha_custom_forms', [] );
