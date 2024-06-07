@@ -13,6 +13,9 @@ use Addons\reCAPTCHA\reCAPTCHA;
 use Addons\SMTP\SMTP;
 use Addons\SVG\SVG;
 
+use Addons\Third_Party\Wordfence;
+use Addons\Third_Party\WpRocket;
+
 \defined( 'ABSPATH' ) || die;
 
 /**
@@ -37,7 +40,7 @@ final class Addons {
 		$this->_parser();
 	}
 
-	/** ---------------------------------------- */
+	/** ----------------------------------------------- */
 
 	/**
 	 * Load localization file
@@ -49,7 +52,7 @@ final class Addons {
 		load_plugin_textdomain( ADDONS_TEXT_DOMAIN, false, ADDONS_PATH . 'languages' );
 	}
 
-	/** ---------------------------------------- */
+	/** ----------------------------------------------- */
 
 	/**
 	 * @return void
@@ -66,9 +69,12 @@ final class Addons {
 		( new Heartbeat() );
 		( new Lazy_Load() );
 		( new reCAPTCHA() );
+
+		defined( 'WP_ROCKET_PATH' ) && ( new WpRocket() );
+		check_plugin_active( 'wordfence/wordfence.php' ) && ( new Wordfence() );
 	}
 
-	/** ---------------------------------------- */
+	/** ----------------------------------------------- */
 
 	/**
 	 * @return void
@@ -113,7 +119,7 @@ final class Addons {
 		}
 	}
 
-	/** ---------------------------------------- */
+	/** ----------------------------------------------- */
 
 	/**
 	 * @param string $html
@@ -156,7 +162,7 @@ final class Addons {
 		return $html;
 	}
 
-	// ------------------------------------------------------
+	/** ----------------------------------------------- */
 
 	/**
 	 * @param $html
@@ -186,25 +192,22 @@ final class Addons {
 		return str_replace( '</head>', $new_html . '</head>', $html );
 	}
 
-	/** ---------------------------------------- */
+	/** ----------------------------------------------- */
 
 	/**
 	 * @return void
 	 */
 	public function admin_enqueue_scripts(): void {
-//		if ( ! wp_style_is( 'woocommerce_admin_styles' ) ) { // tested
-//			wp_enqueue_style( 'select2-style', ADDONS_URL . 'assets/css/select2.min.css', [], ADDONS_VERSION );
-//		}
-//
-//		if ( ! wp_script_is( 'select2', 'registered' ) ) {
-//			wp_register_script( 'select2', ADDONS_URL . 'assets/js/select2.full.min.js', [ 'jquery-core' ], ADDONS_VERSION );
-//		}
+		if ( ! wp_style_is( 'woocommerce_admin_styles' ) ) { // tested
+			wp_enqueue_style( 'select2-style', ADDONS_URL . 'assets/css/select2.min.css', [], ADDONS_VERSION );
+		}
 
-		wp_enqueue_style( 'addon-style', ADDONS_URL . 'assets/css/addon.css', [], ADDONS_VERSION );
-		wp_enqueue_script( 'addon', ADDONS_URL . 'assets/js/addon.js', [ 'jquery-core', 'admin' ], ADDONS_VERSION, true );
+		if ( ! wp_script_is( 'select2', 'registered' ) ) {
+			wp_register_script( 'select2', ADDONS_URL . 'assets/js/select2.full.min.js', [ 'jquery-core' ], ADDONS_VERSION );
+		}
 	}
 
-	// ------------------------------------------------------
+	/** ----------------------------------------------- */
 
 	/**
 	 * @return void

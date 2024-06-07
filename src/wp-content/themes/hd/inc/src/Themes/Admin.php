@@ -58,7 +58,7 @@ final class Admin {
 		/** ---------------------------------------- */
 
 		/** Aspect Ratio */
-		$aspect_ratio_options = [];
+		$aspect_ratio_options   = [];
 		$aspect_ratio_post_type = Helper::filter_setting_options( 'aspect_ratio_post_type', [] );
 
 		foreach ( $aspect_ratio_post_type as $ar ) {
@@ -329,6 +329,7 @@ final class Admin {
 				'recaptcha_site_key'   => ! empty( $data['recaptcha_site_key'] ) ? sanitize_text_field( $data['recaptcha_site_key'] ) : '',
 				'recaptcha_secret_key' => ! empty( $data['recaptcha_secret_key'] ) ? sanitize_text_field( $data['recaptcha_secret_key'] ) : '',
 				'recaptcha_score'      => ! empty( $data['recaptcha_score'] ) ? sanitize_text_field( $data['recaptcha_score'] ) : '0.5',
+				'recaptcha_global'     => ! empty( $data['recaptcha_global'] ) ? sanitize_text_field( $data['recaptcha_global'] ) : '',
 			];
 
 			Helper::updateOption( 'recaptcha__options', $recaptcha_options );
@@ -420,7 +421,7 @@ final class Admin {
 	 */
 	public function admin_menu(): void {
 
-		global $menu, $submenu;
+		//global $menu, $submenu;
 		//dump($menu);
 		//dump($submenu);
 
@@ -517,19 +518,19 @@ final class Admin {
                             </li>
 
 	                        <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
-                            <li class="smtp-settings">
+                                <li class="smtp-settings">
                                 <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php endif; ?>
 
 	                        <?php if ( Helper::is_addons_active() ) : ?>
-                            <li class="contact-info-settings">
+                                <li class="contact-info-settings">
                                 <a title="Contact Info" href="#contact_info_settings"><?php _e( 'Contact Info', TEXT_DOMAIN ); ?></a>
                             </li>
-                            <li class="contact-button-settings">
+                                <li class="contact-button-settings">
                                 <a title="Contact Button" href="#contact_button_settings"><?php _e( 'Contact Button', TEXT_DOMAIN ); ?></a>
                             </li>
-                            <li class="gutenberg-settings">
+                                <li class="gutenberg-settings">
                                 <a title="Editor" href="#block_editor_settings"><?php _e( 'Editor', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php endif; ?>
@@ -541,11 +542,11 @@ final class Admin {
                                 <a title="Security" href="#security_settings"><?php _e( 'Security', TEXT_DOMAIN ); ?></a>
                             </li>
 
-		                    <?php if ( Helper::is_addons_active() ) : ?>
-                            <li class="social-settings">
+	                        <?php if ( Helper::is_addons_active() ) : ?>
+                                <li class="social-settings">
                                 <a title="Social" href="#social_settings"><?php _e( 'Social', TEXT_DOMAIN ); ?></a>
                             </li>
-		                    <?php endif; ?>
+	                        <?php endif; ?>
 
 	                        <?php if ( Helper::is_woocommerce_active() ) : ?>
                                 <li class="woocommerce-settings">
@@ -554,23 +555,24 @@ final class Admin {
 	                        <?php endif; ?>
 
 	                        <?php if ( Helper::is_addons_active() ) : ?>
-                            <li class="base-slug-settings">
+                                <li class="base-slug-settings">
                                 <a title="Remove base slug" href="#base_slug_settings"><?php _e( 'Remove Base Slug', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php
 		                        $custom_emails = Helper::filter_setting_options( 'custom_emails', [] );
 		                        if ( ! empty( $custom_emails ) ) :
-                            ?>
-                            <li class="email-settings">
+			                        ?>
+                                    <li class="email-settings">
                                 <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', TEXT_DOMAIN ); ?></a>
                             </li>
-                            <?php endif; ?>
+		                        <?php endif; ?>
 
-                            <li class="order-settings">
+
+                                <li class="order-settings">
                                 <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', TEXT_DOMAIN ); ?></a>
                             </li>
 
-                            <li class="recaptcha-settings">
+                                <li class="recaptcha-settings">
                                 <a title="reCAPTCHA" href="#recaptcha_settings"><?php _e( 'reCAPTCHA', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php endif; ?>
@@ -595,19 +597,19 @@ final class Admin {
                         </div>
 
 	                    <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
-                        <div id="smtp_settings" class="group tabs-panel">
+                            <div id="smtp_settings" class="group tabs-panel">
 							<?php include ADDONS_PATH . 'src/SMTP/options.php'; ?>
                         </div>
 	                    <?php endif; ?>
 
 	                    <?php if ( Helper::is_addons_active() ) : ?>
-                        <div id="contact_info_settings" class="group tabs-panel">
+                            <div id="contact_info_settings" class="group tabs-panel">
 							<?php include ADDONS_PATH . 'src/Contact_Info/options.php'; ?>
                         </div>
-                        <div id="contact_button_settings" class="group tabs-panel">
+                            <div id="contact_button_settings" class="group tabs-panel">
 							<?php include ADDONS_PATH . 'src/Contact_Button/options.php'; ?>
                         </div>
-                        <div id="block_editor_settings" class="group tabs-panel">
+                            <div id="block_editor_settings" class="group tabs-panel">
 							<?php include ADDONS_PATH . 'src/Editor/options.php'; ?>
                         </div>
 	                    <?php endif; ?>
@@ -620,34 +622,35 @@ final class Admin {
 							<?php include INC_PATH . 'admin/options/security.php'; ?>
                         </div>
 
-		                <?php if ( Helper::is_addons_active() ) : ?>
-                        <div id="social_settings" class="group tabs-panel">
+	                    <?php if ( Helper::is_addons_active() ) : ?>
+                            <div id="social_settings" class="group tabs-panel">
 							<?php include ADDONS_PATH . 'src/Social/options.php'; ?>
                         </div>
-		                <?php endif; ?>
+	                    <?php endif; ?>
 
 	                    <?php if ( Helper::is_woocommerce_active() ) : ?>
-                        <div id="woocommerce_settings" class="group tabs-panel">
+                            <div id="woocommerce_settings" class="group tabs-panel">
                             <?php include INC_PATH . 'src/Plugins/WooCommerce/options.php'; ?>
                         </div>
 	                    <?php endif; ?>
 
 	                    <?php if ( Helper::is_addons_active() ) : ?>
-                        <div id="base_slug_settings" class="group tabs-panel">
+                            <div id="base_slug_settings" class="group tabs-panel">
                             <?php include ADDONS_PATH . 'src/Base_Slug/options.php'; ?>
                         </div>
 
 	                    <?php if ( ! empty( $custom_emails ) ) : ?>
-                        <div id="email_settings" class="group tabs-panel">
+                                <div id="email_settings" class="group tabs-panel">
                             <?php include ADDONS_PATH . 'src/Custom_Email/options.php'; ?>
                         </div>
-                        <?php endif; ?>
+		                    <?php endif; ?>
 
-                        <div id="custom_order_settings" class="group tabs-panel">
+
+                            <div id="custom_order_settings" class="group tabs-panel">
 		                    <?php include ADDONS_PATH . 'src/Custom_Order/options.php'; ?>
                         </div>
 
-                        <div id="recaptcha_settings" class="group tabs-panel">
+                            <div id="recaptcha_settings" class="group tabs-panel">
 		                    <?php include ADDONS_PATH . 'src/reCAPTCHA/options.php'; ?>
                         </div>
 

@@ -30,7 +30,7 @@ final class Helper {
 	public static function Lighthouse(): bool {
 		$header = $_SERVER['HTTP_USER_AGENT'];
 
-		return mb_strpos( $header, "Lighthouse", 0, "UTF-8" ) > 0;
+		return mb_strpos( $header, "Lighthouse", 0, "UTF-8" ) !== false;
 	}
 
 	// --------------------------------------------------

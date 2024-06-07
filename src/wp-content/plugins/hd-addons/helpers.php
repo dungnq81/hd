@@ -148,6 +148,28 @@ if ( ! function_exists( 'redirect' ) ) {
 
 /** ----------------------------------------------- */
 
+if ( ! function_exists( 'htaccess' ) ) {
+	/**
+	 * @return bool
+	 */
+	function htaccess(): bool {
+
+		// Apache
+		if ( function_exists( 'apache_get_modules' ) && in_array( 'mod_rewrite', apache_get_modules(), false ) ) {
+			return true;
+		}
+
+		// ?
+		if ( isset( $_SERVER['HTACCESS'] ) && 'on' === $_SERVER['HTACCESS'] ) {
+			return true;
+		}
+
+		return false;
+	}
+}
+
+/** ----------------------------------------------- */
+
 if ( ! function_exists( 'do_lock_write' ) ) {
 	/**
 	 * Lock file and write something in it.

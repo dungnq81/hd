@@ -9,7 +9,6 @@ use Libs\CSS;
 use Plugins\ACF\ACF;
 use Plugins\CF7;
 use Plugins\RankMath;
-use Plugins\WpRocket;
 use Plugins\Elementor;
 use Plugins\WooCommerce\WooCommerce;
 
@@ -182,8 +181,6 @@ final class Theme {
 		Helper::is_elementor_active() && ( new Elementor() );
 		Helper::is_woocommerce_active() && ( new WooCommerce() );
 		Helper::is_acf_active() && ( new ACF() );
-
-		defined( 'WP_ROCKET_PATH' ) && ( new WpRocket() );
 
 		class_exists( \RankMath::class ) && ( new RankMath() );
 		class_exists( \WPCF7::class ) && ( new CF7() );

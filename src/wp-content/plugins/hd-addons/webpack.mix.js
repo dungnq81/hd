@@ -15,9 +15,8 @@ mix.copy(`${nodeModules}/select2/dist/js/select2.full.min.js`, `${assets}/js`);
 
 // Compile SASS files
 mix.sass(`${resources}/sass/editor-style.scss`, `${assets}/css`);
-mix.sass(`${resources}/sass/addon.scss`, `${assets}/css`);
 
 // Compile JS files
-mix.js(`${resources}/js/admin_custom_order.js`, `${assets}/js`)
+mix.js(`${resources}/js/custom_order.js`, `${assets}/js`)
     .js(`${resources}/js/lazyload.js`, `${assets}/js`)
-    .js(`${resources}/js/addon.js`, `${assets}/js`);
+    .js(`${resources}/js/recaptcha.js`, `${assets}/js`);

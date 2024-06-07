@@ -499,6 +499,12 @@ function __hd_theme_setting_options( array $arr ): array {
 		// The urls where a lazy load is excluded.
 		'lazy_load_exclude_urls'          => [],
 
+		// reCAPTCHA forms
+		'recaptcha_custom_forms'          => [],
+
+		// reCAPTCHA exclude users
+		'recaptcha_exclude_user'          => [],
+
 		// Links socials
 		'social_follows_links'            => [
 			'facebook'  => [
@@ -561,10 +567,14 @@ function __hd_theme_setting_options( array $arr ): array {
 				'color' => '',
 				'url'   => '',
 			],
-		]
+		],
+
+		//----------------------------------------------------------
+		// Custom ...
+		//----------------------------------------------------------
 	];
 
-	//------------------------------
+	// --------------------------------------------------
 
 	if ( Helper::is_woocommerce_active() ) {
 		$arr_new['aspect_ratio_post_type'][]          = 'product';

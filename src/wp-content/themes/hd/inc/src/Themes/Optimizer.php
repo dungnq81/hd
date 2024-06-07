@@ -297,7 +297,7 @@ final class Optimizer {
 	 * @return void
 	 */
 	private function _options(): void {
-		add_action( 'wp_enqueue_scripts', [ &$this, 'aspect_ratio_enqueue_scripts' ], 98 );
+		add_action( 'wp_enqueue_scripts', [ &$this, 'aspect_ratio_enqueue_scripts' ] );
 
 		add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 12, 3 );
 		add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
@@ -307,8 +307,8 @@ final class Optimizer {
 		//add_filter( 'preprocess_comment', [ &$this, 'check_simple_antispam' ] );
 
 		/** Custom CSS */
-		// add_action('wp_enqueue_scripts', [ &$this, 'header_custom_css' ], 99);
-		add_action( 'wp_head', [ &$this, 'header_custom_css' ], 98 );
+		add_action( 'wp_enqueue_scripts', [ &$this, 'header_inline_custom_css' ], 11 );
+		//add_action( 'wp_head', [ &$this, 'header_inline_custom_css' ], 98 );
 
 		/** Custom Scripts */
 		add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // header scripts
@@ -323,15 +323,15 @@ final class Optimizer {
 	/**
 	 * @return void
 	 */
-	public function header_custom_css(): void {
+	public function header_inline_custom_css(): void {
 		/** Custom CSS */
 		$css = Helper::getCustomPostContent( 'hd_css', false );
 
 		if ( $css ) {
 			$css = Helper::CSS_Minify( $css, true );
 
-			echo "<style id='custom-style-inline-css'>" . $css . "</style>";
-			// wp_add_inline_style( 'app-style', $css );
+			//echo "<style id='custom-style-inline-css'>" . $css . "</style>";
+			wp_add_inline_style( 'app-style', $css );
 		}
 	}
 

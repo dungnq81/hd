@@ -236,18 +236,22 @@ trait Wp {
 	 * @return array|string|string[]|null
 	 */
 	public static function lazyScriptTag( array $arr_parsed, string $tag, string $handle, string $src ): array|string|null {
-
 		foreach ( $arr_parsed as $str => $value ) {
 			if ( str_contains( $handle, $str ) ) {
 				if ( 'defer' === $value ) {
-					return preg_replace( [ '/\s+defer\s+/', '/\s+src=/' ], [ ' ', ' defer src=' ], $tag );
+					return preg_replace(
+						[ '/\s+defer\s+/', '/\s+src=/' ],
+						[ ' ', ' defer src=' ],
+						$tag
+					);
 				}
 
 				if ( 'delay' === $value && ! self::is_admin() ) {
-					return preg_replace( [ '/\s+defer\s+/', '/\s+src=/' ], [
-						' ',
-						' defer data-type=\'lazy\' data-src='
-					], $tag );
+					return preg_replace(
+						[ '/\s+defer\s+/', '/\s+src=/' ],
+						[ ' ', ' defer data-type=\'lazy\' data-src=' ],
+						$tag
+					);
 				}
 			}
 		}
@@ -1556,7 +1560,7 @@ trait Wp {
 			$ratio_class = $default;
 		} else {
 
-			$ratio_class     = 'ar-' . $ratio_x . '-' . $ratio_y;
+			$ratio_class         = 'ar-' . $ratio_x . '-' . $ratio_y;
 			$ar_aspect_ratio_css = Helper::filter_setting_options( 'aspect_ratio_css', [] );
 
 			if ( is_array( $ar_aspect_ratio_css ) && ! in_array( $ratio_x . '-' . $ratio_y, $ar_aspect_ratio_css, false ) ) {

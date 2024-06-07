@@ -1,8 +1,6 @@
 <?php
 
-namespace Plugins;
-
-use Cores\Helper;
+namespace Addons\Third_Party;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -20,10 +18,10 @@ final class WpRocket {
 		/**
 		 * Override DONOTCACHEPAGE behavior for WP Rocket.
 		 */
-		add_filter( 'rocket_override_donotcachepage', '__return_true', PHP_INT_MAX );
+		//add_filter( 'rocket_override_donotcachepage', '__return_true', PHP_INT_MAX );
 
 		/** Server does not support using .htaccess */
-		if ( ! Helper::htAccess() ) {
+		if ( ! htaccess() ) {
 
 			// Remove rewrite rules block of WP Rocket from .htaccess.
 			add_filter( 'rocket_htaccess_charset', '__return_false' );
