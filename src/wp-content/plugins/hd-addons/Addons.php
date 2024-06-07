@@ -13,8 +13,7 @@ use Addons\reCAPTCHA\reCAPTCHA;
 use Addons\SMTP\SMTP;
 use Addons\SVG\SVG;
 
-use Addons\Third_Party\Wordfence;
-use Addons\Third_Party\WpRocket;
+use Addons\Third_Party;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -70,7 +69,8 @@ final class Addons {
 		( new Lazy_Load() );
 		( new reCAPTCHA() );
 
-		defined( 'WP_ROCKET_PATH' ) && ( new WpRocket() );
+		defined( 'WP_ROCKET_PATH' ) && ( new Third_Party\WpRocket() );
+		check_plugin_active( 'advanced-custom-fields-pro/acf.php' ) && ( new Third_Party\ACF() );
 	}
 
 	/** ----------------------------------------------- */

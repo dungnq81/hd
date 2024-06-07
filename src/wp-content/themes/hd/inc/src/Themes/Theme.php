@@ -6,11 +6,11 @@ use Cores\Helper;
 
 use Libs\CSS;
 
-use Plugins\ACF\ACF;
+use Plugins\ACF;
 use Plugins\CF7;
 use Plugins\RankMath;
 use Plugins\Elementor;
-use Plugins\WooCommerce\WooCommerce;
+use Plugins\WooCommerce;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -179,8 +179,8 @@ final class Theme {
 	public function plugins_setup(): void {
 
 		Helper::is_elementor_active() && ( new Elementor() );
-		Helper::is_woocommerce_active() && ( new WooCommerce() );
-		Helper::is_acf_active() && ( new ACF() );
+		Helper::is_woocommerce_active() && ( new WooCommerce\WooCommerce() );
+		Helper::is_acf_active() && ( new ACF\ACF() );
 
 		class_exists( \RankMath::class ) && ( new RankMath() );
 		class_exists( \WPCF7::class ) && ( new CF7() );
