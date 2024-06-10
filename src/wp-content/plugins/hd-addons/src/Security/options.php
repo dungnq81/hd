@@ -1,5 +1,7 @@
 <?php
 
+use Addons\Security\Options\Login_Attempts;
+
 $security_options = get_option( 'security__options', false );
 
 $illegal_users             = $security_options['illegal_users'] ?? '';
@@ -90,10 +92,9 @@ $limit_login_attempts      = $security_options['limit_login_attempts'] ?? 0;
         <div class="controls">
             <div class="select_wrapper">
                 <select class="hd-control hd-select" name="limit_login_attempts" id="limit_login_attempts">
-                    <option value="0"<?php echo selected( $limit_login_attempts, '0', false ); ?>>OFF</option>
-                    <option value="3"<?php echo selected( $limit_login_attempts, '3', false ); ?>>3</option>
-                    <option value="5"<?php echo selected( $limit_login_attempts, '5', false ); ?>>5</option>
-                    <option value="10"<?php echo selected( $limit_login_attempts, '10', false ); ?>>10</option>
+                    <?php foreach ( Login_Attempts::$login_attempts_data as $key => $value ) : ?>
+                    <option value="<?=$key?>"<?php echo selected( $limit_login_attempts, $key, false ); ?>><?=$value?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
         </div>

@@ -16,7 +16,7 @@ class Login_Attempts {
 	 *
 	 * @var array
 	 */
-	public array $login_attempts_data = [
+	public static array $login_attempts_data = [
 		0  => 'OFF',
 		3  => '3',
 		5  => '5',
@@ -36,7 +36,7 @@ class Login_Attempts {
 	// --------------------------------------------------
 
 	/**
-	 * Restrict access to login for unsuccessfully attempts.
+	 * Restrict access to log in for unsuccessful attempts.
 	 *
 	 * @return void
 	 */
