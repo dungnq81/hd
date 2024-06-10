@@ -7,6 +7,8 @@ namespace Addons\Editor;
 final class Editor {
 	public function __construct() {
 
+		( new TinyMCE() );
+
 		add_action( 'admin_init', [ &$this, 'editor_admin_init' ], 11 );
 		add_action( 'wp_enqueue_scripts', [ &$this, 'editor_enqueue_scripts' ], 98 );
 	}

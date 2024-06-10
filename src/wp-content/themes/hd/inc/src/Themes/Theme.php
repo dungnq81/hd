@@ -8,7 +8,6 @@ use Libs\CSS;
 
 use Plugins\ACF;
 use Plugins\CF7;
-use Plugins\RankMath;
 use Plugins\Elementor;
 use Plugins\WooCommerce;
 
@@ -141,7 +140,6 @@ final class Theme {
 
 		( new Customizer() );
 		( new Optimizer() );
-		( new Security() );
 
 		/** template hooks */
 		$this->_hooks();
@@ -156,7 +154,6 @@ final class Theme {
 			'storage'             => THEME_PATH . 'storage',
 			'languages'           => THEME_PATH . 'languages',
 
-			'inc_tpl'    => INC_PATH . 'admin/tpl',
 			'inc_ajax'   => INC_PATH . 'ajax',
 			'inc_blocks' => INC_PATH . 'blocks',
 		];

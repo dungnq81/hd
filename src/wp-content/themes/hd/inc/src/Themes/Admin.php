@@ -4,17 +4,16 @@ namespace Themes;
 
 use Addons\Base_Slug\Base_Slug;
 use Addons\Custom_Order\Custom_Order;
+use Addons\Security\Options\Dir;
+use Addons\Security\Options\Headers;
+use Addons\Security\Options\Readme;
+use Addons\Security\Options\Xmlrpc;
+
+use Addons\Optimizer\Options\Bs_Cache;
+use Addons\Optimizer\Options\Gzip;
+use Addons\Optimizer\Options\Ssl;
 
 use Cores\Helper;
-
-use Libs\Optimizer\Bs_Cache;
-use Libs\Optimizer\Gzip;
-use Libs\Optimizer\Ssl;
-
-use Libs\Security\Dir;
-use Libs\Security\Headers;
-use Libs\Security\Readme;
-use Libs\Security\Xmlrpc;
 
 /**
  * Options Class
@@ -174,70 +173,72 @@ final class Admin {
 		/** ---------------------------------------- */
 
 		/** Optimizer */
-		$optimizer_options_old = Helper::getOption( 'optimizer__options' );
-		$https_enforce_old     = $optimizer_options_old['https_enforce'] ?? 0;
+		if ( Helper::is_addons_active() ) {
+			$optimizer_options_current = Helper::getOption( 'optimizer__options' );
+			$https_enforce_current     = $optimizer_options_current['https_enforce'] ?? 0;
 
-		$exclude_lazyload = ! empty( $data['exclude_lazyload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $data['exclude_lazyload'] ) : [ 'no-lazy' ];
-		$font_preload     = ! empty( $data['font_preload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $data['font_preload'] ) : [];
-		$dns_prefetch     = ! empty( $data['dns_prefetch'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $data['dns_prefetch'] ) : [];
+			$exclude_lazyload = ! empty( $data['exclude_lazyload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $data['exclude_lazyload'] ) : [ 'no-lazy' ];
+			$font_preload     = ! empty( $data['font_preload'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $data['font_preload'] ) : [];
+			$dns_prefetch     = ! empty( $data['dns_prefetch'] ) ? Helper::explode_multi( [ ',', ' ', PHP_EOL ], $data['dns_prefetch'] ) : [];
 
-		$exclude_lazyload = array_map( 'esc_textarea', $exclude_lazyload );
-		$font_preload     = array_map( 'sanitize_url', $font_preload );
-		$dns_prefetch     = array_map( 'sanitize_url', $dns_prefetch );
+			$exclude_lazyload = array_map( 'esc_textarea', $exclude_lazyload );
+			$font_preload     = array_map( 'sanitize_url', $font_preload );
+			$dns_prefetch     = array_map( 'sanitize_url', $dns_prefetch );
 
-		$optimizer_options = [
-			'https_enforce'    => ! empty( $data['https_enforce'] ) ? sanitize_text_field( $data['https_enforce'] ) : 0,
-			'gzip'             => ! empty( $data['gzip'] ) ? sanitize_text_field( $data['gzip'] ) : 0,
-			'bs_caching'       => ! empty( $data['bs_caching'] ) ? sanitize_text_field( $data['bs_caching'] ) : 0,
-			'heartbeat'        => ! empty( $data['heartbeat'] ) ? sanitize_text_field( $data['heartbeat'] ) : 0,
-			'minify_html'      => ! empty( $data['minify_html'] ) ? sanitize_text_field( $data['minify_html'] ) : 0,
-			'svgs'             => ! empty( $data['svgs'] ) ? sanitize_text_field( $data['svgs'] ) : 'disable',
-			'lazy_load'        => ! empty( $data['lazy_load'] ) ? sanitize_text_field( $data['lazy_load'] ) : 0,
-			'lazy_load_mobile' => ! empty( $data['lazy_load_mobile'] ) ? sanitize_text_field( $data['lazy_load_mobile'] ) : 0,
-			'exclude_lazyload' => $exclude_lazyload,
-			'font_optimize'    => ! empty( $data['font_optimize'] ) ? sanitize_text_field( $data['font_optimize'] ) : 0,
-			'font_preload'     => $font_preload,
-			'dns_prefetch'     => $dns_prefetch,
-		];
+			$optimizer_options = [
+				'https_enforce'    => ! empty( $data['https_enforce'] ) ? sanitize_text_field( $data['https_enforce'] ) : 0,
+				'gzip'             => ! empty( $data['gzip'] ) ? sanitize_text_field( $data['gzip'] ) : 0,
+				'bs_caching'       => ! empty( $data['bs_caching'] ) ? sanitize_text_field( $data['bs_caching'] ) : 0,
+				'heartbeat'        => ! empty( $data['heartbeat'] ) ? sanitize_text_field( $data['heartbeat'] ) : 0,
+				'minify_html'      => ! empty( $data['minify_html'] ) ? sanitize_text_field( $data['minify_html'] ) : 0,
+				'svgs'             => ! empty( $data['svgs'] ) ? sanitize_text_field( $data['svgs'] ) : 'disable',
+				'lazy_load'        => ! empty( $data['lazy_load'] ) ? sanitize_text_field( $data['lazy_load'] ) : 0,
+				'lazy_load_mobile' => ! empty( $data['lazy_load_mobile'] ) ? sanitize_text_field( $data['lazy_load_mobile'] ) : 0,
+				'exclude_lazyload' => $exclude_lazyload,
+				'font_optimize'    => ! empty( $data['font_optimize'] ) ? sanitize_text_field( $data['font_optimize'] ) : 0,
+				'font_preload'     => $font_preload,
+				'dns_prefetch'     => $dns_prefetch,
+			];
 
-		Helper::updateOption( 'optimizer__options', $optimizer_options, true );
+			Helper::updateOption( 'optimizer__options', $optimizer_options, true );
 
-		// Ssl
-		if ( $https_enforce_old !== $optimizer_options['https_enforce'] ) {
-			( new Ssl() )->toggle_rules( $optimizer_options['https_enforce'] );
+			// Ssl
+			if ( $https_enforce_current !== $optimizer_options['https_enforce'] ) {
+				( new Ssl() )->toggle_rules( $optimizer_options['https_enforce'] );
+			}
+
+			// Gzip + Caching
+			( new Gzip() )->toggle_rules( $optimizer_options['gzip'] );
+			( new Bs_Cache() )->toggle_rules( $optimizer_options['bs_caching'] );
 		}
-
-		// Gzip + Caching
-		( new Gzip() )->toggle_rules( $optimizer_options['gzip'] );
-		( new Bs_Cache() )->toggle_rules( $optimizer_options['bs_caching'] );
 
 		/** ---------------------------------------- */
 
 		/** Security */
-		$security_options = [
-			'illegal_users'             => ! empty( $data['illegal_users'] ) ? sanitize_text_field( $data['illegal_users'] ) : '',
-			'hide_wp_version'           => ! empty( $data['hide_wp_version'] ) ? sanitize_text_field( $data['hide_wp_version'] ) : '',
-			'xml_rpc_off'               => ! empty( $data['xml_rpc_off'] ) ? sanitize_text_field( $data['xml_rpc_off'] ) : '',
-			'remove_readme'             => ! empty( $data['remove_readme'] ) ? sanitize_text_field( $data['remove_readme'] ) : '',
-			'rss_feed_off'              => ! empty( $data['rss_feed_off'] ) ? sanitize_text_field( $data['rss_feed_off'] ) : '',
-			'lock_protect_system'       => ! empty( $data['lock_protect_system'] ) ? sanitize_text_field( $data['lock_protect_system'] ) : '',
-			'advanced_xss_protection'   => ! empty( $data['advanced_xss_protection'] ) ? sanitize_text_field( $data['advanced_xss_protection'] ) : '',
-			'limit_login_attempts'      => ! empty( $data['limit_login_attempts'] ) ? sanitize_text_field( $data['limit_login_attempts'] ) : '0',
-			'two_factor_authentication' => ! empty( $data['two_factor_authentication'] ) ? sanitize_text_field( $data['two_factor_authentication'] ) : '',
-		];
+		if ( Helper::is_addons_active() ) {
+			$security_options = [
+				'illegal_users'           => ! empty( $data['illegal_users'] ) ? sanitize_text_field( $data['illegal_users'] ) : '',
+				'hide_wp_version'         => ! empty( $data['hide_wp_version'] ) ? sanitize_text_field( $data['hide_wp_version'] ) : '',
+				'xml_rpc_off'             => ! empty( $data['xml_rpc_off'] ) ? sanitize_text_field( $data['xml_rpc_off'] ) : '',
+				'remove_readme'           => ! empty( $data['remove_readme'] ) ? sanitize_text_field( $data['remove_readme'] ) : '',
+				'rss_feed_off'            => ! empty( $data['rss_feed_off'] ) ? sanitize_text_field( $data['rss_feed_off'] ) : '',
+				'lock_protect_system'     => ! empty( $data['lock_protect_system'] ) ? sanitize_text_field( $data['lock_protect_system'] ) : '',
+				'advanced_xss_protection' => ! empty( $data['advanced_xss_protection'] ) ? sanitize_text_field( $data['advanced_xss_protection'] ) : '',
+				'limit_login_attempts'    => ! empty( $data['limit_login_attempts'] ) ? sanitize_text_field( $data['limit_login_attempts'] ) : '0',
+				//'two_factor_authentication' => ! empty( $data['two_factor_authentication'] ) ? sanitize_text_field( $data['two_factor_authentication'] ) : '',
+			];
 
-		Helper::updateOption( 'security__options', $security_options, true );
+			Helper::updateOption( 'security__options', $security_options, true );
 
-		// readme.html
-		if ( $security_options['remove_readme'] ) {
-			$readme = new Readme();
-			$readme->delete_readme();
+			// readme.html
+			if ( $security_options['remove_readme'] ) {
+				( new Readme() )->delete_readme();
+			}
+
+			( new Xmlrpc() )->toggle_rules( $security_options['xml_rpc_off'] );
+			( new Dir() )->toggle_rules( $security_options['lock_protect_system'] );
+			( new Headers() )->toggle_rules( $security_options['advanced_xss_protection'] );
 		}
-
-		// toggle_rules
-		( new Xmlrpc() )->toggle_rules( $security_options['xml_rpc_off'] );
-		( new Dir() )->toggle_rules( $security_options['lock_protect_system'] );
-		( new Headers() )->toggle_rules( $security_options['advanced_xss_protection'] );
 
 		/** ---------------------------------------- */
 
@@ -323,26 +324,18 @@ final class Admin {
 		/** ---------------------------------------- */
 
 		/** reCAPTCHA */
-
 		if ( Helper::is_addons_active() ) {
 			$recaptcha_options = [
-				'recaptcha_site_key'   => ! empty( $data['recaptcha_site_key'] ) ? sanitize_text_field( $data['recaptcha_site_key'] ) : '',
-				'recaptcha_secret_key' => ! empty( $data['recaptcha_secret_key'] ) ? sanitize_text_field( $data['recaptcha_secret_key'] ) : '',
-				'recaptcha_score'      => ! empty( $data['recaptcha_score'] ) ? sanitize_text_field( $data['recaptcha_score'] ) : '0.5',
-				'recaptcha_global'     => ! empty( $data['recaptcha_global'] ) ? sanitize_text_field( $data['recaptcha_global'] ) : '',
+				'recaptcha_v2_site_key'   => ! empty( $data['recaptcha_v2_site_key'] ) ? sanitize_text_field( $data['recaptcha_v2_site_key'] ) : '',
+				'recaptcha_v2_secret_key' => ! empty( $data['recaptcha_v2_secret_key'] ) ? sanitize_text_field( $data['recaptcha_v2_secret_key'] ) : '',
+				'recaptcha_v3_site_key'   => ! empty( $data['recaptcha_v3_site_key'] ) ? sanitize_text_field( $data['recaptcha_v3_site_key'] ) : '',
+				'recaptcha_v3_secret_key' => ! empty( $data['recaptcha_v3_secret_key'] ) ? sanitize_text_field( $data['recaptcha_v3_secret_key'] ) : '',
+				'recaptcha_v3_score'      => ! empty( $data['recaptcha_v3_score'] ) ? sanitize_text_field( $data['recaptcha_v3_score'] ) : '0.5',
+				'recaptcha_global'        => ! empty( $data['recaptcha_global'] ) ? sanitize_text_field( $data['recaptcha_global'] ) : '',
 			];
 
 			Helper::updateOption( 'recaptcha__options', $recaptcha_options );
 		}
-
-		/** ---------------------------------------- */
-
-		/** Comments */
-//		$comment_options = [
-//			'simple_antispam' => ! empty( $data['simple_antispam'] ) ? sanitize_text_field( $data['simple_antispam'] ) : '',
-//		];
-//
-//		Helper::updateOption( 'comment__options', $comment_options, true );
 
 		/** ---------------------------------------- */
 
@@ -518,68 +511,57 @@ final class Admin {
                             </li>
 
 	                        <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
-                                <li class="smtp-settings">
+                            <li class="smtp-settings">
                                 <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php endif; ?>
 
 	                        <?php if ( Helper::is_addons_active() ) : ?>
-                                <li class="contact-info-settings">
+                            <li class="contact-info-settings">
                                 <a title="Contact Info" href="#contact_info_settings"><?php _e( 'Contact Info', TEXT_DOMAIN ); ?></a>
                             </li>
-                                <li class="contact-button-settings">
+                            <li class="contact-button-settings">
                                 <a title="Contact Button" href="#contact_button_settings"><?php _e( 'Contact Button', TEXT_DOMAIN ); ?></a>
                             </li>
-                                <li class="gutenberg-settings">
+                            <li class="gutenberg-settings">
                                 <a title="Editor" href="#block_editor_settings"><?php _e( 'Editor', TEXT_DOMAIN ); ?></a>
                             </li>
-	                        <?php endif; ?>
-
                             <li class="optimizer-settings">
                                 <a title="Optimizer" href="#optimizer_settings"><?php _e( 'Optimizer', TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="security-settings">
                                 <a title="Security" href="#security_settings"><?php _e( 'Security', TEXT_DOMAIN ); ?></a>
                             </li>
-
-	                        <?php if ( Helper::is_addons_active() ) : ?>
-                                <li class="social-settings">
+                            <li class="social-settings">
                                 <a title="Social" href="#social_settings"><?php _e( 'Social', TEXT_DOMAIN ); ?></a>
                             </li>
-	                        <?php endif; ?>
-
-	                        <?php if ( Helper::is_woocommerce_active() ) : ?>
-                                <li class="woocommerce-settings">
-                                <a title="WooCommerce" href="#woocommerce_settings"><?php _e( 'WooCommerce', TEXT_DOMAIN ); ?></a>
-                            </li>
-	                        <?php endif; ?>
-
-	                        <?php if ( Helper::is_addons_active() ) : ?>
-                                <li class="base-slug-settings">
+                            <li class="base-slug-settings">
                                 <a title="Remove base slug" href="#base_slug_settings"><?php _e( 'Remove Base Slug', TEXT_DOMAIN ); ?></a>
                             </li>
-	                        <?php
+
+                            <?php
 		                        $custom_emails = Helper::filter_setting_options( 'custom_emails', [] );
 		                        if ( ! empty( $custom_emails ) ) :
-			                        ?>
-                                    <li class="email-settings">
-                                <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', TEXT_DOMAIN ); ?></a>
-                            </li>
-		                        <?php endif; ?>
+                                ?>
+                                <li class="email-settings">
+                                    <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', TEXT_DOMAIN ); ?></a>
+                                </li>
+                            <?php endif; ?>
 
-
-                                <li class="order-settings">
+                            <li class="order-settings">
                                 <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', TEXT_DOMAIN ); ?></a>
                             </li>
-
-                                <li class="recaptcha-settings">
+                            <li class="recaptcha-settings">
                                 <a title="reCAPTCHA" href="#recaptcha_settings"><?php _e( 'reCAPTCHA', TEXT_DOMAIN ); ?></a>
                             </li>
 	                        <?php endif; ?>
 
-                            <li class="comments-settings !hidden">
-                                <a title="Comments" href="#comments_settings"><?php _e( 'Comments', TEXT_DOMAIN ); ?></a>
+	                        <?php if ( Helper::is_woocommerce_active() ) : ?>
+                            <li class="woocommerce-settings">
+                                <a title="WooCommerce" href="#woocommerce_settings"><?php _e( 'WooCommerce', TEXT_DOMAIN ); ?></a>
                             </li>
+	                        <?php endif; ?>
+
                             <li class="custom-script-settings">
                                 <a title="Custom Scripts" href="#custom_script_settings"><?php _e( 'Custom Scripts', TEXT_DOMAIN ); ?></a>
                             </li>
@@ -603,62 +585,53 @@ final class Admin {
 	                    <?php endif; ?>
 
 	                    <?php if ( Helper::is_addons_active() ) : ?>
-                            <div id="contact_info_settings" class="group tabs-panel">
+                        <div id="contact_info_settings" class="group tabs-panel">
 							<?php include ADDONS_PATH . 'src/Contact_Info/options.php'; ?>
                         </div>
-                            <div id="contact_button_settings" class="group tabs-panel">
+
+                        <div id="contact_button_settings" class="group tabs-panel">
 							<?php include ADDONS_PATH . 'src/Contact_Button/options.php'; ?>
                         </div>
-                            <div id="block_editor_settings" class="group tabs-panel">
+
+                        <div id="block_editor_settings" class="group tabs-panel">
 							<?php include ADDONS_PATH . 'src/Editor/options.php'; ?>
                         </div>
-	                    <?php endif; ?>
 
                         <div id="optimizer_settings" class="group tabs-panel">
-							<?php include INC_PATH . 'admin/options/optimizer.php'; ?>
+							<?php include ADDONS_PATH . 'src/Optimizer/options.php'; ?>
                         </div>
 
                         <div id="security_settings" class="group tabs-panel">
-							<?php include INC_PATH . 'admin/options/security.php'; ?>
+							<?php include ADDONS_PATH . 'src/Security/options.php'; ?>
                         </div>
 
-	                    <?php if ( Helper::is_addons_active() ) : ?>
-                            <div id="social_settings" class="group tabs-panel">
+                        <div id="social_settings" class="group tabs-panel">
 							<?php include ADDONS_PATH . 'src/Social/options.php'; ?>
+                        </div>
+
+                        <div id="base_slug_settings" class="group tabs-panel">
+                            <?php include ADDONS_PATH . 'src/Base_Slug/options.php'; ?>
+                        </div>
+
+	                        <?php if ( ! empty( $custom_emails ) ) : ?>
+                            <div id="email_settings" class="group tabs-panel">
+                                <?php include ADDONS_PATH . 'src/Custom_Email/options.php'; ?>
+                            </div>
+		                    <?php endif; ?>
+
+                        <div id="custom_order_settings" class="group tabs-panel">
+		                    <?php include ADDONS_PATH . 'src/Custom_Order/options.php'; ?>
+                        </div>
+                        <div id="recaptcha_settings" class="group tabs-panel">
+		                    <?php include ADDONS_PATH . 'src/reCAPTCHA/options.php'; ?>
                         </div>
 	                    <?php endif; ?>
 
 	                    <?php if ( Helper::is_woocommerce_active() ) : ?>
-                            <div id="woocommerce_settings" class="group tabs-panel">
+                        <div id="woocommerce_settings" class="group tabs-panel">
                             <?php include INC_PATH . 'src/Plugins/WooCommerce/options.php'; ?>
                         </div>
 	                    <?php endif; ?>
-
-	                    <?php if ( Helper::is_addons_active() ) : ?>
-                            <div id="base_slug_settings" class="group tabs-panel">
-                            <?php include ADDONS_PATH . 'src/Base_Slug/options.php'; ?>
-                        </div>
-
-	                    <?php if ( ! empty( $custom_emails ) ) : ?>
-                                <div id="email_settings" class="group tabs-panel">
-                            <?php include ADDONS_PATH . 'src/Custom_Email/options.php'; ?>
-                        </div>
-		                    <?php endif; ?>
-
-
-                            <div id="custom_order_settings" class="group tabs-panel">
-		                    <?php include ADDONS_PATH . 'src/Custom_Order/options.php'; ?>
-                        </div>
-
-                            <div id="recaptcha_settings" class="group tabs-panel">
-		                    <?php include ADDONS_PATH . 'src/reCAPTCHA/options.php'; ?>
-                        </div>
-
-	                    <?php endif; ?>
-
-                        <div id="comments_settings" class="group tabs-panel">
-							<?php include INC_PATH . 'admin/options/comments.php'; ?>
-                        </div>
 
                         <div id="custom_script_settings" class="group tabs-panel">
 							<?php include INC_PATH . 'admin/options/custom_script.php'; ?>

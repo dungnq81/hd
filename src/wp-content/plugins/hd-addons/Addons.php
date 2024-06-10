@@ -4,14 +4,13 @@ use Addons\Base_Slug\Base_Slug;
 use Addons\Custom_Email\Custom_Email;
 use Addons\Custom_Order\Custom_Order;
 use Addons\Editor\Editor;
-use Addons\Editor\TinyMCE;
-use Addons\Font\Font;
-use Addons\Heartbeat\Heartbeat;
-use Addons\Lazy_Load\Lazy_Load;
-use Addons\Minifier\Minify_Html;
 use Addons\reCAPTCHA\reCAPTCHA;
 use Addons\SMTP\SMTP;
-use Addons\SVG\SVG;
+use Addons\Security\Security;
+
+use Addons\Optimizer\Optimizer;
+use Addons\Optimizer\Options\Minifier;
+use Addons\Optimizer\Options\Font\Font;
 
 use Addons\Third_Party;
 
@@ -58,15 +57,13 @@ final class Addons {
 	 */
 	public function plugins_loaded(): void {
 
+		( new Optimizer() );
+		( new Security() );
 		( new Editor() );
-		( new TinyMCE() );
 		( new Custom_Order() );
 		( new Custom_Email() );
 		( new SMTP() );
-		( new SVG() );
 		( new Base_Slug() );
-		( new Heartbeat() );
-		( new Lazy_Load() );
 		( new reCAPTCHA() );
 
 		check_plugin_active( 'wp-rocket/wp-rocket.php' ) && ( new Third_Party\WpRocket() );
@@ -156,7 +153,7 @@ final class Addons {
 
 		$minify_html = $this->optimizer_options['minify_html'] ?? 0;
 		if ( ! empty( $minify_html ) ) {
-			$html = Minify_Html::minify( $html );
+			$html = Minifier\Minify_Html::minify( $html );
 		}
 
 		return $html;

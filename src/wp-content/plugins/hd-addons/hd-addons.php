@@ -33,6 +33,8 @@ define( 'ADDONS_VERSION', $plugin_data['Version'] );
 define( 'ADDONS_TEXT_DOMAIN', $plugin_data['TextDomain'] );
 define( 'ADDONS_AUTHOR', $plugin_data['Author'] );
 
+const ADDONS_SRC_PATH = ADDONS_PATH . 'src' . DIRECTORY_SEPARATOR;
+
 if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	wp_die( __( 'Error locating autoloader. Please run <code>composer install</code>.', ADDONS_TEXT_DOMAIN ) );
 }

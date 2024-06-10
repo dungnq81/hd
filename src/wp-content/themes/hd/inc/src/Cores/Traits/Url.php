@@ -84,9 +84,9 @@ trait Url {
 				$_SERVER['HTTP_CLIENT_IP'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
 			}
 
-			$client  = @$_SERVER['HTTP_CLIENT_IP'];
-			$forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
-			$remote  = @$_SERVER['REMOTE_ADDR'];
+			$client  = $_SERVER['HTTP_CLIENT_IP'] ?? '';
+			$forward = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '';
+			$remote  = $_SERVER['REMOTE_ADDR'] ?? '';
 
 			if ( filter_var( $client, FILTER_VALIDATE_IP ) ) {
 				return $client;
@@ -96,7 +96,9 @@ trait Url {
 				return $forward;
 			}
 
-			return $remote;
+			if ( filter_var( $remote, FILTER_VALIDATE_IP ) ) {
+				return $remote;
+			}
 		}
 
 		// Fallback local ip.

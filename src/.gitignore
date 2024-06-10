@@ -45,6 +45,7 @@ Thumbs.db
 
 # WordPress
 wp-content/uploads/
+wp-content/wflogs/
 wp-content/themes/twenty*/
 wp-content/themes/generatepress/
 
