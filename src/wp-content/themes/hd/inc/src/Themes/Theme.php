@@ -243,16 +243,18 @@ final class Theme {
 		wp_enqueue_style( "fonts-style", ASSETS_URL . "css/fonts.css", [], THEME_VERSION );
 
 		/** Inline Js */
+		$recaptcha_options = Helper::getOption( 'recaptcha__options' );
 		$l10n = [
-			'ajaxUrl'      => esc_js( admin_url( 'admin-ajax.php', 'relative' ) ),
-			'baseUrl'      => esc_js( untrailingslashit( site_url() ) . '/' ),
-			'themeUrl'     => esc_js( THEME_URL ),
-			'_wpnonce'     => wp_create_nonce( '_wpnonce_ajax_csrf' ),
-			'smoothScroll' => ! 0,
-			'tracking'     => ( defined( 'TRACKING' ) && TRACKING ) ? 1 : 0,
-			'locale'       => esc_js( get_locale() ),
-			'lang'         => esc_js( Helper::getLang() ),
-			'lg'           => [
+			'ajaxUrl'           => esc_js( admin_url( 'admin-ajax.php', 'relative' ) ),
+			'baseUrl'           => esc_js( untrailingslashit( site_url() ) . '/' ),
+			'themeUrl'          => esc_js( THEME_URL ),
+			'wpnonce_ajax_csrf' => wp_create_nonce( '_wpnonce_ajax_csrf' ),
+			'tracking'          => ( defined( 'TRACKING' ) && TRACKING ) ? 1 : 0,
+			'recaptcha_v2'      => ( $recaptcha_options['recaptcha_v2_site_key'] && $recaptcha_options['recaptcha_v2_secret_key'] ) ? 1 : 0,
+			'recaptcha_v3'      => ( $recaptcha_options['recaptcha_v3_site_key'] && $recaptcha_options['recaptcha_v3_secret_key'] ) ? 1 : 0,
+			'locale'            => esc_js( get_locale() ),
+			'lang'              => esc_js( Helper::getLang() ),
+			'lg'                => [
 				'view_more'   => __( 'View more', TEXT_DOMAIN ),
 				'view_detail' => __( 'Detail', TEXT_DOMAIN ),
 			],

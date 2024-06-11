@@ -84,7 +84,7 @@ final class Custom_Order {
 		if ( $this->_check_custom_order_script() ) {
 			wp_enqueue_script(
 				'addon-custom-order',
-				ADDONS_URL . 'assets/js/admin_custom_order.js',
+				ADDONS_URL . 'assets/js/custom_order.js',
 				[
 					'jquery-core',
 					'jquery-ui-sortable',
@@ -122,7 +122,7 @@ final class Custom_Order {
 					)
 				);
 
-				if ( $result[0]->cnt === 0 || $result[0]->cnt === $result[0]->max ) {
+				if ( $result[0]->cnt === 0 || ( $result[0]->cnt === $result[0]->max && $result[0]->min === 1 ) ) {
 					continue;
 				}
 

@@ -19,7 +19,7 @@ final class reCAPTCHA {
 		$default_forms = [
 
 			// default
-//			'login_form'                => [ 'form_name' => __( 'Login Form', ADDONS_TEXT_DOMAIN ) ],
+			'login_form'                => [ 'form_name' => __( 'Login Form', ADDONS_TEXT_DOMAIN ) ],
 //			'registration_form'         => [ 'form_name' => __( 'Registration Form', ADDONS_TEXT_DOMAIN ) ],
 //			'reset_pwd_form'            => [ 'form_name' => __( 'Reset Password Form', ADDONS_TEXT_DOMAIN ) ],
 //			'password_form'             => [ 'form_name' => __( 'Protected Post Password Form', ADDONS_TEXT_DOMAIN ) ],
