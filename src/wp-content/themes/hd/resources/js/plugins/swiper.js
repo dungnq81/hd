@@ -68,7 +68,7 @@ const initializeSwipers = () => {
             el.after(controls);
         }
 
-        const swiperWrapper = el.querySelector('.swiper-wrapper');
+        const swiperWrapper = el?.querySelector('.swiper-wrapper');
         let options = JSON.parse(swiperWrapper.dataset.options) || {};
 
         if (isEmpty(options)) {

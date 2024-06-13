@@ -392,6 +392,19 @@ function __widget_tag_cloud_args_filter( $args ): array {
 // custom filter
 // --------------------------------------------------
 
+add_filter( 'hd_hide_menu_options', '__hd_hide_menu_options', 99 );
+
+/**
+ * @return array
+ */
+function __hd_hide_menu_options(): array {
+	return [
+		'aspect_ratio_post_type'
+	];
+}
+
+// --------------------------------------------------
+
 add_filter( 'hd_theme_setting_options', '__hd_theme_setting_options', 99 );
 
 /**
@@ -589,3 +602,5 @@ function __hd_theme_setting_options( array $arr ): array {
 
 	return array_merge( $arr, $arr_new );
 }
+
+// --------------------------------------------------

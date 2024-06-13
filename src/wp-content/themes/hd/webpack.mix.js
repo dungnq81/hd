@@ -19,6 +19,7 @@ const directoriesToCopy = [
 // SASS
 const sassFiles = [
     // admin
+    'editor-style',
     'admin',
 
     // plugin
@@ -70,4 +71,7 @@ jsFiles.forEach((file) => {
 directoriesToCopy.forEach((dir) => mix.copyDirectory(dir.from, dir.to));
 
 // Additional JS file
+mix.copy(`${node_modules}/select2/dist/css/select2.min.css`, `${assets}/css/plugins`);
+mix.copy(`${node_modules}/select2/dist/js/select2.full.min.js`, `${assets}/js/plugins`);
+
 mix.copy(`${node_modules}/pace-js/pace.min.js`, `${assets}/js/plugins`);

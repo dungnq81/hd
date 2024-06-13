@@ -497,19 +497,19 @@ figure {
 }
 
 /** @todo aspect ratio */
-.ar-1, .ar-1-1 {
+:is(.ar-1, .ar-1-1, .ar\[1-1\]) {
     @include responsive-ratio(1, 1);
 }
 
-.ar-3-2 {
+:is(.ar-3-2, .ar\[3-2\]) {
     @include responsive-ratio(3, 2);
 }
 
-.ar-4-3 {
+:is(.ar-4-3, .ar\[4-3\]) {
     @include responsive-ratio(4, 3);
 }
 
-.ar-16-9 {
+:is(.ar-16-9, .ar\[16-9\]) {
     @include responsive-ratio(16, 9);
 }
 

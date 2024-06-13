@@ -77,7 +77,6 @@ $order_taxonomy       = $custom_order_options['order_taxonomy'] ?? [];
 
 <div class="section section-checkbox" id="section_custom_reset_order">
 	<span class="heading block !fw-700"><?php _e( 'Check to reset order', ADDONS_TEXT_DOMAIN ); ?></span>
-
 	<div class="option mb-20">
 		<label class="controls">
 			<input type="checkbox" class="hd-checkbox hd-control" name="order_reset" id="order_reset" value="1">

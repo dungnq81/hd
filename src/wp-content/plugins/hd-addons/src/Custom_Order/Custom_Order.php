@@ -107,6 +107,7 @@ final class Custom_Order {
 		}
 
 		global $wpdb;
+
 		$objects = $this->order_post_type;
 		$tags    = $this->order_taxonomy;
 
@@ -122,7 +123,9 @@ final class Custom_Order {
 					)
 				);
 
-				if ( $result[0]->cnt === 0 || ( $result[0]->cnt === $result[0]->max && $result[0]->min === 1 ) ) {
+				if ( (int) $result[0]->cnt === 0 ||
+				     ( $result[0]->cnt === $result[0]->max && (int) $result[0]->min === 1 )
+				) {
 					continue;
 				}
 
@@ -131,7 +134,7 @@ final class Custom_Order {
 					"UPDATE {$wpdb->posts} as `pt` JOIN (
 						SELECT `ID`, (@row_number:=@row_number + 1) AS `rank`
                         FROM {$wpdb->posts}
-                        WHERE `post_type` = '$object' AND `post_status` IN ( 'publish', 'pending', 'draft', 'private', 'future' )
+                        WHERE `post_type` = '{$object}' AND `post_status` IN ( 'publish', 'pending', 'draft', 'private', 'future' )
                         ORDER BY `menu_order` ASC
                     ) as `pt2`
                 	ON pt.`id` = pt2.`id`
@@ -153,7 +156,9 @@ final class Custom_Order {
 					)
 				);
 
-				if ( $result[0]->cnt === 0 || $result[0]->cnt === $result[0]->max ) {
+				if ( (int) $result[0]->cnt === 0 ||
+				     ( $result[0]->cnt === $result[0]->max && (int) $result[0]->min === 1 )
+				) {
 					continue;
 				}
 

@@ -29,7 +29,7 @@ $smtp_disable_ssl_verification = $smtp_options['smtp_disable_ssl_verification'] 
 	<div class="option">
 		<div class="controls">
 			<div class="select_wrapper">
-				<select class="hd-control hd-select" name="smtp_auth" id="smtp_auth">
+				<select class="hd-control hd-select !w[50%]" name="smtp_auth" id="smtp_auth">
 					<option value="true"<?php echo selected( $smtp_auth, 'true', false ); ?>>True</option>
 					<option value="false"<?php echo selected( $smtp_auth, 'false', false ); ?>>False</option>
 				</select>
@@ -61,7 +61,7 @@ $smtp_disable_ssl_verification = $smtp_options['smtp_disable_ssl_verification'] 
 	<div class="option">
 		<div class="controls">
 			<div class="select_wrapper">
-				<select class="hd-control hd-select" name="smtp_encryption" id="smtp_encryption">
+				<select class="hd-control hd-select !w[50%]" name="smtp_encryption" id="smtp_encryption">
 					<option value="tls"<?php echo selected( $smtp_encryption, 'tls', false );?>>TLS</option>
 					<option value="ssl"<?php echo selected( $smtp_encryption, 'ssl', false );?>>SSL</option>
 					<option value="none"<?php echo selected( $smtp_encryption, 'none', false );?>>No Encryption</option>

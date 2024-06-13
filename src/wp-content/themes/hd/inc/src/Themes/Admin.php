@@ -4,6 +4,7 @@ namespace Themes;
 
 use Addons\Base_Slug\Base_Slug;
 use Addons\Custom_Order\Custom_Order;
+
 use Addons\Security\Options\Dir;
 use Addons\Security\Options\Headers;
 use Addons\Security\Options\Readme;
@@ -332,6 +333,7 @@ final class Admin {
 				'recaptcha_v3_secret_key' => ! empty( $data['recaptcha_v3_secret_key'] ) ? sanitize_text_field( $data['recaptcha_v3_secret_key'] ) : '',
 				'recaptcha_v3_score'      => ! empty( $data['recaptcha_v3_score'] ) ? sanitize_text_field( $data['recaptcha_v3_score'] ) : '0.5',
 				'recaptcha_global'        => ! empty( $data['recaptcha_global'] ) ? sanitize_text_field( $data['recaptcha_global'] ) : '',
+				'recaptcha_allowlist_ids' => ! empty( $data['recaptcha_allowlist_ids'] ) ? array_map( 'sanitize_text_field', $data['recaptcha_allowlist_ids'] ) : [],
 			];
 
 			Helper::updateOption( 'recaptcha__options', $recaptcha_options );
@@ -359,7 +361,7 @@ final class Admin {
 		/** ---------------------------------------- */
 
 		Helper::clearAllCache();
-		Helper::messageSuccess( __( 'Your settings have been saved.', ADDONS_TEXT_DOMAIN ), true );
+		Helper::messageSuccess( __( 'Your settings have been saved.', TEXT_DOMAIN ), true );
 
 		die();
 	}
@@ -383,16 +385,24 @@ final class Admin {
 	 * @return void
 	 */
 	public function admin_enqueue_scripts( $hook ): void {
+		if ( ! wp_style_is( 'woocommerce_admin_styles' ) && ! wp_style_is( 'select2-style' ) ) { // tested
+			wp_enqueue_style( 'select2-style', THEME_URL . 'assets/css/plugins/select2.min.css' );
+		}
+
+		if ( ! wp_script_is( 'select2', 'registered' ) ) {
+			wp_register_script( 'select2', THEME_URL . 'assets/js/plugins/select2.full.min.js', [ 'jquery-core' ], false, true );
+		}
+
 		wp_enqueue_style( "admin-style", THEME_URL . "assets/css/admin.css", [], THEME_VERSION );
 
-		wp_enqueue_script( 'pace-js', THEME_URL . 'assets/js/plugins/pace.min.js', [], false, true );
-		wp_enqueue_script( "admin", THEME_URL . "assets/js/admin.js", [ "pace-js" ], THEME_VERSION, true );
+		wp_register_script( 'pace-js', THEME_URL . 'assets/js/plugins/pace.min.js', [], false, true );
+		wp_enqueue_script( 'admin', THEME_URL . 'assets/js/admin.js', [ 'pace-js', 'select2' ], THEME_VERSION, true );
 
 		$pace_js_inline = 'paceOptions = {startOnPageLoad:!1}';
 		wp_add_inline_script( 'pace-js', $pace_js_inline, 'before' );
 
-		wp_enqueue_script( "fontawesome-kit", "https://kit.fontawesome.com/09f86c70cd.js", [], false, true );
-		wp_script_add_data( "fontawesome-kit", "defer", true );
+		wp_enqueue_script( 'fontawesome-kit', 'https://kit.fontawesome.com/09f86c70cd.js', [], false, true );
+		wp_script_add_data( 'fontawesome-kit', 'defer', true );
 
 		// options_enqueue_assets
 		$allowed_pages = 'toplevel_page_hd-settings';
@@ -493,158 +503,10 @@ final class Admin {
 				<?php $nonce_field = wp_nonce_field( '_wpnonce_hd_settings_' . get_current_user_id() ); ?>
 
                 <div id="main" class="filter-tabs clearfix">
-                    <div id="hd_nav" class="tabs-nav">
-                        <div class="logo-title">
-                            <h3>
-								<?php _e( 'HD Settings', TEXT_DOMAIN ); ?>
-                                <span>Version: <?php echo THEME_VERSION; ?></span>
-                            </h3>
-                        </div>
 
-                        <div class="save-bar">
-                            <button type="submit" name="hd_submit_settings" class="button button-primary"><?php _e( 'Save Changes', TEXT_DOMAIN ); ?></button>
-                        </div>
+                    <?php include INC_PATH . 'admin/menu_options.php'; ?>
+                    <?php include INC_PATH . 'admin/content_options.php'; ?>
 
-                        <ul class="ul-menu-list">
-                            <li class="aspect-ratio-settings">
-                                <a class="current" title="Aspect ratio" href="#aspect_ratio_settings"><?php _e( 'Aspect Ratio', TEXT_DOMAIN ); ?></a>
-                            </li>
-
-	                        <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
-                            <li class="smtp-settings">
-                                <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', TEXT_DOMAIN ); ?></a>
-                            </li>
-	                        <?php endif; ?>
-
-	                        <?php if ( Helper::is_addons_active() ) : ?>
-                            <li class="contact-info-settings">
-                                <a title="Contact Info" href="#contact_info_settings"><?php _e( 'Contact Info', TEXT_DOMAIN ); ?></a>
-                            </li>
-                            <li class="contact-button-settings">
-                                <a title="Contact Button" href="#contact_button_settings"><?php _e( 'Contact Button', TEXT_DOMAIN ); ?></a>
-                            </li>
-                            <li class="gutenberg-settings">
-                                <a title="Editor" href="#block_editor_settings"><?php _e( 'Editor', TEXT_DOMAIN ); ?></a>
-                            </li>
-                            <li class="optimizer-settings">
-                                <a title="Optimizer" href="#optimizer_settings"><?php _e( 'Optimizer', TEXT_DOMAIN ); ?></a>
-                            </li>
-                            <li class="security-settings">
-                                <a title="Security" href="#security_settings"><?php _e( 'Security', TEXT_DOMAIN ); ?></a>
-                            </li>
-                            <li class="social-settings">
-                                <a title="Social" href="#social_settings"><?php _e( 'Social', TEXT_DOMAIN ); ?></a>
-                            </li>
-                            <li class="base-slug-settings">
-                                <a title="Remove base slug" href="#base_slug_settings"><?php _e( 'Remove Base Slug', TEXT_DOMAIN ); ?></a>
-                            </li>
-
-                            <?php
-		                        $custom_emails = Helper::filter_setting_options( 'custom_emails', [] );
-		                        if ( ! empty( $custom_emails ) ) :
-                                ?>
-                                <li class="email-settings">
-                                    <a title="EMAIL" href="#email_settings"><?php _e( 'Custom Email', TEXT_DOMAIN ); ?></a>
-                                </li>
-                            <?php endif; ?>
-
-                            <li class="order-settings">
-                                <a title="Custom Order" href="#custom_order_settings"><?php _e( 'Custom Order', TEXT_DOMAIN ); ?></a>
-                            </li>
-                            <li class="recaptcha-settings">
-                                <a title="reCAPTCHA" href="#recaptcha_settings"><?php _e( 'reCAPTCHA', TEXT_DOMAIN ); ?></a>
-                            </li>
-	                        <?php endif; ?>
-
-	                        <?php if ( Helper::is_woocommerce_active() ) : ?>
-                            <li class="woocommerce-settings">
-                                <a title="WooCommerce" href="#woocommerce_settings"><?php _e( 'WooCommerce', TEXT_DOMAIN ); ?></a>
-                            </li>
-	                        <?php endif; ?>
-
-                            <li class="custom-script-settings">
-                                <a title="Custom Scripts" href="#custom_script_settings"><?php _e( 'Custom Scripts', TEXT_DOMAIN ); ?></a>
-                            </li>
-                            <li class="custom-css-settings">
-                                <a title="Custom CSS" href="#custom_css_settings"><?php _e( 'Custom CSS', TEXT_DOMAIN ); ?></a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div id="hd_content" class="tabs-content">
-                        <h2 class="hidden-text"></h2>
-
-                        <div id="aspect_ratio_settings" class="group tabs-panel">
-							<?php include INC_PATH . 'admin/options/aspect_ratio.php'; ?>
-                        </div>
-
-	                    <?php if ( Helper::is_addons_active() && check_smtp_plugin_active() ) : ?>
-                            <div id="smtp_settings" class="group tabs-panel">
-							<?php include ADDONS_PATH . 'src/SMTP/options.php'; ?>
-                        </div>
-	                    <?php endif; ?>
-
-	                    <?php if ( Helper::is_addons_active() ) : ?>
-                        <div id="contact_info_settings" class="group tabs-panel">
-							<?php include ADDONS_PATH . 'src/Contact_Info/options.php'; ?>
-                        </div>
-
-                        <div id="contact_button_settings" class="group tabs-panel">
-							<?php include ADDONS_PATH . 'src/Contact_Button/options.php'; ?>
-                        </div>
-
-                        <div id="block_editor_settings" class="group tabs-panel">
-							<?php include ADDONS_PATH . 'src/Editor/options.php'; ?>
-                        </div>
-
-                        <div id="optimizer_settings" class="group tabs-panel">
-							<?php include ADDONS_PATH . 'src/Optimizer/options.php'; ?>
-                        </div>
-
-                        <div id="security_settings" class="group tabs-panel">
-							<?php include ADDONS_PATH . 'src/Security/options.php'; ?>
-                        </div>
-
-                        <div id="social_settings" class="group tabs-panel">
-							<?php include ADDONS_PATH . 'src/Social/options.php'; ?>
-                        </div>
-
-                        <div id="base_slug_settings" class="group tabs-panel">
-                            <?php include ADDONS_PATH . 'src/Base_Slug/options.php'; ?>
-                        </div>
-
-	                        <?php if ( ! empty( $custom_emails ) ) : ?>
-                            <div id="email_settings" class="group tabs-panel">
-                                <?php include ADDONS_PATH . 'src/Custom_Email/options.php'; ?>
-                            </div>
-		                    <?php endif; ?>
-
-                        <div id="custom_order_settings" class="group tabs-panel">
-		                    <?php include ADDONS_PATH . 'src/Custom_Order/options.php'; ?>
-                        </div>
-                        <div id="recaptcha_settings" class="group tabs-panel">
-		                    <?php include ADDONS_PATH . 'src/reCAPTCHA/options.php'; ?>
-                        </div>
-	                    <?php endif; ?>
-
-	                    <?php if ( Helper::is_woocommerce_active() ) : ?>
-                        <div id="woocommerce_settings" class="group tabs-panel">
-                            <?php include INC_PATH . 'src/Plugins/WooCommerce/options.php'; ?>
-                        </div>
-	                    <?php endif; ?>
-
-                        <div id="custom_script_settings" class="group tabs-panel">
-							<?php include INC_PATH . 'admin/options/custom_script.php'; ?>
-                        </div>
-
-                        <div id="custom_css_settings" class="group tabs-panel">
-							<?php include INC_PATH . 'admin/options/custom_css.php'; ?>
-                        </div>
-
-                        <div class="save-bar">
-                            <button type="submit" name="hd_submit_settings" class="button button-primary"><?php _e( 'Save Changes', TEXT_DOMAIN ) ?></button>
-                        </div>
-                    </div>
                 </div>
             </form>
         </div>

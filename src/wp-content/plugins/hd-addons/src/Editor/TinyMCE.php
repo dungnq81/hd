@@ -18,8 +18,8 @@ final class TinyMCE {
 		/** Custom styles. */
 		add_editor_style( ADDONS_URL . "assets/css/editor-style.css" );
 
-		add_filter( 'mce_buttons', [ &$this, 'tinymce_add_table_button' ] );
-		add_filter( 'mce_external_plugins', [ &$this, 'tinymce_add_table_plugin' ] );
+		add_filter( 'mce_buttons', [ &$this, 'mce_buttons' ] );
+		add_filter( 'mce_external_plugins', [ &$this, 'mce_external_plugins' ] );
 	}
 
 	// --------------------------------------------------
@@ -29,7 +29,7 @@ final class TinyMCE {
 	 *
 	 * @return mixed
 	 */
-	public function tinymce_add_table_button( $buttons ): mixed {
+	public function mce_buttons( $buttons ): mixed {
 
 		array_push( $buttons, 'separator', 'unlink' );
 		array_push( $buttons, 'separator', 'alignjustify' );
@@ -53,7 +53,7 @@ final class TinyMCE {
 	 *
 	 * @return mixed
 	 */
-	public function tinymce_add_table_plugin( $plugins ): mixed {
+	public function mce_external_plugins( $plugins ): mixed {
 
 		$plugins['table']      = ADDONS_URL . 'src/Editor/tinymce/table/plugin.min.js';
 		$plugins['codesample'] = ADDONS_URL . 'src/Editor/tinymce/codesample/plugin.min.js';

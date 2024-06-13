@@ -24,10 +24,9 @@ jQuery(function ($) {
 
     if (typeof codemirror_settings !== 'undefined') {
         /**
-         * codemirror css
-         * @type {jQuery|HTMLElement|*}
+         * @type {*[]}
          */
-        const codemirror_css = $('.codemirror_css');
+        const codemirror_css = [...document.querySelectorAll('.codemirror_css')];
         _.each(codemirror_css, function (el, index) {
             // Initialize the random element
             rand_element_init(el);
@@ -47,10 +46,9 @@ jQuery(function ($) {
         });
 
         /**
-         * codemirror html
-         * @type {jQuery|HTMLElement|*}
+         * @type {*[]}
          */
-        const codemirror_html = $('.codemirror_html');
+        const codemirror_html = [...document.querySelectorAll('.codemirror_html')];
         _.each(codemirror_html, function (el, index) {
             // Initialize the random element
             rand_element_init(el);
@@ -193,5 +191,16 @@ jQuery(function ($) {
                 btn_submit.prop('disabled', false).html(button_text);
                 console.log(errorThrown);
             });
+    });
+
+    // select2 multiple
+    const select2_multiple = $('.select2-multiple');
+    $.each(select2_multiple, function (i, el) {
+        let select_el = $(el).select2({
+            multiple: true,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true,
+        });
     });
 });

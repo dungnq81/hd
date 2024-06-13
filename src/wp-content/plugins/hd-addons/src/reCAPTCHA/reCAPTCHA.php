@@ -6,9 +6,13 @@ namespace Addons\reCAPTCHA;
 
 $recaptcha_options = get_option( 'recaptcha__options' );
 
-define( "GOOGLE_CAPTCHA_SITE_KEY", $recaptcha_options['recaptcha_site_key'] ?? '' );
-define( "GOOGLE_CAPTCHA_SECRET_KEY", $recaptcha_options['recaptcha_secret_key'] ?? '' );
-define( "GOOGLE_CAPTCHA_SCORE", $recaptcha_options['recaptcha_score'] ?? '0.5' );
+define( "GOOGLE_CAPTCHA_V2_SITE_KEY", $recaptcha_options['recaptcha_v2_site_key'] ?? '' );
+define( "GOOGLE_CAPTCHA_V2_SECRET_KEY", $recaptcha_options['recaptcha_v2_secret_key'] ?? '' );
+
+define( "GOOGLE_CAPTCHA_V3_SITE_KEY", $recaptcha_options['recaptcha_v3_site_key'] ?? '' );
+define( "GOOGLE_CAPTCHA_V3_SECRET_KEY", $recaptcha_options['recaptcha_v3_secret_key'] ?? '' );
+define( "GOOGLE_CAPTCHA_V3_SCORE", $recaptcha_options['recaptcha_v3_score'] ?? '0.5' );
+
 define( "GOOGLE_CAPTCHA_GLOBAL", $recaptcha_options['recaptcha_global'] ?? false );
 
 final class reCAPTCHA {
@@ -19,7 +23,7 @@ final class reCAPTCHA {
 		$default_forms = [
 
 			// default
-			'login_form'                => [ 'form_name' => __( 'Login Form', ADDONS_TEXT_DOMAIN ) ],
+			'login_form' => [ 'form_name' => __( 'Login Form', ADDONS_TEXT_DOMAIN ) ],
 //			'registration_form'         => [ 'form_name' => __( 'Registration Form', ADDONS_TEXT_DOMAIN ) ],
 //			'reset_pwd_form'            => [ 'form_name' => __( 'Reset Password Form', ADDONS_TEXT_DOMAIN ) ],
 //			'password_form'             => [ 'form_name' => __( 'Protected Post Password Form', ADDONS_TEXT_DOMAIN ) ],
@@ -46,11 +50,21 @@ final class reCAPTCHA {
 	// ------------------------------------------------------
 
 	/**
+	 * @param $render
+	 *
 	 * @return string
 	 */
-	public function get_api_url(): string {
+	public function get_api_url( $render ): string {
 		$use_globally = GOOGLE_CAPTCHA_GLOBAL ? 'recaptcha.net' : 'google.com';
 
-		return sprintf( 'https://www.' . $use_globally . '/recaptcha/api.js?render=%s', GOOGLE_CAPTCHA_SITE_KEY );
+		if ( ! empty( $render ) ) {
+			return sprintf( 'https://www.' . $use_globally . '/recaptcha/api.js?render=%s', $render );
+		}
+
+		return 'https://www.' . $use_globally . '/recaptcha/api.js';
 	}
+
+	// ------------------------------------------------------
+
+
 }

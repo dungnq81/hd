@@ -194,15 +194,7 @@ final class Addons {
 	/**
 	 * @return void
 	 */
-	public function admin_enqueue_scripts(): void {
-		if ( ! wp_style_is( 'woocommerce_admin_styles' ) ) { // tested
-			wp_enqueue_style( 'select2-style', ADDONS_URL . 'assets/css/select2.min.css', [], ADDONS_VERSION );
-		}
-
-		if ( ! wp_script_is( 'select2', 'registered' ) ) {
-			wp_register_script( 'select2', ADDONS_URL . 'assets/js/select2.full.min.js', [ 'jquery-core' ], ADDONS_VERSION );
-		}
-	}
+	public function admin_enqueue_scripts(): void {}
 
 	/** ----------------------------------------------- */
 
