@@ -399,7 +399,21 @@ add_filter( 'hd_hide_menu_options', '__hd_hide_menu_options', 99 );
  */
 function __hd_hide_menu_options(): array {
 	return [
-		'aspect_ratio_post_type'
+		//'aspect-ratio', // Aspect Ratio
+		//'smtp', // SMTP
+		//'contact-info', // Contact Info
+		//'contact-button', // Contact Button
+		//'gutenberg', // Editor
+		//'optimizer', // Optimizer
+		//'security', // Security
+		//'social', // Social
+		//'base-slug', // Remove Base Slug
+		//'email', // Custom Email
+		//'custom-order', // Custom Order
+		//'recaptcha', // reCAPTCHA
+		//'woocommerce', // WooCommerce
+		//'custom-script', // Custom Scripts
+		//'custom-css', // Custom CSS
 	];
 }
 

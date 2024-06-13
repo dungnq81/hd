@@ -11,6 +11,29 @@ use Cores\Helper;
 
 // --------------------------------------------------
 
+if ( ! function_exists( 'in_array_toggle_class' ) ) {
+	/**
+	 * @param array $arr
+	 * @param $key
+	 * @param string $html_class
+	 * @param true $display
+	 *
+	 * @return string|void
+	 */
+	function in_array_toggle_class( array $arr, $key, string $html_class = '!hidden', true $display = true ) {
+		if ( $html_class && in_array( $key, $arr, false ) ) {
+
+			if ( $display ) { echo ' ' . $html_class; }
+			else { return ' ' . $html_class; }
+		}
+
+		if ( $display ) { echo ''; }
+		else { return ''; }
+	}
+}
+
+// --------------------------------------------------
+
 if ( ! function_exists( 'toggle_container' ) ) {
 	/**
 	 * @param bool $check
