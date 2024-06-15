@@ -19,7 +19,6 @@ const directoriesToCopy = [
 // SASS
 const sassFiles = [
     // admin
-    'editor-style',
     'admin',
 
     // plugin

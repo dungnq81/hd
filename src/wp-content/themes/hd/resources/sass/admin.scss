@@ -1180,4 +1180,18 @@ html.wp-toolbar {
             outline: 2px solid transparent;
         }
     }
+
+    .select2-results__option {
+        cursor: pointer;
+        margin-bottom: 0;
+        font-size: 14px;
+        padding-left: 10px;
+        padding-right: 10px;
+        transition: background-color 0.3s;
+
+        &.select2-results__option--highlighted {
+            background-color: rgba(34, 113, 177, 0.75);
+            color: #fff;
+        }
+    }
 }

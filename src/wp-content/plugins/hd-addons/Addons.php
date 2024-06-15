@@ -34,6 +34,9 @@ final class Addons {
 		add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 39 );
 		add_action( 'admin_menu', [ &$this, 'admin_menu' ] );
 
+		// editor-style.css
+		add_action( 'enqueue_block_editor_assets', [ &$this, 'enqueue_block_editor_assets' ] );
+
 		// Parser functions
 		$this->_parser();
 	}
@@ -83,8 +86,8 @@ final class Addons {
 
 		$minify_html   = $this->optimizer_options['minify_html'] ?? 0;
 		$font_optimize = $this->optimizer_options['font_optimize'] ?? 0;
-		$font_preload  = $this->optimizer_options['font_preload'] ? implode( PHP_EOL, $this->optimizer_options['font_preload'] ) : '';
-		$dns_prefetch  = $this->optimizer_options['dns_prefetch'] ? implode( PHP_EOL, $this->optimizer_options['dns_prefetch'] ) : '';
+		$font_preload  = isset( $this->optimizer_options['font_preload'] ) ? implode( PHP_EOL, $this->optimizer_options['font_preload'] ) : '';
+		$dns_prefetch  = isset( $this->optimizer_options['dns_prefetch'] ) ? implode( PHP_EOL, $this->optimizer_options['dns_prefetch'] ) : '';
 
 		if ( ! empty( $minify_html ) ||
 		     ! empty( $font_optimize ) ||
@@ -195,6 +198,17 @@ final class Addons {
 	 * @return void
 	 */
 	public function admin_enqueue_scripts(): void {}
+
+	/** ----------------------------------------------- */
+
+	/**
+	 * Gutenberg editor
+	 *
+	 * @return void
+	 */
+	public function enqueue_block_editor_assets(): void {
+		wp_enqueue_style( 'editor-style', ADDONS_URL . "assets/css/editor-style.css" );
+	}
 
 	/** ----------------------------------------------- */
 

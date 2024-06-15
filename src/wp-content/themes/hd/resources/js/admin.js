@@ -196,8 +196,20 @@ jQuery(function ($) {
     // select2 multiple
     const select2_multiple = $('.select2-multiple');
     $.each(select2_multiple, function (i, el) {
-        let select_el = $(el).select2({
+        $(el).select2({
             multiple: true,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true,
+        });
+    });
+
+    // select2 tags
+    const select2_tags = $('.select2-tags');
+    $.each(select2_tags, function (i, el) {
+        $(el).select2({
+            multiple: true,
+            tags: true,
             allowClear: true,
             width: 'resolve',
             dropdownAutoWidth: true,

@@ -30,9 +30,6 @@ final class Admin {
 
 	public function __construct() {
 
-		// editor-style.css
-		add_action( 'enqueue_block_editor_assets', [ &$this, 'enqueue_block_editor_assets' ] );
-
 		// admin.js, admin.css & codemirror_settings, v.v...
 		add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 9999, 1 );
 
@@ -333,7 +330,8 @@ final class Admin {
 				'recaptcha_v3_secret_key' => ! empty( $data['recaptcha_v3_secret_key'] ) ? sanitize_text_field( $data['recaptcha_v3_secret_key'] ) : '',
 				'recaptcha_v3_score'      => ! empty( $data['recaptcha_v3_score'] ) ? sanitize_text_field( $data['recaptcha_v3_score'] ) : '0.5',
 				'recaptcha_global'        => ! empty( $data['recaptcha_global'] ) ? sanitize_text_field( $data['recaptcha_global'] ) : '',
-				'recaptcha_allowlist_ids' => ! empty( $data['recaptcha_allowlist_ids'] ) ? array_map( 'sanitize_text_field', $data['recaptcha_allowlist_ids'] ) : [],
+				'recaptcha_allowlist_ips' => ! empty( $data['recaptcha_allowlist_ips'] ) ? array_map( 'sanitize_text_field', $data['recaptcha_allowlist_ips']
+				) : [],
 			];
 
 			Helper::updateOption( 'recaptcha__options', $recaptcha_options );
@@ -364,17 +362,6 @@ final class Admin {
 		Helper::messageSuccess( __( 'Your settings have been saved.', TEXT_DOMAIN ), true );
 
 		die();
-	}
-
-	// --------------------------------------------------
-
-	/**
-	 * Gutenberg editor
-	 *
-	 * @return void
-	 */
-	public function enqueue_block_editor_assets(): void {
-		wp_enqueue_style( 'editor-style', THEME_URL . "assets/css/editor-style.css" );
 	}
 
 	// --------------------------------------------------

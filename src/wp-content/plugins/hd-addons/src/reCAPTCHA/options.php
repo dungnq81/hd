@@ -10,7 +10,7 @@ $recaptcha_v3_secret_key = $recaptcha_options['recaptcha_v3_secret_key'] ?? '';
 $recaptcha_v3_score      = $recaptcha_options['recaptcha_v3_score'] ?? '0.5';
 
 $recaptcha_global        = $recaptcha_options['recaptcha_global'] ?? false;
-$recaptcha_allowlist_ids = $recaptcha_options['recaptcha_allowlist_ids'] ?? [];
+$recaptcha_allowlist_ips = $recaptcha_options['recaptcha_allowlist_ips'] ?? [];
 
 ?>
 <h2><?php _e( 'reCAPTCHA v2 Settings', ADDONS_TEXT_DOMAIN ); ?></h2>
@@ -74,31 +74,15 @@ $recaptcha_allowlist_ids = $recaptcha_options['recaptcha_allowlist_ids'] ?? [];
     </div>
 </div>
 
-<?php
-    // Get all admins.
-    $admins = get_users(
-        [
-            'role'    => 'administrator',
-            'orderby' => 'user_login',
-            'order'   => 'ASC',
-            'fields'  => [
-                'ID',
-                'user_login',
-                'display_name',
-            ],
-        ]
-    );
-?>
 <div class="section section-select" id="section_recaptcha_allowlist_ids">
-	<label class="heading" for="recaptcha_allowlist_ids"><?php _e( 'Allowlist Users', ADDONS_TEXT_DOMAIN ); ?></label>
-    <div class="desc"><?php _e( 'The allowlist can ignore reCAPTCHA.', ADDONS_TEXT_DOMAIN ); ?></div>
+	<label class="heading" for="recaptcha_allowlist_ips"><?php _e( 'Allowlist IP Addresses', ADDONS_TEXT_DOMAIN ); ?></label>
+    <div class="desc"><?php _e( 'The allowlist IPs can ignore reCAPTCHA.', ADDONS_TEXT_DOMAIN ); ?></div>
 	<div class="option">
 		<div class="controls">
 			<div class="select_wrapper">
-				<select multiple class="hd-control hd-select !w[100%] select2-multiple" name="recaptcha_allowlist_ids[]" id="recaptcha_allowlist_ids">
-                    <?php foreach ( $admins as $admin ) : ?>
-                        <option value="<?=esc_attr_strip_tags( $admin->ID )?>" <?php in_array_checked( $recaptcha_allowlist_ids, $admin->ID, true, 'selected' );
-                        ?>><?=$admin->display_name?></option>
+				<select multiple class="hd-control hd-select !w[100%] select2-tags" name="recaptcha_allowlist_ips[]" id="recaptcha_allowlist_ips">
+                    <?php foreach ( $recaptcha_allowlist_ips as $ip ) : ?>
+                    <option value="<?=esc_attr_strip_tags( $ip )?>" <?php in_array_checked( $recaptcha_allowlist_ips, $ip, true, 'selected' ); ?>><?=$ip?></option>
                     <?php endforeach; ?>
 				</select>
 			</div>
