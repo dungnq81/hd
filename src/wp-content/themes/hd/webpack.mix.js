@@ -24,6 +24,7 @@ const sassFiles = [
     // plugin
     'plugins/swiper',
     'plugins/woocommerce',
+    'plugins/elementor',
 
     // site
     'fonts',

@@ -38,7 +38,7 @@ final class WooCommerce {
 		add_action( 'enqueue_block_assets', [ &$this, 'enqueue_block_assets' ], 41 );
 		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 98 );
 
-		// hooks
+		// Custom hooks
 		$this->_hooks();
 	}
 
@@ -95,9 +95,9 @@ final class WooCommerce {
 			wp_deregister_style( 'woocommerce-inline' );
 		}
 
-		wp_enqueue_style( 'hdwc-style', ASSETS_URL . "css/plugins/woocommerce.css", [ "app-style" ], THEME_VERSION );
-		wp_enqueue_script( "hdwc", ASSETS_URL . "js/plugins/woocommerce.js", [ "app" ], THEME_VERSION, true );
-		wp_script_add_data( "hdwc", "defer", true );
+		wp_enqueue_style( '_wc-style', ASSETS_URL . "css/plugins/woocommerce.css", [ "app-style" ], THEME_VERSION );
+		wp_enqueue_script( "_wc", ASSETS_URL . "js/plugins/woocommerce.js", [ "app" ], THEME_VERSION, true );
+		wp_script_add_data( "_wc", "defer", true );
 	}
 
 	// ------------------------------------------------------

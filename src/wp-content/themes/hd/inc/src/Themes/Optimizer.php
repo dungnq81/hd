@@ -92,12 +92,12 @@ final class Optimizer {
 		// if not admin page
 		if ( ! is_admin() ) {
 			add_action( 'pre_get_posts', [ &$this, 'set_posts_per_page' ] );
-		}
 
-		// only front-end
-		if ( ! is_admin() && ! Helper::is_login() ) {
-			add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 999 );
-			add_action( 'wp_footer', [ &$this, 'deferred_scripts' ], 1000 );
+			// only front-end
+			if ( ! Helper::is_login() ) {
+				add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 999 );
+				add_action( 'wp_footer', [ &$this, 'deferred_scripts' ], 1000 );
+			}
 		}
 
 		// Filters the rel values that are added to links with `target` attribute.
