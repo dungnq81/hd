@@ -97,7 +97,7 @@ body {
 
 :is(h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6) {
     a {
-        display: block;
+        display: inline-block;
     }
 
     p {
@@ -362,15 +362,15 @@ figure {
     @include layout-container($gutter-xs, $gutter, false, false);
 
     &:not(.full) {
-        &.xxl {
-            @include mq-min(xxl) {
-                max-width: map-get($container-max-widths, xxl);
+        &.\2xl {
+            @include mq-min(2xl) {
+                max-width: map-get($container-max-widths, 2xl);
             }
         }
 
-        &.xxxl {
-            @include mq-min(xxxl) {
-                max-width: map-get($container-max-widths, xxxl);
+        &.\3xl {
+            @include mq-min(3xl) {
+                max-width: map-get($container-max-widths, 3xl);
             }
         }
     }
@@ -497,7 +497,7 @@ figure {
 }
 
 /** @todo aspect ratio */
-:is(.ar-1, .ar-1-1, .ar\[1-1\]) {
+:is(.ar-1-1, .ar\[1-1\]) {
     @include responsive-ratio(1, 1);
 }
 
@@ -518,35 +518,35 @@ $count: 0;
 $count_max: 30;
 
 @while $count <= $count_max {
-    .mt-#{$count} {
+    :is(.mt-#{$count}, .mt\[#{$count}px\]) {
         margin-top: fs($count);
     }
 
-    .\!mt-#{$count} {
+    :is(.\!mt-#{$count}, .\!mt\[#{$count}px\]) {
         margin-top: fs($count) !important;
     }
 
-    .mb-#{$count} {
+    :is(.mb-#{$count}, .mb\[#{$count}px\]) {
         margin-bottom: fs($count);
     }
 
-    .\!mb-#{$count} {
+    :is(.\!mb-#{$count}, .\!mb\[#{$count}px\]) {
         margin-bottom: fs($count) !important;
     }
 
-    .pt-#{$count} {
+    :is(.pt-#{$count}, .pt\[#{$count}px\]) {
         padding-top: fs($count);
     }
 
-    .\!pt-#{$count} {
+    :is(.\!pt-#{$count}, .\!pt\[#{$count}px\]) {
         padding-top: fs($count) !important;
     }
 
-    .pb-#{$count} {
+    :is(.pb-#{$count}, .pb\[#{$count}px\]) {
         padding-bottom: fs($count);
     }
 
-    .\!pb-#{$count} {
+    :is(.\!pb-#{$count}, .\!pb\[#{$count}px\]) {
         padding-bottom: fs($count) !important;
     }
 
@@ -558,11 +558,11 @@ $fw: 200;
 $fw_max: 900;
 
 @while $fw <= $fw_max {
-    .fw-#{$fw} {
+    :is(.fw-#{$fw}, .fw\[#{$fw}\]) {
         font-weight: $fw;
     }
 
-    .\!fw-#{$fw} {
+    :is(.\!fw-#{$fw}, .\!fw\[#{$fw}\]) {
         font-weight: $fw !important;
     }
 

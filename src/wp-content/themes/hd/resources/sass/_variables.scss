@@ -79,8 +79,8 @@ $sm: 576px !default;
 $md: 768px !default;
 $lg: 1024px !default;
 $xl: 1200px !default;
-$xxl: 1400px !default;
-$xxxl: 1880px !default;
+$\2xl: 1400px !default;
+$\3xl: 1880px !default;
 $wp: 782px !default;
 
 $mq-breakpoints: (
@@ -89,8 +89,8 @@ $mq-breakpoints: (
         md: fs($md),
         lg: fs($lg),
         xl: fs($xl),
-        xxl: fs($xxl),
-        xxxl: fs($xxxl),
+        2xl: fs($\2xl),
+        3xl: fs($\3xl),
         tablet: fs($md),
         desktop: fs($lg),
         wp: fs($wp)
@@ -104,16 +104,16 @@ $screen-sm: 540px !default;
 $screen-md: 720px !default;
 $screen-lg: 960px !default;
 $screen-xl: 1140px !default;
-$screen-xxl: 1320px !default;
-$screen-xxxl: 1680px !default;
+$screen-2xl: 1320px !default;
+$screen-3xl: 1680px !default;
 
 $container-max-widths: (
         sm: fs($screen-sm),
         md: fs($screen-md),
         lg: fs($screen-lg),
         xl: fs($screen-xl),
-        xxl: fs($screen-xxl),
-        xxxl: fs($screen-xxxl)
+        2xl: fs($screen-2xl),
+        3xl: fs($screen-3xl)
 ) !default;
 
 // Typography
@@ -126,7 +126,7 @@ $font-sizes: (
         h3: 25px,
         h4: 21px,
         h5: 18px,
-        h6: 16px,
+        h6: 16px
 ) !default;
 
 $font-sizes-large: (
@@ -135,7 +135,7 @@ $font-sizes-large: (
         h3: 29px,
         h4: 24px,
         h5: 20px,
-        h6: 17px,
+        h6: 17px
 ) !default;
 
 $line-height-global: 1.5 !default;

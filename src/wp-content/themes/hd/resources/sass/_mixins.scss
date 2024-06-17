@@ -321,7 +321,7 @@
     @include linear-gradient($angle, $c1, $c1);
 }
 
-@mixin layout-container( $padding_m: $gutter-xs, $padding: $gutter, $xxl: false, $xxxl: false ) {
+@mixin layout-container( $padding_m: $gutter-xs, $padding: $gutter, $\2xl: false, $\3xl: false ) {
     margin-left: auto;
     margin-right: auto;
 
@@ -360,17 +360,17 @@
             max-width: map-get($container-max-widths, xl);
         }
 
-        // xxl breakpoint
-        @if true == $xxl {
-            @include mq-min(xxl) {
-                max-width: map-get($container-max-widths, xxl);
+        // 2xl breakpoint
+        @if true == $\2xl {
+            @include mq-min(2xl) {
+                max-width: map-get($container-max-widths, 2xl);
             }
         }
 
-        // xxxl breakpoint
-        @if true == $xxxl {
-            @include mq-min(xxxl) {
-                max-width: map-get($container-max-widths, xxxl);
+        // 3xl breakpoint
+        @if true == $\3xl {
+            @include mq-min(3xl) {
+                max-width: map-get($container-max-widths, 3xl);
             }
         }
     }

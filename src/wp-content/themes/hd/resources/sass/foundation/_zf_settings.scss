@@ -44,7 +44,7 @@ $breakpoints: (
         "medium": fs($md),
         "large": fs($lg),
         "xlarge": fs($xl),
-        "xxlarge": fs($xxl),
+        "xxlarge": fs($\2xl),
 );
 $breakpoints-hidpi: (
         "hidpi-1": 1,
