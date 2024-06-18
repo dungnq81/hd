@@ -35,16 +35,16 @@ final class SMTP {
 	// -------------------------------------------------------------
 
 	/**
-	 * SMTP Mailer plugin - https://vi.wordpress.org/plugins/smtp-mailer/
+	 *  SMTP Mailer plugin - https://vi.wordpress.org/plugins/smtp-mailer/
 	 *
 	 * @param $null
 	 * @param $atts
 	 * @param string|null $option_name
 	 *
-	 * @return void
+	 * @return false|void
 	 * @throws Exception
 	 */
-	private function _smtp_pre_wp_mail( $null, $atts, ?string $option_name = null ): void {
+	private function _smtp_pre_wp_mail( $null, $atts, ?string $option_name = null ) {
 
 		if ( isset( $atts['to'] ) ) {
 			$to = $atts['to'];
@@ -78,7 +78,7 @@ final class SMTP {
 
 		global $phpmailer;
 
-		// (Re)create it if it's gone missing.
+		// (Re)create it, if it's gone missing.
 		if ( ! ( $phpmailer instanceof PHPMailer ) ) {
 			require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
 			require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
@@ -107,15 +107,12 @@ final class SMTP {
 			} else {
 				$tempheaders = $headers;
 			}
-
 			$headers = [];
 
 			// If it's actually got contents.
 			if ( ! empty( $tempheaders ) ) {
-
 				// Iterate through the raw headers.
 				foreach ( (array) $tempheaders as $header ) {
-
 					if ( ! str_contains( $header, ':' ) ) {
 						if ( false !== stripos( $header, 'boundary=' ) ) {
 							$parts    = preg_split( '/boundary=/i', trim( $header ) );
@@ -123,7 +120,6 @@ final class SMTP {
 						}
 						continue;
 					}
-
 					// Explode them out.
 					[ $name, $content ] = explode( ':', trim( $header ), 2 );
 
@@ -132,28 +128,26 @@ final class SMTP {
 					$content = trim( $content );
 
 					switch ( strtolower( $name ) ) {
-
 						// Mainly for legacy -- process a "From:" header if it's there.
 						case 'from':
 							$bracket_pos = strpos( $content, '<' );
 							if ( false !== $bracket_pos ) {
-
 								// Text before the bracketed email is the "From" name.
 								if ( $bracket_pos > 0 ) {
 									$from_name = substr( $content, 0, $bracket_pos );
-									$from_name = trim( str_replace( '"', '', $from_name ) );
+									$from_name = str_replace( '"', '', $from_name );
+									$from_name = trim( $from_name );
 								}
 
 								$from_email = substr( $content, $bracket_pos + 1 );
-								$from_email = trim( str_replace( '>', '', $from_email ) );
+								$from_email = str_replace( '>', '', $from_email );
+								$from_email = trim( $from_email );
 
 								// Avoid setting an empty $from_email.
 							} elseif ( '' !== trim( $content ) ) {
 								$from_email = trim( $content );
 							}
-
 							break;
-
 						case 'content-type':
 							if ( str_contains( $content, ';' ) ) {
 								[ $type, $charset_content ] = explode( ';', $content );
@@ -161,11 +155,7 @@ final class SMTP {
 								if ( false !== stripos( $charset_content, 'charset=' ) ) {
 									$charset = trim( str_replace( [ 'charset=', '"' ], '', $charset_content ) );
 								} elseif ( false !== stripos( $charset_content, 'boundary=' ) ) {
-									$boundary = trim( str_replace( [
-										'BOUNDARY=',
-										'boundary=',
-										'"'
-									], '', $charset_content ) );
+									$boundary = trim( str_replace( [ 'BOUNDARY=', 'boundary=', '"' ], '', $charset_content ) );
 									$charset  = '';
 								}
 
@@ -202,8 +192,27 @@ final class SMTP {
 
 		// Set "From" name and email.
 
-		$from_email = apply_filters( 'wp_mail_from', $options['smtp_from_email'] );
-		$from_name  = apply_filters( 'wp_mail_from_name', $options['smtp_from_name'] );
+		/*
+	     * If we don't have an email from the input headers, default to wordpress@$sitename
+	     * Some hosts will block outgoing mail from this address if it doesn't exist,
+	     * but there's no easy alternative. Defaulting to admin_email might appear to be
+	     * another option, but some hosts may refuse to relay mail from an unknown domain.
+	     * See https://core.trac.wordpress.org/ticket/5007.
+	     */
+		if ( ! empty( $options['smtp_from_email'] ) ) {
+			$from_email = $options['smtp_from_email'];
+		}
+
+		// If we don't have a name from the input headers.
+		if ( ! empty( $options['smtp_from_name'] ) ) {
+			$from_name = $options['smtp_from_name']; //'WordPress';
+		}
+
+		$from_email = $from_email ?? '';
+		$from_name = $from_name ?? '';
+
+		$from_email = apply_filters( 'wp_mail_from', $from_email );
+		$from_name = apply_filters( 'wp_mail_from_name', $from_name );
 
 		try {
 			$phpmailer->setFrom( $from_email, $from_name, false );
@@ -214,7 +223,7 @@ final class SMTP {
 			/** This filter is documented in wp-includes/pluggable.php */
 			do_action( 'wp_mail_failed', new WP_Error( 'wp_mail_failed', $e->getMessage(), $mail_error_data ) );
 
-			return;
+			return false;
 		}
 
 		// reply_to
@@ -247,10 +256,11 @@ final class SMTP {
 					// Break $recipient into name and address parts if in the format "Foo <bar@baz.com>".
 					$recipient_name = '';
 
-					if ( preg_match( '/(.*)<(.+)>/', $address, $matches ) && count( $matches ) === 3 ) {
-						[ $recipient_name, $address ] = $matches;
-						//$recipient_name = $matches[1];
-						//$address        = $matches[2];
+					if ( preg_match( '/(.*)<(.+)>/', $address, $matches ) ) {
+						if ( count( $matches ) === 3 ) {
+							$recipient_name = $matches[1];
+							$address        = $matches[2];
+						}
 					}
 
 					switch ( $address_header ) {
@@ -273,7 +283,11 @@ final class SMTP {
 			}
 		}
 
+		// Tell PHPMailer to use SMTP
 		$phpmailer->isSMTP();
+		//$phpmailer->isMail();
+
+		// Set the hostname of the mail server
 		$phpmailer->Host = $options['smtp_host'];
 
 		// Whether to use SMTP authentication
@@ -316,7 +330,7 @@ final class SMTP {
 		$content_type           = apply_filters( 'wp_mail_content_type', $content_type );
 		$phpmailer->ContentType = $content_type;
 
-		// Set whether it's a plaintext, depending on $content_type.
+		// Set whether it's plaintext, depending on $content_type.
 		if ( 'text/html' === $content_type ) {
 			$phpmailer->isHTML( true );
 		}
@@ -373,16 +387,44 @@ final class SMTP {
 		// Send!
 		try {
 			$send = $phpmailer->send();
+
+			/**
+			 * Fires after PHPMailer has successfully sent an email.
+			 *
+			 * The firing of this action does not necessarily mean that the recipient(s) received the
+			 * email successfully. It only means that the `send` method above was able to
+			 * process the request without any errors.
+			 *
+			 * @since 5.9.0
+			 *
+			 * @param array $mail_data {
+			 *     An array containing the email recipient(s), subject, message, headers, and attachments.
+			 *
+			 *     @type string[] $to          Email addresses to send message.
+			 *     @type string   $subject     Email subject.
+			 *     @type string   $message     Message contents.
+			 *     @type string[] $headers     Additional headers.
+			 *     @type string[] $attachments Paths to files to attach.
+			 * }
+			 */
 			do_action( 'wp_mail_succeeded', $mail_data );
 
-			return;
+			return $send;
 
 		} catch ( Exception $e ) {
 			$mail_data['phpmailer_exception_code'] = $e->getCode();
 
+			/**
+			 * Fires after a PHPMailer\PHPMailer\Exception is caught.
+			 *
+			 * @since 4.4.0
+			 *
+			 * @param WP_Error $error A WP_Error object with the PHPMailer\PHPMailer\Exception message, and an array
+			 *                        containing the mail recipient, subject, message, headers, and attachments.
+			 */
 			do_action( 'wp_mail_failed', new WP_Error( 'wp_mail_failed', $e->getMessage(), $mail_data ) );
 
-			return;
+			return false;
 		}
 	}
 
