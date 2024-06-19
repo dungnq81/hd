@@ -236,7 +236,6 @@ final class Theme {
 		wp_enqueue_script( "app", ASSETS_URL . "js/app.js", [ "jquery-core" ], THEME_VERSION, true );
 		wp_script_add_data( "app", "defer", true );
 
-		wp_enqueue_style( "fonts-style", ASSETS_URL . "css/fonts.css", [], THEME_VERSION );
 		wp_enqueue_script( "back-to-top", ASSETS_URL . "js/plugins/back-to-top.js", [], false, true );
 		wp_enqueue_script( "social-share", ASSETS_URL . "js/plugins/social-share.js", [], '0.0.3', true );
 

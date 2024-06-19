@@ -2,7 +2,7 @@
 /*!
 Plugin Name: HD Addons
 Plugin URI: https://webhd.vn
-Version: 0.24.5
+Version: 0.24.6
 Requires PHP: 8.2
 Author: HD Team
 Author URI: https://webhd.vn
@@ -51,16 +51,16 @@ require_once __DIR__ . '/Addons.php';
 ( new Addons() );
 
 // The code that runs during plugin activation.
-function activation() {
+function activation(): void {
 	Activator::activation();
 }
 
 // The code that runs during plugin deactivation.
-function deactivation() {
+function deactivation(): void {
 	Activator::deactivation();
 }
 
 // The code that will be executed when the plugin is uninstalled.
-function uninstall() {
+function uninstall(): void {
 	Activator::uninstall();
 }

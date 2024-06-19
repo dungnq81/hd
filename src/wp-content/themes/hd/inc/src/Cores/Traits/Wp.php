@@ -1528,7 +1528,7 @@ trait Wp {
 	 *
 	 * @return string
 	 */
-	public static function aspectRatioClass( string $post_type = 'post', string $default = 'ar-3-2' ): string {
+	public static function aspectRatioClass( string $post_type = 'post', string $default = 'ar[3-2]' ): string {
 		$ratio = self::getAspectRatioOption( $post_type );
 
 		$ratio_x = $ratio[0] ?? '';
@@ -1537,7 +1537,7 @@ trait Wp {
 			return $default;
 		}
 
-		return 'ar-' . $ratio_x . '-' . $ratio_y;
+		return 'ar[' . $ratio_x . '-' . $ratio_y . ']';
 	}
 
 	// -------------------------------------------------------------
@@ -1549,7 +1549,7 @@ trait Wp {
 	 *
 	 * @return object
 	 */
-	public static function getAspectRatio( string $post_type = 'post', string $option = '', string $default = 'ar-3-2' ): object {
+	public static function getAspectRatio( string $post_type = 'post', string $option = '', string $default = 'ar[3-2]' ): object {
 		$ratio = self::getAspectRatioOption( $post_type, $option );
 
 		$ratio_x = $ratio[0] ?? '';
@@ -1560,7 +1560,8 @@ trait Wp {
 			$ratio_class = $default;
 		} else {
 
-			$ratio_class         = 'ar-' . $ratio_x . '-' . $ratio_y;
+			//$ratio_class         = 'ar-' . $ratio_x . '-' . $ratio_y;
+			$ratio_class         = 'ar[' . $ratio_x . '-' . $ratio_y . ']';
 			$ar_aspect_ratio_css = Helper::filter_setting_options( 'aspect_ratio_css', [] );
 
 			if ( is_array( $ar_aspect_ratio_css ) && ! in_array( $ratio_x . '-' . $ratio_y, $ar_aspect_ratio_css, false ) ) {

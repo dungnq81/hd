@@ -651,7 +651,7 @@ body.toplevel_page_hd-settings {
                     padding: 25px 0 20px 0;
                     border-top: 1px solid #dddddd;
                     display: block;
-                    width: 660px;
+                    width: 700px;
                     max-width: calc(100% - 15px);
                     font-weight: 700;
 
@@ -675,7 +675,7 @@ body.toplevel_page_hd-settings {
                     .controls {
                         position: relative;
                         margin: 0 10px 10px 0;
-                        width: 660px;
+                        width: 700px;
                         max-width: calc(100% - 15px);
 
                         :where(input:not([type="checkbox"]), textarea, select) {
@@ -718,7 +718,7 @@ body.toplevel_page_hd-settings {
                                 font-size: 12px;
                                 color: #999999;
 
-                                input, select, textarea {
+                                :where(input, select, textarea) {
                                     margin-top: 5px;
                                     font-size: 13px;
                                 }
@@ -912,9 +912,7 @@ body.toplevel_page_hd-settings {
     }
 }
 
-:is(input[type="checkbox"].hd-checkbox,
-.acf-field.hd-checkbox > .acf-input input[type="checkbox"],
-.menu-item-settings .field-link-target input[type="checkbox"]) {
+:is(input[type="checkbox"].hd-checkbox, .acf-field.hd-checkbox > .acf-input input[type="checkbox"], .menu-item-settings .field-link-target input[type="checkbox"]) {
     appearance: none;
     -webkit-tap-highlight-color: transparent;
     width: auto;
@@ -1039,10 +1037,11 @@ body.toplevel_page_hd-settings {
     display: none !important;
 }
 
-.acf-admin-page .notice.notice-error,
-.acf-admin-page .notice.notice-warning {
-    flex: 0 0 100%;
-    max-width: 100%;
+.acf-admin-page {
+    :where(.notice.notice-error, .notice.notice-warning) {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
 }
 
 .acf-flexible-content .layout .acf-fc-layout-handle {
@@ -1082,7 +1081,7 @@ html.wp-toolbar {
         .pace-progress {
             top: 32px;
 
-            @media screen and (max-width: 782px) {
+            @include mq-max(wp) {
                 top: 46px;
             }
         }
@@ -1093,6 +1092,12 @@ html.wp-toolbar {
 .hd-input.input-half {
     width: 50% !important;
     min-width: 330px;
+}
+
+.CodeMirror-vscrollbar {
+    @include webkit-scrollbar(4, 4);
+    @include webkit-scrollbar-track(#e9e9e9);
+    @include webkit-scrollbar-thumb(#9f9f9f);
 }
 
 /** select2 */
@@ -1191,7 +1196,7 @@ html.wp-toolbar {
 
         &.select2-results__option--highlighted {
             background-color: rgba(34, 113, 177, 0.75);
-            color: #fff;
+            color: #ffffff;
         }
     }
 }
