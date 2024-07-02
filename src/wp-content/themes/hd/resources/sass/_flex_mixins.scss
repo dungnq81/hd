@@ -3,11 +3,7 @@
 
 @import "mixins";
 
-@mixin flex-self(
-    $total: 1,
-    $n: 1,
-    $gap: false
-) {
+@mixin flex-self( $total: 1, $n: 1, $gap: false ) {
     @if type-of($gap) == bool or $gap < 0 {
         $gap: 0;
     }
@@ -20,10 +16,7 @@
     }
 }
 
-@mixin flex-basis(
-    $n: 1,
-    $gap: false
-) {
+@mixin flex-basis( $n: 1, $gap: false ) {
     @include flex-self($grid-columns, $n, $gap);
 }
 
@@ -122,8 +115,14 @@
     width: auto;
 }
 
+@mixin flex-stretch {
+    flex: 0 0 auto;
+    width: 100%;
+}
+
 @mixin cell( $w: false ) {
     flex: 0 0 auto;
+    max-width: 100%;
     min-height: 0;
     min-width: 0;
 
@@ -132,10 +131,7 @@
     }
 }
 
-@mixin flex-x(
-    $flex: false,
-    $reverse: false
-) {
+@mixin flex-x($flex: true, $reverse: false) {
     @if true == $flex {
         display: flex;
     }
@@ -147,10 +143,7 @@
     }
 }
 
-@mixin flex-y(
-    $flex: false,
-    $reverse: false
-) {
+@mixin flex-y($flex: true, $reverse: false) {
     @if true == $flex {
         display: flex;
     }
@@ -203,22 +196,14 @@
     }
 }
 
-@mixin flex-center( $direction_column: false ) {
+@mixin flex-center() {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    @if true == $direction_column {
-        flex-direction: $direction_column;
-    }
 }
 
-@mixin inline-flex-center( $direction_column: false ) {
+@mixin inline-flex-center() {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
-    @if true == $direction_column {
-        flex-direction: $direction_column;
-    }
 }

@@ -52,7 +52,7 @@ final class Lazy_Load {
 		}
 
 		// Disable the native lazy-loading.
-		add_filter( 'wp_lazy_loading_enabled', '__return_false' );
+		//add_filter( 'wp_lazy_loading_enabled', '__return_false' );
 
 		$this->lazyload_iframes = new Lazy_Load_Iframes();
 		$this->lazyload_videos  = new Lazy_Load_Videos();

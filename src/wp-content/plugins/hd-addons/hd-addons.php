@@ -2,7 +2,7 @@
 /*!
 Plugin Name: HD Addons
 Plugin URI: https://webhd.vn
-Version: 0.24.6
+Version: 0.24.7
 Requires PHP: 8.2
 Author: HD Team
 Author URI: https://webhd.vn

@@ -18,10 +18,12 @@ class MiniCart_Widget extends \WC_Widget_Cart {
 			return;
 		}
 
-		$hide_if_empty = empty( $instance['hide_if_empty'] ) ? 0 : 1;
-		$title         = $this->get_instance_title( $instance );
+		$args['before_widget'] = '<div class="mini_widget_shopping_cart">';
+		$args['after_widget'] = '</div>';
 
 		echo $args['before_widget']; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+
+		$title = $this->get_instance_title( $instance );
 		if ( $title ) {
 			echo '<span class="cart-title">' . $title . '</span>';
 		}
@@ -30,25 +32,13 @@ class MiniCart_Widget extends \WC_Widget_Cart {
 		if ( is_cart() || is_checkout() ) {
 			$class .= ' current-menu-item';
 		}
-
 		?>
 		<ul id="shopping-cart" class="shopping-cart menu">
 			<li class="<?php echo Helper::esc_attr_strip_tags( $class ); ?>">
 				<?php Helper::wc_cart_link(); ?>
 			</li>
 			<li class="widget-menu-item menu-item">
-				<?php
-				if ( $hide_if_empty ) {
-					echo '<div class="hide_cart_widget_if_empty">';
-				}
-
-				// Insert cart widget placeholder - code in woocommerce.js will update this on page load.
-				echo '<div class="widget_shopping_cart_content"></div>';
-
-				if ( $hide_if_empty ) {
-					echo '</div>';
-				}
-				?>
+				<?php the_widget('WC_Widget_Cart', 'title='); ?>
 			</li>
 		</ul>
 		<?php

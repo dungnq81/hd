@@ -5,8 +5,8 @@
  * @package HD
  */
 
+use Cores\Helper;
+
 \defined( 'ABSPATH' ) || die;
 
-get_header();
-
-get_footer();
+wp_safe_redirect( Helper::home() );

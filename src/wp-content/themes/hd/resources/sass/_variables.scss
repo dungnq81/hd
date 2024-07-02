@@ -4,9 +4,9 @@
 //
 // theme color
 //
-$Primary-01: #330002;
-$Primary-02: #ec2028;
-$Primary-03: #fbd0d2;
+$Primary-01: #005F95;
+$Primary-02: #E52A2A;
+$Primary-03: #fef6f6;
 $Primary-04: #fef6f6;
 
 $Secondary-01: #331f00;
@@ -19,8 +19,8 @@ $Gray-02: #666666;
 $Gray-03: #f0f0f0;
 $Gray-04: #fafafa;
 
-$primary: $blue !default;
-$secondary: $gray-600 !default;
+$primary: $Primary-01 !default;
+$secondary: $Secondary-01 !default;
 $success: $green !default;
 $info: $cyan !default;
 $warning: $yellow !default;
@@ -50,6 +50,7 @@ $color-contrast-light: $white !default;
 //
 // Settings for the `<body>` element.
 
+$header-color: #0a0a0a !default;
 $body-color: #0a0a0a !default;
 $body-bg: $white !default;
 $body-size: 16px !default;
@@ -78,7 +79,7 @@ $xs: 0 !default;
 $sm: 576px !default;
 $md: 768px !default;
 $lg: 1024px !default;
-$xl: 1200px !default;
+$xl: 1280px !default;
 $\2xl: 1400px !default;
 $\3xl: 1880px !default;
 $wp: 782px !default;
@@ -91,6 +92,7 @@ $mq-breakpoints: (
         xl: fs($xl),
         2xl: fs($\2xl),
         3xl: fs($\3xl),
+        mobile: 0,
         tablet: fs($md),
         desktop: fs($lg),
         wp: fs($wp)
@@ -98,12 +100,12 @@ $mq-breakpoints: (
 
 // Layout containers
 //
-// Define the maximum width of `.layout-container` for different screen sizes.
+// Define the maximum width of `.container` for different screen sizes.
 
-$screen-sm: 540px !default;
-$screen-md: 720px !default;
-$screen-lg: 960px !default;
-$screen-xl: 1140px !default;
+$screen-sm: 546px !default;
+$screen-md: 738px !default;
+$screen-lg: 994px !default;
+$screen-xl: 1200px !default;
 $screen-2xl: 1320px !default;
 $screen-3xl: 1680px !default;
 
@@ -130,8 +132,8 @@ $font-sizes: (
 ) !default;
 
 $font-sizes-large: (
-        h1: 42px,
-        h2: 35px,
+        h1: 44px,
+        h2: 36px,
         h3: 29px,
         h4: 24px,
         h5: 20px,
@@ -173,6 +175,6 @@ $spacers: (
 $scrollbar-w: 8px !default;
 $scrollbar-h: 4px !default;
 
-$header-font: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", system-ui, "Ubuntu", Arial, cursive, sans-serif !default;
-$body-font: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", system-ui, "Ubuntu", Arial, cursive, sans-serif !default;
+$header-font: 'Playfair Display', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Ubuntu", Arial, cursive, sans-serif !default;
+$body-font: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Ubuntu", Arial, cursive, sans-serif !default;
 $awesome-font: "Font Awesome 6 Pro", "Font Awesome 6 Brands", "Font Awesome 6 Free", sans-serif;

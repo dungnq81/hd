@@ -184,7 +184,7 @@
     }
 }
 
-@mixin placeholder($color: #9a9a9a) {
+@mixin placeholder-color($color: #9a9a9a) {
     &::placeholder {
         color: $color;
     }
@@ -285,7 +285,7 @@
         }
     } @else {
         @supports (aspect-ratio: 1) {
-            aspect-ratio: list.slash($ratio-width, $ratio-height);
+            aspect-ratio: auto list.slash($ratio-width, $ratio-height);
         }
 
         @supports not (aspect-ratio: 1) {
@@ -296,11 +296,7 @@
 }
 
 @mixin linear-gradient( $angle: 90deg, $c: $primary, $amount: 12deg ) {
-    background-image: linear-gradient($angle, $c 0%, adjust-hue($c, $amount) 100%);
-}
-
-@mixin linear-gradient2( $angle: 90deg, $c1: $primary, $c2: $secondary ) {
-    background-image: linear-gradient($angle, $c1 0%, $c2 100%);
+    background: linear-gradient($angle, $c 0%, adjust-hue($c, $amount) 100%);
 }
 
 @mixin gradient-text( $angle: 135deg, $c: $primary, $amount: 12deg ) {
@@ -319,6 +315,111 @@
     color: transparent;
     display: inline-block;
     @include linear-gradient($angle, $c1, $c1);
+}
+
+@mixin left-container( $padding_m: $gutter-xs, $padding: $gutter, $\2xl: false, $\3xl: false ) {
+    margin-left: 0;
+    margin-right: auto;
+
+    @if is-int($padding_m) or unit($padding_m) == '%' {
+        padding-right: fs($padding_m);
+    }
+
+    // tablet breakpoint
+    @if is-int($padding) or unit($padding) == '%' {
+        @include mq-min(tablet) {
+            padding-right: fs($padding);
+        }
+    }
+
+    // sm breakpoint
+    @include mq-min(sm) {
+        max-width: add(50%, calc(map-get($container-max-widths, sm) / 2));
+    }
+
+    // md breakpoint
+    @include mq-min(md) {
+        max-width: add(50%, calc(map-get($container-max-widths, md) / 2));
+    }
+
+    // lg breakpoint
+    @include mq-min(lg) {
+        max-width: add(50%, calc(map-get($container-max-widths, lg) / 2));
+    }
+
+    // xl breakpoint
+    @include mq-min(xl) {
+        max-width: add(50%, calc(map-get($container-max-widths, xl) / 2));
+    }
+
+    // 2xl breakpoint
+    @if true == $\2xl {
+        @include mq-min(2xl) {
+            max-width: add(50%, calc(map-get($container-max-widths, 2xl) / 2));
+        }
+    }
+
+    // 3xl breakpoint
+    @if true == $\3xl {
+        @include mq-min(3xl) {
+            max-width: add(50%, calc(map-get($container-max-widths, 3xl) / 2));
+        }
+    }
+}
+
+@mixin right-container( $padding_m: $gutter-xs, $padding: $gutter, $\2xl: false, $\3xl: false ) {
+    margin-right: 0;
+    margin-left: auto;
+
+    @if is-int($padding_m) or unit($padding_m) == '%' {
+        padding-left: fs($padding_m);
+    }
+
+    // tablet breakpoint
+    @if is-int($padding) or unit($padding) == '%' {
+        @include mq-min(tablet) {
+            padding-left: fs($padding);
+        }
+    }
+
+    // sm breakpoint
+    @include mq-min(sm) {
+        max-width: add(50%, calc(map-get($container-max-widths, sm) / 2));
+    }
+
+    // md breakpoint
+    @include mq-min(md) {
+        max-width: add(50%, calc(map-get($container-max-widths, md) / 2));
+    }
+
+    // lg breakpoint
+    @include mq-min(lg) {
+        max-width: add(50%, calc(map-get($container-max-widths, lg) / 2));
+    }
+
+    // xl breakpoint
+    @include mq-min(xl) {
+        max-width: add(50%, calc(map-get($container-max-widths, xl) / 2));
+    }
+
+    // 2xl breakpoint
+    @if true == $\2xl {
+        @include mq-min(2xl) {
+            max-width: add(50%, calc(map-get($container-max-widths, 2xl) / 2));
+        }
+    }
+
+    // 3xl breakpoint
+    @if true == $\3xl {
+        @include mq-min(3xl) {
+            max-width: add(50%, calc(map-get($container-max-widths, 3xl) / 2));
+        }
+    }
+}
+
+// alias of 'layout-container'
+@mixin container( $padding_m: $gutter-xs, $padding: $gutter, $\2xl: false, $\3xl: false ) {
+    @include layout-container($padding_m, $padding, $\2xl, $\3xl)
 }
 
 @mixin layout-container( $padding_m: $gutter-xs, $padding: $gutter, $\2xl: false, $\3xl: false ) {
@@ -465,21 +566,42 @@
     }
 }
 
-@mixin hover-color( $c1: $primary, $c2: $c1, $text-decoration: false ) {
-    color: $c1;
+@mixin hover-bgcolor( $c1: false, $c2: $c1 ) {
+    @if type-of($c1) != bool {
+        background-color: $c1;
+    }
+
     &:hover {
-        color: $c2;
+        @if type-of($c2) != bool {
+            background-color: $c2;
+        }
+    }
+}
+
+@mixin hover-color( $c1: false, $c2: $c1, $text-decoration: false ) {
+    @if type-of($c1) != bool {
+        color: $c1;
+    }
+
+    &:hover {
+        @if type-of($c2) != bool {
+            color: $c2;
+        }
         @if false == $text-decoration {
             text-decoration: none;
         }
     }
 }
 
-@mixin hover-svg( $c1: $primary, $c2: $c1 ) {
-    fill: $c1;
+@mixin hover-svg( $c1: false, $c2: $c1 ) {
+    @if type-of($c1) != bool {
+        fill: $c1;
+    }
 
     &:hover {
-        fill: $c2;
+        @if type-of($c2) != bool {
+            fill: $c2;
+        }
     }
 }
 
@@ -515,11 +637,11 @@
 }
 
 @mixin list-reset( $margin: false, $padding: false ) {
-    @if is-int( $margin ) {
-        margin: fs( $margin );
+    @if is-int($margin) {
+        margin: fs($margin);
     }
-    @if is-int( $padding ) {
-        padding: fs( $padding );
+    @if is-int($padding) {
+        padding: fs($padding);
     }
     list-style: none;
 }
@@ -541,8 +663,8 @@
 @mixin centering-self( $width: 300, $height: $width ) {
     @include box($width, $height);
     position: absolute;
-    top: subtract( 50%, fs( divide($height, 2) ) );
-    left: subtract( 50%, fs( divide($width, 2) ) );
+    top: subtract(50%, fs(divide($height, 2)));
+    left: subtract(50%, fs(divide($width, 2)));
 }
 
 @mixin fixed-center {

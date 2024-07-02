@@ -18,7 +18,7 @@ final class ACF {
 		// Hide the ACF Admin UI
 		//add_filter( 'acf/settings/show_admin', '__return_false' );
 
-		add_filter( 'acf/format_value/type=textarea', 'wp_kses_post', 10, 1 );
+		add_filter( 'acf/format_value/type=textarea', [ Helper::class, 'remove_inline_js_css' ], 10, 1 );
 		add_filter( 'acf/fields/wysiwyg/toolbars', [ &$this, 'wysiwyg_toolbars' ], 11, 1 );
 
 		// Auto required fields

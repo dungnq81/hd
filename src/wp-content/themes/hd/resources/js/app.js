@@ -9,6 +9,15 @@ import device from 'current-device';
 // window.Cookies = Cookies;
 // Object.assign(window, { Cookies });
 
+import { Fancybox } from '@fancyapps/ui';
+
+//------------------------------------
+
+Fancybox.bind('.fcy-popup, .fcy-video, .banner-video a', {});
+Fancybox.bind('.wp-block-gallery .wp-block-image a, [id^="gallery-"] a, [data-rel="lightbox"]', {
+    groupAll: true, // Group all items
+});
+
 //------------------------------------
 
 jQuery(($) => {
@@ -19,7 +28,6 @@ jQuery(($) => {
     $(window).on('load', () => {
         onload_events();
     });
-
     device.onChangeOrientation(() => {
         onload_events();
     });
@@ -55,6 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //------------------------------------
 
+/** vars */
+const getParameters = (URL) =>
+    JSON.parse('{"' + decodeURI(URL.split('?')[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+
+//------------------------------------
+
 /**
  * @param el
  * @returns {*|jQuery}
@@ -71,4 +85,32 @@ function rand_element_init(el) {
     }
 
     return _id;
+}
+
+/**
+ * @param url
+ * @param $delay
+ */
+function redirect(url = null, $delay = 10) {
+    setTimeout(function () {
+        if (url === null || url === '' || typeof url === 'undefined') {
+            document.location.assign(window.location.href);
+        } else {
+            url = url.replace(/\s+/g, '');
+            document.location.assign(url);
+        }
+    }, $delay);
+}
+
+/**
+ * @param page
+ * @param title
+ * @param url
+ */
+function pushState(page, title, url) {
+    if ('undefined' !== typeof history.pushState) {
+        history.pushState({ page: page }, title, url);
+    } else {
+        window.location.assign(url);
+    }
 }

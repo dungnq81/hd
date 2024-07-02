@@ -186,14 +186,15 @@ final class Helper {
 	 * @param $link
 	 * @param string $class
 	 * @param string $label
+	 * @param string|bool $empty_link_default_tag
 	 *
 	 * @return string
 	 */
-	public static function ACF_Link_Wrap( $content, $link, string $class = '', string $label = '' ): string {
+	public static function ACF_Link_Wrap( $content, $link, string $class = '', string $label = '', string|bool $empty_link_default_tag = 'span' ): string {
 		$link_return = '';
 
-		if ( is_string( $link ) ) {
-			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( trim( $link ) ), esc_attr( $label ), esc_attr( $class ) );
+		if ( is_string( $link ) && ! empty( $link) ) {
+			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( trim( $link ) ), esc_attr_strip_tags( $label ), esc_attr_strip_tags( $class ) );
 			$link_return .= '>' . $content . '</a>';
 
 			return wp_targeted_link_rel( $link_return );
@@ -202,18 +203,30 @@ final class Helper {
 		$link = (array) $link;
 		if ( $link ) {
 			$_link_title  = $link['title'] ?? '';
-			$_link_url    = $link['url'] ?? '#';
+			$_link_url    = $link['url'] ?? '';
 			$_link_target = $link['target'] ?? '';
 
-			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( $_link_url ), esc_attr( $_link_title ), esc_attr( $class ) );
-			if ( ! empty( $_link_target ) ) {
-				$link_return .= ' target="_blank"';
-			}
+			if ( ! empty( $_link_url ) ) {
 
-			$link_return .= '>';
-			$link_return .= $content;
-			$link_return .= '</a>';
-			$link_return = wp_targeted_link_rel( $link_return );
+				$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( $_link_url ), esc_attr_strip_tags( $_link_title ), esc_attr_strip_tags( $class ) );
+				if ( ! empty( $_link_target ) ) {
+					$link_return .= ' target="_blank"';
+				}
+
+				$link_return .= '>';
+				$link_return .= $content;
+				$link_return .= '</a>';
+				$link_return = wp_targeted_link_rel( $link_return );
+			}
+		}
+
+		// empty url
+		if ( empty( $link_return ) ) {
+			$link_return = $content;
+
+			if ( $empty_link_default_tag ) {
+				$link_return = '<' . $empty_link_default_tag . ' class="' . esc_attr_strip_tags( $class ) . '">' . $content . '</' . $empty_link_default_tag . '>';
+			}
 		}
 
 		return $link_return;
@@ -234,7 +247,7 @@ final class Helper {
 
 		// string
 		if ( ! empty( $link ) && is_string( $link ) ) {
-			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( trim( $link ) ), esc_attr( $label ), esc_attr( $class ) );
+			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( trim( $link ) ), esc_attr_strip_tags( $label ), esc_attr_strip_tags( $class ) );
 			$link_return .= '>';
 			$link_return .= $label . $extra_title;
 			$link_return .= '</a>';
@@ -245,18 +258,21 @@ final class Helper {
 		// array
 		if ( ! empty( $link ) && is_array( $link ) ) {
 			$_link_title  = $link['title'] ?? '';
-			$_link_url    = $link['url'] ?? '#';
+			$_link_url    = $link['url'] ?? '';
 			$_link_target = $link['target'] ?? '';
 
-			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( $_link_url ), esc_attr( $_link_title ), esc_attr( $class ) );
-			if ( ! empty( $_link_target ) ) {
-				$link_return .= ' target="_blank"';
-			}
+			if ( ! empty( $_link_url ) ) {
 
-			$link_return .= '>';
-			$link_return .= $_link_title . $extra_title;
-			$link_return .= '</a>';
-			$link_return = wp_targeted_link_rel( $link_return );
+				$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( $_link_url ), esc_attr_strip_tags( $_link_title ), esc_attr_strip_tags( $class ) );
+				if ( ! empty( $_link_target ) ) {
+					$link_return .= ' target="_blank"';
+				}
+
+				$link_return .= '>';
+				$link_return .= $_link_title . $extra_title;
+				$link_return .= '</a>';
+				$link_return = wp_targeted_link_rel( $link_return );
+			}
 		}
 
 		return $link_return;

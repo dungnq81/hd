@@ -59,9 +59,25 @@ final class Customizer {
 		$wp_customize->add_control(
 			'logo_title_control',
 			[
-				'label'    => __( 'The title of logo', TEXT_DOMAIN ),
+				'label'    => __( 'Title of logo', TEXT_DOMAIN ),
 				'section'  => 'title_tagline',
 				'settings' => 'logo_title_setting',
+				'type'     => 'text',
+				'priority' => 9,
+			]
+		);
+
+		// Add control
+		$wp_customize->add_setting( 'home_heading_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_text_field',
+		] );
+		$wp_customize->add_control(
+			'home_heading_control',
+			[
+				'label'    => __( 'H1 on the homepage', TEXT_DOMAIN ),
+				'section'  => 'title_tagline',
+				'settings' => 'home_heading_setting',
 				'type'     => 'text',
 				'priority' => 9,
 			]
@@ -235,10 +251,26 @@ final class Customizer {
 			]
 		);
 
+		// Max height control
+		$wp_customize->add_setting( 'breadcrumb_max_height_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_text_field'
+		] );
+		$wp_customize->add_control(
+			'breadcrumb_max_height_control',
+			[
+				'label'       => __( 'Breadcrumb max-height', TEXT_DOMAIN ),
+				'section'     => 'breadcrumb_section',
+				'settings'    => 'breadcrumb_max_height_setting',
+				'type'        => 'number',
+				'description' => __( 'Max-height of breadcrumb section', TEXT_DOMAIN ),
+			]
+		);
+
 		// Add control
 		$wp_customize->add_setting( 'breadcrumb_bg_setting', [
 			'capability'        => 'edit_theme_options',
-			'sanitize_callback' => 'sanitize_image',
+			'sanitize_callback' => 'sanitize_customize_image_control_id',
 		] );
 		$wp_customize->add_control(
 			new WP_Customize_Image_Control(
@@ -532,6 +564,23 @@ final class Customizer {
 					'label'    => __( 'Footer background color', TEXT_DOMAIN ),
 					'section'  => 'footer_section',
 					'settings' => 'footer_bgcolor_setting',
+					'priority' => 9,
+				]
+			)
+		);
+
+		// Add control
+		$wp_customize->add_setting( 'footer_color_setting', [
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'sanitize_hex_color'
+		] );
+		$wp_customize->add_control(
+			new WP_Customize_Color_Control( $wp_customize,
+				'footer_color_control',
+				[
+					'label'    => __( 'Footer color', TEXT_DOMAIN ),
+					'section'  => 'footer_section',
+					'settings' => 'footer_color_setting',
 					'priority' => 9,
 				]
 			)

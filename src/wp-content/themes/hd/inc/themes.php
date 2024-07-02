@@ -23,9 +23,9 @@ function __after_setup_theme_action(): void {
 		[
 			'main-nav'   => __( 'Primary Menu', TEXT_DOMAIN ),
 			//'second-nav' => __( 'Secondary Menu', TEXT_DOMAIN ),
-			//'mobile-nav' => __( 'Handheld Menu', TEXT_DOMAIN ),
+			'mobile-nav' => __( 'Handheld Menu', TEXT_DOMAIN ),
 			'social-nav' => __( 'Social menu', TEXT_DOMAIN ),
-			//'policy-nav' => __( 'Term menu', TEXT_DOMAIN ),
+			'policy-nav' => __( 'Term menu', TEXT_DOMAIN ),
 		]
 	);
 }
@@ -166,6 +166,48 @@ function __register_sidebars_action(): void {
 	//----------------------------------------------------------
 	// Other ...
 	//----------------------------------------------------------
+
+	// Footer Credit
+	register_sidebar(
+		[
+			'container'     => false,
+			'id'            => 'footer-credit-sidebar',
+			'name'          => __( 'Footer Credit', TEXT_DOMAIN ),
+			'description'   => __( 'Widgets added here will appear in footer.', TEXT_DOMAIN ),
+			'before_widget' => '<div class="%2$s">',
+			'after_widget'  => '</div>',
+			'before_title'  => '<span>',
+			'after_title'   => '</span>',
+		]
+	);
+
+	// Post Archive
+	register_sidebar(
+		[
+			'container'     => false,
+			'id'            => 'post-archive-sidebar',
+			'name'          => __( 'Post Archive', TEXT_DOMAIN ),
+			'description'   => __( 'Widgets added here will appear in post archive.', TEXT_DOMAIN ),
+			'before_widget' => '<div class="%2$s">',
+			'after_widget'  => '</div>',
+			'before_title'  => '<span>',
+			'after_title'   => '</span>',
+		]
+	);
+
+	// Product Archive
+	register_sidebar(
+		[
+			'container'     => false,
+			'id'            => 'product-archive-sidebar',
+			'name'          => __( 'Product Archive', TEXT_DOMAIN ),
+			'description'   => __( 'Widgets added here will appear in product archive.', TEXT_DOMAIN ),
+			'before_widget' => '<div class="%2$s">',
+			'after_widget'  => '</div>',
+			'before_title'  => '<span>',
+			'after_title'   => '</span>',
+		]
+	);
 }
 
 // --------------------------------------------------
@@ -209,12 +251,11 @@ function __body_classes_filter( array $classes ): array {
 	}
 
 	foreach ( $classes as $class ) {
-		if (
-			str_contains( $class, 'wp-custom-logo' )
-			|| str_contains( $class, 'page-template-templates' )
-			|| str_contains( $class, 'page-template-default' )
-			|| str_contains( $class, 'no-customize-support' )
-			|| str_contains( $class, 'page-id-' )
+		if ( str_contains( $class, 'wp-custom-logo' ) ||
+		     str_contains( $class, 'page-template-templates' ) ||
+		     str_contains( $class, 'page-template-default' ) ||
+		     str_contains( $class, 'no-customize-support' ) ||
+		     str_contains( $class, 'page-id-' )
 		) {
 			$classes = array_diff( $classes, [ $class ] );
 		}
@@ -252,8 +293,8 @@ function __post_classes_filter( array $classes ): array {
 
 	// remove 'tag-', 'category-' classes
 	foreach ( $classes as $class ) {
-		if ( str_contains( $class, 'tag-' )
-		     || str_contains( $class, 'category-' )
+		if ( str_contains( $class, 'tag-' ) ||
+		     str_contains( $class, 'category-' )
 		) {
 			$classes = array_diff( $classes, [ $class ] );
 		}
@@ -283,16 +324,16 @@ function __nav_menu_css_classes_filter( $classes, $menu_item, $args, $depth ): a
 
 	// Remove 'menu-item-type-', 'menu-item-object-' classes
 	foreach ( $classes as $class ) {
-		if ( str_contains( $class, 'menu-item-type-' )
-		     || str_contains( $class, 'menu-item-object-' )
+		if ( str_contains( $class, 'menu-item-type-' ) ||
+		     str_contains( $class, 'menu-item-object-' )
 		) {
 			$classes = array_diff( $classes, [ $class ] );
 		}
 	}
 
-	if ( 1 === $menu_item->current
-	     || $menu_item->current_item_ancestor
-	     || $menu_item->current_item_parent
+	if ( 1 === $menu_item->current ||
+	     $menu_item->current_item_ancestor ||
+	     $menu_item->current_item_parent
 	) {
 		$classes[] = 'active';
 	}
@@ -401,7 +442,7 @@ function __hd_hide_menu_options(): array {
 	return [
 		//'aspect-ratio', // Aspect Ratio
 		//'smtp', // SMTP
-		//'contact-info', // Contact Info
+		'contact-info', // Contact Info
 		//'contact-button', // Contact Button
 		//'gutenberg', // Editor
 		//'optimizer', // Optimizer
@@ -410,7 +451,7 @@ function __hd_hide_menu_options(): array {
 		//'base-slug', // Remove Base Slug
 		//'email', // Custom Email
 		//'custom-order', // Custom Order
-		//'recaptcha', // reCAPTCHA
+		'recaptcha', // reCAPTCHA
 		//'woocommerce', // WooCommerce
 		//'custom-script', // Custom Scripts
 		//'custom-css', // Custom CSS
@@ -443,7 +484,6 @@ function __hd_theme_setting_options( array $arr ): array {
 			// delay
 			'comment-reply'        => 'delay',
 			'wp-embed'             => 'delay',
-			'admin-bar'            => 'delay',
 			'back-to-top'          => 'delay',
 			'social-share'         => 'delay',
 		],
@@ -451,13 +491,13 @@ function __hd_theme_setting_options( array $arr ): array {
 		// defer style
 		'defer_style'                     => [
 			'dashicons',
-			'admin-bar',
 			'contact-form-7',
 		],
 
 		// Aspect Ratio default
 		'aspect_ratio_css'                => [
 			'1-1',
+			'2-1',
 			'3-2',
 			'4-3',
 			'16-9',
@@ -536,7 +576,7 @@ function __hd_theme_setting_options( array $arr ): array {
 		'social_follows_links'            => [
 			'facebook'  => [
 				'name'  => 'Facebook',
-				'icon'  => '<svg viewBox="0 0 36 36" style="color:#0866FF" fill="currentColor" height="40" width="40"><path d="M20.181 35.87C29.094 34.791 36 27.202 36 18c0-9.941-8.059-18-18-18S0 8.059 0 18c0 8.442 5.811 15.526 13.652 17.471L14 34h5.5l.681 1.87Z"></path><path style="fill:#ffffff" d="M13.651 35.471v-11.97H9.936V18h3.715v-2.37c0-6.127 2.772-8.964 8.784-8.964 1.138 0 3.103.223 3.91.446v4.983c-.425-.043-1.167-.065-2.081-.065-2.952 0-4.09 1.116-4.09 4.025V18h5.883l-1.008 5.5h-4.867v12.37a18.183 18.183 0 0 1-6.53-.399Z"></path></svg>',
+				'icon'  => 'fa-brands fa-facebook',
 				'color' => '#0866FF',
 				'url'   => 'https://www.facebook.com',
 			],
@@ -554,7 +594,7 @@ function __hd_theme_setting_options( array $arr ): array {
 			],
 			'twitter'   => [
 				'name'  => 'X (Twitter)',
-				'icon'  => '<svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></g></svg>',
+				'icon'  => '<i class="fa-brands fa-x-twitter"></i>',
 				'color' => 'rgb(239, 243, 244)',
 				'url'   => 'https://twitter.com',
 			],
@@ -605,6 +645,7 @@ function __hd_theme_setting_options( array $arr ): array {
 
 	if ( Helper::is_woocommerce_active() ) {
 		$arr_new['aspect_ratio_post_type'][]          = 'product';
+		$arr_new['aspect_ratio_post_type'][]          = 'product_cat';
 		$arr_new['term_row_actions'][]                = 'product_cat';
 		$arr_new['post_type_exclude_thumb_columns'][] = 'product';
 		$arr_new['post_type_terms'][]                 = [ 'product' => 'product_cat' ];

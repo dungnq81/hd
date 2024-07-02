@@ -20,7 +20,7 @@ class Posts_Carousel_Widget extends Abstract_Widget {
 			'container'            => [
 				'type'  => 'checkbox',
 				'std'   => 0,
-				'label' => __( 'Container layout', TEXT_DOMAIN ),
+				'label' => __( 'Container', TEXT_DOMAIN ),
 			],
 			'include_children'      => [
 				'type'  => 'checkbox',
@@ -31,31 +31,31 @@ class Posts_Carousel_Widget extends Abstract_Widget {
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post categories', TEXT_DOMAIN ),
+				'label' => __( 'Show categories', TEXT_DOMAIN ),
 			],
 			'show_thumbnail'        => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post thumbnails', TEXT_DOMAIN ),
+				'label' => __( 'Show thumbnail', TEXT_DOMAIN ),
 			],
 			'show_date'             => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post date', TEXT_DOMAIN ),
+				'label' => __( 'Show post date', TEXT_DOMAIN ),
 			],
 			'show_desc'             => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post description', TEXT_DOMAIN ),
+				'label' => __( 'Show post description', TEXT_DOMAIN ),
 			],
 			'show_detail_button'             => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display detail button', TEXT_DOMAIN ),
+				'label' => __( 'Show detail button', TEXT_DOMAIN ),
 			],
 			'number'                => [
 				'type'  => 'number',
@@ -147,7 +147,7 @@ class Posts_Carousel_Widget extends Abstract_Widget {
 		ob_start();
 
 		?>
-        <section class="section carousel-section posts-carousel-section posts-section<?= $css_class ?>">
+        <section class="section carousel-section posts-section<?= $css_class ?>">
 			<?php
 			toggle_container( $container, 'container', '' );
 
@@ -160,7 +160,7 @@ class Posts_Carousel_Widget extends Abstract_Widget {
 
 			?>
             <div class="<?= $uniqid ?>" aria-label="<?php echo Helper::esc_attr_strip_tags( $title ); ?>">
-                <div class="swiper-section carousel-posts grid-posts">
+                <div class="swiper-container carousel-posts grid-posts">
 					<?php
 					$_data = $this->swiper_acf_options( $instance, $ACF );
 
@@ -182,8 +182,8 @@ class Posts_Carousel_Widget extends Abstract_Widget {
             </div>
 	        <?php
 
-	        if ( $show_view_more_button ) {echo $view_more_link;}
-	        if ( $container ) {echo '</div>';}
+	        if ( $show_view_more_button ) { echo $view_more_link; }
+	        if ( $container ) { echo '</div>'; }
 
 	        ?>
         </section>

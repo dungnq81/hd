@@ -15,6 +15,7 @@ class Media_Image_Widget extends WP_Widget_Media_Image {
 	 * @param $instance
 	 *
 	 * @return void
+	 * @throws \JsonException
 	 */
 	public function widget( $args, $instance ) {
 		$instance = wp_parse_args( $instance, wp_list_pluck( $this->get_instance_schema(), 'default' ) );

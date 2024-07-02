@@ -327,6 +327,12 @@ final class Font {
 			return implode( '', $combined_tags );
 		}
 
+		// Force combined tag
+		$font_combined_css = optimizer_options( 'font_combined_css', 0 );
+		if ( ! empty( $font_combined_css ) ) {
+			return implode( '', $combined_tags );
+		}
+
 		// Return the inline css.
 		return '<style>' . $css . '</style>';
 	}

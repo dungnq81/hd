@@ -15,20 +15,27 @@ use Cores\Helper;
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>" />
 
-	<?php wp_head(); ?>
+	<?php
+
+	/**
+	 * @see __wp_head - 1
+     * @see __external_fonts - 10
+	 */
+    wp_head();
+    ?>
 
 </head>
 <body <?php body_class(); ?> <?php echo Helper::microdata( 'body' ); ?>>
     <?php
 
     /**
-     * @see \Themes\Options::body_scripts_top__hook - 99
+     * @see \Themes\Optimizer::body_scripts_top__hook - 99
      */
     do_action( 'wp_body_open' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core WP hook.
 
     /**
-     * @see __skip_to_content_link - 2
-     * @see __off_canvas_menu - 10
+     * @see hd_skip_to_content_link - 2
+     * @see hd_off_canvas_menu - 10
      */
     do_action( 'hd_before_header' );
 
@@ -37,7 +44,7 @@ use Cores\Helper;
         <?php
 
         /**
-         * @see __construct_header - 10
+         * @see hd_construct_header - 10
          */
         do_action( 'hd_header' );
 

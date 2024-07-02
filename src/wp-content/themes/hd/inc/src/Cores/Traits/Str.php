@@ -37,7 +37,72 @@ trait Str {
 	 * @return array|string|string[]
 	 */
 	public static function removeEmptyP( $content ): array|string {
-		return \str_replace( '<p></p>', '', $content );
+		return \preg_replace('/<p>\s*<\/p>/', '', $content);
+	}
+
+	// --------------------------------------------------
+
+	/**
+	 * @param $html
+	 *
+	 * @return array|string
+	 */
+	public static function nl2p( $html ): array|string {
+		$html = trim( $html );
+		if ( empty( $html ) ) {
+			return '';
+		}
+
+		$html = preg_replace( '/(\r?\n)+/', '</p><p>', $html );
+		$html = '<p>' . $html . '</p>';
+
+		return self::removeEmptyP( $html );
+	}
+
+	// --------------------------------------------------
+
+	/**
+	 * @param $html
+	 *
+	 * @return array|string|string[]|null
+	 */
+	public static function br2p( $html ): array|string|null {
+
+		$html = trim( $html );
+		if ( empty( $html ) ) {
+			return '';
+		}
+
+		$html = preg_replace( '/(<br\s*\/?>\s*)+/', "</p>\n<p>", $html );
+		$html = '<p>' . $html . '</p>';
+
+		return self::removeEmptyP( $html );
+	}
+
+	// --------------------------------------------------
+
+	/**
+	 * @param $content
+	 *
+	 * @return array|string|string[]|null
+	 */
+	public static function remove_inline_js_css( $content ): array|string|null {
+
+		// remove <script> tag
+		$content = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $content);
+
+		// JavaScript event
+		$content = preg_replace('/\s*on\w+="[^"]*"/i', '', $content);
+		$content = preg_replace("/\s*on\w+='[^']*'/i", '', $content);
+
+		// remove <style> tag
+		$content = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', '', $content);
+
+		// remove inline style
+		$content = preg_replace('/\s*style="[^"]*"/i', '', $content);
+		$content = preg_replace("/\s*style='[^']*'/i", '', $content);
+
+		return $content;
 	}
 
 	// --------------------------------------------------
@@ -271,7 +336,7 @@ trait Str {
 	 * @return string The list of keywords in a comma separated string form.
 	 */
 	public static function keyWords( string $str ): string {
-		$str = preg_replace( '/(\v\s)+/u', ' ', $str );
+		$str = preg_replace( '/[\v\s]+/u', ' ', $str );
 
 		return preg_replace( '/\s+/', ', ', trim( $str ) );
 	}
@@ -338,14 +403,19 @@ trait Str {
 	 * @param bool $strip_tags
 	 * @param string $replace
 	 *
-	 * @return array|string|string[]|null
+	 * @return string
 	 */
-	public static function stripSpace( $string, bool $strip_tags = true, string $replace = '' ): array|string|null {
+	public static function stripSpace( $string, bool $strip_tags = true, string $replace = '' ): string {
+		if ( empty( $string ) ) {
+			return '';
+		}
+
 		if ( $strip_tags ) {
 			$string = strip_tags( $string );
 		}
 
-		return preg_replace( [ '~\x{00a0}~', '/\s+/', '/(\v\s)+/u' ], [ $replace, $replace, $replace ], $string );
+		// Replace all whitespace characters (including vertical control characters and non-breaking spaces)
+		return preg_replace( '/[\v\s\x{00a0}]+/u', $replace, $string );
 	}
 
 	// --------------------------------------------------
@@ -377,7 +447,7 @@ trait Str {
 		$text = wptexturize( nl2br( self::normalize( $text ) ) );
 
 		// replace all multiple-space and carriage return characters with a space
-		return preg_replace( '/(\v\s)+/u', ' ', $text );
+		return preg_replace( '/[\v\s]+/u', ' ', $text );
 	}
 
 	// --------------------------------------------------
@@ -454,6 +524,6 @@ trait Str {
 		$text = wptexturize( nl2br( $text ) );
 
 		// replace all multiple-space and carriage return characters with a space
-		return preg_replace( '/(\v\s)+/u', ' ', $text );
+		return preg_replace( '/[\v\s]+/u', ' ', $text );
 	}
 }

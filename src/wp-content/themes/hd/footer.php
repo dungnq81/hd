@@ -22,8 +22,8 @@
             do_action( 'hd_before_footer_content' );
 
             /**
-             * @see __construct_footer_widgets - 5
-             * @see __construct_footer - 10
+             * @see hd_construct_footer_widgets - 5
+             * @see hd_construct_footer - 10
              */
             do_action( 'hd_footer' );
 
@@ -38,7 +38,14 @@
         ?>
     </div><!-- .site-outer -->
 
-    <?php wp_footer(); ?>
+    <?php
+
+    /**
+     * @see __wp_footer - 98
+     */
+    wp_footer();
+
+    ?>
 
 </body>
 </html>

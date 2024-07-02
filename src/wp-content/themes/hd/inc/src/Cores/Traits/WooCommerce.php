@@ -20,7 +20,7 @@ trait WooCommerce {
 		?>
         <a class="header-cart-contents" href="<?php echo esc_url( wc_get_cart_url() ); ?>" title="<?php echo esc_attr__( 'View your shopping cart', TEXT_DOMAIN ); ?>">
 			<?php echo wp_kses_post( WC()->cart->get_cart_subtotal() ); ?>
-            <span class="icon" data-glyph=""></span>
+            <span class="icon" data-glyph=""></span>
             <span class="count"><?php echo wp_kses_data( sprintf( '%d', WC()->cart->get_cart_contents_count() ) ); ?></span>
             <span class="txt"><?php echo __( 'Shopping cart', TEXT_DOMAIN ) ?></span>
         </a>

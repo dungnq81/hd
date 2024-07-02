@@ -3,14 +3,14 @@
 
 @import "mixins";
 
-@mixin grid-x( $grid: false  ) {
+@mixin grid-x( $grid: true  ) {
     @if true == $grid {
         display: grid;
     }
     grid-auto-flow: row;
 }
 
-@mixin grid-y( $grid: false  ) {
+@mixin grid-y( $grid: true  ) {
     @if true == $grid {
         display: grid;
     }
@@ -44,7 +44,7 @@
     }
 }
 
-@mixin grid-template( $n:1, $columns: true ) {
+@mixin grid-template( $n: 1, $columns: true ) {
     @if true == $columns {
         grid-template-columns: repeat( $n, 1fr );
     } @else {

@@ -249,7 +249,7 @@ class Products_Carousel_Widget extends Abstract_Widget {
 
 	        ?>
             <div class="<?= $uniqid ?>" aria-label="<?php echo Helper::esc_attr_strip_tags( $title ); ?>">
-                <div class="swiper-section carousel-products grid-products">
+                <div class="swiper-container carousel-products grid-products">
 	                <?php
 	                $_data = $this->swiper_acf_options( $instance, $ACF );
 

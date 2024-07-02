@@ -10,36 +10,49 @@
  * @package HD
  */
 
+use Cores\Helper;
+
 \defined( 'ABSPATH' ) || die;
 
-get_header();
+// header
+get_header( 'page' );
 
-the_content();
+if ( have_posts() ) {
+	the_post();
+}
 
-echo wp_get_attachment_image( 2349 );
+if ( post_password_required() ) :
+	echo get_the_password_form(); // WPCS: XSS ok.
 
-// homepage widget
-if ( is_active_sidebar( 'hd-home-sidebar' ) ) :
-	dynamic_sidebar( 'hd-home-sidebar' );
+	return;
 endif;
 
+// template-parts/parts/page-title.php
+the_page_title_theme();
+
+$ID = $post->ID ?? false;
+try {
+	$ACF = Helper::acfFields( $ID ) ?? '';
+} catch ( JsonException $e ) {}
+
+$alternative_title = $ACF->alternative_title ?? '';
+$image_for_banner  = $ACF->image_for_banner ?? false;
+
 ?>
-    <div class="layout-demo container">
-        <div class="!flex flex-x gap">
-            <div class="cell cell-1 m-4 t-3 d-2" style="background-color: #0a4b78;">cell-1</div>
-            <div class="cell cell-2 m-4 t-3 d-2" style="background-color: #0c6ca0;">cell-2</div>
-            <div class="cell cell-3 m-4 t-3 d-2" style="background-color: #00a32a;">cell-3</div>
-            <div class="cell cell-4 m-4 t-3 d-2" style="background-color: #0c88b4;">cell-4</div>
-            <div class="cell cell-5" style="background-color: #6f42c1;">cell-5</div>
-            <div class="cell cell-6" style="background-color: #8a6d3b;">cell-6</div>
-            <div class="cell cell-7" style="background-color: #f4a224;">cell-7</div>
-            <div class="cell cell-8" style="background-color: darkred;">cell-8</div>
-            <div class="cell cell-9" style="background-color: #ff2222;">cell-9</div>
-            <div class="cell cell-10" style="background-color: mediumblue;">cell-10</div>
-            <div class="cell cell-11" style="background-color: purple;">cell-11</div>
-            <div class="cell cell-12" style="background-color: yellowgreen;">cell-12</div>
-        </div>
-    </div>
+<section class="section singular page">
+	<div class="container">
+		<header>
+			<h1 class="heading-title"><?= $alternative_title ?: get_the_title() ?></h1>
+			<?php echo Helper::stripSpace( $post->post_excerpt ) ? '<div class="excerpt">' . Helper::nl2p( $post->post_excerpt ) . '</div>' : ''; ?>
+		</header>
+		<article <?=Helper::microdata( 'article' )?>>
+
+			<?php the_content(); ?>
+
+		</article>
+	</div>
+</section>
 <?php
 
-get_footer();
+// footer
+get_footer( 'page' );

@@ -1,6 +1,7 @@
 <?php
 
 $font_optimize = $font_optimize ?? 0;
+$font_combined_css = $font_combined_css ?? 0;
 
 $font_preload = $font_preload ?? [];
 $font_preload = implode( PHP_EOL, $font_preload );
@@ -12,6 +13,17 @@ $font_preload = implode( PHP_EOL, $font_preload );
     <div class="option">
         <div class="controls">
             <input type="checkbox" class="hd-checkbox hd-control" name="font_optimize" id="font_optimize" <?php checked( $font_optimize, 1 ); ?> value="1">
+        </div>
+        <div class="explain"><?php _e( 'Check to activate', ADDONS_TEXT_DOMAIN ); ?></div>
+    </div>
+</div>
+
+<div class="section section-checkbox" id="section_font_combined_css">
+    <label class="heading inline-heading" for="font_combined_css"><?php _e( 'Combined CSS', ADDONS_TEXT_DOMAIN ) ?></label>
+    <div class="desc">Return combined tag instead of using inline CSS.</div>
+    <div class="option">
+        <div class="controls">
+            <input type="checkbox" class="hd-checkbox hd-control" name="font_combined_css" id="font_combined_css" <?php checked( $font_combined_css, 1 ); ?> value="1">
         </div>
         <div class="explain"><?php _e( 'Check to activate', ADDONS_TEXT_DOMAIN ); ?></div>
     </div>

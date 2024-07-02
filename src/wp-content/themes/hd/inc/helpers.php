@@ -11,6 +11,19 @@ use Cores\Helper;
 
 // --------------------------------------------------
 
+if ( ! function_exists( 'esc_attr_strip_tags' ) ) {
+	/**
+	 * @param $string
+	 *
+	 * @return string|null
+	 */
+	function esc_attr_strip_tags( $string ): ?string {
+		return Helper::esc_attr_strip_tags( $string );
+	}
+}
+
+// --------------------------------------------------
+
 if ( ! function_exists( 'in_array_toggle_class' ) ) {
 	/**
 	 * @param array $arr
@@ -123,6 +136,23 @@ if ( ! function_exists( 'sanitize_checkbox' ) ) {
 
 // --------------------------------------------------
 
+if ( ! function_exists( 'sanitize_customize_image_control_id' ) ) {
+
+	/**
+	 * @param $image
+	 * @param $setting
+	 *
+	 * @return int|mixed
+	 */
+	function sanitize_customize_image_control_id( $image, $setting ): mixed {
+		$attachment_id = attachment_url_to_postid( $image );
+
+		return $attachment_id ?: $setting->default;
+	}
+}
+
+// --------------------------------------------------
+
 if ( ! function_exists( 'sanitize_image' ) ) {
 
 	/**
@@ -173,16 +203,17 @@ if ( ! function_exists( 'set_posts_per_page' ) ) {
 }
 
 // --------------------------------------------------
+// Custom functions
+// --------------------------------------------------
 
 if ( ! function_exists( 'the_paginate_links' ) ) {
 	/**
 	 * @param null $query
 	 * @param bool $get
-	 * @param bool $echo
 	 *
-	 * @return string|null
+	 * @return void
 	 */
-	function the_paginate_links( $query = null, bool $get = false, bool $echo = true ): ?string {
+	function the_paginate_links( $query = null, bool $get = false ): void {
 		if ( ! $query ) {
 			global $wp_query;
 		} else {
@@ -228,7 +259,7 @@ if ( ! function_exists( 'the_paginate_links' ) ) {
 				)
 			);
 
-			$paginate_links = str_replace( "<ul class='page-numbers'>", '<ul class="pagination">', $paginate_links );
+			$paginate_links = str_replace( "<ul class='page-numbers'>", '<ul class="pagination page-numbers">', $paginate_links );
 			$paginate_links = str_replace( '<li><span class="page-numbers dots">&hellip;</span></li>', '<li class="ellipsis"></li>', $paginate_links );
 			$paginate_links = str_replace( '<li><span aria-current="page" class="page-numbers current">', '<li class="current"><span aria-current="page" class="sr-only">You\'re on page </span>', $paginate_links );
 			$paginate_links = str_replace( '</span></li>', '</li>', $paginate_links );
@@ -237,16 +268,13 @@ if ( ! function_exists( 'the_paginate_links' ) ) {
 
 			// Display the pagination if more than one page is found.
 			if ( $paginate_links ) {
-				$paginate_links = '<nav aria-label="Pagination">' . $paginate_links . '</nav>';
-				if ( $echo ) {
-					echo $paginate_links;
-				} else {
-					return $paginate_links;
-				}
+				$paginate_links = '<nav class="nav-pagination" aria-label="Pagination">' . $paginate_links . '</nav>';
+
+				echo $paginate_links;
 			}
 		}
 
-		return null;
+		echo null;
 	}
 }
 
@@ -304,5 +332,31 @@ if ( ! function_exists( 'the_post_comment' ) ) {
 
 			echo $wrapper_close;
 		}
+	}
+}
+
+// --------------------------------------------------
+
+if ( ! function_exists( 'the_page_title_theme' ) ) {
+	/**
+	 * @param array $args
+	 *
+	 * @return void
+	 */
+	function the_page_title_theme( array $args = [] ): void {
+		get_template_part( 'template-parts/parts/page-title', null, $args );
+	}
+}
+
+// --------------------------------------------------
+
+if ( ! function_exists( 'the_archive_title_theme' ) ) {
+	/**
+	 * @param array $args
+	 *
+	 * @return void
+	 */
+	function the_archive_title_theme( array $args = [] ): void {
+		get_template_part( 'template-parts/parts/archive-title', null, $args );
 	}
 }

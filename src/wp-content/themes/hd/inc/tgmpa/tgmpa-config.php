@@ -75,11 +75,11 @@ function hd_register_required_plugins(): void {
 //			'slug'     => 'webp-converter-for-media',
 //			'required' => false,
 //		],
-//		[
-//			'name'     => 'Easy Table of Contents',
-//			'slug'     => 'easy-table-of-contents',
-//			'required' => false,
-//		],
+		[
+			'name'     => 'Easy Table of Contents',
+			'slug'     => 'easy-table-of-contents',
+			'required' => false,
+		],
 
 		//
 		// Include a plugin bundled with a theme.
@@ -87,7 +87,7 @@ function hd_register_required_plugins(): void {
 //		[
 //			'name'             => 'Advanced Custom Fields PRO',
 //			'slug'             => 'advanced-custom-fields-pro',
-//			'source'           => dirname(__DIR__, 2) . '/storage/acf/bundled/advanced-custom-fields-pro.zip',
+//			'source'           => dirname(__DIR__, 2) . '/storage/bundled/advanced-custom-fields-pro.zip',
 //			'required'         => true,
 //			'force_activation' => false,
 //			'external_url'     => 'https://www.advancedcustomfields.com/'
@@ -95,7 +95,7 @@ function hd_register_required_plugins(): void {
 //		[
 //			'name'             => 'Fixed TOC',
 //			'slug'             => 'fixed-toc',
-//			'source'           => __DIR__ . '/bundled/fixed-toc.zip',
+//			'source'           => dirname(__DIR__, 2) . '/storage/bundled/fixed-toc.zip',
 //			'required'         => false,
 //			'force_activation' => false,
 //			'external_url'     => 'https://codecanyon.net/item/fixed-toc-wordpress-plugin/7264676'

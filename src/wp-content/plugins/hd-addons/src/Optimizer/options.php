@@ -16,7 +16,8 @@ $font_preload = $optimizer_options['font_preload'] ?? [];
 $dns_prefetch = $optimizer_options['dns_prefetch'] ?? [];
 $minify_html  = $optimizer_options['minify_html'] ?? 0;
 
-$font_optimize = $optimizer_options['font_optimize'] ?? 0;
+$font_optimize     = $optimizer_options['font_optimize'] ?? 0;
+$font_combined_css = $optimizer_options['font_combined_css'] ?? 0;
 
 ?>
 <h2><?php _e( 'Optimizer Settings', ADDONS_TEXT_DOMAIN ); ?></h2>

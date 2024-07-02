@@ -8,4 +8,4 @@
 \defined( 'ABSPATH' ) || die;
 
 ?>
-<div class="no-results not-found"></div>
+<p class="no-results not-found"><?php echo __( 'No posts were found matching your selection.', TEXT_DOMAIN ) ?></p>

@@ -47,6 +47,23 @@ $body-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Arial, sans
     width: 50% !important;
 }
 
+/** */
+#excerpt {
+    display: block;
+    margin: 12px 0 0;
+    height: auto;
+    min-height: 200px;
+    width: 100%;
+}
+
+.acf-gallery {
+    border: #ccd0d4 solid 1px;
+    height: auto !important;
+    position: relative;
+    min-height: 230px;
+    max-height: 400px;
+}
+
 /** @todo gutter */
 $count: 0;
 $count_max: 30;
@@ -1006,6 +1023,18 @@ body.toplevel_page_hd-settings {
     }
 }
 
+.widget-content {
+    .acf-image-uploader {
+        .hide-if-value {
+            & > p {
+                a.acf-button.button {
+                    width: auto !important;
+                }
+            }
+        }
+    }
+}
+
 /** */
 :is(input, textarea, select) {
     &:disabled {
@@ -1056,6 +1085,33 @@ body.toplevel_page_hd-settings {
     }
 }
 
+.acf-admin-page .acf-field.acf-field-number .acf-input input[type=number] {
+    max-width: unset;
+}
+
+.acf-repeater.-row > table > tbody > tr {
+    &:not(:first-child) {
+        & > td {
+            border-top: 1px solid #d63638;
+        }
+    }
+}
+
+.acf-repeater .acf-row-handle .acf-icon {
+    &:where(.-minus, .-plus) {
+        border-color: #d63638;
+        color: #d63638;
+    }
+}
+
+.acf-flexible-content .layout {
+    border: 1px solid #2271b1;
+}
+
+.acf-flexible-content .layout .acf-fc-layout-handle {
+    border-bottom: 1px solid #2271b1;
+}
+
 /** pace loading */
 .pace {
     pointer-events: none;
@@ -1103,6 +1159,14 @@ html.wp-toolbar {
 /** select2 */
 .select2-container--default {
     display: block;
+
+    .select2-selection--single {
+        .select2-selection__arrow {
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 999;
+        }
+    }
 
     .select2-selection--multiple {
         background-color: #f9f9f9;

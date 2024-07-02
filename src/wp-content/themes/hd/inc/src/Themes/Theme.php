@@ -31,12 +31,12 @@ final class Theme {
 
 		add_action( 'after_setup_theme', [ &$this, 'i18n' ], 1 );
 		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 10 );
-		add_action( 'after_setup_theme', [ &$this, 'setup' ], 11 );
-		add_action( 'after_setup_theme', [ &$this, 'plugins_setup' ], 12 );
+		add_action( 'after_setup_theme', [ &$this, 'setup' ], 10 );
+		add_action( 'after_setup_theme', [ &$this, 'plugins_setup' ], 10 );
 
 		/** Widgets WordPress */
-		add_action( 'widgets_init', [ &$this, 'unregister_widgets' ], 13 );
-		add_action( 'widgets_init', [ &$this, 'register_widgets' ], 13 );
+		add_action( 'widgets_init', [ &$this, 'unregister_widgets' ], 12 );
+		add_action( 'widgets_init', [ &$this, 'register_widgets' ], 12 );
 
 		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 10 );
 	}
@@ -120,7 +120,8 @@ final class Theme {
 					'width'                => $logo_width,
 					'flex-height'          => true,
 					'flex-width'           => true,
-					'unlink-homepage-logo' => false,
+					'header-text'          => '',
+					'unlink-homepage-logo' => true,
 				]
 			)
 		);
@@ -175,8 +176,8 @@ final class Theme {
 	 */
 	public function plugins_setup(): void {
 
-		Helper::is_elementor_active() && ( new Elementor() );
 		Helper::is_woocommerce_active() && ( new WooCommerce\WooCommerce() );
+		Helper::is_elementor_active() && ( new Elementor() );
 		Helper::is_acf_active() && ( new ACF\ACF() );
 
 		class_exists( \WPCF7::class ) && ( new CF7() );
@@ -227,6 +228,13 @@ final class Theme {
 	public function wp_enqueue_scripts(): void {
 
 		// wp_enqueue_style( 'style', get_stylesheet_uri(), [], THEME_VERSION );
+
+		// swiper js
+		//if ( is_home() || is_front_page() ) {
+			wp_enqueue_style( "swiper-style", ASSETS_URL . "css/plugins/swiper.css", [], THEME_VERSION );
+			wp_enqueue_script( "swiper", ASSETS_URL . "js/plugins/swiper.js", [], THEME_VERSION, true );
+			wp_script_add_data( "swiper", "defer", true );
+		//}
 
 		/** Stylesheet */
 		wp_register_style( "plugins-style", ASSETS_URL . "css/plugins.css", [], THEME_VERSION );
@@ -299,13 +307,13 @@ final class Theme {
 		// -------------------------------------------------------------
 
 		/**
-		 * thumbnail (480x0)
+		 * thumbnail (576x0)
 		 * medium (768x0)
 		 * large (1024x0)
 		 *
 		 * small-thumbnail (150x150)
 		 * widescreen (1920x9999)
-		 * post-thumbnail (1200x9999)
+		 * post-thumbnail (1280x9999)
 		 */
 
 		/** Custom thumb */

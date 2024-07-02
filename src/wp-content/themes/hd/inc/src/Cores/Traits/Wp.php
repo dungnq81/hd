@@ -449,11 +449,8 @@ trait Wp {
 		// 'orderby' => [ 'date' => 'DESC', 'menu_order' => 'DESC' ]
 		if ( is_array( $orderby ) && ! empty( $orderby ) ) {
 			$orderby = self::removeEmptyValues( $orderby );
-		} else {
-			$orderby = 'rand';
+			$_args['orderby'] = $orderby;
 		}
-
-		$_args['orderby'] = $orderby;
 
 		// meta_query
 		if ( ! empty( $meta_query ) ) {
@@ -558,11 +555,8 @@ trait Wp {
 		// 'orderby' => [ 'date' => 'DESC', 'menu_order' => 'DESC' ]
 		if ( is_array( $orderby ) && ! empty( $orderby ) ) {
 			$orderby = self::removeEmptyValues( $orderby );
-		} else {
-			$orderby = 'rand';
+			$_args['orderby'] = $orderby;
 		}
-
-		$_args['orderby'] = $orderby;
 
 		// meta_query
 		if ( ! empty( $meta_query ) ) {
@@ -616,6 +610,123 @@ trait Wp {
 	// -------------------------------------------------------------
 
 	/**
+	 * @param int $blog_id
+	 *
+	 * @return string
+	 * Modified from native \get_custom_logo() function
+	 */
+	public static function custom_site_logo( int $blog_id = 0 ): string {
+		$html          = '';
+		$switched_blog = false;
+
+		if ( ! empty( $blog_id ) && is_multisite() && get_current_blog_id() !== (int) $blog_id ) {
+			switch_to_blog( $blog_id );
+			$switched_blog = true;
+		}
+
+		$custom_logo_id = self::getThemeMod( 'custom_logo' );
+
+		// We have a logo. Logo is go.
+		if ( $custom_logo_id ) {
+			$custom_logo_attr = array(
+				'class'   => 'custom-logo',
+				'loading' => false,
+			);
+
+			$unlink_homepage_logo = (bool) get_theme_support( 'custom-logo', 'unlink-homepage-logo' );
+			$unlink_logo          = $unlink_homepage_logo;
+
+			if ( $unlink_homepage_logo && self::is_home_or_front_page() && ! is_paged() ) {
+				/*
+				 * If on the home page, set the logo alt attribute to an empty string,
+				 * as the image is decorative and doesn't need its purpose to be described.
+				 */
+				$custom_logo_attr['alt'] = '';
+			} elseif ( $unlink_logo ) {
+
+				// set the logo alt attribute to an empty string
+				$custom_logo_attr['alt'] = '';
+			} else {
+				/*
+				 * If the logo alt attribute is empty, get the site title and explicitly pass it
+				 * to the attributes used by wp_get_attachment_image().
+				 */
+				$image_alt = get_post_meta( $custom_logo_id, '_wp_attachment_image_alt', true );
+				if ( empty( $image_alt ) ) {
+					$custom_logo_attr['alt'] = get_bloginfo( 'name', 'display' );
+				}
+			}
+
+			/**
+			 * Filters the list of custom logo image attributes.
+			 *
+			 * @param array $custom_logo_attr Custom logo image attributes.
+			 * @param int $custom_logo_id Custom logo attachment ID.
+			 * @param int $blog_id ID of the blog to get the custom logo for.
+			 *
+			 * @since 5.5.0
+			 *
+			 */
+			$custom_logo_attr = apply_filters( 'get_custom_logo_image_attributes', $custom_logo_attr, $custom_logo_id, $blog_id );
+
+			/*
+			 * If the alt attribute is not empty, there's no need to explicitly pass it
+			 * because wp_get_attachment_image() already adds the alt attribute.
+			 */
+			$image = wp_get_attachment_image( $custom_logo_id, 'full', false, $custom_logo_attr );
+
+			if ( $unlink_homepage_logo && self::is_home_or_front_page() && ! is_paged() ) {
+
+				// If on the home page, don't link the logo to home.
+				$html = sprintf( '<span class="custom-logo-link">%1$s</span>', $image );
+			} elseif ( $unlink_logo ) {
+
+				// Remove logo link
+				$html = sprintf( '<span class="custom-logo-link">%1$s</span>', $image );
+			} else {
+				$aria_current = self::is_home_or_front_page() && ! is_paged() ? ' aria-current="page"' : '';
+
+				$html = sprintf(
+					'<a href="%1$s" class="custom-logo-link" rel="home"%2$s>%3$s</a>',
+					esc_url( home_url( '/' ) ),
+					$aria_current,
+					$image
+				);
+			}
+		} elseif ( is_customize_preview() ) {
+
+			// If no logo is set, but we're in the Customizer, leave a placeholder (needed for the live preview).
+			$html = sprintf(
+				'<a href="%1$s" class="custom-logo-link" style="display:none;">' . esc_html( get_bloginfo( 'name' ) ) . '</a>',
+				esc_url( home_url( '/' ) )
+			);
+		}
+
+		if ( $switched_blog ) {
+			restore_current_blog();
+		}
+
+		/**
+		 * Filters the custom logo output.
+		 *
+		 * @param string $html Custom logo HTML output.
+		 * @param int $blog_id ID of the blog to get the custom logo for.
+		 */
+		return apply_filters( 'custom_site_logo', $html, $blog_id );
+	}
+
+	// -------------------------------------------------------------
+
+	/**
+	 * @return bool
+	 */
+	public static function is_home_or_front_page(): bool {
+		return is_home() || is_front_page();
+	}
+
+	// -------------------------------------------------------------
+
+	/**
 	 * @param bool $echo
 	 * @param string $home_heading
 	 * @param string $class
@@ -623,20 +734,25 @@ trait Wp {
 	 * @return string|void
 	 */
 	public static function siteTitleOrLogo( bool $echo = true, string $home_heading = 'h1', string $class = 'logo' ) {
-		$is_home_or_front_page = is_home() || is_front_page();
+		$is_home_or_front_page = self::is_home_or_front_page();
 		$tag                   = $is_home_or_front_page ? $home_heading : 'div';
 
+		$logo_title = self::getThemeMod( 'logo_title_setting' );
+		$logo_title = $logo_title ? '<span class="logo-txt">' . $logo_title . '</span>' : '';
+
 		if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
-			$logo = get_custom_logo();
-			$html = '<div id="logo" class="' . $class . '">' . $logo . '</div>';
+
+			// replace \get_custom_logo() with Helper::custom_site_logo()
+			$logo = self::custom_site_logo();
+			$html = '<div class="' . $class . '"><a title="' . esc_attr( get_bloginfo( 'name' ) ) . '" href="' . self::home() . '" rel="home">' . $logo . $logo_title . '</a></div>';
 		} else {
-			$html = '<div class="' . $class . '"><a title href="' . self::home() . '" rel="home">' . esc_html( get_bloginfo( 'name' ) ) . '</a></div>';
+			$html = '<div class="' . $class . '"><a title="' . esc_attr( get_bloginfo( 'name' ) ) . '" href="' . self::home() . '" rel="home">' . esc_html( get_bloginfo( 'name' ) ) . $logo_title . '</a></div>';
 			if ( '' !== get_bloginfo( 'description' ) ) {
 				$html .= '<p class="site-description">' . esc_html( get_bloginfo( 'description', 'display' ) ) . '</p>';
 			}
 		}
 
-		$logo_heading = self::getThemeMod( 'logo_title_setting' );
+		$logo_heading = self::getThemeMod( 'home_heading_setting' );
 		if ( $logo_heading && $is_home_or_front_page ) {
 			$html .= '<' . esc_attr( $tag ) . ' class="sr-only">' . $logo_heading . '</' . esc_attr( $tag ) . '>';
 		}
@@ -684,15 +800,18 @@ trait Wp {
 
 			$custom_logo_attr['alt'] = $image_alt;
 
+			$logo_title = self::getThemeMod( 'logo_title_setting' );
+			$logo_title = $logo_title ? '<span>' . $logo_title . '</span>' : '';
+
 			/**
 			 * If the alt attribute is not empty, there's no need to explicitly pass it
 			 * because wp_get_attachment_image() already adds the alt attribute.
 			 */
 			$logo = wp_get_attachment_image( $custom_logo_id, 'full', false, $custom_logo_attr );
 			if ( $class ) {
-				$html = '<div class="' . $class . '"><a title="' . $image_alt . '" href="' . self::home() . '">' . $logo . '</a></div>';
+				$html = '<div class="' . $class . '"><a title="' . $image_alt . '" href="' . self::home() . '">' . $logo . $logo_title . '</a></div>';
 			} else {
-				$html = '<a title="' . $image_alt . '" href="' . self::home() . '">' . $logo . '</a>';
+				$html = '<a title="' . $image_alt . '" href="' . self::home() . '">' . $logo . $logo_title . '</a>';
 			}
 		}
 
@@ -747,7 +866,7 @@ trait Wp {
 			$close = '</div>';
 		}
 
-		return $open . '<div>' . $post->post_excerpt . '</div>' . $close;
+		return $open . $post->post_excerpt . $close;
 	}
 
 	// -------------------------------------------------------------
@@ -790,11 +909,11 @@ trait Wp {
 				$taxonomy = 'category';
 			}
 
-			$post_type_terms_arr = Helper::filter_setting_options( 'post_type_terms', [] );
-			if ( ! empty( $post_type_terms_arr ) ) {
-				foreach ( $post_type_terms_arr as $_post_type => $_taxonomy ) {
+			foreach ( Helper::filter_setting_options( 'post_type_terms', [] ) as $post_type_terms ) {
+				foreach ( $post_type_terms as $_post_type => $_taxonomy ) {
 					if ( $_post_type === $post_type ) {
 						$taxonomy = $_taxonomy;
+						break;
 					}
 				}
 			}
@@ -1107,7 +1226,7 @@ trait Wp {
 		if ( ! is_front_page() ) {
 
 			echo '<ul id="breadcrumbs" class="breadcrumbs" aria-label="Breadcrumbs">';
-			echo '<li><a class="home" href="' . self::home() . '">' . __( 'Home', TEXT_DOMAIN ) . '</a></li>';
+			echo '<li><a class="home" href="' . self::home() . '">' . __( 'Trang chủ', TEXT_DOMAIN ) . '</a></li>';
 
 			//...
 			if ( self::is_woocommerce_active() && @is_shop() ) {
@@ -1143,22 +1262,25 @@ trait Wp {
 			} /** single */
 			elseif ( is_single() && ! is_attachment() ) {
 
-				if ( ! in_array( get_post_type(), [ 'post', 'product', 'service', 'project' ] ) ) {
-					$post_type = get_post_type_object( get_post_type() );
-					$slug      = $post_type->rewrite;
+				$post_type = get_post_type_object( get_post_type() );
+				$taxonomies = get_object_taxonomies( $post_type->name, 'names' );
+
+				if ( empty( $taxonomies ) ) {
+					$slug = $post_type->rewrite;
 					if ( ! is_bool( $slug ) ) {
 						echo '<li><a href="' . self::home() . $slug['slug'] . '/">' . $post_type->labels->singular_name . '</a></span>';
 					}
 				} else {
-					$term     = self::primaryTerm( $post );
-					$cat_code = get_term_parents_list( $term->term_id, $term->taxonomy, [ 'separator' => '' ] );
 
-					if ( $term && $cat_code ) {
+					// has taxonomy
+					// get primary term
+					$term = self::primaryTerm( $post );
+					if ( $term ) {
+						$cat_code = get_term_parents_list( $term->term_id, $term->taxonomy, [ 'separator' => '' ] );
 						$cat_code = str_replace( '<a', '<li><a', $cat_code );
 						echo str_replace( '</a>', '</a></li>', $cat_code );
 					}
 				}
-
 				echo $before . get_the_title() . $after;
 			} /** search page */
 			elseif ( is_search() ) {

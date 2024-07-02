@@ -10,7 +10,7 @@ use Cores\Helper;
 \defined( 'ABSPATH' ) || die;
 
 // -----------------------------------------------
-// wp_head hook
+// wp_head
 // -----------------------------------------------
 
 if ( ! function_exists( '__wp_head' ) ) {
@@ -46,18 +46,34 @@ if ( ! function_exists( '__wp_head' ) ) {
 }
 
 // -----------------------------------------------
-// hd_before_header hook
+
+if ( ! function_exists( '__external_fonts' ) ) {
+	add_action( 'wp_head', '__external_fonts', 10 );
+
+	/**
+	 * @return void
+	 */
+	function __external_fonts(): void {
+    ?>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600..800;1,600..800&display=swap" rel="stylesheet">
+    <?php
+	}
+}
+
+// -----------------------------------------------
+// hd_before_header
 // -----------------------------------------------
 
-if ( ! function_exists( '__hd_skip_to_content_link' ) ) {
-	add_action( 'hd_before_header', '__hd_skip_to_content_link', 2 );
+if ( ! function_exists( 'hd_skip_to_content_link' ) ) {
+	add_action( 'hd_before_header', 'hd_skip_to_content_link', 2 );
 
 	/**
 	 * Add skip to a content link before the header.
 	 *
 	 * @return void
 	 */
-	function __hd_skip_to_content_link(): void {
+	function hd_skip_to_content_link(): void {
 		printf(
 			'<a class="screen-reader-text skip-link" href="#site-content" title="%1$s">%2$s</a>',
 			esc_attr__( 'Skip to content', TEXT_DOMAIN ),
@@ -68,15 +84,15 @@ if ( ! function_exists( '__hd_skip_to_content_link' ) ) {
 
 // -----------------------------------------------
 
-if ( ! function_exists( '__off_canvas_menu' ) ) {
-	add_action( 'hd_before_header', '__off_canvas_menu', 10 );
+if ( ! function_exists( 'hd_off_canvas_menu' ) ) {
+	add_action( 'hd_before_header', 'hd_off_canvas_menu', 10 );
 
 	/**
 	 * Position canvas menu
 	 *
 	 * @return void
 	 */
-	function __off_canvas_menu(): void {
+	function hd_off_canvas_menu(): void {
 
 		$position = Helper::getThemeMod( 'offcanvas_menu_setting' );
 		if ( ! in_array( $position, [ 'left', 'right', 'top', 'bottom' ], false ) ) {
@@ -91,16 +107,16 @@ if ( ! function_exists( '__off_canvas_menu' ) ) {
 }
 
 // -----------------------------------------------
-// hd_header hook
+// hd_header
 // -----------------------------------------------
 
-if ( ! function_exists( '__hd_construct_header' ) ) {
-	add_action( 'hd_header', '__hd_construct_header', 10 );
+if ( ! function_exists( 'hd_construct_header' ) ) {
+	add_action( 'hd_header', 'hd_construct_header', 10 );
 
 	/**
 	 * @return void
 	 */
-	function __hd_construct_header(): void {
+	function hd_construct_header(): void {
 		?>
         <header id="masthead" class="site-header" <?php echo Helper::microdata( 'header' ); ?>>
             <?php

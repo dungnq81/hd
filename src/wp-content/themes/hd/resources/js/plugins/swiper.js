@@ -34,6 +34,7 @@ const initializeSwiper = (el, swiper_class, options) => {
 const generateClasses = () => {
     const rand = nanoid(9);
     return {
+        rand: rand,
         swiperClass: 'swiper-' + rand,
         nextClass: 'next-' + rand,
         prevClass: 'prev-' + rand,
@@ -54,8 +55,11 @@ const getDefaultOptions = () => ({
     slideActiveClass: 'swiper-slide-active',
 });
 
+//
+// swipers single
+//
 const initializeSwipers = () => {
-    const swiperElements = [...document.querySelectorAll('.w-swiper')];
+    const swiperElements = [...document?.querySelectorAll('.w-swiper')];
 
     swiperElements.forEach((el, index) => {
         const classes = generateClasses();
@@ -79,20 +83,20 @@ const initializeSwipers = () => {
             };
         }
 
-        const swiperOptions = { ...getDefaultOptions() };
+        let swiperOptions = { ...getDefaultOptions() };
 
         if (options.autoview) {
             swiperOptions.slidesPerView = 'auto';
             if (options.gap) {
                 swiperOptions.spaceBetween = 20;
                 swiperOptions.breakpoints = {
-                    640: { spaceBetween: 30 },
+                    768: { spaceBetween: 30 },
                 };
             }
         } else {
             swiperOptions.breakpoints = {
                 0: options.mobile || {},
-                640: options.tablet || {},
+                768: options.tablet || {},
                 1024: options.desktop || {},
             };
         }
@@ -202,6 +206,7 @@ const initializeSwipers = () => {
             swiperOptions.centeredSlides = !1;
             swiperOptions.autoplay = { delay: 1, disableOnInteraction: !0 };
             swiperOptions.loop = !0;
+            swiperOptions.speed = 6000;
             swiperOptions.allowTouchMove = !0;
         }
 
@@ -209,4 +214,124 @@ const initializeSwipers = () => {
     });
 };
 
+//
+// Products slides
+//
+const spgSwipers = () => {
+    const swiperElements = [...document?.querySelectorAll('.swiper-product-gallery')];
+
+    swiperElements.forEach((el, index) => {
+        const classes = generateClasses();
+        el.classList.add(classes.swiperClass);
+
+        const w_images = el?.querySelector('.swiper-images');
+        const w_thumbs = el?.querySelector('.swiper-thumbs');
+
+        let swiper_images = false;
+        let swiper_thumbs = false;
+
+        /** wpg thumbs */
+        if (w_thumbs) {
+            w_thumbs?.querySelector('.swiper-button-prev').classList.add('prev-thumbs-' + classes.rand);
+            w_thumbs?.querySelector('.swiper-button-next').classList.add('next-thumbs-' + classes.rand);
+            w_thumbs.classList.add('thumbs-' + classes.rand);
+
+            let thumbs_options = { ...getDefaultOptions() };
+            thumbs_options.breakpoints = {
+                0: {
+                    spaceBetween: 5,
+                    slidesPerView: 4,
+                },
+                768: {
+                    spaceBetween: 10,
+                    slidesPerView: 5,
+                },
+                1024: {
+                    spaceBetween: 10,
+                    slidesPerView: 6,
+                },
+            };
+
+            thumbs_options.navigation = {
+                prevEl: '.prev-thumbs-' + classes.rand,
+                nextEl: '.next-thumbs-' + classes.rand,
+            };
+
+            swiper_thumbs = initializeSwiper(w_thumbs, '.thumbs-' + classes.rand, thumbs_options);
+        }
+
+        /** wpg images */
+        if (w_images) {
+            w_images?.querySelector('.swiper-button-prev').classList.add('prev-images-' + classes.rand);
+            w_images?.querySelector('.swiper-button-next').classList.add('next-images-' + classes.rand);
+            w_images.classList.add('images-' + classes.rand);
+
+            let images_options = { ...getDefaultOptions() };
+            images_options.slidesPerView = 'auto';
+            images_options.spaceBetween = 10;
+            images_options.watchSlidesProgress = !0;
+
+            images_options.navigation = {
+                prevEl: '.prev-images-' + classes.rand,
+                nextEl: '.next-images-' + classes.rand,
+            };
+
+            if (swiper_thumbs) {
+                images_options.thumbs = {
+                    swiper: swiper_thumbs,
+                };
+            }
+
+            swiper_images = initializeSwiper(w_images, '.images-' + classes.rand, images_options);
+        }
+
+        /** variation image */
+        let firstImage = w_images?.querySelector('.swiper-images-first img');
+        firstImage.removeAttribute('srcset');
+
+        let firstImageSrc = firstImage.getAttribute('src');
+        let imagePopupSrc = w_images?.querySelector('.swiper-images-first .image-popup');
+
+        /** */
+        let firstThumb = false;
+        let firstThumbSrc = false;
+        let dataLargeImage = false;
+
+        if (swiper_thumbs) {
+            firstThumb = w_thumbs?.querySelector('.swiper-thumbs-first img');
+            firstThumb.removeAttribute('srcset');
+
+            firstThumbSrc = firstThumb.getAttribute('src');
+            dataLargeImage = firstThumb.getAttribute('data-large_image');
+        }
+
+        /** WC event */
+        const variations_form = document?.querySelector('form.variations_form');
+        if (variations_form) {
+            variations_form.addEventListener('found_variation', (event, variation) => {
+                if (variation.image.src) {
+                    firstImage.setAttribute('src', variation.image.src);
+                    imagePopupSrc.setAttribute('data-src', variation.image.full_src);
+                    if (swiper_thumbs) {
+                        firstThumb.setAttribute('src', variation.image.gallery_thumbnail_src);
+                    }
+
+                    swiper_images.slideTo(0);
+                }
+            });
+
+            variations_form.addEventListener('reset_image', () => {
+                firstImage.setAttribute('src', firstImageSrc);
+                imagePopupSrc.setAttribute('data-src', dataLargeImage);
+                if (swiper_thumbs) {
+                    firstThumb.setAttribute('src', firstThumbSrc);
+                }
+
+                swiper_images.slideTo(0);
+            });
+        }
+    });
+};
+
 document.addEventListener('DOMContentLoaded', initializeSwipers);
+document.addEventListener('DOMContentLoaded', spgSwipers);

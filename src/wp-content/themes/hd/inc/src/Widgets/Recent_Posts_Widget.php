@@ -30,25 +30,25 @@ class Recent_Posts_Widget extends Abstract_Widget {
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post categories', TEXT_DOMAIN ),
+				'label' => __( 'Show categories', TEXT_DOMAIN ),
 			],
 			'show_thumbnail' => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post thumbnails', TEXT_DOMAIN ),
+				'label' => __( 'Show thumbnail', TEXT_DOMAIN ),
 			],
 			'show_date'      => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post date', TEXT_DOMAIN ),
+				'label' => __( 'Show post date', TEXT_DOMAIN ),
 			],
 			'show_desc'      => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post description', TEXT_DOMAIN ),
+				'label' => __( 'Show post description', TEXT_DOMAIN ),
 			],
 			'limit_time'     => [
 				'type'  => 'text',
@@ -66,6 +66,8 @@ class Recent_Posts_Widget extends Abstract_Widget {
 	 *
 	 * @param array $args
 	 * @param array $instance
+	 *
+	 * @throws \JsonException
 	 */
 	public function widget( $args, $instance ) {
 		if ( $this->get_cached_widget( $args ) ) {
@@ -157,7 +159,6 @@ class Recent_Posts_Widget extends Abstract_Widget {
 						$post_title     = ( ! empty( $post_title ) ) ? $post_title : __( '(no title)', TEXT_DOMAIN );
 
                         $attr_post_title = Helper::esc_attr_strip_tags( $post_title );
-
                         $post_thumbnail = get_the_post_thumbnail( $recent_post, 'medium', [ 'alt' => $attr_post_title ] );
 
 						$aria_current = '';

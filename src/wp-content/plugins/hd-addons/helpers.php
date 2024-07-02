@@ -110,8 +110,7 @@ if ( ! function_exists( 'esc_attr_strip_tags' ) ) {
 	 * @return string|null
 	 */
 	function esc_attr_strip_tags( $string ): ?string {
-		$string = strip_tags( $string );
-		$string = preg_replace( '/[\r\n\t ]+/', ' ', $string );
+		$string = wp_strip_all_tags( $string, true );
 
 		return esc_attr( $string );
 	}

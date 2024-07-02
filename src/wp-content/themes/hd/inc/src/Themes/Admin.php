@@ -184,18 +184,19 @@ final class Admin {
 			$dns_prefetch     = array_map( 'sanitize_url', $dns_prefetch );
 
 			$optimizer_options = [
-				'https_enforce'    => ! empty( $data['https_enforce'] ) ? sanitize_text_field( $data['https_enforce'] ) : 0,
-				'gzip'             => ! empty( $data['gzip'] ) ? sanitize_text_field( $data['gzip'] ) : 0,
-				'bs_caching'       => ! empty( $data['bs_caching'] ) ? sanitize_text_field( $data['bs_caching'] ) : 0,
-				'heartbeat'        => ! empty( $data['heartbeat'] ) ? sanitize_text_field( $data['heartbeat'] ) : 0,
-				'minify_html'      => ! empty( $data['minify_html'] ) ? sanitize_text_field( $data['minify_html'] ) : 0,
-				'svgs'             => ! empty( $data['svgs'] ) ? sanitize_text_field( $data['svgs'] ) : 'disable',
-				'lazy_load'        => ! empty( $data['lazy_load'] ) ? sanitize_text_field( $data['lazy_load'] ) : 0,
-				'lazy_load_mobile' => ! empty( $data['lazy_load_mobile'] ) ? sanitize_text_field( $data['lazy_load_mobile'] ) : 0,
-				'exclude_lazyload' => $exclude_lazyload,
-				'font_optimize'    => ! empty( $data['font_optimize'] ) ? sanitize_text_field( $data['font_optimize'] ) : 0,
-				'font_preload'     => $font_preload,
-				'dns_prefetch'     => $dns_prefetch,
+				'https_enforce'     => ! empty( $data['https_enforce'] ) ? sanitize_text_field( $data['https_enforce'] ) : 0,
+				'gzip'              => ! empty( $data['gzip'] ) ? sanitize_text_field( $data['gzip'] ) : 0,
+				'bs_caching'        => ! empty( $data['bs_caching'] ) ? sanitize_text_field( $data['bs_caching'] ) : 0,
+				'heartbeat'         => ! empty( $data['heartbeat'] ) ? sanitize_text_field( $data['heartbeat'] ) : 0,
+				'minify_html'       => ! empty( $data['minify_html'] ) ? sanitize_text_field( $data['minify_html'] ) : 0,
+				'svgs'              => ! empty( $data['svgs'] ) ? sanitize_text_field( $data['svgs'] ) : 'disable',
+				'lazy_load'         => ! empty( $data['lazy_load'] ) ? sanitize_text_field( $data['lazy_load'] ) : 0,
+				'lazy_load_mobile'  => ! empty( $data['lazy_load_mobile'] ) ? sanitize_text_field( $data['lazy_load_mobile'] ) : 0,
+				'exclude_lazyload'  => $exclude_lazyload,
+				'font_optimize'     => ! empty( $data['font_optimize'] ) ? sanitize_text_field( $data['font_optimize'] ) : 0,
+				'font_combined_css' => ! empty( $data['font_combined_css'] ) ? sanitize_text_field( $data['font_combined_css'] ) : 0,
+				'font_preload'      => $font_preload,
+				'dns_prefetch'      => $dns_prefetch,
 			];
 
 			Helper::updateOption( 'optimizer__options', $optimizer_options, true );

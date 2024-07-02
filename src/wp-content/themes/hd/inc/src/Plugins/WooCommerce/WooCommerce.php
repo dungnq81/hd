@@ -6,6 +6,9 @@ use Cores\Helper;
 
 \defined( 'ABSPATH' ) || die;
 
+require __DIR__ . "/hooks.php";
+require __DIR__ . "/functions.php";
+
 /**
  * WooCommerce Plugin
  *
@@ -21,7 +24,6 @@ final class WooCommerce {
 	// ------------------------------------------------------
 
 	public function __construct() {
-
 		$this->woocommerce_options = Helper::getOption( 'woocommerce__options', false, false );
 		$woocommerce_jsonld        = $this->woocommerce_options['woocommerce_jsonld'] ?? '';
 		if ( $woocommerce_jsonld ) {
@@ -30,11 +32,10 @@ final class WooCommerce {
 			add_action( 'init', [ &$this, 'remove_woocommerce_jsonld' ], 10 );
 		}
 
-		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 33 );
-
 		add_action( 'widgets_init', [ &$this, 'unregister_default_widgets' ], 33 );
 		add_action( 'widgets_init', [ &$this, 'register_widgets' ], 33 );
 
+		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 33 );
 		add_action( 'enqueue_block_assets', [ &$this, 'enqueue_block_assets' ], 41 );
 		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 98 );
 
@@ -118,6 +119,9 @@ final class WooCommerce {
 		if ( $woocommerce_default_css ) {
 			add_filter( 'woocommerce_enqueue_styles', '__return_false' );
 		}
+
+		// Remove default hooks
+		remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20 );
 	}
 
 	// ------------------------------------------------------

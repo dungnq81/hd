@@ -39,31 +39,31 @@ class Posts_Widget extends Abstract_Widget {
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post categories', TEXT_DOMAIN ),
+				'label' => __( 'Show categories', TEXT_DOMAIN ),
 			],
 			'show_thumbnail'        => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post thumbnails', TEXT_DOMAIN ),
+				'label' => __( 'Show thumbnail', TEXT_DOMAIN ),
 			],
 			'show_date'             => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post date', TEXT_DOMAIN ),
+				'label' => __( 'Show post date', TEXT_DOMAIN ),
 			],
 			'show_desc'             => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post description', TEXT_DOMAIN ),
+				'label' => __( 'Show post description', TEXT_DOMAIN ),
 			],
 			'show_detail_button'             => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display detail button', TEXT_DOMAIN ),
+				'label' => __( 'Show detail button', TEXT_DOMAIN ),
 			],
 			'limit_time'            => [
 				'type'  => 'text',
@@ -76,12 +76,14 @@ class Posts_Widget extends Abstract_Widget {
 		parent::__construct();
 	}
 
-    /**
-     * Outputs the content for the posts widget instance.
-     *
-     * @param array $args
-     * @param array $instance
-     */
+	/**
+	 * Outputs the content for the posts widget instance.
+	 *
+	 * @param array $args
+	 * @param array $instance
+	 *
+	 * @throws \JsonException
+	 */
     public function widget( $args, $instance ) {
         if ( $this->get_cached_widget( $args ) ) {
             return;
@@ -90,7 +92,7 @@ class Posts_Widget extends Abstract_Widget {
 	    $title = $this->get_instance_title( $instance );
 
 	    $container          = ! empty( $instance['container'] );
-	    $number             = ( ! empty( $instance['number'] ) ) ? absint( $instance['number'] ) : $this->settings['number']['std'];
+	    $number             = ! empty( $instance['number'] ) ? absint( $instance['number'] ) : $this->settings['number']['std'];
 	    $show_cat           = ! empty( $instance['show_cat'] );
 	    $show_thumbnail     = ! empty( $instance['show_thumbnail'] );
 	    $show_date          = ! empty( $instance['show_date'] );
@@ -160,8 +162,8 @@ class Posts_Widget extends Abstract_Widget {
             </div>
             <?php
 
-            if ( $show_view_more_button ) {echo $view_more_link;}
-            if ( $container ) {echo '</div>';}
+            if ( $show_view_more_button ) { echo $view_more_link; }
+            if ( $container ) { echo '</div>'; }
 
             ?>
         </section>

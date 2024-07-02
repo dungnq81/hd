@@ -34,6 +34,7 @@ abstract class Abstract_Lazy_Load {
 		       $this->is_lazy_url_excluded() ||
 		       is_feed() ||
 		       is_admin() ||
+		       wp_doing_ajax() ||
 		       is_amp_enabled( $content );
 	}
 
@@ -60,7 +61,7 @@ abstract class Abstract_Lazy_Load {
 	 */
 	public function filter_html( $content ): mixed {
 
-		// Bail if it's feed or if the content is empty.
+		// Bail if it's feed, ajax, admin, amp... or if the content is empty.
 		if ( $this->should_process( $content ) ) {
 			return $content;
 		}

@@ -14,7 +14,7 @@ class offCanvas_Widget extends Abstract_Widget {
 		$this->settings           = [
 			'hide_if_desktop' => [
 				'type'  => 'checkbox',
-				'std'   => 1,
+				'std'   => 0,
 				'label' => __( 'Hide if desktop devices', TEXT_DOMAIN ),
 			],
 		];
@@ -27,6 +27,8 @@ class offCanvas_Widget extends Abstract_Widget {
 	 *
 	 * @param array $args
 	 * @param array $instance
+	 *
+	 * @throws \JsonException
 	 */
 	public function widget( $args, $instance ) {
 		if ( $this->get_cached_widget( $args ) ) {

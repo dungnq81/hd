@@ -30,12 +30,63 @@ final class Shortcode {
 			'vertical_menu'   => __CLASS__ . '::vertical_menu',
 
 			'posts' => __CLASS__ . '::posts',
+
+			'menu_logo'         => __CLASS__ . '::menu_logo',
+			'social_menu'         => __CLASS__ . '::social_menu',
 		];
 
 		foreach ( $shortcodes as $shortcode => $function ) {
 			add_shortcode( apply_filters( "{$shortcode}_shortcode_tag", $shortcode ), $function );
 		}
 	}
+
+	// ------------------------------------------------------
+
+    public static function social_menu( array $atts = [] ): string {
+	    $atts = shortcode_atts(
+		    [
+			    'class'    => 'social-menu',
+		    ],
+		    $atts,
+		    'social_menu'
+	    );
+
+	    $class = $atts['class'] ? ' ' . Helper::esc_attr_strip_tags( $atts['class'] ) : ' social-menu';
+
+	    ob_start();
+
+	    $social_options       = get_option( 'social__options' );
+	    $social_follows_links = filter_setting_options( 'social_follows_links', [] );
+
+        if ( $social_options ) {
+            foreach ( $social_options as $key => $social_option ) {
+                $data = [
+                    'url' => $social_option['url'],
+                    'name' => $key,
+                    //'color' => $social_follows_links[$key]['color'],
+                    'icon' => $social_follows_links[$key]['icon'],
+                ];
+
+                $thumb = '';
+	            if ( filter_var( $data['icon'], FILTER_VALIDATE_URL ) || str_starts_with( $data['icon'], 'data:' ) ) :
+		            $thumb = '<img src="' . $data['icon'] . '" alt="' . esc_attr( $data['name'] ) . '">';
+                elseif ( str_starts_with( $data['icon'], '<svg' ) ) :
+	                $thumb = $data['icon'];
+                elseif ( is_string( $data['icon'] ) ) :
+	                $thumb = '<i class="' . $data['icon'] . '"></i>';
+	            endif;
+
+                if ( ! empty( $social_option['url'] ) ) {
+        ?>
+        <li>
+            <a href="<?=$data['url']?>" title="<?=esc_attr_strip_tags( $data['name'] )?>" target="_blank">
+                <?=$thumb?>
+                <span class="social-txt"><?=$data['name']?></span>
+            </a>
+        </li>
+        <?php } } }
+	    return '<ul class="menu' . $class . '">' . ob_get_clean() . '</ul>';
+    }
 
 	// ------------------------------------------------------
 
@@ -55,6 +106,7 @@ final class Shortcode {
 			'limit_time'    => '',
 			'wrapper'       => '',
 			'wrapper_class' => '',
+			'title_tag'     => 'h3',
 
 			'show' => [
 				'thumbnail'      => true,
@@ -90,6 +142,7 @@ final class Shortcode {
 		$wrapper_close = $atts['wrapper'] ? '</' . $atts['wrapper'] . '>' : '';
 
 		$thumbnail_size = $atts['show']['thumbnail_size'] ?? 'medium';
+		$title_tag      = $atts['title_tag'] ?? 'p';
 
 		ob_start();
 
@@ -107,11 +160,16 @@ final class Shortcode {
             $attr_post_title = Helper::esc_attr_strip_tags( $post_title );
 			$post_thumbnail = get_the_post_thumbnail( $post, $thumbnail_size, [ 'alt' => $attr_post_title ] );
 
-			echo $wrapper_open . '<div class="cell">';
-			echo '<article class="item">';
+			if ( empty( $post_thumbnail ) ) {
+				$post_thumbnail = Helper::placeholderSrc();
+			}
+
+			//echo $wrapper_open . '<div class="cell">';
+			echo $wrapper_open;
+			echo '<div class="item">';
 
 			// thumbnail
-			if ( $atts['show']['thumbnail'] && $post_thumbnail ) :
+			if ( $atts['show']['thumbnail'] ) :
 
 				$scale_class = isset( $atts['show']['scale'] ) ? 'scale ' : '';
 				$ratio_class = Helper::aspectRatioClass();
@@ -124,7 +182,7 @@ final class Shortcode {
 
 			// post info
 			echo '<div class="cover-content">';
-			echo '<a href="' . get_permalink( $post->ID ) . '" title="' . $attr_post_title . '"><h6>' . $post_title . '</h6></a>';
+			echo '<a href="' . get_permalink( $post->ID ) . '" title="' . $attr_post_title . '"><' . $title_tag . '>' . $post_title . '</' . $title_tag . '></a>';
 
 			if ( $atts['show']['time'] || $atts['show']['term'] ) :
 				echo '<div class="meta">';
@@ -148,8 +206,9 @@ final class Shortcode {
 
 			echo '</div>';
 
-			echo '</article>';
-			echo '</div>' . $wrapper_close;
+			echo '</div>';
+			//echo '</div>' . $wrapper_close;
+			echo $wrapper_close;
 
 			++ $i;
 		endwhile;
@@ -235,7 +294,7 @@ final class Shortcode {
 		$atts = shortcode_atts(
 			[
 				'title'           => '',
-				'hide_if_desktop' => true,
+				'hide_if_desktop' => 1,
 				'class'           => '',
 			],
 			$atts,
@@ -243,14 +302,14 @@ final class Shortcode {
 		);
 
 		$title = $atts['title'] ?: __( 'Menu', TEXT_DOMAIN );
-		$class = $atts['hide_if_desktop'] ? ' !lg:hidden' : '';
-		$class = $atts['class'] ? ' ' . Helper::esc_attr_strip_tags( $atts['class'] ) . $class : '';
+		$class = ! empty( $atts['hide_if_desktop'] ) ? ' !lg:hidden' : '';
+		$class .= $atts['class'] ? ' ' . Helper::esc_attr_strip_tags( $atts['class'] ) . $class : '';
 
 		ob_start();
 
 		?>
         <button class="menu-lines" type="button" data-open="offCanvasMenu" aria-label="button">
-            <span class="menu-txt"><?= $title; ?></span>
+            <span class="menu-txt"><?= $title ?></span>
         </button>
 		<?php
 
@@ -293,6 +352,26 @@ final class Shortcode {
 	 *
 	 * @return string
 	 */
+	public static function menu_logo( array $atts = [] ): string {
+		$atts = shortcode_atts(
+			[
+				'heading' => 'h1',
+				'class'   => 'logo',
+			],
+			$atts,
+			'menu_logo'
+		);
+
+		return Helper::siteTitleOrLogo( false, $atts['heading'], $atts['class'] );
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @param array $atts
+	 *
+	 * @return string
+	 */
 	public static function site_logo( array $atts = [] ): string {
 		$atts = shortcode_atts(
 			[
@@ -316,28 +395,29 @@ final class Shortcode {
 	public static function inline_search( array $atts = [] ): string {
 		$atts = shortcode_atts(
 			[
-				'title' => '',
-				'class' => '',
-				'id'    => esc_attr( uniqid( 'search-', false ) ),
+				'title'       => '',
+				'placeholder' => '',
+				'class'       => '',
+				'id'          => esc_attr( uniqid( 'search-', false ) ),
 			],
 			$atts,
 			'inline_search'
 		);
 
-		$title             = $atts['title'] ?: __( 'Search', TEXT_DOMAIN );
-		$title_for         = __( 'Search for', TEXT_DOMAIN );
-		$placeholder_title = esc_attr( __( 'Search ...', TEXT_DOMAIN ) );
+		$title             = $atts['title'] ?: '';
+		$title_for         = __( 'Search', TEXT_DOMAIN );
+		$placeholder_title = $atts['placeholder'] ?: __( 'Search...', TEXT_DOMAIN );
 		$id                = $atts['id'] ? Helper::esc_attr_strip_tags( $atts['id'] ) : esc_attr( uniqid( 'search-', false ) );
-        $class = $atts['class'] ? ' ' . Helper::esc_attr_strip_tags( $atts['class'] ) : '';
+		$class             = $atts['class'] ? ' ' . Helper::esc_attr_strip_tags( $atts['class'] ) : '';
 
 		ob_start();
 
 		?>
         <form action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
-            <label for="<?= $id; ?>" class="screen-reader-text"><?= $title_for; ?></label>
-            <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" autocomplete="off" name="s" value="<?= get_search_query(); ?>" placeholder="<?= $placeholder_title; ?>">
+            <label for="<?= $id ?>" class="screen-reader-text"><?= $title_for ?></label>
+            <input id="<?= $id ?>" required pattern="^(.*\S+.*)$" type="search" autocomplete="off" name="s" value="<?= get_search_query() ?>" placeholder="<?= $placeholder_title; ?>">
             <button type="submit" data-glyph="">
-                <span><?= $title; ?></span>
+                <span><?= $title ?></span>
             </button>
 			<?php if ( class_exists( \WooCommerce::class ) ) : ?>
             <input type="hidden" name="post_type" value="product">
@@ -376,21 +456,21 @@ final class Shortcode {
 		ob_start();
 
 		?>
-        <a class="trigger-s" title="<?= Helper::esc_attr_strip_tags( $title ) ?>" href="javascript:;" data-toggle="dropdown-<?= $id ?>" data-glyph=""><span><?php echo $title; ?></span></a>
+        <a class="trigger-s" title="<?= Helper::esc_attr_strip_tags( $title ) ?>" href="javascript:;" data-toggle="dropdown-<?= $id ?>" data-glyph=""><span><?= $title ?></span></a>
         <div role="search" class="dropdown-pane" id="dropdown-<?= $id ?>" data-dropdown data-auto-focus="true">
-            <form action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
+            <form action="<?= Helper::home() ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
                 <div class="frm-container">
-                    <label for="<?= $id; ?>" class="screen-reader-text"><?= $title_for; ?></label>
-                    <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" name="s" value="<?php echo get_search_query(); ?>" placeholder="<?php echo $placeholder_title; ?>">
+                    <label for="<?= $id ?>" class="screen-reader-text"><?= $title_for ?></label>
+                    <input id="<?= $id ?>" required pattern="^(.*\S+.*)$" type="search" name="s" value="<?= get_search_query() ?>" placeholder="<?= $placeholder_title ?>">
                     <button class="btn-s" type="submit" data-glyph="">
-                        <span><?php echo $title; ?></span>
+                        <span><?= $title ?></span>
                     </button>
                     <button class="trigger-s-close" type="button" data-glyph="">
-                        <span><?php echo $close_title; ?></span>
+                        <span><?= $close_title ?></span>
                     </button>
                 </div>
 				<?php if ( class_exists( \WooCommerce::class ) ) : ?>
-                    <input type="hidden" name="post_type" value="product">
+                <input type="hidden" name="post_type" value="product">
 				<?php endif; ?>
             </form>
         </div>

@@ -10,7 +10,7 @@ use Cores\Helper;
 \defined( 'ABSPATH' ) || die;
 
 // -----------------------------------------------
-// wp_footer hook
+// wp_footer
 // -----------------------------------------------
 
 if ( ! function_exists( '__wp_footer' ) ) {
@@ -26,7 +26,7 @@ if ( ! function_exists( '__wp_footer' ) ) {
 			echo apply_filters( // phpcs:ignore
 				'end_back_to_top_output',
 				sprintf(
-					'<a title="%1$s" aria-label="%1$s" rel="nofollow" href="#" class="back-to-top toTop" data-scroll-speed="%2$s" data-start-scroll="%3$s" data-glyph=""></a>',
+					'<a title="%1$s" aria-label="%1$s" rel="nofollow" href="#" class="back-to-top toTop" data-scroll-speed="%2$s" data-start-scroll="%3$s" data-glyph=""></a>',
 					esc_attr__( 'Scroll back to top', TEXT_DOMAIN ),
 					absint( apply_filters( 'hd_back_to_top_scroll_speed', 400 ) ),
 					absint( apply_filters( 'hd_back_to_top_start_scroll', 300 ) ),
@@ -37,18 +37,18 @@ if ( ! function_exists( '__wp_footer' ) ) {
 }
 
 // -----------------------------------------------
-// hd_footer hook
+// hd_footer
 // -----------------------------------------------
 
-if ( ! function_exists( '__construct_footer_widgets' ) ) {
-	add_action( 'hd_footer', '__construct_footer_widgets', 5 );
+if ( ! function_exists( 'hd_construct_footer_widgets' ) ) {
+	add_action( 'hd_footer', 'hd_construct_footer_widgets', 5 );
 
 	/**
 	 * Build our footer widgets
 	 *
 	 * @return void
 	 */
-	function __construct_footer_widgets(): void {
+	function hd_construct_footer_widgets(): void {
 		$rows    = (int) Helper::getThemeMod( 'footer_row_setting' );
 		$regions = (int) Helper::getThemeMod( 'footer_col_setting' );
 
@@ -92,6 +92,7 @@ if ( ! function_exists( '__construct_footer_widgets' ) ) {
 
                     echo '</div>';
                     echo '</div>';
+                    echo '</div>';
 
                 endif;
             endfor;
@@ -103,15 +104,15 @@ if ( ! function_exists( '__construct_footer_widgets' ) ) {
 
 // -----------------------------------------------
 
-if ( ! function_exists( '__construct_footer' ) ) {
-	add_action( 'hd_footer', '__construct_footer', 10 );
+if ( ! function_exists( 'hd_construct_footer' ) ) {
+	add_action( 'hd_footer', 'hd_construct_footer', 10 );
 
 	/**
 	 * Build our footer
 	 *
 	 * @return void
 	 */
-	function __construct_footer(): void {
+	function hd_construct_footer(): void {
 		$footer_container = Helper::getThemeMod( 'footer_container_setting' );
 
 		?>

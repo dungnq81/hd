@@ -200,8 +200,8 @@ class Products_Widget extends Abstract_Widget {
             </div>
 	        <?php
 
-	        if ( $show_view_more_button ) {echo $view_more_link;}
-	        if ( $container ) {echo '</div>';}
+	        if ( $show_view_more_button ) { echo $view_more_link; }
+	        if ( $container ) { echo '</div>'; }
 
 	        ?>
         </section>

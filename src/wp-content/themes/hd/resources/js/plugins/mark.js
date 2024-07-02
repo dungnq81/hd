@@ -1,1 +1,1 @@
-import mark from "mark.js";
+import mark from 'mark.js';

@@ -130,6 +130,11 @@ final class Optimizer {
 
 			return $vars;
 		} );
+
+        // Remove archive title prefix
+		add_filter( 'get_the_archive_title_prefix', function ( $prefix ) {
+            return __return_empty_string();
+        } );
 	}
 
 	// ------------------------------------------------------
