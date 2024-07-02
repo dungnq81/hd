@@ -24,7 +24,7 @@ if ( ! function_exists( '__wp_footer' ) ) {
 	function __wp_footer(): void {
 		if ( apply_filters( 'hd_back_to_top', true ) ) {
 			echo apply_filters( // phpcs:ignore
-				'end_back_to_top_output',
+				'hd_back_to_top_output',
 				sprintf(
 					'<a title="%1$s" aria-label="%1$s" rel="nofollow" href="#" class="back-to-top toTop" data-scroll-speed="%2$s" data-start-scroll="%3$s" data-glyph=""></a>',
 					esc_attr__( 'Scroll back to top', TEXT_DOMAIN ),
@@ -40,15 +40,15 @@ if ( ! function_exists( '__wp_footer' ) ) {
 // hd_footer
 // -----------------------------------------------
 
-if ( ! function_exists( 'hd_construct_footer_widgets' ) ) {
-	add_action( 'hd_footer', 'hd_construct_footer_widgets', 5 );
+if ( ! function_exists( '__hd_construct_footer_widgets' ) ) {
+	add_action( 'hd_footer', '__hd_construct_footer_widgets', 5 );
 
 	/**
 	 * Build our footer widgets
 	 *
 	 * @return void
 	 */
-	function hd_construct_footer_widgets(): void {
+	function __hd_construct_footer_widgets(): void {
 		$rows    = (int) Helper::getThemeMod( 'footer_row_setting' );
 		$regions = (int) Helper::getThemeMod( 'footer_col_setting' );
 
@@ -104,19 +104,19 @@ if ( ! function_exists( 'hd_construct_footer_widgets' ) ) {
 
 // -----------------------------------------------
 
-if ( ! function_exists( 'hd_construct_footer' ) ) {
-	add_action( 'hd_footer', 'hd_construct_footer', 10 );
+if ( ! function_exists( '__hd_construct_footer_credit' ) ) {
+	add_action( 'hd_footer', '__hd_construct_footer_credit', 10 );
 
 	/**
 	 * Build our footer
 	 *
 	 * @return void
 	 */
-	function hd_construct_footer(): void {
+	function __hd_construct_footer_credit(): void {
 		$footer_container = Helper::getThemeMod( 'footer_container_setting' );
 
 		?>
-        <footer class="footer-info" <?php echo Helper::microdata( 'footer' ); ?>>
+        <div id="footer-info" class="footer-info">
 	        <?php
 
 	        toggle_container( $footer_container );
@@ -126,24 +126,20 @@ if ( ! function_exists( 'hd_construct_footer' ) ) {
 	         */
 	        do_action( 'hd_before_credits' );
 
-	        ?>
-            <div class="footer-copyright">
-                <?php
+	        /**
+	         * @see __hd_credits - 10
+	         */
+	        do_action( 'hd_credits' );
 
-                /**
-                 * @see __hd_credits - 10
-                 */
-                do_action( 'hd_credits' );
+	        echo '</div>';
 
-                ?>
-            </div>
-
-			<?php echo '</div>'; ?>
-
-        </footer>
+            ?>
+        </div><!-- #footer-info -->
 		<?php
 	}
 }
+
+// -----------------------------------------------
 
 if ( ! function_exists( '__hd_before_credits' ) ) {
 	add_action( 'hd_before_credits', '__hd_before_credits', 15 );
@@ -163,6 +159,8 @@ if ( ! function_exists( '__hd_before_credits' ) ) {
 	}
 }
 
+// -----------------------------------------------
+
 if ( ! function_exists( '__hd_credits' ) ) {
 	add_action( 'hd_credits', '__hd_credits', 10 );
 
@@ -172,6 +170,7 @@ if ( ! function_exists( '__hd_credits' ) ) {
 	 * @return void
 	 */
 	function __hd_credits(): void {
+        echo '<div class="footer-copyright">';
 		$copyright = sprintf(
 			'<span class="copyright">&copy; %1$s %2$s</span><span class="hd">, %3$s <a class="_blank" title="%6$s" href="%4$s" %5$s>%6$s</a></span>',
 			date( 'Y' ), // phpcs:ignore
@@ -183,5 +182,8 @@ if ( ! function_exists( '__hd_credits' ) ) {
 		);
 
 		echo apply_filters( 'hd_copyright', $copyright ); // phpcs:ignore
+		echo '</div>';
 	}
 }
+
+// -----------------------------------------------

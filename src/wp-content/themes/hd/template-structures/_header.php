@@ -21,7 +21,6 @@ if ( ! function_exists( '__wp_head' ) ) {
 	 */
 	function __wp_head(): void {
 
-		// Add viewport to wp_head
 		//$meta_viewport = '<meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0" />';
 		$meta_viewport = '<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />';
 		echo apply_filters( 'hd_meta_viewport', $meta_viewport );  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -65,15 +64,15 @@ if ( ! function_exists( '__external_fonts' ) ) {
 // hd_before_header
 // -----------------------------------------------
 
-if ( ! function_exists( 'hd_skip_to_content_link' ) ) {
-	add_action( 'hd_before_header', 'hd_skip_to_content_link', 2 );
+if ( ! function_exists( '__hd_skip_to_content_link' ) ) {
+	add_action( 'hd_before_header', '__hd_skip_to_content_link', 2 );
 
 	/**
 	 * Add skip to a content link before the header.
 	 *
 	 * @return void
 	 */
-	function hd_skip_to_content_link(): void {
+	function __hd_skip_to_content_link(): void {
 		printf(
 			'<a class="screen-reader-text skip-link" href="#site-content" title="%1$s">%2$s</a>',
 			esc_attr__( 'Skip to content', TEXT_DOMAIN ),
@@ -84,15 +83,15 @@ if ( ! function_exists( 'hd_skip_to_content_link' ) ) {
 
 // -----------------------------------------------
 
-if ( ! function_exists( 'hd_off_canvas_menu' ) ) {
-	add_action( 'hd_before_header', 'hd_off_canvas_menu', 10 );
+if ( ! function_exists( '__hd_off_canvas_menu' ) ) {
+	add_action( 'hd_before_header', '__hd_off_canvas_menu', 10 );
 
 	/**
 	 * Position canvas menu
 	 *
 	 * @return void
 	 */
-	function hd_off_canvas_menu(): void {
+	function __hd_off_canvas_menu(): void {
 
 		$position = Helper::getThemeMod( 'offcanvas_menu_setting' );
 		if ( ! in_array( $position, [ 'left', 'right', 'top', 'bottom' ], false ) ) {
@@ -110,39 +109,32 @@ if ( ! function_exists( 'hd_off_canvas_menu' ) ) {
 // hd_header
 // -----------------------------------------------
 
-if ( ! function_exists( 'hd_construct_header' ) ) {
-	add_action( 'hd_header', 'hd_construct_header', 10 );
+if ( ! function_exists( '__hd_construct_header' ) ) {
+	add_action( 'hd_header', '__hd_construct_header', 10 );
 
 	/**
 	 * @return void
 	 */
-	function hd_construct_header(): void {
-		?>
-        <header id="masthead" class="site-header" <?php echo Helper::microdata( 'header' ); ?>>
-            <?php
+	function __hd_construct_header(): void {
 
-            /**
-             * @see __top_header - 10
-             * @see __header - 11
-             * @see __bottom_header - 12
-             */
-            do_action( 'masthead' );
-
-            ?>
-		</header>
-		<?php
+		/**
+		 * @see _hd_top_header - 10
+		 * @see _hd_header - 11
+		 * @see _hd_bottom_header - 12
+		 */
+		do_action( 'masthead' );
 	}
 }
 
 // -----------------------------------------------
 
-if ( ! function_exists( '__top_header' ) ) {
-	add_action( 'masthead', '__top_header', 10 );
+if ( ! function_exists( '_hd_top_header' ) ) {
+	add_action( 'masthead', '_hd_top_header', 10 );
 
 	/**
 	 * @return void
 	 */
-	function __top_header(): void {
+	function _hd_top_header(): void {
 		$top_header_cols      = (int) Helper::getThemeMod( 'top_header_setting' );
 		$top_header_container = Helper::getThemeMod( 'top_header_container_setting' );
 
@@ -172,13 +164,13 @@ if ( ! function_exists( '__top_header' ) ) {
 
 // -----------------------------------------------
 
-if ( ! function_exists( '__header' ) ) {
-	add_action( 'masthead', '__header', 11 );
+if ( ! function_exists( '_hd_header' ) ) {
+	add_action( 'masthead', '_hd_header', 11 );
 
 	/**
 	 * @return void
 	 */
-	function __header(): void {
+	function _hd_header(): void {
 		$header_cols      = (int) Helper::getThemeMod( 'header_setting' );
 		$header_container = Helper::getThemeMod( 'header_container_setting' );
 
@@ -208,13 +200,13 @@ if ( ! function_exists( '__header' ) ) {
 
 // -----------------------------------------------
 
-if ( ! function_exists( '__bottom_header' ) ) {
-	add_action( 'masthead', '__bottom_header', 12 );
+if ( ! function_exists( '_hd_bottom_header' ) ) {
+	add_action( 'masthead', '_hd_bottom_header', 12 );
 
 	/**
 	 * @return void
 	 */
-	function __bottom_header(): void {
+	function _hd_bottom_header(): void {
 		$bottom_header_cols      = (int) Helper::getThemeMod( 'bottom_header_setting' );
 		$bottom_header_container = Helper::getThemeMod( 'bottom_header_container_setting' );
 
@@ -241,3 +233,5 @@ if ( ! function_exists( '__bottom_header' ) ) {
 		<?php endif;
 	}
 }
+
+// -----------------------------------------------
