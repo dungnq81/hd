@@ -1,16 +1,17 @@
 <?php
-/*!
-Plugin Name: HD Addons
-Plugin URI: https://webhd.vn
-Version: 0.24.7
-Requires PHP: 8.2
-Author: HD Team
-Author URI: https://webhd.vn
-Text Domain: hd-addons
-Description: Addons plugin for HD Theme
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-*/
+/**
+ * Plugin Name: HD Addons
+ * Plugin URI: https://webhd.vn
+ * Version: 0.24.7
+ * Requires PHP: 8.2
+ * Author: HD Team
+ * Author URI: https://webhd.vn
+ * Text Domain: hd-addons
+ * Description: Addons plugin for HD Theme
+ * License: GPLv2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * Requires Plugins: advanced-custom-fields-pro
+ */
 
 use Addons\Activator\Activator;
 
@@ -42,13 +43,11 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/helpers.php';
 
+/** ----------------------------------------------- */
+
 register_activation_hook( __FILE__, 'activation' );
 register_deactivation_hook( __FILE__, 'deactivation' );
 register_uninstall_hook( __FILE__, 'uninstall' );
-
-require_once __DIR__ . '/Addons.php';
-
-( new Addons() );
 
 // The code that runs during plugin activation.
 function activation(): void {
@@ -64,3 +63,28 @@ function deactivation(): void {
 function uninstall(): void {
 	Activator::uninstall();
 }
+
+/** ----------------------------------------------- */
+
+add_action( 'admin_notices', 'addons_requirement_notice' );
+
+/**
+ * @return void
+ */
+function addons_requirement_notice(): void {
+	if ( ! check_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
+		printf(
+			'<div class="%1$s"><p>%2$s <a target="_blank" href="%3$s"><strong>%4$s</strong></a></p></div>',
+			'notice notice-error',
+			wp_kses( __( '<strong>HD Addons</strong> plugin requires', ADDONS_TEXT_DOMAIN ), [ 'strong' => [] ] ),
+			'https://www.advancedcustomfields.com/',
+			esc_html__( 'Advanced Custom Fields PRO', ADDONS_TEXT_DOMAIN )
+		);
+	}
+}
+
+/** ----------------------------------------------- */
+
+require_once __DIR__ . '/Addons.php';
+
+( new Addons() );
