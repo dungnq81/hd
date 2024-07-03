@@ -1,6 +1,6 @@
 <?php
 /**
- * Footer elements
+ * Footer hooks
  *
  * @author HD
  */

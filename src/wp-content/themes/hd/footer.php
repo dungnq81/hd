@@ -32,7 +32,7 @@ use Cores\Helper;
         do_action( 'hd_footer' );
 
         ?>
-    </footer>
+    </footer><!-- .site-footer -->
     <?php
 
     /**

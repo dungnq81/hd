@@ -88,21 +88,121 @@ trait Str {
 	 */
 	public static function remove_inline_js_css( $content ): array|string|null {
 
-		// remove <script> tag
+		// Remove <script> tags
 		$content = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $content);
 
-		// JavaScript event
+		// Remove JavaScript event handlers (on* attributes)
 		$content = preg_replace('/\s*on\w+="[^"]*"/i', '', $content);
 		$content = preg_replace("/\s*on\w+='[^']*'/i", '', $content);
 
-		// remove <style> tag
+		// Remove <style> tags
 		$content = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', '', $content);
 
-		// remove inline style
+		// Remove inline style attributes
 		$content = preg_replace('/\s*style="[^"]*"/i', '', $content);
 		$content = preg_replace("/\s*style='[^']*'/i", '', $content);
 
 		return $content;
+	}
+
+	// --------------------------------------------------
+
+	/**
+	 * @param $content
+	 *
+	 * @return string
+	 */
+	public static function extractJavaScript( $content ): string {
+
+		// Define pattern for matching <script> tags
+		$script_pattern = '/<script\b[^>]*>(.*?)<\/script>/is';
+
+		// Find and extract JavaScript code within <script> tags
+		preg_match_all($script_pattern, $content, $matches);
+
+		// Initialize an array to hold the non-empty <script> tags or those with src attribute
+		$valid_scripts = [];
+
+		// Define patterns for detecting potentially malicious code or encoding
+		$malicious_patterns = [
+			'/eval\(/i',           // Use of eval()
+			'/document\.write\(/i',// Use of document.write()
+			'/<script.*?src=[\'"]?data:/i', // Inline scripts with data URIs
+			'/base64,/i'           // Base64 encoding
+		];
+
+		// Loop through all matched <script> tags
+		foreach ($matches[0] as $index => $scriptTag) {
+			$scriptContent = trim($matches[1][$index]);
+			$hasSrc = preg_match('/\bsrc=["\'].*?["\']/', $scriptTag);
+
+			// Check if the script content is not malicious
+			$isMalicious = false;
+			foreach ($malicious_patterns as $pattern) {
+				if (preg_match($pattern, $scriptContent)) {
+					$isMalicious = true;
+					break;
+				}
+			}
+
+			if (!$isMalicious && ($scriptContent !== '' || $hasSrc)) {
+				$valid_scripts[] = $scriptTag;
+			}
+		}
+
+		// Return the concatenated valid <script> tags
+		return implode("\n", $valid_scripts);
+	}
+
+	// --------------------------------------------------
+
+	/**
+	 * @param $content
+	 * @param bool $keepTags
+	 *
+	 * @return string
+	 */
+	public static function extractCSS( $content, bool $keepTags = true ): string {
+
+		// Define patterns for matching <style> and <link> tags
+		$style_pattern = '/<style\b[^>]*>(.*?)<\/style>/is';
+		$link_pattern  = '/<link\b[^>]*rel=["\'](stylesheet|prefetch|preload)["\'][^>]*href=["\'][^"\']*["\'][^>]*>/is';
+
+		// Find and extract <style> tags with their content
+		preg_match_all( $style_pattern, $content, $style_matches );
+
+		// Find and extract <link> tags with specified rel attributes and href attribute
+		preg_match_all( $link_pattern, $content, $link_matches );
+
+		// Initialize an array to hold the valid <style> and <link> tags
+		$valid_css = [];
+
+		// Loop through all matched <style> tags
+		foreach ( $style_matches[0] as $index => $styleTag ) {
+
+			// Check if to keep the tags or just their content
+			if ( $keepTags ) {
+				// Check if the style content is not empty
+				if ( trim( $style_matches[1][ $index ] ) !== '' ) {
+					$valid_css[] = $styleTag;
+				}
+			} else {
+				// Just add the style content without tags
+				$valid_css[] = $style_matches[1][ $index ];
+			}
+		}
+
+		// Loop through all matched <link> tags
+		foreach ( $link_matches[0] as $linkTag ) {
+
+			// Check if to keep the tags or just their content
+			if ( $keepTags ) {
+				$valid_css[] = $linkTag;
+			}
+		}
+
+		// Return the concatenated valid <style> and <link> tags
+		return implode( "\n", $valid_css );
 	}
 
 	// --------------------------------------------------

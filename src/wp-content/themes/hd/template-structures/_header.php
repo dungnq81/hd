@@ -1,6 +1,6 @@
 <?php
 /**
- * Header elements
+ * Header hooks
  *
  * @author HD
  */

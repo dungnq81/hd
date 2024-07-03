@@ -594,7 +594,7 @@ function __hd_theme_setting_options( array $arr ): array {
 			],
 			'twitter'   => [
 				'name'  => 'X (Twitter)',
-				'icon'  => '<i class="fa-brands fa-x-twitter"></i>',
+				'icon'  => 'fa-brands fa-x-twitter',
 				'color' => 'rgb(239, 243, 244)',
 				'url'   => 'https://twitter.com',
 			],

@@ -308,7 +308,6 @@ final class Optimizer {
 
 		/** Custom CSS */
 		add_action( 'wp_enqueue_scripts', [ &$this, 'header_inline_custom_css' ], 11 );
-		//add_action( 'wp_head', [ &$this, 'header_inline_custom_css' ], 98 );
 
 		/** Custom Scripts */
 		add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // header scripts
@@ -324,13 +323,13 @@ final class Optimizer {
 	 * @return void
 	 */
 	public function header_inline_custom_css(): void {
+
 		/** Custom CSS */
 		$css = Helper::getCustomPostContent( 'hd_css', false );
+        $css = Helper::extractCSS( $css, false );
 
 		if ( $css ) {
 			$css = Helper::CSS_Minify( $css, true );
-
-			//echo "<style id='custom-style-inline-css'>" . $css . "</style>";
 			wp_add_inline_style( 'app-style', $css );
 		}
 	}
@@ -344,7 +343,9 @@ final class Optimizer {
 	 */
 	public function body_scripts_bottom__hook(): void {
 		$html_body_bottom = Helper::getCustomPostContent( 'html_body_bottom', true );
-		if ( $html_body_bottom ) {
+		$html_body_bottom = Helper::extractJavaScript( $html_body_bottom );
+
+		if ( $html_body_bottom && ! Helper::Lighthouse() ) {
 			echo $html_body_bottom;
 		}
 	}
@@ -358,7 +359,9 @@ final class Optimizer {
 	 */
 	public function footer_scripts__hook(): void {
 		$html_footer = Helper::getCustomPostContent( 'html_footer', true );
-		if ( $html_footer ) {
+		$html_footer = Helper::extractJavaScript( $html_footer );
+
+		if ( $html_footer && ! Helper::Lighthouse() ) {
 			echo $html_footer;
 		}
 	}
@@ -372,7 +375,9 @@ final class Optimizer {
 	 */
 	public function body_scripts_top__hook(): void {
 		$html_body_top = Helper::getCustomPostContent( 'html_body_top', true );
-		if ( $html_body_top ) {
+		$html_body_top = Helper::extractJavaScript( $html_body_top );
+
+		if ( $html_body_top && ! Helper::Lighthouse() ) {
 			echo $html_body_top;
 		}
 	}
@@ -386,7 +391,9 @@ final class Optimizer {
 	 */
 	public function header_scripts__hook(): void {
 		$html_header = Helper::getCustomPostContent( 'html_header', true );
-		if ( $html_header ) {
+		$html_header = Helper::extractJavaScript( $html_header );
+
+		if ( $html_header && ! Helper::Lighthouse() ) {
 			echo $html_header;
 		}
 	}

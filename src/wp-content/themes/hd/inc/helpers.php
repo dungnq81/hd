@@ -153,6 +153,34 @@ if ( ! function_exists( 'sanitize_customize_image_control_id' ) ) {
 
 // --------------------------------------------------
 
+if ( ! function_exists( 'sanitize_css' ) ) {
+
+	/**
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	function sanitize_css( string $string ): string {
+		return Helper::extractCSS( $string );
+	}
+}
+
+// --------------------------------------------------
+
+if ( ! function_exists( 'sanitize_js' ) ) {
+
+	/**
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	function sanitize_js( string $string ): string {
+		return Helper::extractJavaScript( $string );
+	}
+}
+
+// --------------------------------------------------
+
 if ( ! function_exists( 'sanitize_image' ) ) {
 
 	/**
