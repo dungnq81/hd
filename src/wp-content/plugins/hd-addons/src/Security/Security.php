@@ -29,6 +29,7 @@ final class Security {
 		$this->_illegal_users();
 		$this->_hide_wp_version();
 		$this->_disable_XMLRPC();
+		$this->_disable_Opml();
 		$this->_remove_ReadMe();
 		$this->_disable_RSSFeed();
 		$this->_xss_protection();
@@ -190,6 +191,28 @@ final class Security {
 	// ------------------------------------------------------
 
 	/**
+	 * Opml
+	 *
+	 * @return void
+	 */
+	private function _disable_Opml(): void {
+		if ( $this->security_options['wp_links_opml_off'] ?? 0 ) {
+			add_action( 'init', function () {
+
+				// Check if the request matches wp-links-opml.php
+				if ( str_contains( $_SERVER['REQUEST_URI'], 'wp-links-opml.php' ) ) {
+
+					// If matched, send a 403 Forbidden response and exit
+					status_header( 403 );
+					exit;
+				}
+			} );
+		}
+	}
+
+	// ------------------------------------------------------
+
+	/**
 	 * XML-RPC
 	 *
 	 * @return void
@@ -197,7 +220,7 @@ final class Security {
 	private function _disable_XMLRPC(): void {
 		if ( $this->security_options['xml_rpc_off'] ?? 0 ) {
 
-			// Disable XML-RPC authentication
+			// Disable XML-RPC authentication and related functions
 			if ( is_admin() ) {
 				update_option( 'default_ping_status', 'closed' );
 			}
@@ -206,11 +229,7 @@ final class Security {
 			add_filter( 'pre_update_option_enable_xmlrpc', '__return_false' );
 			add_filter( 'pre_option_enable_xmlrpc', '__return_zero' );
 
-			/**
-			 * unset XML-RPC headers
-			 *
-			 * @param array $headers The array of wp headers
-			 */
+			// Unset XML-RPC headers
 			add_filter( 'wp_headers', function ( $headers ) {
 				if ( isset( $headers['X-Pingback'] ) ) {
 					unset( $headers['X-Pingback'] );
@@ -219,11 +238,7 @@ final class Security {
 				return $headers;
 			}, 10, 1 );
 
-			/**
-			 * unset XML-RPC methods for ping-backs
-			 *
-			 * @param array $methods The array of xml-rpc methods
-			 */
+			// Unset XML-RPC methods for ping-backs
 			add_filter( 'xmlrpc_methods', function ( $methods ) {
 				unset( $methods['pingback.ping'], $methods['pingback.extensions.getPingbacks'] );
 

@@ -7,6 +7,7 @@ $security_options = get_option( 'security__options', false );
 $illegal_users             = $security_options['illegal_users'] ?? '';
 $hide_wp_version           = $security_options['hide_wp_version'] ?? '';
 $xml_rpc_off               = $security_options['xml_rpc_off'] ?? '';
+$wp_links_opml_off         = $security_options['wp_links_opml_off'] ?? '';
 $remove_readme             = $security_options['remove_readme'] ?? '';
 $rss_feed_off              = $security_options['rss_feed_off'] ?? '';
 $lock_protect_system       = $security_options['lock_protect_system'] ?? '';
@@ -27,8 +28,8 @@ $limit_login_attempts      = $security_options['limit_login_attempts'] ?? 0;
     </div>
 </div>
 <div class="section section-checkbox" id="section_xml_rpc_off">
-	<label class="heading" for="xml_rpc_off"><?php _e( 'Disable XML-RPC', ADDONS_TEXT_DOMAIN ); ?></label>
-    <div class="desc"><?php _e( 'XML-RPC was designed as a protocol enabling WordPress to communicate with third-party systems but recently it has been used in a number of exploits. Unless you specifically need to use it, we recommend that XML-RPC is always disabled.', ADDONS_TEXT_DOMAIN )?></div>
+	<label class="heading" for="xml_rpc_off"><?php _e( 'Disable XMLRPC', ADDONS_TEXT_DOMAIN ); ?></label>
+    <div class="desc"><?php _e( 'XMLRPC was designed as a protocol enabling WordPress to communicate with third-party systems but recently it has been used in a number of exploits. Unless you specifically need to use it, we recommend that XML-RPC is always disabled.', ADDONS_TEXT_DOMAIN )?></div>
 	<div class="option">
 		<div class="controls">
 			<input type="checkbox" class="hd-checkbox hd-control" name="xml_rpc_off" id="xml_rpc_off" <?php checked( $xml_rpc_off, 1 ); ?> value="1">
@@ -36,6 +37,18 @@ $limit_login_attempts      = $security_options['limit_login_attempts'] ?? 0;
 		<div class="explain"><?php _e( 'Check to activate', ADDONS_TEXT_DOMAIN ); ?></div>
 	</div>
 </div>
+
+<div class="section section-checkbox" id="section_wp_links_opml_off">
+	<label class="heading" for="wp_links_opml_off"><?php _e( 'Disable wp-links-opml', ADDONS_TEXT_DOMAIN ); ?></label>
+    <div class="desc"><?php _e( 'The wp-links-opml.php file allows users to export their links to an OPML file. This file is rarely used and can be disabled to enhance the security of your WordPress site. Disabling it helps prevent unauthorized access and potential information leakage.', ADDONS_TEXT_DOMAIN )?></div>
+	<div class="option">
+		<div class="controls">
+			<input type="checkbox" class="hd-checkbox hd-control" name="wp_links_opml_off" id="wp_links_opml_off" <?php checked( $wp_links_opml_off, 1 ); ?> value="1">
+		</div>
+		<div class="explain"><?php _e( 'Check to activate', ADDONS_TEXT_DOMAIN ); ?></div>
+	</div>
+</div>
+
 <div class="section section-checkbox" id="section_remove_readme">
 	<label class="heading" for="remove_readme"><?php _e( 'Delete the Default Readme.html', ADDONS_TEXT_DOMAIN ); ?></label>
     <div class="desc"><?php _e( 'WordPress comes with a readme.html file containing information about your website. The readme.html is often used by hackers to compile lists of potentially vulnerable sites which can be hacked or attacked.', ADDONS_TEXT_DOMAIN ); ?></div>

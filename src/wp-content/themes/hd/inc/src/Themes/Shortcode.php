@@ -56,7 +56,7 @@ final class Shortcode {
 	    ob_start();
 
 	    $social_options       = get_option( 'social__options' );
-	    $social_follows_links = filter_setting_options( 'social_follows_links', [] );
+	    $social_follows_links = Helper::filter_setting_options( 'social_follows_links', [] );
 
         if ( $social_options ) {
             foreach ( $social_options as $key => $social_option ) {

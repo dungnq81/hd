@@ -570,7 +570,7 @@ function __hd_theme_setting_options( array $arr ): array {
 		'recaptcha_custom_forms'          => [],
 
 		// reCAPTCHA exclude users
-		'recaptcha_exclude_user'          => [],
+		'recaptcha_exclude_users'          => [],
 
 		// Links socials
 		'social_follows_links'            => [
@@ -635,6 +635,8 @@ function __hd_theme_setting_options( array $arr ): array {
 				'url'   => '',
 			],
 		],
+
+		'allowed_users_ids_install_plugins' => [ 1 ],
 
 		//----------------------------------------------------------
 		// Custom ...

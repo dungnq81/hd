@@ -34,11 +34,15 @@ final class Theme {
 		add_action( 'after_setup_theme', [ &$this, 'setup' ], 10 );
 		add_action( 'after_setup_theme', [ &$this, 'plugins_setup' ], 10 );
 
+		/** Enqueue Scripts */
+		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 10 );
+
+		/** Restrict admin install plugin */
+		add_filter( 'user_has_cap', [ &$this, 'restrict_admin_plugin_install' ], 10, 3 );
+
 		/** Widgets WordPress */
 		add_action( 'widgets_init', [ &$this, 'unregister_widgets' ], 12 );
 		add_action( 'widgets_init', [ &$this, 'register_widgets' ], 12 );
-
-		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 10 );
 	}
 
 	// --------------------------------------------------
@@ -281,6 +285,34 @@ final class Theme {
 		} else {
 			wp_dequeue_script( 'comment-reply' );
 		}
+	}
+
+	// --------------------------------------------------
+
+	/**
+	 * @param $allcaps
+	 * @param $caps
+	 * @param $args
+	 *
+	 * @return mixed
+	 */
+	public function restrict_admin_plugin_install( $allcaps, $caps, $args ): mixed {
+		$allowed_users_ids_install_plugins = Helper::filter_setting_options( 'allowed_users_ids_install_plugins', [] );
+
+		// Get the current user ID
+		$user_id = get_current_user_id();
+
+		// Check if the current user is in the allowed users list
+		if ( $user_id && in_array( $user_id, $allowed_users_ids_install_plugins, false ) ) {
+			return $allcaps;
+		}
+
+		// If user is not allowed, remove the capability to install plugins
+		if ( isset( $allcaps['activate_plugins'] ) ) {
+			unset( $allcaps['install_plugins'] );
+		}
+
+		return $allcaps;
 	}
 
 	// --------------------------------------------------

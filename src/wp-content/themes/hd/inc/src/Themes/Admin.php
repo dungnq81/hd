@@ -7,6 +7,7 @@ use Addons\Custom_Order\Custom_Order;
 
 use Addons\Security\Options\Dir;
 use Addons\Security\Options\Headers;
+use Addons\Security\Options\Opml;
 use Addons\Security\Options\Readme;
 use Addons\Security\Options\Xmlrpc;
 
@@ -219,6 +220,7 @@ final class Admin {
 				'illegal_users'           => ! empty( $data['illegal_users'] ) ? sanitize_text_field( $data['illegal_users'] ) : '',
 				'hide_wp_version'         => ! empty( $data['hide_wp_version'] ) ? sanitize_text_field( $data['hide_wp_version'] ) : '',
 				'xml_rpc_off'             => ! empty( $data['xml_rpc_off'] ) ? sanitize_text_field( $data['xml_rpc_off'] ) : '',
+				'wp_links_opml_off'       => ! empty( $data['wp_links_opml_off'] ) ? sanitize_text_field( $data['wp_links_opml_off'] ) : '',
 				'remove_readme'           => ! empty( $data['remove_readme'] ) ? sanitize_text_field( $data['remove_readme'] ) : '',
 				'rss_feed_off'            => ! empty( $data['rss_feed_off'] ) ? sanitize_text_field( $data['rss_feed_off'] ) : '',
 				'lock_protect_system'     => ! empty( $data['lock_protect_system'] ) ? sanitize_text_field( $data['lock_protect_system'] ) : '',
@@ -235,6 +237,7 @@ final class Admin {
 			}
 
 			( new Xmlrpc() )->toggle_rules( $security_options['xml_rpc_off'] );
+			( new Opml() )->toggle_rules( $security_options['wp_links_opml_off'] );
 			( new Dir() )->toggle_rules( $security_options['lock_protect_system'] );
 			( new Headers() )->toggle_rules( $security_options['advanced_xss_protection'] );
 		}
