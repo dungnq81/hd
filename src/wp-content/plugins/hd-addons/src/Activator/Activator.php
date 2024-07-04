@@ -11,19 +11,19 @@ final class Activator {
 	 *
 	 * @return void
 	 */
-	public static function activation() {}
+	public static function activation(): void {}
 
 	/**
 	 * The code that runs during plugin deactivation.
 	 *
 	 * @return void
 	 */
-	public static function deactivation() {}
+	public static function deactivation(): void {}
 
 	/**
 	 * The code that will be executed when the plugin is uninstalled.
 	 *
 	 * @return void
 	 */
-	public static function uninstall() {}
+	public static function uninstall(): void {}
 }

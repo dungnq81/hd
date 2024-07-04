@@ -21,7 +21,6 @@ class ComposerStaticInit87b0866f271891d99b07d8193ea233f6
         ),
         'A' => 
         array (
-            'Addons\\Third_Party\\' => 19,
             'Addons\\' => 7,
         ),
     );
@@ -38,10 +37,6 @@ class ComposerStaticInit87b0866f271891d99b07d8193ea233f6
         'Detection\\' => 
         array (
             0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/src',
-        ),
-        'Addons\\Third_Party\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src/3rd',
         ),
         'Addons\\' => 
         array (

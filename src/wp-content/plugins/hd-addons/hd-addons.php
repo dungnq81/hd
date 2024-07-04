@@ -13,8 +13,6 @@
  * Requires Plugins: advanced-custom-fields-pro
  */
 
-use Addons\Activator\Activator;
-
 \defined( 'ABSPATH' ) || die;
 
 $default_headers = [
@@ -43,30 +41,24 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/helpers.php';
 
-/** ----------------------------------------------- */
-
 register_activation_hook( __FILE__, 'activation' );
 register_deactivation_hook( __FILE__, 'deactivation' );
 register_uninstall_hook( __FILE__, 'uninstall' );
 
 // The code that runs during plugin activation.
 function activation(): void {
-	Activator::activation();
+	\Addons\Activator\Activator::activation();
 }
 
 // The code that runs during plugin deactivation.
 function deactivation(): void {
-	Activator::deactivation();
+	\Addons\Activator\Activator::deactivation();
 }
 
 // The code that will be executed when the plugin is uninstalled.
 function uninstall(): void {
-	Activator::uninstall();
+	\Addons\Activator\Activator::uninstall();
 }
-
-/** ----------------------------------------------- */
-
-add_action( 'admin_notices', 'addons_requirement_notice' );
 
 /**
  * @return void
@@ -83,8 +75,17 @@ function addons_requirement_notice(): void {
 	}
 }
 
-/** ----------------------------------------------- */
+add_action( 'admin_notices', 'addons_requirement_notice' );
 
-require_once __DIR__ . '/Addons.php';
+/**
+ *  Global function-holder. Works similar to a singleton's instance().
+ *
+ * @return void
+ */
+function hd_addons(): void {
+	require_once __DIR__ . '/Addons.php';
 
-( new Addons() );
+	( new \Addons() );
+}
+
+\hd_addons();

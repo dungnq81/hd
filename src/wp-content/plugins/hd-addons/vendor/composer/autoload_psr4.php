@@ -9,6 +9,5 @@ return array(
     'enshrined\\svgSanitize\\' => array($vendorDir . '/enshrined/svg-sanitize/src'),
     'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
     'Detection\\' => array($vendorDir . '/mobiledetect/mobiledetectlib/src'),
-    'Addons\\Third_Party\\' => array($baseDir . '/src/3rd'),
     'Addons\\' => array($baseDir . '/src'),
 );
