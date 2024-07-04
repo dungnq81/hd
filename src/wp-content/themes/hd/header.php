@@ -6,8 +6,6 @@
  * @package HD
  */
 
-use Cores\Helper;
-
 \defined( 'ABSPATH' ) || die;
 
 ?><!DOCTYPE html>
@@ -26,7 +24,7 @@ use Cores\Helper;
 
     ?>
 </head>
-<body <?php body_class(); ?> <?php echo Helper::microdata( 'body' ); ?>>
+<body <?php body_class(); ?> <?php echo \Cores\Helper::microdata( 'body' ); ?>>
     <?php
 
     /**
@@ -43,7 +41,7 @@ use Cores\Helper;
     do_action( 'hd_before_header' );
 
     ?>
-    <header id="masthead" class="site-header" <?php echo Helper::microdata( 'header' ); ?>>
+    <header id="masthead" class="site-header" <?php echo \Cores\Helper::microdata( 'header' ); ?>>
         <?php
 
         /**

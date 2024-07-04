@@ -501,6 +501,7 @@ function __hd_theme_setting_options( array $arr ): array {
 			'3-2',
 			'4-3',
 			'16-9',
+			'21-9',
 		],
 
 		// Aspect Ratio - custom post-type
@@ -572,6 +573,8 @@ function __hd_theme_setting_options( array $arr ): array {
 		// reCAPTCHA exclude users
 		'recaptcha_exclude_users'          => [],
 
+		'allowed_users_ids_install_plugins' => [ 1 ],
+
 		// Links socials
 		'social_follows_links'            => [
 			'facebook'  => [
@@ -635,8 +638,6 @@ function __hd_theme_setting_options( array $arr ): array {
 				'url'   => '',
 			],
 		],
-
-		'allowed_users_ids_install_plugins' => [ 1 ],
 
 		//----------------------------------------------------------
 		// Custom ...

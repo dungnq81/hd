@@ -6,8 +6,6 @@
  * @package HD
  */
 
-use Cores\Helper;
-
 \defined( 'ABSPATH' ) || die;
 
 ?>
@@ -20,7 +18,7 @@ use Cores\Helper;
     do_action( 'hd_before_footer' );
 
     ?>
-    <footer class="site-footer" <?php echo Helper::microdata( 'footer' ); ?>>
+    <footer class="site-footer" <?php echo \Cores\Helper::microdata( 'footer' ); ?>>
         <?php
 
         /**

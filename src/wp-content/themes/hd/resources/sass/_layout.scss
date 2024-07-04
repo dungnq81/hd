@@ -548,6 +548,10 @@ figure {
     @include responsive-ratio(16, 9);
 }
 
+:is(.ar-21-9, .ar\[21-9\]) {
+    @include responsive-ratio(21, 9);
+}
+
 :is(.ar-2-1, .ar\[2-1\]) {
     @include responsive-ratio(2, 1);
 }

@@ -26,18 +26,18 @@ $columns = apply_filters('woocommerce_product_thumbnails_columns', 6);
 $post_thumbnail_id = $product->get_image_id();
 $attachment_ids = $product->get_gallery_image_ids();
 
-$wrapper_classes   = apply_filters(
+$wrapper_classes = apply_filters(
 	'woocommerce_single_product_image_gallery_classes',
-	array(
+	[
 		'woocommerce-product-gallery',
 		'woocommerce-product-gallery--' . ( $post_thumbnail_id ? 'with-images' : 'without-images' ),
 		'woocommerce-product-gallery--columns-' . absint( $columns ),
 		'images',
 		'swiper-product-gallery',
-	)
+	]
 );
 
-$outstanding_features = \get_field('outstanding_features',$product->ID) ?? '';
+$outstanding_features = \get_field( 'outstanding_features', $product->get_id() ) ?? '';
 
 ?>
 <div class="woocommerce-product-gallery-wrapper">

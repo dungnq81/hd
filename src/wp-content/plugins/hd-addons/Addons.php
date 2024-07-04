@@ -23,6 +23,9 @@ use Addons\Third_Party;
  */
 final class Addons {
 
+	/**
+	 * @var mixed|false|null
+	 */
 	public mixed $optimizer_options;
 
 	public function __construct() {

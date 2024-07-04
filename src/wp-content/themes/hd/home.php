@@ -15,7 +15,7 @@ get_header( 'home' );
 /**
  * Hook: home_before_section.
  *
- * @see __hd_page_title - 10
+ * @see __hd_home_title - 10
  */
 do_action( 'home_before_section' );
 
@@ -25,12 +25,12 @@ do_action( 'home_before_section' );
         <?php
 
         /**
-         * Hook: Home page content
+         * Hook: Home content
          *
-         * @see __hd_home_page_header - 10
-         * @see __hd_home_page_content - 11
+         * @see __hd_home_header - 10
+         * @see __hd_home_content - 11
          */
-        do_action( 'home_page_content' );
+        do_action( 'home_content' );
 
         ?>
     </div>
