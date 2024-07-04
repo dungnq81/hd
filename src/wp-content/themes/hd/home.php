@@ -5,8 +5,6 @@
  * @package HD
  */
 
-use Cores\Helper;
-
 \defined( 'ABSPATH' ) || die;
 
 // header
@@ -25,10 +23,10 @@ do_action( 'home_before_section' );
         <?php
 
         /**
-         * Hook: Home content
+         * Hook: home_content
          *
          * @see __hd_home_header - 10
-         * @see __hd_home_content - 11
+         * @see __hd_home_content - 12
          */
         do_action( 'home_content' );
 

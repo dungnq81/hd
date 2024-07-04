@@ -10,49 +10,45 @@
  * @package HD
  */
 
-use Cores\Helper;
-
 \defined( 'ABSPATH' ) || die;
 
 // header
 get_header( 'page' );
 
-if ( have_posts() ) {
-	the_post();
-}
-
 if ( post_password_required() ) :
 	echo get_the_password_form(); // WPCS: XSS ok.
-
 	return;
 endif;
 
-// template-parts/parts/page-title.php
-the_page_title_theme();
-
-$ID = $post->ID ?? false;
-try {
-	$ACF = Helper::acfFields( $ID ) ?? '';
-} catch ( JsonException $e ) {}
-
-$alternative_title = $ACF->alternative_title ?? '';
-$image_for_banner  = $ACF->image_for_banner ?? false;
+/**
+ * Hook: page_before_section.
+ *
+ * @see __hd_page_title - 10
+ */
+do_action( 'page_before_section' );
 
 ?>
 <section class="section singular page">
 	<div class="container">
-		<header>
-			<h1 class="heading-title"><?= $alternative_title ?: get_the_title() ?></h1>
-			<?php echo Helper::stripSpace( $post->post_excerpt ) ? '<div class="excerpt">' . Helper::nl2p( $post->post_excerpt ) . '</div>' : ''; ?>
-		</header>
-		<article <?=Helper::microdata( 'article' )?>>
+        <?php
 
-			<?php the_content(); ?>
+        /**
+         * Hook: page_content
+         *
+         * @see __hd_page_header - 10
+         * @see __hd_page_content - 12
+         */
+        do_action( 'page_content' );
 
-		</article>
+        ?>
 	</div>
 </section>
 <?php
+
+/**
+ * Hook: page_after_section.
+ */
+do_action( 'page_after_section' );
 
 // footer
 get_footer( 'page' );

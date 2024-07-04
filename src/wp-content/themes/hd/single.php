@@ -5,55 +5,48 @@
  * @package HD
  */
 
-use Cores\Helper;
-
 \defined( 'ABSPATH' ) || die;
 
 // header
-get_header();
-
-if ( have_posts() ) {
-	the_post();
-}
+get_header( 'single' );
 
 if ( post_password_required() ) :
 	echo get_the_password_form(); // WPCS: XSS ok.
 	return;
 endif;
 
-// template-parts/parts/page-title.php
-the_page_title_theme();
-
-$ID = $post->ID ?? false;
-try {
-	$ACF = Helper::acfFields( $ID ) ?? '';
-} catch ( JsonException $e ) {}
-
-$alternative_title = $ACF->alternative_title ?? '';
-$image_for_banner  = $ACF->image_for_banner ?? false;
+/**
+ * Hook: single_before_section.
+ *
+ * @see __hd_single_title - 10
+ */
+do_action( 'single_before_section' );
 
 ?>
 <section class="section singular post">
 	<div class="container">
+        <?php
 
-		<?php get_template_part( 'template-parts/parts/sharing' ); ?>
+        /**
+         * Hook: single_content
+         *
+         * @see __hd_single_share - 10
+         * @see __hd_single_wrapper_open - 12
+         * @see __hd_single_header - 14
+         * @see __hd_single_content - 16
+         * @see __hd_single_wrapper_close - 18
+         */
+        do_action( 'single_content' );
 
-		<div class="content-col">
-			<header>
-                <h1 class="heading-title"><?= $alternative_title ?: get_the_title() ?></h1>
-
-                <?php echo Helper::postExcerpt( $post, 'excerpt', true );?>
-
-			</header>
-            <article <?=Helper::microdata( 'article' )?>>
-
-				<?php the_content(); ?>
-
-            </article>
-		</div>
+        ?>
 	</div>
 </section>
 <?php
 
+/**
+ * Hook: single_after_section.
+ */
+do_action( 'single_after_section' );
+
 // footer
-get_footer();
+get_footer( 'single' );

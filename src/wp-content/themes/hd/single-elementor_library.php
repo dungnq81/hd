@@ -7,8 +7,8 @@
 
 \defined( 'ABSPATH' ) || die;
 
-if (have_posts()) {
-    the_post();
+if ( have_posts() ) {
+	the_post();
 }
 
 ?>

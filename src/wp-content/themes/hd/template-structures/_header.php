@@ -16,9 +16,6 @@ use Cores\Helper;
 if ( ! function_exists( '__wp_head' ) ) {
 	add_action( 'wp_head', '__wp_head', 1 );
 
-	/**
-	 * @return void
-	 */
 	function __wp_head(): void {
 
 		//$meta_viewport = '<meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0" />';
@@ -49,9 +46,6 @@ if ( ! function_exists( '__wp_head' ) ) {
 if ( ! function_exists( '__external_fonts' ) ) {
 	add_action( 'wp_head', '__external_fonts', 10 );
 
-	/**
-	 * @return void
-	 */
 	function __external_fonts(): void {
     ?>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
@@ -112,9 +106,6 @@ if ( ! function_exists( '__hd_off_canvas_menu' ) ) {
 if ( ! function_exists( '__hd_construct_header' ) ) {
 	add_action( 'hd_header', '__hd_construct_header', 10 );
 
-	/**
-	 * @return void
-	 */
 	function __hd_construct_header(): void {
 
 		/**
@@ -131,9 +122,6 @@ if ( ! function_exists( '__hd_construct_header' ) ) {
 if ( ! function_exists( '_hd_top_header' ) ) {
 	add_action( 'masthead', '_hd_top_header', 10 );
 
-	/**
-	 * @return void
-	 */
 	function _hd_top_header(): void {
 		$top_header_cols      = (int) Helper::getThemeMod( 'top_header_setting' );
 		$top_header_container = Helper::getThemeMod( 'top_header_container_setting' );
@@ -167,9 +155,6 @@ if ( ! function_exists( '_hd_top_header' ) ) {
 if ( ! function_exists( '_hd_header' ) ) {
 	add_action( 'masthead', '_hd_header', 11 );
 
-	/**
-	 * @return void
-	 */
 	function _hd_header(): void {
 		$header_cols      = (int) Helper::getThemeMod( 'header_setting' );
 		$header_container = Helper::getThemeMod( 'header_container_setting' );
@@ -203,9 +188,6 @@ if ( ! function_exists( '_hd_header' ) ) {
 if ( ! function_exists( '_hd_bottom_header' ) ) {
 	add_action( 'masthead', '_hd_bottom_header', 12 );
 
-	/**
-	 * @return void
-	 */
 	function _hd_bottom_header(): void {
 		$bottom_header_cols      = (int) Helper::getThemeMod( 'bottom_header_setting' );
 		$bottom_header_container = Helper::getThemeMod( 'bottom_header_container_setting' );

@@ -42,7 +42,3 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-
-html/
-!/html/dist/
-test.js

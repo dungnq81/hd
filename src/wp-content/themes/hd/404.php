@@ -5,8 +5,6 @@
  * @package HD
  */
 
-use Cores\Helper;
-
 \defined( 'ABSPATH' ) || die;
 
-wp_safe_redirect( Helper::home() );
+wp_safe_redirect( \Cores\Helper::home() );

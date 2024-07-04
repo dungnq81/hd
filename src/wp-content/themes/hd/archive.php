@@ -12,31 +12,35 @@ use Cores\Helper;
 // header
 get_header( 'archive' );
 
-$object = get_queried_object();
-
-$desc = '';
-if ( isset( $object->term_id ) ) {
-	$desc = Helper::termExcerpt( $object->term_id );
-}
-
-// template-parts/parts/archive-title.php
-the_archive_title_theme();
+/**
+ * Hook: archive_before_section.
+ *
+ * @see __hd_archive_title - 10
+ */
+do_action( 'archive_before_section' );
 
 ?>
 <section class="section archive">
     <div class="container">
-        <header class="text-center">
-            <h1 class="heading-title"><?= get_the_archive_title() ?></h1>
-		    <?php echo Helper::stripSpace( $desc ) ? $desc : ''; ?>
-        </header>
-        <div class="grid-posts">
+        <?php
 
-		    <?php get_template_part( 'template-parts/posts/grid', null, [ 'sidebar' => true ] ); ?>
+        /**
+         * Hook: archive_content
+         *
+         * @see __hd_archive_header - 10
+         * @see __hd_archive_content - 11
+         */
+        do_action( 'archive_content' );
 
-        </div>
+        ?>
     </div>
 </section>
 <?php
+
+/**
+ * Hook: archive_after_section.
+ */
+do_action( 'archive_after_section' );
 
 // footer
 get_footer( 'archive' );
