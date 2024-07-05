@@ -11,7 +11,7 @@ $navigation = $args['fc_navigation'] ?? false;
 $pagination = $args['fc_pagination'] ?? false;
 $autoplay   = $args['fc_autoplay'] ?? false;
 $max_number = $args['fc_max_number'] ?? -1;
-$css_class  = ! empty( $args['fc_css_class'] ) ? ' ' . esc_attr_strip_tags( $args['fc_css_class'] ) : '';
+$css_class  = ! empty( $args['fc_css_class'] ) ? ' ' . Helper::esc_attr_strip_tags( $args['fc_css_class'] ) : '';
 
 $slides_query = Helper::queryByTerms( $banner_cat, 'banner', 'banner_cat', false, $max_number );
 if ( ! $slides_query ) {

@@ -14,7 +14,7 @@ $fc_image       = $args['fc_image'] ?? false;
 $fc_image_text       = $args['fc_image_text'] ?? false;
 $fc_button_link = $args['fc_button_link'] ?? '';
 $fc_video_link = $args['fc_video_link'] ?? '';
-$fc_css_class   = ! empty( $args['fc_css_class'] ) ? ' ' . esc_attr_strip_tags( $args['fc_css_class'] ) : '';
+$fc_css_class   = ! empty( $args['fc_css_class'] ) ? ' ' . Helper::esc_attr_strip_tags( $args['fc_css_class'] ) : '';
 
 ob_start();
 

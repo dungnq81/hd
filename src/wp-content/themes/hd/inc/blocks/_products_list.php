@@ -11,7 +11,7 @@ $fc_title       = $args['fc_title'] ?? '';
 $fc_product_cat = $args['fc_product_cat'] ?? false;
 $fc_max_number  = $args['fc_max_number'] ?? 8;
 $fc_button_link = $args['fc_button_link'] ?? '';
-$fc_css_class   = ! empty( $args['fc_css_class'] ) ? ' ' . esc_attr_strip_tags( $args['fc_css_class'] ) : '';
+$fc_css_class   = ! empty( $args['fc_css_class'] ) ? ' ' . Helper::esc_attr_strip_tags( $args['fc_css_class'] ) : '';
 
 wc_set_loop_prop( 'name', 'home_products_list' );
 

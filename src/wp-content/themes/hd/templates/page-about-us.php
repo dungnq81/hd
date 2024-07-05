@@ -90,7 +90,7 @@ $post_thumbnail = get_the_post_thumbnail( $post, 'medium' );
                             <figure>
                                 <?php
 
-                                if ( $_href ) { echo '<a class="after-overlay" href="' . $_href . '" title="' . esc_attr_strip_tags( $attachment_meta->alt ) . '">'; }
+                                if ( $_href ) { echo '<a class="after-overlay" href="' . $_href . '" title="' . Helper::esc_attr_strip_tags( $attachment_meta->alt ) . '">'; }
                                 echo wp_get_attachment_image( $gal, 'medium' );
                                 if ( $_href ) { echo '</a>'; }
 

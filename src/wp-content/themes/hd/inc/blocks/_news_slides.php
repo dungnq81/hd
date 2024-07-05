@@ -14,7 +14,7 @@ $fc_navigation  = $args['fc_navigation'] ?? true;
 $fc_pagination  = $args['fc_pagination'] ?? true;
 $fc_autoplay    = $args['fc_autoplay'] ?? true;
 $fc_button_link = $args['fc_button_link'] ?? '';
-$fc_css_class   = ! empty( $args['fc_css_class'] ) ? ' ' . esc_attr_strip_tags( $args['fc_css_class'] ) : '';
+$fc_css_class   = ! empty( $args['fc_css_class'] ) ? ' ' . Helper::esc_attr_strip_tags( $args['fc_css_class'] ) : '';
 
 $_args          = [
 	'post_type'              => 'post',

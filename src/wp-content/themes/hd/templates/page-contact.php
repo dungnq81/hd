@@ -48,7 +48,7 @@ $c_iframe_map      = $ACF->c_iframe_map ?? '';
                     <span class="icon phone-icon"></span>
                     <p>
                         <span class="title"><?= __( 'Phone', TEXT_DOMAIN )?></span>
-                        <a href="tel:<?=Helper::stripSpace( $c_phone )?>" title="<?=esc_attr_strip_tags( $c_phone )?>"><?=$c_phone?></a>
+                        <a href="tel:<?=Helper::stripSpace( $c_phone )?>" title="<?=Helper::esc_attr_strip_tags( $c_phone )?>"><?=$c_phone?></a>
                     </p>
                 </li>
                 <?php endif; ?>
@@ -57,7 +57,7 @@ $c_iframe_map      = $ACF->c_iframe_map ?? '';
                     <span class="icon email-icon"></span>
                     <p>
                         <span class="title"><?= __( 'Email', TEXT_DOMAIN )?></span>
-                        <a href="mailto:<?=$c_email?>" title="<?=esc_attr_strip_tags( $c_email )?>"><?=$c_email?></a>
+                        <a href="mailto:<?=$c_email?>" title="<?=Helper::esc_attr_strip_tags( $c_email )?>"><?=$c_email?></a>
                     </p>
                 </li>
                 <?php endif; ?>

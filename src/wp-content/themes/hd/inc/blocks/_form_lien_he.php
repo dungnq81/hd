@@ -12,7 +12,7 @@ $fc_contact_information = $args['fc_contact_information'] ?? false;
 $fc_form_title          = $args['fc_form_title'] ?? '';
 $fc_form_desc           = $args['fc_form_desc'] ?? '';
 $fc_form                = $args['fc_form'] ?? false;
-$fc_css_class           = ! empty( $args['fc_css_class'] ) ? ' ' . esc_attr_strip_tags( $args['fc_css_class'] ) : '';
+$fc_css_class           = ! empty( $args['fc_css_class'] ) ? ' ' . Helper::esc_attr_strip_tags( $args['fc_css_class'] ) : '';
 
 ob_start();
 

@@ -194,7 +194,8 @@ final class Helper {
 		$link_return = '';
 
 		if ( is_string( $link ) && ! empty( $link) ) {
-			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( trim( $link ) ), esc_attr_strip_tags( $label ), esc_attr_strip_tags( $class ) );
+			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( trim( $link ) ), self::esc_attr_strip_tags( $label ),
+				self::esc_attr_strip_tags( $class ) );
 			$link_return .= '>' . $content . '</a>';
 
 			return wp_targeted_link_rel( $link_return );
@@ -208,7 +209,7 @@ final class Helper {
 
 			if ( ! empty( $_link_url ) ) {
 
-				$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( $_link_url ), esc_attr_strip_tags( $_link_title ), esc_attr_strip_tags( $class ) );
+				$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( $_link_url ), self::esc_attr_strip_tags( $_link_title ), esc_attr_strip_tags( $class ) );
 				if ( ! empty( $_link_target ) ) {
 					$link_return .= ' target="_blank"';
 				}
@@ -225,7 +226,7 @@ final class Helper {
 			$link_return = $content;
 
 			if ( $empty_link_default_tag ) {
-				$link_return = '<' . $empty_link_default_tag . ' class="' . esc_attr_strip_tags( $class ) . '">' . $content . '</' . $empty_link_default_tag . '>';
+				$link_return = '<' . $empty_link_default_tag . ' class="' . self::esc_attr_strip_tags( $class ) . '">' . $content . '</' . $empty_link_default_tag . '>';
 			}
 		}
 
@@ -247,7 +248,7 @@ final class Helper {
 
 		// string
 		if ( ! empty( $link ) && is_string( $link ) ) {
-			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( trim( $link ) ), esc_attr_strip_tags( $label ), esc_attr_strip_tags( $class ) );
+			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( trim( $link ) ), self::esc_attr_strip_tags( $label ), esc_attr_strip_tags( $class ) );
 			$link_return .= '>';
 			$link_return .= $label . $extra_title;
 			$link_return .= '</a>';
@@ -263,7 +264,7 @@ final class Helper {
 
 			if ( ! empty( $_link_url ) ) {
 
-				$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( $_link_url ), esc_attr_strip_tags( $_link_title ), esc_attr_strip_tags( $class ) );
+				$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( $_link_url ), self::esc_attr_strip_tags( $_link_title ), esc_attr_strip_tags( $class ) );
 				if ( ! empty( $_link_target ) ) {
 					$link_return .= ' target="_blank"';
 				}

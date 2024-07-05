@@ -12,7 +12,7 @@ $fc_product_cat = $args['fc_product_cat'] ?? false;
 $fc_navigation  = $args['fc_navigation'] ?? true;
 $fc_pagination  = $args['fc_pagination'] ?? true;
 $fc_autoplay    = $args['fc_autoplay'] ?? true;
-$fc_css_class   = ! empty( $args['fc_css_class'] ) ? ' ' . esc_attr_strip_tags( $args['fc_css_class'] ) : '';
+$fc_css_class   = ! empty( $args['fc_css_class'] ) ? ' ' . Helper::esc_attr_strip_tags( $args['fc_css_class'] ) : '';
 
 ob_start();
 
@@ -89,7 +89,7 @@ ob_start();
 		                $ratio_class = Helper::aspectRatioClass( 'product_cat', 'ar[16-9]');
                     ?>
                     <div class="swiper-slide">
-                        <a <?php wc_product_cat_class( 'block item' ); ?> href="<?php echo get_term_link( $term_id, 'product_cat' ); ?>" title="<?php echo esc_attr_strip_tags( $term->name ); ?>">
+                        <a <?php wc_product_cat_class( 'block item' ); ?> href="<?php echo get_term_link( $term_id, 'product_cat' ); ?>" title="<?php echo Helper::esc_attr_strip_tags( $term->name ); ?>">
                             <div class="cover">
                                 <?php
 
