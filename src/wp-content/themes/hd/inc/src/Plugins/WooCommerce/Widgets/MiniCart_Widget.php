@@ -35,7 +35,7 @@ class MiniCart_Widget extends \WC_Widget_Cart {
 		?>
 		<ul id="shopping-cart" class="shopping-cart menu">
 			<li class="<?php echo Helper::esc_attr_strip_tags( $class ); ?>">
-				<?php Helper::wc_cart_link(); ?>
+				<?php _wc_cart_link(); ?>
 			</li>
 			<li class="widget-menu-item menu-item">
 				<?php the_widget('WC_Widget_Cart', 'title='); ?>

@@ -110,7 +110,8 @@ trait Base {
 	 * @return bool
 	 */
 	public static function isInteger( $input ): bool {
-		return ( ctype_digit( (string) $input ) );
+		//return ( ctype_digit( (string) $input ) );
+		return filter_var( $input, FILTER_VALIDATE_INT ) !== false;
 	}
 
 	// --------------------------------------------------

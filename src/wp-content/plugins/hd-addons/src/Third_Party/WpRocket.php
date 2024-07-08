@@ -2,6 +2,8 @@
 
 namespace Addons\Third_Party;
 
+use Addons\Base\Singleton;
+
 \defined( 'ABSPATH' ) || die;
 
 /*
@@ -11,9 +13,11 @@ namespace Addons\Third_Party;
  */
 final class WpRocket {
 
+	use Singleton;
+
 	// --------------------------------------------------
 
-	public function __construct() {
+	private function init(): void {
 
 		/**
 		 * Override DONOTCACHEPAGE behavior for WP Rocket.

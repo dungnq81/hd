@@ -2,8 +2,15 @@
 
 namespace Addons\Custom_Email;
 
+use Addons\Base\Singleton;
+
 \defined( 'ABSPATH' ) || die;
 
 final class Custom_Email {
-	public function __construct() {}
+
+	use Singleton;
+
+	// ------------------------------------------------------
+
+	private function init(): void {}
 }

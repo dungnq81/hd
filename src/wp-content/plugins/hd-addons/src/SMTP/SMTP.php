@@ -2,6 +2,8 @@
 
 namespace Addons\SMTP;
 
+use Addons\Base\Singleton;
+
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use WP_Error;
@@ -9,7 +11,12 @@ use WP_Error;
 \defined( 'ABSPATH' ) || die;
 
 final class SMTP {
-	public function __construct() {
+
+	use Singleton;
+
+	// ------------------------------------------------------
+
+	private function init(): void {
 
 		if ( $this->smtpConfigured() && check_smtp_plugin_active() ) {
 			add_filter( 'pre_wp_mail', [ &$this, 'pre_wp_mail' ], 11, 2 );

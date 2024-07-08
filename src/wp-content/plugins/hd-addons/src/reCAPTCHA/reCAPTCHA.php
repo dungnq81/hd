@@ -2,6 +2,8 @@
 
 namespace Addons\reCAPTCHA;
 
+use Addons\Base\Singleton;
+
 \defined( 'ABSPATH' ) || die;
 
 $recaptcha_options = get_option( 'recaptcha__options' );
@@ -17,9 +19,13 @@ define( "GOOGLE_CAPTCHA_GLOBAL", $recaptcha_options['recaptcha_global'] ?? false
 
 final class reCAPTCHA {
 
+	use Singleton;
+
+	// --------------------------------------------------
+
 	public array $forms = [];
 
-	public function __construct() {
+	private function init(): void {
 		$default_forms = [
 
 			// default

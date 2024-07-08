@@ -2,7 +2,7 @@
 
 namespace Addons\Optimizer\Options;
 
-use Addons\Htaccess\Abstract_Htaccess;
+use Addons\Base\Abstract_Htaccess;
 
 \defined( 'ABSPATH' ) || die;
 

@@ -1,5 +1,7 @@
 <?php
 
+use Addons\Base\Singleton;
+
 use Addons\Base_Slug\Base_Slug;
 use Addons\Custom_Email\Custom_Email;
 use Addons\Custom_Order\Custom_Order;
@@ -7,11 +9,9 @@ use Addons\Editor\Editor;
 use Addons\reCAPTCHA\reCAPTCHA;
 use Addons\SMTP\SMTP;
 use Addons\Security\Security;
-
 use Addons\Optimizer\Optimizer;
 use Addons\Optimizer\Options\Minifier;
 use Addons\Optimizer\Options\Font\Font;
-
 use Addons\Third_Party;
 
 \defined( 'ABSPATH' ) || die;
@@ -23,16 +23,20 @@ use Addons\Third_Party;
  */
 final class Addons {
 
+	use Singleton;
+
+	/** ----------------------------------------------- */
+
 	/**
 	 * @var mixed|false|null
 	 */
 	public mixed $optimizer_options;
 
-	public function __construct() {
+	private function init(): void {
 		$this->optimizer_options = get_option( 'optimizer__options', [] );
 
 		add_action( 'plugins_loaded', [ &$this, 'i18n' ], 1 );
-		add_action( 'plugins_loaded', [ &$this, 'plugins_loaded' ] );
+		add_action( 'plugins_loaded', [ &$this, 'plugins_loaded' ], 11 );
 
 		add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 39 );
 		add_action( 'admin_menu', [ &$this, 'admin_menu' ] );
@@ -63,18 +67,18 @@ final class Addons {
 	 */
 	public function plugins_loaded(): void {
 
-		( new Optimizer() );
-		( new Security() );
-		( new Editor() );
-		( new Custom_Order() );
-		( new Custom_Email() );
-		( new SMTP() );
-		( new Base_Slug() );
-		( new reCAPTCHA() );
+		Optimizer::get_instance();
+		Security::get_instance();
+		Editor::get_instance();
+		Custom_Order::get_instance();
+		Custom_Email::get_instance();
+		SMTP::get_instance();
+		Base_Slug::get_instance();
+		reCAPTCHA::get_instance();
 
-		check_plugin_active( 'wp-rocket/wp-rocket.php' ) && ( new Third_Party\WpRocket() );
-		check_plugin_active( 'seo-by-rank-math/rank-math.php' ) && ( new Third_Party\RankMath() );
-		check_plugin_active( 'advanced-custom-fields-pro/acf.php' ) && ( new Third_Party\ACF() );
+		check_plugin_active( 'wp-rocket/wp-rocket.php' ) && Third_Party\WpRocket::get_instance();
+		check_plugin_active( 'seo-by-rank-math/rank-math.php' ) && Third_Party\RankMath::get_instance();
+		check_plugin_active( 'advanced-custom-fields-pro/acf.php' ) && Third_Party\ACF::get_instance();
 	}
 
 	/** ----------------------------------------------- */

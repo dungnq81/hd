@@ -2,10 +2,17 @@
 
 namespace Addons\Editor;
 
+use Addons\Base\Singleton;
+
 \defined( 'ABSPATH' ) || die;
 
 final class Editor {
-	public function __construct() {
+
+	use Singleton;
+
+	// ------------------------------------------------------
+
+	private function init(): void {
 
 		( new TinyMCE() );
 

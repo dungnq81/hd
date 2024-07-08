@@ -9,7 +9,7 @@ namespace Addons\Editor;
  *
  * @author   WEBHD
  */
-final class TinyMCE {
+class TinyMCE {
 
 	// --------------------------------------------------
 

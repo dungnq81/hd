@@ -2,6 +2,7 @@
 
 namespace Addons\Optimizer;
 
+use Addons\Base\Singleton;
 use Addons\Optimizer\Options\Heartbeat\Heartbeat;
 use Addons\Optimizer\Options\Lazy_Load\Lazy_Load;
 use Addons\Optimizer\Options\SVG\SVG;
@@ -14,7 +15,12 @@ use Addons\Optimizer\Options\SVG\SVG;
  * @author HD
  */
 final class Optimizer {
-	public function __construct() {
+
+	use Singleton;
+
+	// ------------------------------------------------------
+
+	private function init(): void {
 
 		( new Heartbeat() );
 		( new SVG() );

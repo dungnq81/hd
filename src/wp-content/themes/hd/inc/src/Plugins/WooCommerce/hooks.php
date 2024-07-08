@@ -49,33 +49,6 @@ function woocommerce_default_product_tabs( $tabs = [] ): array {
 
 // ------------------------------------------------------
 
-if ( ! function_exists( '__woocommerce_product_get_rating_html' ) ) {
-	add_filter( 'woocommerce_product_get_rating_html', '__woocommerce_product_get_rating_html', 10, 3 );
-
-	/**
-	 * @param $html
-	 * @param $rating
-	 * @param $count
-	 *
-	 * @return string
-	 */
-	function __woocommerce_product_get_rating_html( $html, $rating, $count ): string {
-		$return = '';
-
-		if ( 0 < $rating ) {
-			$label = sprintf( __( 'Rated %s out of 5', 'woocommerce' ), $rating );
-
-			$return .= '<div class="loop-stars-rating" role="img" aria-label="' . esc_attr( $label ) . '">';
-			$return .= wc_get_star_rating_html( $rating, $count );
-			$return .= '</div>';
-		}
-
-		return $return;
-	}
-}
-
-// ------------------------------------------------------
-
 /**
  * Get the product thumbnail, or the placeholder if not set.
  *

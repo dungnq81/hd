@@ -2,14 +2,20 @@
 
 namespace Addons\Base_Slug;
 
+use Addons\Base\Singleton;
+
 \defined( 'ABSPATH' ) || die;
 
 final class Base_Slug {
 
+	use Singleton;
+
+	// ------------------------------------------------------
+
 	private mixed $base_slug_post_type;
 	private mixed $base_slug_taxonomy;
 
-	public function __construct() {
+	private function init(): void {
 		$custom_base_slug_options = get_option( 'custom_base_slug__options', [] );
 
 		$this->base_slug_post_type = $custom_base_slug_options['base_slug_post_type'] ?? [];

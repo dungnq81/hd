@@ -2,6 +2,8 @@
 
 namespace Addons\Custom_Order;
 
+use Addons\Base\Singleton;
+
 \defined( 'ABSPATH' ) || die;
 
 /**
@@ -12,28 +14,16 @@ namespace Addons\Custom_Order;
  */
 final class Custom_Order {
 
-	private mixed $order_post_type;
-	private mixed $order_taxonomy;
-
-	public function __construct() {
-		$this->_init();
-
-		// Check custom order
-		$custom_order_options  = get_option( 'custom_order__options', [] );
-		$this->order_post_type = $custom_order_options['order_post_type'] ?? [];
-		$this->order_taxonomy  = $custom_order_options['order_taxonomy'] ?? [];
-
-		if ( ! empty( $this->order_post_type ) || ! empty( $this->order_taxonomy ) ) {
-			$this->_init_run();
-		}
-	}
+	use Singleton;
 
 	// ------------------------------------------------------
 
-	/**
-	 * @return void
-	 */
-	private function _init(): void {
+	private mixed $order_post_type;
+	private mixed $order_taxonomy;
+
+	private function init(): void {
+
+		// setup db
 		if ( ! get_theme_mod( '_custom_order_' ) ) {
 			global $wpdb;
 
@@ -43,6 +33,15 @@ final class Custom_Order {
 			}
 
 			set_theme_mod( '_custom_order_', 1 );
+		}
+
+		// Check custom order
+		$custom_order_options  = get_option( 'custom_order__options', [] );
+		$this->order_post_type = $custom_order_options['order_post_type'] ?? [];
+		$this->order_taxonomy  = $custom_order_options['order_taxonomy'] ?? [];
+
+		if ( ! empty( $this->order_post_type ) || ! empty( $this->order_taxonomy ) ) {
+			$this->_init_run();
 		}
 	}
 

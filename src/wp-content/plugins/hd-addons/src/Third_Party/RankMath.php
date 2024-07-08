@@ -2,6 +2,8 @@
 
 namespace Addons\Third_Party;
 
+use Addons\Base\Singleton;
+
 \defined( 'ABSPATH' ) || die;
 
 /**
@@ -11,9 +13,11 @@ namespace Addons\Third_Party;
  */
 final class RankMath {
 
+	use Singleton;
+
 	// --------------------------------------------------
 
-	public function __construct() {
+	private function init(): void {
 
 		add_filter( 'rank_math/frontend/breadcrumb/args', [ &$this, 'breadcrumb_args' ] );
 		add_filter( 'rank_math/frontend/show_keywords', '__return_true' );

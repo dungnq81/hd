@@ -61,11 +61,11 @@ function addons_requirement_notice(): void {
 	}
 }
 
-add_action( 'plugins_loaded', 'plugins_loaded_hd_addons' );
-
 // Global function-holder. Works similar to a singleton's instance().
 function plugins_loaded_hd_addons(): void {
 	require_once __DIR__ . '/Addons.php';
 
-	( new \Addons() );
+	Addons::get_instance();
 }
+
+\plugins_loaded_hd_addons();

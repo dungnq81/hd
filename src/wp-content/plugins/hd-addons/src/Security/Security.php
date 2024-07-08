@@ -2,6 +2,7 @@
 
 namespace Addons\Security;
 
+use Addons\Base\Singleton;
 use Addons\Security\Options\Headers;
 use Addons\Security\Options\Illegal_Users;
 use Addons\Security\Options\Login_Attempts;
@@ -16,6 +17,10 @@ use Addons\Security\Options\Readme;
  */
 final class Security {
 
+	use Singleton;
+
+	// ------------------------------------------------------
+
 	/**
 	 * @var array|false|mixed
 	 */
@@ -23,7 +28,7 @@ final class Security {
 
 	// ------------------------------------------------------
 
-	public function __construct() {
+	private function init(): void {
 		$this->security_options = get_option( 'security__options', false );
 
 		$this->_illegal_users();

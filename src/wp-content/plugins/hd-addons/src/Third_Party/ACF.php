@@ -2,11 +2,17 @@
 
 namespace Addons\Third_Party;
 
+use Addons\Base\Singleton;
+
 \defined( 'ABSPATH' ) || die;
 
 final class ACF {
 
-	public function __construct() {
+	use Singleton;
+
+	// -------------------------------------------------------------
+
+	private function init(): void {
 		$this->_license();
 	}
 

@@ -2,7 +2,7 @@
 
 namespace Addons\Security\Options;
 
-use Addons\Htaccess\Abstract_Htaccess;
+use Addons\Base\Abstract_Htaccess;
 use WP_HTTP_Response;
 
 class Headers extends Abstract_Htaccess {

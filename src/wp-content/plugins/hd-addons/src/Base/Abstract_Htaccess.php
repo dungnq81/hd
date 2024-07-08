@@ -1,6 +1,6 @@
 <?php
 
-namespace Addons\Htaccess;
+namespace Addons\Base;
 
 \defined( 'ABSPATH' ) || die;
 
