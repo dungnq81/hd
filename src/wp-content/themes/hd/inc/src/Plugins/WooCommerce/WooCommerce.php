@@ -3,6 +3,7 @@
 namespace Plugins\WooCommerce;
 
 use Cores\Helper;
+use Cores\Traits\Singleton;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -16,6 +17,8 @@ require __DIR__ . "/functions.php";
  */
 final class WooCommerce {
 
+	use Singleton;
+
 	/**
 	 * @var array|false|mixed
 	 */
@@ -23,7 +26,7 @@ final class WooCommerce {
 
 	// ------------------------------------------------------
 
-	public function __construct() {
+	private function init(): void {
 		$this->woocommerce_options = Helper::getOption( 'woocommerce__options', false, false );
 		$woocommerce_jsonld        = $this->woocommerce_options['woocommerce_jsonld'] ?? '';
 		if ( $woocommerce_jsonld ) {

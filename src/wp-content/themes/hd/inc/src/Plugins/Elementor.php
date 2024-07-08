@@ -2,6 +2,8 @@
 
 namespace Plugins;
 
+use Cores\Traits\Singleton;
+
 \defined( 'ABSPATH' ) || die;
 
 /**
@@ -11,9 +13,11 @@ namespace Plugins;
  */
 final class Elementor {
 
+	use Singleton;
+
 	// --------------------------------------------------
 
-	public function __construct() {
+	private function init(): void {
 		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 99 );
 
 		// Custom hooks

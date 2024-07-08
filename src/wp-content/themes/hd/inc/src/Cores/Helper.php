@@ -5,8 +5,6 @@ namespace Cores;
 use DirectoryIterator;
 use MatthiasMullie\Minify;
 
-use Cores\Traits\Elementor;
-use Cores\Traits\WooCommerce;
 use Cores\Traits\Wp;
 
 \defined( 'ABSPATH' ) || die;
@@ -17,9 +15,6 @@ use Cores\Traits\Wp;
  * @author WEBHD
  */
 final class Helper {
-
-	use WooCommerce;
-	use Elementor;
 	use Wp;
 
 	// --------------------------------------------------

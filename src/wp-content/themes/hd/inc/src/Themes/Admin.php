@@ -16,6 +16,7 @@ use Addons\Optimizer\Options\Gzip;
 use Addons\Optimizer\Options\Ssl;
 
 use Cores\Helper;
+use Cores\Traits\Singleton;
 
 /**
  * Options Class
@@ -27,9 +28,11 @@ use Cores\Helper;
 
 final class Admin {
 
+	use Singleton;
+
 	// --------------------------------------------------
 
-	public function __construct() {
+	private function init(): void {
 
 		// admin.js, admin.css & codemirror_settings, v.v...
 		add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 9999, 1 );

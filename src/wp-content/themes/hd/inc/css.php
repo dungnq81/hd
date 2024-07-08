@@ -22,7 +22,7 @@ if ( ! function_exists( '__enqueue_inline_css' ) ) {
 	 * @return void
 	 */
 	function __enqueue_inline_css(): void {
-		$css = new CSS();
+		$css = CSS::get_instance();
 
 		// footer
 		$footer_bgcolor = Helper::getThemeMod( 'footer_bgcolor_setting' );

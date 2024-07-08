@@ -2,6 +2,8 @@
 
 namespace Plugins;
 
+use Cores\Traits\Singleton;
+
 \defined( 'ABSPATH' ) || die;
 
 /**
@@ -11,9 +13,11 @@ namespace Plugins;
  */
 final class CF7 {
 
+	use Singleton;
+
 	// --------------------------------------------------
 
-	public function __construct() {
+	private function init(): void {
 
 		// remove <p> and <br> contact-form-7 plugin
 		add_filter( 'wpcf7_autop_or_not', '__return_false' );

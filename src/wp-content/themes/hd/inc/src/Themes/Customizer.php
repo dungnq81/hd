@@ -2,6 +2,8 @@
 
 namespace Themes;
 
+use Cores\Traits\Singleton;
+
 use WP_Customize_Color_Control;
 use WP_Customize_Image_Control;
 use WP_Customize_Manager;
@@ -16,9 +18,14 @@ use WP_Customize_Manager;
 
 final class Customizer {
 
+	use Singleton;
+
 	// --------------------------------------------------
 
-	public function __construct() {
+	/**
+	 * @return void
+	 */
+	private function init(): void {
 
 		// Theme Customizer settings and controls.
 		add_action( 'customize_register', [ &$this, 'customize_register' ], 30 );

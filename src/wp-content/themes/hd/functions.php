@@ -6,8 +6,6 @@
  * @package HD
  */
 
-use Themes\Theme;
-
 $theme_version = ( wp_get_theme()->get( 'Version' ) ) ?: false;
 $theme_author  = ( wp_get_theme()->get( 'Author' ) ) ?: 'HD Team';
 $theme_uri     = ( wp_get_theme()->get( 'ThemeURI' ) ) ?: 'https://webhd.vn';
@@ -25,6 +23,7 @@ const INC_PATH   = THEME_PATH . 'inc' . DIRECTORY_SEPARATOR;
 const ASSETS_URL = THEME_URL . 'assets/';
 
 if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	error_log( 'Autoloader not found: ' . __DIR__ . '/vendor/autoload.php' );
 	wp_die( __( 'Error locating autoloader. Please run <code>composer install</code>.', TEXT_DOMAIN ) );
 }
 
@@ -35,4 +34,4 @@ require_once __DIR__ . '/inc/themes.php';
 require_once __DIR__ . '/inc/css.php';
 
 // Initialize theme settings.
-( new Theme() );
+\Themes\Theme::get_instance();

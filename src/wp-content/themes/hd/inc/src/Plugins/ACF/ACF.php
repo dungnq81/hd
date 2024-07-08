@@ -3,6 +3,7 @@
 namespace Plugins\ACF;
 
 use Cores\Helper;
+use Cores\Traits\Singleton;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -13,7 +14,11 @@ use Cores\Helper;
  */
 final class ACF {
 
-	public function __construct() {
+	use Singleton;
+
+	// -------------------------------------------------------------
+
+	private function init(): void {
 
 		// Hide the ACF Admin UI
 		//add_filter( 'acf/settings/show_admin', '__return_false' );

@@ -3,6 +3,7 @@
 namespace Themes;
 
 use Cores\Helper;
+use Cores\Traits\Singleton;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -13,12 +14,14 @@ use Cores\Helper;
  */
 final class Shortcode {
 
+	use Singleton;
+
 	// --------------------------------------------------
 
 	/**
 	 * @return void
 	 */
-	public static function init(): void {
+	private function init(): void {
 		$shortcodes = [
 			'safe_mail'         => __CLASS__ . '::safe_mail',
 			'site_logo'         => __CLASS__ . '::site_logo',

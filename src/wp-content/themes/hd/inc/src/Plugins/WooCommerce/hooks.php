@@ -6,10 +6,6 @@ use Cores\Helper;
 
 // ------------------------------------------------------
 
-
-
-// ------------------------------------------------------
-
 /**
  * Add default product tabs to product pages.
  *
@@ -22,30 +18,30 @@ function woocommerce_default_product_tabs( $tabs = [] ): array {
 
 	// Description tab - shows product content.
 	if ( $post->post_content ) {
-		$tabs['description'] = array(
+		$tabs['description'] = [
 			'title'    => __( 'Description', 'woocommerce' ),
 			'priority' => 10,
 			'callback' => 'woocommerce_product_description_tab',
-		);
+		];
 	}
 
 	// Additional information tab - shows attributes.
 	if ( $product && ( $product->has_attributes() || apply_filters( 'wc_product_enable_dimensions_display', $product->has_weight() || $product->has_dimensions() ) ) ) {
-		$tabs['additional_information'] = array(
+		$tabs['additional_information'] = [
 			'title'    => __( 'Additional information', 'woocommerce' ),
 			'priority' => 20,
 			'callback' => 'woocommerce_product_additional_information_tab',
-		);
+		];
 	}
 
 	// Reviews tab - shows comments.
 	if ( comments_open() ) {
-		$tabs['reviews'] = array(
+		$tabs['reviews'] = [
 			/* translators: %s: reviews count */
 			'title'    => sprintf( __( 'Reviews (%d)', 'woocommerce' ), $product->get_review_count() ),
 			'priority' => 30,
 			'callback' => 'comments_template',
-		);
+		];
 	}
 
 	return $tabs;

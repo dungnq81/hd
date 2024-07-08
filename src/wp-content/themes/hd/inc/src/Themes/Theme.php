@@ -3,6 +3,7 @@
 namespace Themes;
 
 use Cores\Helper;
+use Cores\Traits\Singleton;
 
 use Libs\CSS;
 
@@ -20,9 +21,11 @@ use Plugins\WooCommerce;
  */
 final class Theme {
 
+	use Singleton;
+
 	// --------------------------------------------------
 
-	public function __construct() {
+	private function init(): void {
 
 		// plugins_loaded -> after_setup_theme -> init -> widgets_init -> wp_loaded -> admin_menu -> admin_init ...
 
@@ -140,16 +143,15 @@ final class Theme {
 	 */
 	public function setup(): void {
 		if ( is_admin() ) {
-			( new Admin() );
+			Admin::get_instance();
 		}
 
-		( new Customizer() );
-		( new Optimizer() );
+		Customizer::get_instance();
+		Optimizer::get_instance();
+		Shortcode::get_instance();
 
 		/** template hooks */
 		$this->_hooks();
-
-		( new Shortcode() )::init();
 
 		// folders
 		$dirs = [
@@ -180,11 +182,11 @@ final class Theme {
 	 */
 	public function plugins_setup(): void {
 
-		Helper::is_woocommerce_active() && ( new WooCommerce\WooCommerce() );
-		Helper::is_elementor_active() && ( new Elementor() );
-		Helper::is_acf_active() && ( new ACF\ACF() );
+		Helper::is_woocommerce_active() && WooCommerce\WooCommerce::get_instance();
+		Helper::is_elementor_active() && Elementor::get_instance();
+		Helper::is_acf_active() && ACF\ACF::get_instance();
 
-		class_exists( \WPCF7::class ) && ( new CF7() );
+		class_exists( \WPCF7::class ) && CF7::get_instance();
 	}
 
 	// --------------------------------------------------
@@ -430,7 +432,7 @@ final class Theme {
 		$logo_bg       = ! empty( $logo_bg = Helper::getThemeMod( 'login_page_bgimage_setting' ) ) ? $logo_bg : $default_logo_bg;
 		$logo_bg_color = Helper::getThemeMod( 'login_page_bgcolor_setting' );
 
-		$css = new CSS();
+		$css = CSS::get_instance();
 
 		if ( $logo_bg ) {
 			$css->set_selector( 'body.login' );

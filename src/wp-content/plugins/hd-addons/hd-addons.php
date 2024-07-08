@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: HD Addons
  * Plugin URI: https://webhd.vn
@@ -24,8 +25,8 @@ $default_headers = [
 
 $plugin_data = get_file_data( __FILE__, $default_headers, 'plugin' );
 
-define( 'ADDONS_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) . '/' );       // https://**/wp-content/plugins/**/
-define( 'ADDONS_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR );     // **\wp-content\plugins\**\
+define( 'ADDONS_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) . '/' ); // https://**/wp-content/plugins/**/
+define( 'ADDONS_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR ); // **\wp-content\plugins\**\
 define( 'ADDONS_BASENAME', plugin_basename( __FILE__ ) ); // **/**.php
 
 define( 'ADDONS_VERSION', $plugin_data['Version'] );
@@ -35,34 +36,19 @@ define( 'ADDONS_AUTHOR', $plugin_data['Author'] );
 const ADDONS_SRC_PATH = ADDONS_PATH . 'src' . DIRECTORY_SEPARATOR;
 
 if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	error_log( 'Autoloader not found: ' . __DIR__ . '/vendor/autoload.php' );
 	wp_die( __( 'Error locating autoloader. Please run <code>composer install</code>.', ADDONS_TEXT_DOMAIN ) );
 }
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/helpers.php';
 
-register_activation_hook( __FILE__, 'activation' );
-register_deactivation_hook( __FILE__, 'deactivation' );
-register_uninstall_hook( __FILE__, 'uninstall' );
+register_activation_hook( __FILE__, [ \Addons\Activator\Activator::class, 'activation' ] );
+register_deactivation_hook( __FILE__, [ \Addons\Activator\Activator::class, 'deactivation' ] );
+register_uninstall_hook( __FILE__, [ \Addons\Activator\Activator::class, 'uninstall' ] );
 
-// The code that runs during plugin activation.
-function activation(): void {
-	\Addons\Activator\Activator::activation();
-}
+add_action( 'admin_notices', 'addons_requirement_notice' );
 
-// The code that runs during plugin deactivation.
-function deactivation(): void {
-	\Addons\Activator\Activator::deactivation();
-}
-
-// The code that will be executed when the plugin is uninstalled.
-function uninstall(): void {
-	\Addons\Activator\Activator::uninstall();
-}
-
-/**
- * @return void
- */
 function addons_requirement_notice(): void {
 	if ( ! check_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
 		printf(
@@ -75,17 +61,11 @@ function addons_requirement_notice(): void {
 	}
 }
 
-add_action( 'admin_notices', 'addons_requirement_notice' );
+add_action( 'plugins_loaded', 'plugins_loaded_hd_addons' );
 
-/**
- *  Global function-holder. Works similar to a singleton's instance().
- *
- * @return void
- */
-function hd_addons(): void {
+// Global function-holder. Works similar to a singleton's instance().
+function plugins_loaded_hd_addons(): void {
 	require_once __DIR__ . '/Addons.php';
 
 	( new \Addons() );
 }
-
-\hd_addons();

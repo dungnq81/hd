@@ -3,6 +3,7 @@
 namespace Themes;
 
 use Cores\Helper;
+use Cores\Traits\Singleton;
 
 /**
  * Optimizer Class
@@ -14,6 +15,8 @@ use Cores\Helper;
 
 final class Optimizer {
 
+	use Singleton;
+
 	/**
 	 * @var array|false|mixed
 	 */
@@ -21,7 +24,7 @@ final class Optimizer {
 
 	// ------------------------------------------------------
 
-	public function __construct() {
+	private function init(): void {
 
 		$this->optimizer_options = Helper::getOption( 'optimizer__options', false, false );
 
@@ -229,7 +232,6 @@ final class Optimizer {
 	 * @param $wp_query
 	 *
 	 * @return mixed|string
-	 * @throws \JsonException
 	 */
 	public function post_search_by_title( $search, $wp_query ): mixed {
 		global $wpdb;
@@ -243,16 +245,11 @@ final class Optimizer {
 
 		$search = $search_and = '';
 
-		$search_terms = Helper::toArray( $q['search_terms'] );
-
-		foreach ( $search_terms as $term ) {
+		foreach ( (array) $q['search_terms'] as $term ) {
 			$term = mb_strtolower( esc_sql( $wpdb->esc_like( $term ) ) );
 
 			$like       = "LIKE CONCAT('{$n}', CONVERT('{$term}', BINARY), '{$n}')";
-			$like_first = "LIKE CONCAT(CONVERT('{$term}', BINARY), '{$n}')";
-			$like_last  = "LIKE CONCAT('{$n}', CONVERT('{$term}', BINARY))";
-
-			$search     .= "{$search_and}(LOWER($wpdb->posts.post_title) {$like} OR LOWER($wpdb->posts.post_title) {$like_first} OR LOWER($wpdb->posts.post_title) {$like_last} OR LOWER($wpdb->posts.post_excerpt) {$like} OR LOWER($wpdb->posts.post_excerpt) {$like_first} OR LOWER($wpdb->posts.post_excerpt) {$like_last})";
+			$search     .= "{$search_and}(LOWER($wpdb->posts.post_title) {$like} OR LOWER($wpdb->posts.post_excerpt) {$like})";
 			$search_and = " AND ";
 		}
 
@@ -326,7 +323,7 @@ final class Optimizer {
 
 		/** Custom CSS */
 		$css = Helper::getCustomPostContent( 'hd_css', false );
-        $css = Helper::extractCSS( $css, false );
+        $css = Helper::extractCSS( $css, false ); // remove tags
 
 		if ( $css ) {
 			$css = Helper::CSS_Minify( $css, true );

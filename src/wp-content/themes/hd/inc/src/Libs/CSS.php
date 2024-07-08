@@ -2,6 +2,8 @@
 
 namespace Libs;
 
+use Cores\Traits\Singleton;
+
 /**
  * Creates minified css via PHP.
  *
@@ -11,6 +13,9 @@ namespace Libs;
  * Modified by HD Team
  */
 final class CSS {
+
+	use Singleton;
+
 	/**
 	 * The css selector that you're currently adding rules to
 	 *
