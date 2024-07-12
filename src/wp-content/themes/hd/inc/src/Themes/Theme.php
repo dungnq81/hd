@@ -6,6 +6,7 @@ use Cores\Helper;
 use Cores\Traits\Singleton;
 
 use Libs\CSS;
+use Libs\Login_Security\Login_Security;
 
 use Plugins\ACF;
 use Plugins\CF7;
@@ -143,12 +144,13 @@ final class Theme {
 	 */
 	public function setup(): void {
 		if ( is_admin() ) {
-			Admin::get_instance();
+			( Admin::get_instance() );
 		}
 
-		Customizer::get_instance();
-		Optimizer::get_instance();
-		Shortcode::get_instance();
+		( Login_Security::get_instance() );
+		( Customizer::get_instance() );
+		( Optimizer::get_instance() );
+		( Shortcode::get_instance() );
 
 		/** template hooks */
 		$this->_hooks();
@@ -237,9 +239,9 @@ final class Theme {
 
 		// swiper js
 		//if ( is_home() || is_front_page() ) {
-			wp_enqueue_style( "swiper-style", ASSETS_URL . "css/plugins/swiper.css", [], THEME_VERSION );
-			wp_enqueue_script( "swiper", ASSETS_URL . "js/plugins/swiper.js", [], THEME_VERSION, true );
-			wp_script_add_data( "swiper", "defer", true );
+		wp_enqueue_style( "swiper-style", ASSETS_URL . "css/plugins/swiper.css", [], THEME_VERSION );
+		wp_enqueue_script( "swiper", ASSETS_URL . "js/plugins/swiper.js", [], THEME_VERSION, true );
+		wp_script_add_data( "swiper", "defer", true );
 		//}
 
 		/** Stylesheet */
@@ -258,10 +260,10 @@ final class Theme {
 		/** Inline Js */
 		$recaptcha_options = Helper::getOption( 'recaptcha__options' );
 
-		$recaptcha_v2_site_key = $recaptcha_options['recaptcha_v2_site_key'] ?? '';
+		$recaptcha_v2_site_key   = $recaptcha_options['recaptcha_v2_site_key'] ?? '';
 		$recaptcha_v2_secret_key = $recaptcha_options['recaptcha_v2_secret_key'] ?? '';
 
-		$recaptcha_v3_site_key = $recaptcha_options['recaptcha_v3_site_key'] ?? '';
+		$recaptcha_v3_site_key   = $recaptcha_options['recaptcha_v3_site_key'] ?? '';
 		$recaptcha_v3_secret_key = $recaptcha_options['recaptcha_v3_secret_key'] ?? '';
 
 		$l10n = [

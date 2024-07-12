@@ -6,7 +6,7 @@ use Addons\Base\Abstract_Htaccess;
 
 \defined( 'ABSPATH' ) || die;
 
-class Gzip extends Abstract_Htaccess {
+final class Gzip extends Abstract_Htaccess {
 
 	/**
 	 * @var string

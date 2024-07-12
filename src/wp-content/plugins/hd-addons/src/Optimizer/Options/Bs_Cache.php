@@ -6,7 +6,7 @@ use Addons\Base\Abstract_Htaccess;
 
 \defined( 'ABSPATH' ) || die;
 
-class Bs_Cache extends Abstract_Htaccess {
+final class Bs_Cache extends Abstract_Htaccess {
 
 	/**
 	 * @var string

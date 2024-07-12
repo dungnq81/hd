@@ -44,7 +44,7 @@ final class Addons {
 		// editor-style.css
 		add_action( 'enqueue_block_editor_assets', [ &$this, 'enqueue_block_editor_assets' ] );
 
-		// Parser functions
+		// Parser
 		$this->_parser();
 	}
 
@@ -67,14 +67,14 @@ final class Addons {
 	 */
 	public function plugins_loaded(): void {
 
-		Optimizer::get_instance();
-		Security::get_instance();
-		Editor::get_instance();
-		Custom_Order::get_instance();
-		Custom_Email::get_instance();
-		SMTP::get_instance();
-		Base_Slug::get_instance();
-		reCAPTCHA::get_instance();
+		( Optimizer::get_instance() );
+		( Security::get_instance() );
+		( Editor::get_instance() );
+		( Custom_Order::get_instance() );
+		( Custom_Email::get_instance() );
+		( SMTP::get_instance() );
+		( Base_Slug::get_instance() );
+		( reCAPTCHA::get_instance() );
 
 		check_plugin_active( 'wp-rocket/wp-rocket.php' ) && Third_Party\WpRocket::get_instance();
 		check_plugin_active( 'seo-by-rank-math/rank-math.php' ) && Third_Party\RankMath::get_instance();
@@ -158,7 +158,7 @@ final class Addons {
 	 */
 	public function optimize_for_visitors( $html ): string {
 
-		$html = ( new Font() )->run( $html );
+		$html = ( Font::get_instance() )->run( $html );
 		$html = $this->dns_prefetch( $html );
 
 		$minify_html = $this->optimizer_options['minify_html'] ?? 0;

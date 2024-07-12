@@ -2,53 +2,12 @@
 
 namespace Cores\Traits;
 
-use DateTimeInterface;
 use Detection\Exception\MobileDetectException;
 use Detection\MobileDetect;
 
 \defined( 'ABSPATH' ) || die;
 
 trait Base {
-
-	// --------------------------------------------------
-
-	/**
-	 * @param string $datetime
-	 *
-	 * @return string
-	 * @throws \Exception
-	 */
-	public static function ATOM_format( string $datetime = 'now' ): string {
-		return ( new \DateTime( $datetime ) )->format( DateTimeInterface::ATOM );
-	}
-
-	// --------------------------------------------------
-
-	/**
-	 * @param string $date_time_1
-	 * @param string $date_time_2
-	 *
-	 * @return string
-	 * @throws \Exception
-	 */
-	public static function isoDuration( string $date_time_1, string $date_time_2 ): string {
-
-		$_date_time_1 = new \DateTime( $date_time_1 );
-		$_date_time_2 = new \DateTime( $date_time_2 );
-
-		$interval = $_date_time_1->diff( $_date_time_2 );
-
-		$isoDuration = 'P';
-		$isoDuration .= ( $interval->y > 0 ) ? $interval->y . 'Y' : '';
-		$isoDuration .= ( $interval->m > 0 ) ? $interval->m . 'M' : '';
-		$isoDuration .= ( $interval->d > 0 ) ? $interval->d . 'D' : '';
-		$isoDuration .= 'T';
-		$isoDuration .= ( $interval->h > 0 ) ? $interval->h . 'H' : '';
-		$isoDuration .= ( $interval->i > 0 ) ? $interval->i . 'M' : '';
-		$isoDuration .= ( $interval->s > 0 ) ? $interval->s . 'S' : '';
-
-		return $isoDuration;
-	}
 
 	// --------------------------------------------------
 
@@ -110,7 +69,7 @@ trait Base {
 	 * @return bool
 	 */
 	public static function isInteger( $input ): bool {
-		//return ( ctype_digit( (string) $input ) );
+		// return ( ctype_digit( (string) $input ) );
 		return filter_var( $input, FILTER_VALIDATE_INT ) !== false;
 	}
 
@@ -132,8 +91,8 @@ trait Base {
 	// --------------------------------------------------
 
 	/**
-	 * @param mixed $value
-	 * @param mixed $fallback
+	 * @param $value
+	 * @param $fallback
 	 * @param bool $strict
 	 *
 	 * @return mixed
@@ -147,9 +106,9 @@ trait Base {
 	// --------------------------------------------------
 
 	/**
-	 * @param mixed $condition
-	 * @param mixed $ifTrue
-	 * @param mixed $ifFalse
+	 * @param $condition
+	 * @param $ifTrue
+	 * @param $ifFalse
 	 *
 	 * @return mixed
 	 */
@@ -160,7 +119,7 @@ trait Base {
 	// --------------------------------------------------
 
 	/**
-	 * @param mixed $value
+	 * @param $value
 	 *
 	 * @return bool
 	 */

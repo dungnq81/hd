@@ -118,7 +118,7 @@ trait Str {
 		$script_pattern = '/<script\b[^>]*>(.*?)<\/script>/is';
 
 		// Find and extract JavaScript code within <script> tags
-		preg_match_all($script_pattern, $content, $matches);
+		preg_match_all( $script_pattern, $content, $matches );
 
 		// Initialize an array to hold the non-empty <script> tags or those with src attribute
 		$valid_scripts = [];
@@ -132,26 +132,26 @@ trait Str {
 		];
 
 		// Loop through all matched <script> tags
-		foreach ($matches[0] as $index => $scriptTag) {
-			$scriptContent = trim($matches[1][$index]);
-			$hasSrc = preg_match('/\bsrc=["\'].*?["\']/', $scriptTag);
+		foreach ( $matches[0] as $index => $scriptTag ) {
+			$scriptContent = trim( $matches[1][ $index ] );
+			$hasSrc        = preg_match( '/\bsrc=["\'].*?["\']/', $scriptTag );
 
 			// Check if the script content is not malicious
 			$isMalicious = false;
-			foreach ($malicious_patterns as $pattern) {
-				if (preg_match($pattern, $scriptContent)) {
+			foreach ( $malicious_patterns as $pattern ) {
+				if ( preg_match( $pattern, $scriptContent ) ) {
 					$isMalicious = true;
 					break;
 				}
 			}
 
-			if (!$isMalicious && ($scriptContent !== '' || $hasSrc)) {
+			if ( ! $isMalicious && ( $scriptContent !== '' || $hasSrc ) ) {
 				$valid_scripts[] = $scriptTag;
 			}
 		}
 
 		// Return the concatenated valid <script> tags
-		return implode("\n", $valid_scripts);
+		return implode( "\n", $valid_scripts );
 	}
 
 	// --------------------------------------------------
@@ -253,7 +253,7 @@ trait Str {
 	 * @return string
 	 */
 	public static function random( int $length = 8 ): string {
-		$text = base64_encode( wp_generate_password() );
+		$text = base64_encode( wp_generate_password( $length, false, false ) );
 
 		return substr( str_replace( [ '/', '+', '=' ], '', $text ), 0, $length );
 	}
@@ -263,7 +263,7 @@ trait Str {
 	/**
 	 * @param string $string
 	 * @param string $prefix
-	 * @param string|null $trim
+	 * @param $trim
 	 *
 	 * @return string
 	 */
@@ -295,8 +295,8 @@ trait Str {
 	// --------------------------------------------------
 
 	/**
-	 * @param string|string[] $needles
-	 * @param string $haystack
+	 * @param $needles
+	 * @param $haystack
 	 *
 	 * @return bool
 	 */
@@ -314,8 +314,8 @@ trait Str {
 	// --------------------------------------------------
 
 	/**
-	 * @param string|string[] $needles
-	 * @param string $haystack
+	 * @param $needles
+	 * @param $haystack
 	 *
 	 * @return bool
 	 */
@@ -333,8 +333,8 @@ trait Str {
 	// --------------------------------------------------
 
 	/**
-	 * @param string $string
-	 * @param string $suffix
+	 * @param $string
+	 * @param $suffix
 	 *
 	 * @return string
 	 */
@@ -349,9 +349,9 @@ trait Str {
 	// --------------------------------------------------
 
 	/**
-	 * @param string $search
-	 * @param string $replace
-	 * @param string $subject
+	 * @param $search
+	 * @param $replace
+	 * @param $subject
 	 *
 	 * @return string
 	 */
@@ -444,8 +444,8 @@ trait Str {
 	// --------------------------------------------------
 
 	/**
-	 * @param string $value
-	 * @param int $length
+	 * @param $value
+	 * @param $length
 	 * @param string $end
 	 *
 	 * @return string

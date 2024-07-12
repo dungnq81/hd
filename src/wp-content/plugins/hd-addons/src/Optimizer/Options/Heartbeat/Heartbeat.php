@@ -2,15 +2,19 @@
 
 namespace Addons\Optimizer\Options\Heartbeat;
 
+use Addons\Base\Singleton;
+
 \defined( 'ABSPATH' ) || die;
 
 const INTERVAL_LIMIT = 120;
 
 final class Heartbeat {
 
+	use Singleton;
+
 	public array $options;
 
-	public function __construct() {
+	private function init(): void {
 		$heartbeat = optimizer_options( 'heartbeat', 0 );
 
 		if ( ! empty( $heartbeat ) ) {

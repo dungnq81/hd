@@ -5,7 +5,7 @@ namespace Addons\Security\Options;
 use Addons\Base\Abstract_Htaccess;
 use WP_HTTP_Response;
 
-class Headers extends Abstract_Htaccess {
+final class Headers extends Abstract_Htaccess {
 
 	/**
 	 * The path to the htaccess template.
@@ -46,9 +46,6 @@ class Headers extends Abstract_Htaccess {
 
 	// --------------------------------------------------
 
-	/**
-	 * The constructor.
-	 */
 	public function __construct() {
 		$this->security_headers = $this->prepare_headers();
 		parent::__construct();

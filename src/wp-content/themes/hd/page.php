@@ -15,6 +15,10 @@
 // header
 get_header( 'page' );
 
+if ( have_posts() ) {
+	the_post();
+}
+
 if ( post_password_required() ) :
 	echo get_the_password_form(); // WPCS: XSS ok.
 	return;

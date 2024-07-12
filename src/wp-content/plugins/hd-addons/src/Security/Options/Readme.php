@@ -7,7 +7,7 @@ namespace Addons\Security\Options;
  *
  * @author SiteGround Security
  */
-class Readme {
+final class Readme {
 
 	/**
 	 * Check if the file exists in the root directory of the WP Installation

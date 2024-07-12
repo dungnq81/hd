@@ -234,9 +234,9 @@ trait File {
 	/**
 	 * @param $directory
 	 *
-	 * @return bool|mixed
+	 * @return bool
 	 */
-	public static function createDirectory( $directory ): mixed {
+	public static function createDirectory( $directory ): bool {
 
 		// Create the directory and return the result.
 		$is_directory_created = wp_mkdir_p( $directory );

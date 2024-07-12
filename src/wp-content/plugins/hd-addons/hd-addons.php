@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name: HD Addons
  * Plugin URI: https://webhd.vn

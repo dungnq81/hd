@@ -6,7 +6,7 @@ use Addons\Base\Abstract_Htaccess;
 
 \defined( 'ABSPATH' ) || die;
 
-class Ssl extends Abstract_Htaccess {
+final class Ssl extends Abstract_Htaccess {
 
 	/**
 	 * The path to the htaccess template.

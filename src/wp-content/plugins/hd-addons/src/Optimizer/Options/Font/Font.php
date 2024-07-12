@@ -2,6 +2,8 @@
 
 namespace Addons\Optimizer\Options\Font;
 
+use Addons\Base\Singleton;
+
 \defined( 'ABSPATH' ) || die;
 
 const GOOGLE_API_URL       = 'https://fonts.googleapis.com/';
@@ -12,6 +14,10 @@ const GOOGLE_FONTS_DISPLAY = 'swap';
  * Modified by HD Team
  */
 final class Font {
+
+	use Singleton;
+
+	// ------------------------------------------------------
 
 	public ?string $assets_dir = null;
 	public mixed $wp_filesystem;
@@ -41,7 +47,7 @@ final class Font {
 
 	// ------------------------------------------------------
 
-	public function __construct() {
+	private function init(): void {
 
 		$this->_set_assets_directory_path();
 		$this->_setup_wp_filesystem();

@@ -1,23 +1,26 @@
 <?php
 
+\defined( 'ABSPATH' ) || die;
+
 $optimizer_options = get_option( 'optimizer__options' );
 
-$https_enforce = $optimizer_options['https_enforce'] ?? 0;
-$gzip          = $optimizer_options['gzip'] ?? 0;
-$bs_caching    = $optimizer_options['bs_caching'] ?? 0;
-$heartbeat     = $optimizer_options['heartbeat'] ?? 0;
-$svgs          = $optimizer_options['svgs'] ?? 'disable';
+$https_enforce      = $optimizer_options['https_enforce'] ?? 0;
+$gzip               = $optimizer_options['gzip'] ?? 0;
+$bs_caching         = $optimizer_options['bs_caching'] ?? 0;
+$heartbeat          = $optimizer_options['heartbeat'] ?? 0;
+$del_attached_media = $optimizer_options['del_attached_media'] ?? 0;
+$svgs               = $optimizer_options['svgs'] ?? 'disable';
 
 $lazy_load        = $optimizer_options['lazy_load'] ?? 0;
 $lazy_load_mobile = $optimizer_options['lazy_load_mobile'] ?? 0;
 $exclude_lazyload = $optimizer_options['exclude_lazyload'] ?? [ 'no-lazy' ];
 
 $font_preload = $optimizer_options['font_preload'] ?? [];
-$dns_prefetch = $optimizer_options['dns_prefetch'] ?? [];
-$minify_html  = $optimizer_options['minify_html'] ?? 0;
-
 $font_optimize     = $optimizer_options['font_optimize'] ?? 0;
 $font_combined_css = $optimizer_options['font_combined_css'] ?? 0;
+
+$dns_prefetch = $optimizer_options['dns_prefetch'] ?? [];
+$minify_html  = $optimizer_options['minify_html'] ?? 0;
 
 ?>
 <h2><?php _e( 'Optimizer Settings', ADDONS_TEXT_DOMAIN ); ?></h2>
@@ -58,3 +61,4 @@ include __DIR__ . '/Options/SVG/options.php';
 include __DIR__ . '/Options/Minifier/options.php';
 include __DIR__ . '/Options/Font/options.php';
 include __DIR__ . '/Options/Lazy_Load/options.php';
+include __DIR__ . '/Options/Del_Attached_Media/options.php';

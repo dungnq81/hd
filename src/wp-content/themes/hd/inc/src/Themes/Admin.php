@@ -188,19 +188,20 @@ final class Admin {
 			$dns_prefetch     = array_map( 'sanitize_url', $dns_prefetch );
 
 			$optimizer_options = [
-				'https_enforce'     => ! empty( $data['https_enforce'] ) ? sanitize_text_field( $data['https_enforce'] ) : 0,
-				'gzip'              => ! empty( $data['gzip'] ) ? sanitize_text_field( $data['gzip'] ) : 0,
-				'bs_caching'        => ! empty( $data['bs_caching'] ) ? sanitize_text_field( $data['bs_caching'] ) : 0,
-				'heartbeat'         => ! empty( $data['heartbeat'] ) ? sanitize_text_field( $data['heartbeat'] ) : 0,
-				'minify_html'       => ! empty( $data['minify_html'] ) ? sanitize_text_field( $data['minify_html'] ) : 0,
-				'svgs'              => ! empty( $data['svgs'] ) ? sanitize_text_field( $data['svgs'] ) : 'disable',
-				'lazy_load'         => ! empty( $data['lazy_load'] ) ? sanitize_text_field( $data['lazy_load'] ) : 0,
-				'lazy_load_mobile'  => ! empty( $data['lazy_load_mobile'] ) ? sanitize_text_field( $data['lazy_load_mobile'] ) : 0,
-				'exclude_lazyload'  => $exclude_lazyload,
-				'font_optimize'     => ! empty( $data['font_optimize'] ) ? sanitize_text_field( $data['font_optimize'] ) : 0,
-				'font_combined_css' => ! empty( $data['font_combined_css'] ) ? sanitize_text_field( $data['font_combined_css'] ) : 0,
-				'font_preload'      => $font_preload,
-				'dns_prefetch'      => $dns_prefetch,
+				'https_enforce'      => ! empty( $data['https_enforce'] ) ? sanitize_text_field( $data['https_enforce'] ) : 0,
+				'gzip'               => ! empty( $data['gzip'] ) ? sanitize_text_field( $data['gzip'] ) : 0,
+				'bs_caching'         => ! empty( $data['bs_caching'] ) ? sanitize_text_field( $data['bs_caching'] ) : 0,
+				'heartbeat'          => ! empty( $data['heartbeat'] ) ? sanitize_text_field( $data['heartbeat'] ) : 0,
+				'minify_html'        => ! empty( $data['minify_html'] ) ? sanitize_text_field( $data['minify_html'] ) : 0,
+				'svgs'               => ! empty( $data['svgs'] ) ? sanitize_text_field( $data['svgs'] ) : 'disable',
+				'lazy_load'          => ! empty( $data['lazy_load'] ) ? sanitize_text_field( $data['lazy_load'] ) : 0,
+				'lazy_load_mobile'   => ! empty( $data['lazy_load_mobile'] ) ? sanitize_text_field( $data['lazy_load_mobile'] ) : 0,
+				'exclude_lazyload'   => $exclude_lazyload,
+				'font_optimize'      => ! empty( $data['font_optimize'] ) ? sanitize_text_field( $data['font_optimize'] ) : 0,
+				'font_combined_css'  => ! empty( $data['font_combined_css'] ) ? sanitize_text_field( $data['font_combined_css'] ) : 0,
+				'font_preload'       => $font_preload,
+				'dns_prefetch'       => $dns_prefetch,
+				'del_attached_media' => ! empty( $data['del_attached_media'] ) ? sanitize_text_field( $data['del_attached_media'] ) : 0,
 			];
 
 			Helper::updateOption( 'optimizer__options', $optimizer_options, true );
@@ -220,7 +221,6 @@ final class Admin {
 		/** Security */
 		if ( Helper::is_addons_active() ) {
 			$security_options = [
-				'illegal_users'           => ! empty( $data['illegal_users'] ) ? sanitize_text_field( $data['illegal_users'] ) : '',
 				'hide_wp_version'         => ! empty( $data['hide_wp_version'] ) ? sanitize_text_field( $data['hide_wp_version'] ) : '',
 				'xml_rpc_off'             => ! empty( $data['xml_rpc_off'] ) ? sanitize_text_field( $data['xml_rpc_off'] ) : '',
 				'wp_links_opml_off'       => ! empty( $data['wp_links_opml_off'] ) ? sanitize_text_field( $data['wp_links_opml_off'] ) : '',
@@ -228,8 +228,6 @@ final class Admin {
 				'rss_feed_off'            => ! empty( $data['rss_feed_off'] ) ? sanitize_text_field( $data['rss_feed_off'] ) : '',
 				'lock_protect_system'     => ! empty( $data['lock_protect_system'] ) ? sanitize_text_field( $data['lock_protect_system'] ) : '',
 				'advanced_xss_protection' => ! empty( $data['advanced_xss_protection'] ) ? sanitize_text_field( $data['advanced_xss_protection'] ) : '',
-				'limit_login_attempts'    => ! empty( $data['limit_login_attempts'] ) ? sanitize_text_field( $data['limit_login_attempts'] ) : '0',
-				//'two_factor_authentication' => ! empty( $data['two_factor_authentication'] ) ? sanitize_text_field( $data['two_factor_authentication'] ) : '',
 			];
 
 			Helper::updateOption( 'security__options', $security_options, true );
@@ -247,7 +245,27 @@ final class Admin {
 
 		/** ---------------------------------------- */
 
-		// Socials
+		/** Login Security */
+		$login_ips_access = ! empty( $data['login_ips_access'] ) ? $data['login_ips_access'] : '';
+		$login_ips_access = is_array( $login_ips_access ) ? array_map( 'sanitize_text_field', $login_ips_access ) : sanitize_text_field( $login_ips_access );
+
+		$disable_ips_access = ! empty( $data['disable_ips_access'] ) ? $data['disable_ips_access'] : '';
+		$disable_ips_access = is_array( $disable_ips_access ) ? array_map( 'sanitize_text_field', $disable_ips_access ) : sanitize_text_field( $disable_ips_access );
+
+		$login_security__options = [
+			'custom_login_url'          => ! empty( $data['custom_login_url'] ) ? sanitize_text_field( $data['custom_login_url'] ) : '',
+			'illegal_users'             => ! empty( $data['illegal_users'] ) ? sanitize_text_field( $data['illegal_users'] ) : '',
+			'login_ips_access'          => $login_ips_access,
+			'disable_ips_access'        => $disable_ips_access,
+			'limit_login_attempts'      => ! empty( $data['limit_login_attempts'] ) ? sanitize_text_field( $data['limit_login_attempts'] ) : '0',
+			'two_factor_authentication' => ! empty( $data['two_factor_authentication'] ) ? sanitize_text_field( $data['two_factor_authentication'] ) : '',
+		];
+
+		Helper::updateOption( 'login_security__options', $login_security__options, true );
+
+		/** ---------------------------------------- */
+
+		/** Socials */
 		if ( Helper::is_addons_active() ) {
 			$social_options       = [];
 			$social_follows_links = Helper::filter_setting_options( 'social_follows_links', [] );
@@ -275,7 +293,6 @@ final class Admin {
 
 			Helper::updateOption( 'woocommerce__options', $woocommerce_options, true );
 
-			// fixed woo db
 			if ( $woocommerce_options['remove_legacy_coupon'] ) {
 				$wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "wc_admin_notes SET status=%s WHERE name=%s", 'actioned', 'wc-admin-coupon-page-moved' ) );
 				$wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "wc_admin_note_actions SET status=%s WHERE name=%s", 'actioned', 'remove-legacy-coupon-menu' ) );
@@ -296,12 +313,10 @@ final class Admin {
 
 				Helper::updateOption( 'custom_base_slug__options', $custom_base_slug_options );
 
-				( new Base_Slug() )->flush_rules();
+				( Base_Slug::get_instance() )->flush_rules();
 
 			} else {
-
-				// reset order
-				( new Base_Slug() )->reset_all();
+				( Base_Slug::get_instance() )->reset_all();
 			}
 		}
 
@@ -319,10 +334,10 @@ final class Admin {
 
 				Helper::updateOption( 'custom_order__options', $custom_order_options );
 
-				( new Custom_Order() )->update_options();
+				( Custom_Order::get_instance() )->update_options();
 
 			} else {
-				( new Custom_Order() )->reset_all();
+				( Custom_Order::get_instance() )->reset_all();
 			}
 		}
 
@@ -337,12 +352,12 @@ final class Admin {
 				'recaptcha_v3_secret_key' => ! empty( $data['recaptcha_v3_secret_key'] ) ? sanitize_text_field( $data['recaptcha_v3_secret_key'] ) : '',
 				'recaptcha_v3_score'      => ! empty( $data['recaptcha_v3_score'] ) ? sanitize_text_field( $data['recaptcha_v3_score'] ) : '0.5',
 				'recaptcha_global'        => ! empty( $data['recaptcha_global'] ) ? sanitize_text_field( $data['recaptcha_global'] ) : '',
-				'recaptcha_allowlist_ips' => ! empty( $data['recaptcha_allowlist_ips'] ) ? array_map( 'sanitize_text_field', $data['recaptcha_allowlist_ips']
-				) : [],
+				'recaptcha_allowlist_ips' => ! empty( $data['recaptcha_allowlist_ips'] ) ? array_map( 'sanitize_text_field', $data['recaptcha_allowlist_ips'] ) : [],
 			];
 
 			Helper::updateOption( 'recaptcha__options', $recaptcha_options );
 		}
+
 
 		/** ---------------------------------------- */
 
@@ -682,8 +697,8 @@ final class Admin {
 					$term_thumb = Helper::placeholderSrc();
 				}
 
-				return $out = $term_thumb;
-				break;
+				$out = $term_thumb;
+				return $out;
 
 //			case 'term_order':
 //				if ( class_exists( '\ACF' ) ) {
@@ -697,7 +712,6 @@ final class Admin {
 
 			default:
 				return $out;
-				break;
 		}
 	}
 

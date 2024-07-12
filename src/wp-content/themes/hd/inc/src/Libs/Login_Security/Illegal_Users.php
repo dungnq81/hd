@@ -1,8 +1,8 @@
 <?php
 
-namespace Addons\Security\Options;
+namespace Libs\Login_Security;
 
-class Illegal_Users {
+final class Illegal_Users {
 
 	/**
 	 * Array containing common usernames.
@@ -30,7 +30,7 @@ class Illegal_Users {
 	 */
 	public function get_illegal_usernames( array $usernames = [] ): array {
 		$illegal_usernames = apply_filters(
-			'hd_illegal_users',
+			'_illegal_users',
 			$usernames
 		);
 

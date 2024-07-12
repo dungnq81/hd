@@ -223,7 +223,7 @@ if ( ! function_exists( 'is_mobile' ) ) {
 	 */
 	function is_mobile(): bool {
 
-		if ( class_exists( '\Detection\MobileDetect' ) ) {
+		if ( class_exists( \Detection\MobileDetect::class ) ) {
 			return ( new MobileDetect() )->isMobile();
 		}
 

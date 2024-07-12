@@ -4,7 +4,7 @@ namespace Addons\Security\Options;
 
 use Addons\Base\Abstract_Htaccess;
 
-class Xmlrpc extends Abstract_Htaccess {
+final class Xmlrpc extends Abstract_Htaccess {
 
 	/**
 	 * Array containing all plugins using XML-RPC.

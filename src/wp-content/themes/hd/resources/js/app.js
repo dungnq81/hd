@@ -21,6 +21,13 @@ Fancybox.bind('.wp-block-gallery .wp-block-image a, [id^="gallery-"] a, [data-re
 //------------------------------------
 
 jQuery(($) => {
+    // replaceState
+    // let url = new URL(window.location.href);
+    // if (url.searchParams.has('added')) {
+    //     url.searchParams.delete('added');
+    //     window.history.replaceState(null, '', url.toString());
+    // }
+
     //...
     const onload_events = () => {};
 
@@ -100,17 +107,4 @@ function redirect(url = null, $delay = 10) {
             document.location.assign(url);
         }
     }, $delay);
-}
-
-/**
- * @param page
- * @param title
- * @param url
- */
-function pushState(page, title, url) {
-    if ('undefined' !== typeof history.pushState) {
-        history.pushState({ page: page }, title, url);
-    } else {
-        window.location.assign(url);
-    }
 }

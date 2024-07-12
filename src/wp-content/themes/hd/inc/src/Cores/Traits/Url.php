@@ -62,46 +62,152 @@ trait Url {
 	// --------------------------------------------------
 
 	/**
+	 * @param $ip
+	 * @param $range
+	 *
+	 * @return bool
+	 */
+	public static function ipInRange( $ip, $range ): bool {
+		if ( ! filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+			return false;
+		}
+
+		$ipPattern    = '/^(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})$/';
+		$rangePattern = '/^(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})-(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])$/';
+		$cidrPattern  = '/^(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\/(\d|[1-2]\d|3[0-2])$/';
+
+		// Check if it's a single IP address
+		if ( preg_match( $ipPattern, $range ) ) {
+			return (string) $ip === (string) $range;
+		}
+
+		// Check if it's an IP range
+		if ( preg_match( $rangePattern, $range, $matches ) ) {
+			$startIP = "{$matches[1]}.{$matches[2]}.{$matches[3]}.{$matches[4]}";
+			$endIP   = "{$matches[1]}.{$matches[2]}.{$matches[3]}.{$matches[5]}";
+
+			return self::_compareIPs( $startIP, $endIP ) < 0 && self::_compareIPs( $startIP, $ip ) <= 0 && self::_compareIPs( $ip, $endIP ) <= 0;
+		}
+
+		// Check if it's a CIDR notation
+		if ( preg_match( $cidrPattern, $range ) ) {
+			[ $subnet, $maskLength ] = explode( '/', $range );
+
+			return self::_ipCIDRCheck( $ip, $subnet, $maskLength );
+		}
+
+		return false;
+	}
+
+	// --------------------------------------------------
+
+	/**
+	 * @param $ip
+	 * @param $subnet
+	 * @param $maskLength
+	 *
+	 * @return bool
+	 */
+	public static function _ipCIDRCheck( $ip, $subnet, $maskLength ): bool {
+		$ip     = ip2long( $ip );
+		$subnet = ip2long( $subnet );
+		$mask   = - 1 << ( 32 - $maskLength );
+		$subnet &= $mask; // Align the subnet to the mask
+
+		return ( $ip & $mask ) === $subnet;
+	}
+
+	// --------------------------------------------------
+
+	/**
+	 * @param $range
+	 *
+	 * @return bool
+	 */
+	public static function isValidIPRange( $range ): bool {
+		$ipPattern    = '/^(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})$/';
+		$rangePattern = '/^(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})-(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])$/';
+		$cidrPattern  = '/^(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\/(\d|[1-2]\d|3[0-2])$/';
+
+		if ( preg_match( $ipPattern, $range ) ) {
+			return true;
+		}
+
+		if ( preg_match( $rangePattern, $range, $matches ) ) {
+			$startIP = "{$matches[1]}.{$matches[2]}.{$matches[3]}.{$matches[4]}";
+			$endIP   = "{$matches[1]}.{$matches[2]}.{$matches[3]}.{$matches[5]}";
+
+			return self::_compareIPs( $startIP, $endIP ) < 0;
+		}
+
+		if ( preg_match( $cidrPattern, $range ) ) {
+			return true; // Just return true for CIDR notation
+		}
+
+		return false;
+	}
+
+	// --------------------------------------------------
+
+	/**
+	 * @param $ip1
+	 * @param $ip2
+	 *
+	 * @return int
+	 */
+	public static function _compareIPs( $ip1, $ip2 ): int {
+		$ip1Long = (int) ip2long( $ip1 );
+		$ip2Long = (int) ip2long( $ip2 );
+
+		if ( $ip1Long < $ip2Long ) {
+			return - 1;
+		}
+
+		if ( $ip1Long > $ip2Long ) {
+			return 1;
+		}
+
+		return 0;
+	}
+
+	// --------------------------------------------------
+
+	/**
 	 * Get the IP address from which the user is viewing the current page.
 	 *
 	 * @return string
 	 */
 	public static function getIpAddress(): string {
-
-		if ( class_exists( Whip::class ) ) {
+		if ( class_exists( 'Whip' ) ) {
 			$whip          = new Whip( Whip::CLOUDFLARE_HEADERS | Whip::REMOTE_ADDR | Whip::PROXY_HEADERS | Whip::INCAPSULA_HEADERS );
 			$clientAddress = $whip->getValidIpAddress();
 
 			if ( false !== $clientAddress ) {
 				return preg_replace( '/^::1$/', '127.0.0.1', $clientAddress );
 			}
-
 		} else {
-
-			// Get real visitor IP behind CloudFlare network
+			// Check CloudFlare headers
 			if ( isset( $_SERVER["HTTP_CF_CONNECTING_IP"] ) ) {
-				$_SERVER['REMOTE_ADDR']    = $_SERVER["HTTP_CF_CONNECTING_IP"];
-				$_SERVER['HTTP_CLIENT_IP'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+				return $_SERVER["HTTP_CF_CONNECTING_IP"];
 			}
 
-			$client  = $_SERVER['HTTP_CLIENT_IP'] ?? '';
-			$forward = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '';
-			$remote  = $_SERVER['REMOTE_ADDR'] ?? '';
-
-			if ( filter_var( $client, FILTER_VALIDATE_IP ) ) {
-				return $client;
+			// Check forwarded IP (proxy)
+			if ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) && filter_var( $_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP ) ) {
+				return $_SERVER['HTTP_X_FORWARDED_FOR'];
 			}
 
-			if ( filter_var( $forward, FILTER_VALIDATE_IP ) ) {
-				return $forward;
+			// Check client IP
+			if ( isset( $_SERVER['HTTP_CLIENT_IP'] ) && filter_var( $_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP ) ) {
+				return $_SERVER['HTTP_CLIENT_IP'];
 			}
 
-			if ( filter_var( $remote, FILTER_VALIDATE_IP ) ) {
-				return $remote;
+			// Fallback to remote address
+			if ( isset( $_SERVER['REMOTE_ADDR'] ) && filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP ) ) {
+				return $_SERVER['REMOTE_ADDR'];
 			}
 		}
 
-		// Fallback local ip.
+		// Fallback to localhost IP
 		return '127.0.0.1';
 	}
 
@@ -143,6 +249,23 @@ trait Url {
 	// --------------------------------------------------
 
 	/**
+	 * @param string $path
+	 *
+	 * @return string|null
+	 */
+	public static function admin_current_url( string $path = 'admin.php' ): ?string {
+		$parsed_url  = parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+		$current_url = admin_url( $path );
+		if ( $parsed_url ) {
+			$current_url .= '?' . $parsed_url['query'];
+		}
+
+		return $current_url;
+	}
+
+	// --------------------------------------------------
+
+	/**
 	 * @param bool $nopaging
 	 * @param bool $get_vars
 	 *
@@ -164,7 +287,7 @@ trait Url {
 		if ( $get_vars ) {
 			$queryString = http_build_query( $_GET );
 
-			if ( mb_strpos( $current_url, "?" ) && $queryString ) {
+			if ( $queryString && mb_strpos( $current_url, "?" ) ) {
 				$current_url .= "&" . $queryString;
 			} elseif ( $queryString ) {
 				$current_url .= "?" . $queryString;

@@ -47,6 +47,11 @@ $hide_menu_options = apply_filters( 'hd_hide_menu_options', [] );
         <li class="security-settings<?php in_array_toggle_class( $hide_menu_options, 'security' ); ?>">
             <a title="Security" href="#security_settings"><?php _e( 'Security', TEXT_DOMAIN ); ?></a>
         </li>
+
+        <li class="login-security-settings<?php in_array_toggle_class( $hide_menu_options, 'login-security' ); ?>">
+            <a title="Login Security" href="#login_security_settings"><?php _e( 'Login Security', TEXT_DOMAIN ); ?></a>
+        </li>
+
         <li class="social-settings<?php in_array_toggle_class( $hide_menu_options, 'social' ); ?>">
             <a title="Social" href="#social_settings"><?php _e( 'Social', TEXT_DOMAIN ); ?></a>
         </li>

@@ -4,7 +4,7 @@ namespace Addons\Security\Options;
 
 use Addons\Base\Abstract_Htaccess;
 
-class Opml extends Abstract_Htaccess {
+final class Opml extends Abstract_Htaccess {
 
 	/**
 	 * The path to the htaccess template.

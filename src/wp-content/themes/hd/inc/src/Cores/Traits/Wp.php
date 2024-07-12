@@ -2,6 +2,8 @@
 
 namespace Cores\Traits;
 
+use DateTimeZone;
+
 use Cores\Helper;
 use Libs\CSS;
 use Libs\Horizontal_Nav_Walker;
@@ -1894,5 +1896,138 @@ trait Wp {
 	 */
 	public static function check_plugin_active( $plugin_slug ): bool {
 		return self::check_plugin_installed( $plugin_slug ) && is_plugin_active( $plugin_slug );
+	}
+
+	// --------------------------------------------------
+
+	/**
+	 * @param string $date_time_1
+	 * @param string $date_time_2
+	 *
+	 * @return string
+	 * @throws \Exception
+	 */
+	public static function iso_duration( string $date_time_1, string $date_time_2 ): string {
+
+		$_date_time_1 = new \DateTime( $date_time_1 );
+		$_date_time_2 = new \DateTime( $date_time_2 );
+
+		$interval = $_date_time_1->diff( $_date_time_2 );
+
+		$isoDuration = 'P';
+		$isoDuration .= ( $interval->y > 0 ) ? $interval->y . 'Y' : '';
+		$isoDuration .= ( $interval->m > 0 ) ? $interval->m . 'M' : '';
+		$isoDuration .= ( $interval->d > 0 ) ? $interval->d . 'D' : '';
+		$isoDuration .= 'T';
+		$isoDuration .= ( $interval->h > 0 ) ? $interval->h . 'H' : '';
+		$isoDuration .= ( $interval->i > 0 ) ? $interval->i . 'M' : '';
+		$isoDuration .= ( $interval->s > 0 ) ? $interval->s . 'S' : '';
+
+		return $isoDuration;
+	}
+
+	// -------------------------------------------------------------
+
+	/**
+	 *  Given a date in the timezone of the site, returns that date in UTC.
+	 *
+	 *  Return format can be overridden using the $format parameter.
+	 *
+	 * @param $date_string
+	 * @param string $format timestamp, U, DateTimeInterface::ATOM, 'Y-m-d H:i:s', 'Y-m-d\TH:i', v.v...
+	 *
+	 * @return false|int|string
+	 */
+	public static function convert_datetime_to_utc( $date_string, string $format = 'Y-m-d H:i:s' ): false|int|string {
+		if ( self::isInteger( $date_string ) ) {
+			$date_string = "@" . $date_string;
+		}
+
+		$datetime = date_create( $date_string, wp_timezone() );
+
+		if ( false === $datetime ) {
+			return false;
+		}
+
+		// Returns a sum of timestamp with timezone offset.
+		if ( 'timestamp' === $format || 'U' === $format ) {
+			return $datetime->getTimestamp();
+		}
+
+		if ( 'mysql' === $format ) {
+			$format = 'Y-m-d H:i:s';
+		}
+
+		return $datetime->setTimezone( new DateTimeZone( 'UTC' ) )->format( $format );
+	}
+
+	// -------------------------------------------------------------
+
+	/**
+	 *  Given a date in UTC or GMT timezone, returns that date in the timezone of the site.
+	 *
+	 *  Default return format of 'Y-m-d H:i:s' can be overridden using the `$format` parameter.
+	 *
+	 * @param $date_string
+	 * @param string $format
+	 *
+	 * @return false|int|string
+	 */
+	public static function convert_utc_to_datetime( $date_string, string $format = 'Y-m-d H:i:s' ): false|int|string {
+		if ( self::isInteger( $date_string ) ) {
+			$date_string = "@" . $date_string;
+		}
+
+		$datetime = date_create( $date_string, new DateTimeZone( 'UTC' ) );
+
+		if ( false === $datetime ) {
+			return false;
+		}
+
+		// set to wp_timezone
+		$datetime->setTimezone( wp_timezone() );
+
+		// Returns a sum of timestamp with timezone offset.
+		if ( 'timestamp' === $format || 'U' === $format ) {
+			return $datetime->getTimestamp() + $datetime->getOffset();
+		}
+
+		if ( 'mysql' === $format ) {
+			$format = 'Y-m-d H:i:s';
+		}
+
+		return $datetime->format( $format );
+	}
+
+	// -------------------------------------------------------------
+
+	/**
+	 * @param $date_string
+	 * @param string $format timestamp, U, 'Y-m-d H:i:s', 'Y-m-d\TH:i', DateTimeInterface::ATOM, v.v...
+	 *
+	 * @return false|int|string
+	 */
+	public static function convert_datetime_format( $date_string, string $format = 'Y-m-d H:i:s' ): false|int|string {
+
+		if ( self::isInteger( $date_string ) ) {
+			$date_string = "@" . $date_string;
+		}
+
+		$datetime = date_create( $date_string, wp_timezone() );
+
+		if ( false === $datetime ) {
+			return false;
+		}
+
+		// Returns a sum of timestamp with timezone offset.
+		if ( 'timestamp' === $format || 'U' === $format ) {
+			return $datetime->getTimestamp() + $datetime->getOffset();
+		}
+
+		if ( 'mysql' === $format ) {
+			$format = 'Y-m-d H:i:s';
+		}
+
+		return $datetime->format( $format );
 	}
 }

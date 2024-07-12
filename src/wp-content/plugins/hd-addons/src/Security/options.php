@@ -1,10 +1,7 @@
 <?php
 
-use Addons\Security\Options\Login_Attempts;
-
 $security_options = get_option( 'security__options', false );
 
-$illegal_users             = $security_options['illegal_users'] ?? '';
 $hide_wp_version           = $security_options['hide_wp_version'] ?? '';
 $xml_rpc_off               = $security_options['xml_rpc_off'] ?? '';
 $wp_links_opml_off         = $security_options['wp_links_opml_off'] ?? '';
@@ -12,8 +9,6 @@ $remove_readme             = $security_options['remove_readme'] ?? '';
 $rss_feed_off              = $security_options['rss_feed_off'] ?? '';
 $lock_protect_system       = $security_options['lock_protect_system'] ?? '';
 $advanced_xss_protection   = $security_options['advanced_xss_protection'] ?? '';
-$limit_login_attempts      = $security_options['limit_login_attempts'] ?? 0;
-//$two_factor_authentication = $security_options['two_factor_authentication'] ?? '';
 
 ?>
 <h2><?php _e( 'Security Settings', ADDONS_TEXT_DOMAIN ); ?></h2>
@@ -86,40 +81,5 @@ $limit_login_attempts      = $security_options['limit_login_attempts'] ?? 0;
             <input type="checkbox" class="hd-checkbox hd-control" name="advanced_xss_protection" id="advanced_xss_protection" <?php checked( $advanced_xss_protection, 1 ); ?> value="1">
         </div>
         <div class="explain"><?php _e( 'Enabling this option will add extra headers to your site for protection against XSS attacks.', ADDONS_TEXT_DOMAIN ); ?></div>
-    </div>
-</div>
-<div class="section section-checkbox" id="section_illegal_users">
-    <label class="heading" for="illegal_users"><?php _e( 'Disable Common Usernames', ADDONS_TEXT_DOMAIN ); ?></label>
-    <div class="desc"><?php _e( 'Using common usernames like <b>\'admin\'</b> is a security threat that often results in unauthorised access. By enabling this option we will disable the creation of common usernames and if you already have one or more users with a weak username, we\'ll ask you to provide new one(s).', ADDONS_TEXT_DOMAIN )?></div>
-    <div class="option">
-        <div class="controls">
-            <input type="checkbox" class="hd-checkbox hd-control" name="illegal_users" id="illegal_users" <?php checked( $illegal_users, 1 ); ?> value="1">
-        </div>
-        <div class="explain"><?php _e( 'Check to activate', ADDONS_TEXT_DOMAIN ); ?></div>
-    </div>
-</div>
-<div class="section section-select" id="section_limit_login_attempts">
-    <label class="heading" for="limit_login_attempts"><?php _e( 'Limit Login Attempts', ADDONS_TEXT_DOMAIN ); ?></label>
-    <div class="desc"><?php _e( 'Limit the number of times a given user can attempt to log in to your wp-admin with incorrect credentials. Once the login attempt limit is reached, the IP from which the attempts have originated will be blocked first for 1 hour. If the attempts continue after the first hour, the limit will then be triggered for 24 hours and then for 7 days.', ADDONS_TEXT_DOMAIN )?></div>
-    <div class="option">
-        <div class="controls">
-            <div class="select_wrapper">
-                <select class="hd-control hd-select" name="limit_login_attempts" id="limit_login_attempts">
-                    <?php foreach ( Login_Attempts::$login_attempts_data as $key => $value ) : ?>
-                    <option value="<?=$key?>"<?php echo selected( $limit_login_attempts, $key, false ); ?>><?=$value?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="section section-checkbox !hidden" id="section_two_factor_authentication">
-    <label class="heading" for="two_factor_authentication"><?php _e( 'Two-factor Authentication for Admin & Editors Users', ADDONS_TEXT_DOMAIN ); ?></label>
-    <div class="desc"><?php _e( 'Two-factor authentication forces admin users to login only after providing a token, generated from the Google Authenticator application. When you enable this option, all admin & editor users will be asked to configure their two-factor authentication in the Authenticator app on their next login.', ADDONS_TEXT_DOMAIN )?></div>
-    <div class="option">
-        <div class="controls">
-            <input disabled type="checkbox" class="hd-checkbox hd-control" name="two_factor_authentication" id="two_factor_authentication" <?php checked( $two_factor_authentication, 1 ); ?> value="1">
-        </div>
-        <div class="explain"><?php _e( 'Enable Two-factor authentication', ADDONS_TEXT_DOMAIN ); ?></div>
     </div>
 </div>

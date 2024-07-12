@@ -2,11 +2,14 @@
 
 namespace Addons\Optimizer\Options\Lazy_Load;
 
+use Addons\Base\Singleton;
 use Detection\Exception\MobileDetectException;
 
 \defined( 'ABSPATH' ) || die;
 
 final class Lazy_Load {
+
+	use Singleton;
 
 	public Lazy_Load_Iframes $lazyload_iframes;
 	public Lazy_Load_Videos $lazyload_videos;
@@ -38,7 +41,7 @@ final class Lazy_Load {
 	/**
 	 * @throws MobileDetectException
 	 */
-	public function __construct() {
+	private function init(): void {
 		$lazy_load        = optimizer_options( 'lazy_load', 0 );
 		$lazy_load_mobile = optimizer_options( 'lazy_load_mobile', 0 );
 

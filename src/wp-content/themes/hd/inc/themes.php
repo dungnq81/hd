@@ -442,11 +442,12 @@ function __hd_hide_menu_options(): array {
 	return [
 		//'aspect-ratio', // Aspect Ratio
 		//'smtp', // SMTP
-		'contact-info', // Contact Info
+		//'contact-info', // Contact Info
 		//'contact-button', // Contact Button
 		//'gutenberg', // Editor
 		//'optimizer', // Optimizer
 		//'security', // Security
+		//'login-security', // Login Security
 		//'social', // Social
 		//'base-slug', // Remove Base Slug
 		//'email', // Custom Email
@@ -470,10 +471,10 @@ add_filter( 'hd_theme_setting_options', '__hd_theme_setting_options', 99 );
 function __hd_theme_setting_options( array $arr ): array {
 	$arr_new = [
 
-		// defer, delay script - default 5s
-		'defer_script'                    => [
+		// defer, delay script - default 5s.
+		'defer_script'                      => [
 
-			// defer
+			// defer.
 			'contact-form-7'       => 'defer',
 			'swv'                  => 'defer',
 			'hoverintent-js'       => 'defer',
@@ -481,21 +482,21 @@ function __hd_theme_setting_options( array $arr ): array {
 			'sourcebuster-js'      => 'defer',
 			'wc-order-attribution' => 'defer',
 
-			// delay
+			// delay.
 			'comment-reply'        => 'delay',
 			'wp-embed'             => 'delay',
 			'back-to-top'          => 'delay',
 			'social-share'         => 'delay',
 		],
 
-		// defer style
-		'defer_style'                     => [
+		// defer style.
+		'defer_style'                       => [
 			'dashicons',
 			'contact-form-7',
 		],
 
-		// Aspect Ratio default
-		'aspect_ratio_css'                => [
+		// Aspect Ratio default.
+		'aspect_ratio_css'                  => [
 			'1-1',
 			'2-1',
 			'3-2',
@@ -504,79 +505,96 @@ function __hd_theme_setting_options( array $arr ): array {
 			'21-9',
 		],
 
-		// Aspect Ratio - custom post-type
-		'aspect_ratio_post_type'          => [
+		// Aspect Ratio - custom post-type.
+		'aspect_ratio_post_type'            => [
 			'post',
 		],
 
-		// Add ID to admin category page
-		'term_row_actions'                => [
+		// Add ID to admin category page.
+		'term_row_actions'                  => [
 			'category',
 			'post_tag',
 		],
 
-		// Add ID to admin post-page
-		'post_row_actions'                => [
+		// Add ID to admin post-page.
+		'post_row_actions'                  => [
 			'user',
 			'post',
 			'page',
 		],
 
-		// Terms thumbnail (term_thumb)
-		'term_thumb_columns'              => [
+		// Terms thumbnail (term_thumb).
+		'term_thumb_columns'                => [
 			'category',
 			'post_tag',
 		],
 
-		// Exclude thumb post_type columns
-		'post_type_exclude_thumb_columns' => [],
+		// Exclude thumb post_type columns.
+		'post_type_exclude_thumb_columns'   => [],
 
-		// ACF attributes in menu locations
-		'acf_menu_items_locations'        => [
+		// ACF attributes in menu locations.
+		'acf_menu_items_locations'          => [
 			'main-nav',
 		],
 
-		// ACF attributes 'mega menu' locations
-		'acf_mega_menu_locations'         => [
+		// ACF attributes 'mega menu' locations.
+		'acf_mega_menu_locations'           => [
 			'main-nav',
 		],
 
-		// Custom post_per_page
-		'posts_num_per_page'              => [],
+		// Custom post_per_page.
+		'posts_num_per_page'                => [],
 
-		// Custom post-type & taxonomy
-		'post_type_terms'                 => [],
+		// Custom post-type & taxonomy.
+		'post_type_terms'                   => [],
 
-		// smtp_plugins_support
-		'smtp_plugins_support'            => [
+		// smtp_plugins_support.
+		'smtp_plugins_support'              => [
 			'wp_mail_smtp'     => 'wp-mail-smtp/wp_mail_smtp.php',
 			'wp_mail_smtp_pro' => 'wp-mail-smtp-pro/wp_mail_smtp.php',
 			'smtp_mailer'      => 'smtp-mailer/main.php',
 			'gmail_smtp'       => 'gmail-smtp/main.php',
 		],
 
-		// Custom Email list
-		'custom_emails'                   => [],
+		// Custom Email list.
+		'custom_emails'                     => [],
 
-		// lazy_load_exclude
-		'lazy_load_exclude'               => [
+		// lazy_load_exclude.
+		'lazy_load_exclude'                 => [
 			'no-lazy',
 			'skip-lazy',
 		],
 
 		// The urls where a lazy load is excluded.
-		'lazy_load_exclude_urls'          => [],
+		'lazy_load_exclude_urls'            => [],
 
-		// reCAPTCHA forms
-		'recaptcha_custom_forms'          => [],
+		// reCAPTCHA forms.
+		'recaptcha_custom_forms'            => [],
 
-		// reCAPTCHA exclude users
-		'recaptcha_exclude_users'          => [],
+		// reCAPTCHA exclude users.
+		'recaptcha_exclude_users'           => [],
 
+		// List of admin IDs allowed to install plugins.
 		'allowed_users_ids_install_plugins' => [ 1 ],
 
-		// Links socials
-		'social_follows_links'            => [
+		// Login security
+		'login_security'                    => [
+
+			// Custom admin-login URL.
+			'custom_login_url'            => 'login_x',
+
+			// Allows customization of the Login URL in the admin options.
+			'enable_custom_login_options' => true,
+
+			// Allowlist IPs Login Access
+			'allowlist_ips_login_access'  => [],
+
+			// Blocked IPs Access
+			'disable_ips_access'          => []
+		],
+
+		// Links socials.
+		'social_follows_links'              => [
 			'facebook'  => [
 				'name'  => 'Facebook',
 				'icon'  => 'fa-brands fa-facebook',

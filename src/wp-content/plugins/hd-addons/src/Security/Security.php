@@ -4,8 +4,6 @@ namespace Addons\Security;
 
 use Addons\Base\Singleton;
 use Addons\Security\Options\Headers;
-use Addons\Security\Options\Illegal_Users;
-use Addons\Security\Options\Login_Attempts;
 use Addons\Security\Options\Readme;
 
 \defined( 'ABSPATH' ) || die;
@@ -31,56 +29,12 @@ final class Security {
 	private function init(): void {
 		$this->security_options = get_option( 'security__options', false );
 
-		$this->_illegal_users();
 		$this->_hide_wp_version();
 		$this->_disable_XMLRPC();
 		$this->_disable_Opml();
 		$this->_remove_ReadMe();
 		$this->_disable_RSSFeed();
 		$this->_xss_protection();
-		$this->_login_attempts();
-	}
-
-	// ------------------------------------------------------
-
-	/**
-	 * Add login service hooks.
-	 *
-	 * @return void
-	 */
-	private function _login_attempts(): void {
-		$limit_login_attempts = $this->security_options['limit_login_attempts'] ?? 0;
-		$security_login       = new Login_Attempts();
-
-		// Bail if optimization is disabled.
-		if ( 0 === (int) $limit_login_attempts ) {
-			$security_login->reset_login_attempts();
-
-			return;
-		}
-
-		// Check the login attempts for an IP and block the access to the login page.
-		add_action( 'login_head', [ &$security_login, 'maybe_block_login_access' ], PHP_INT_MAX );
-
-		// Add login attempts for ip.
-		add_filter( 'login_errors', [ &$security_login, 'log_login_attempt' ] );
-
-		// Reset login attempts for an ip on successful login.
-		add_filter( 'wp_login', [ &$security_login, 'reset_login_attempts' ] );
-	}
-
-	// ------------------------------------------------------
-
-	/**
-	 * Add username hooks.
-	 *
-	 * @return void
-	 */
-	private function _illegal_users(): void {
-		if ( $this->security_options['illegal_users'] ?? 0 ) {
-			$common_user = new Illegal_Users();
-			add_action( 'illegal_user_logins', [ &$common_user, 'get_illegal_usernames' ] );
-		}
 	}
 
 	// ------------------------------------------------------

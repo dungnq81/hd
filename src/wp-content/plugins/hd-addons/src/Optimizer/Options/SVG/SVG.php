@@ -2,6 +2,8 @@
 
 namespace Addons\Optimizer\Options\SVG;
 
+use Addons\Base\Singleton;
+
 use enshrined\svgSanitize\data\AllowedAttributes;
 use enshrined\svgSanitize\data\AllowedTags;
 use enshrined\svgSanitize\Sanitizer;
@@ -16,10 +18,16 @@ use enshrined\svgSanitize\Sanitizer;
  */
 final class SVG {
 
+	use Singleton;
+
+	// ------------------------------------------------------
+
 	private Sanitizer $sanitizer;
 	private string $svg_option;
 
-	public function __construct() {
+	// ------------------------------------------------------
+
+	private function init(): void {
 		$this->svg_option = optimizer_options( 'svgs', 'disable' );
 
 		if ( 'disable' !== $this->svg_option ) {
@@ -297,7 +305,7 @@ final class SVG {
 		     current_user_can( 'upload_files' ) &&
 		     ! $this->sanitize( $file['tmp_name'] )
 		) {
-			$file['error'] = __( 'This SVG can not be sanitized!', ADDONS_TEXT_DOMAIN );
+			$file['error'] = __( 'This SVG can not be sanitized.', ADDONS_TEXT_DOMAIN );
 		}
 
 		return $file;

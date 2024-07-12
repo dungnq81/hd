@@ -46,7 +46,10 @@ Thumbs.db
 # WordPress
 wp-content/uploads/
 wp-content/wflogs/
-wp-content/themes/twenty*/
+wp-content/themes/*
+
+!wp-content/themes/index.php
+!wp-content/themes/hd/
 
 # ignore these plugins
 wp-content/plugins/*

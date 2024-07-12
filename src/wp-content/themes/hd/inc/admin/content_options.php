@@ -41,6 +41,10 @@ $hide_menu_options = apply_filters( 'hd_hide_menu_options', [] );
 			<?php include ADDONS_PATH . 'src/Security/options.php'; ?>
         </div>
 
+        <div id="login_security_settings" class="group tabs-panel<?php in_array_toggle_class( $hide_menu_options, 'login-security' ); ?>">
+		    <?php include INC_PATH . 'admin/options/login_security.php'; ?>
+        </div>
+
         <div id="social_settings" class="group tabs-panel<?php in_array_toggle_class( $hide_menu_options, 'social' ); ?>">
 			<?php include ADDONS_PATH . 'src/Social/options.php'; ?>
         </div>

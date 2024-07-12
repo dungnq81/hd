@@ -1,8 +1,10 @@
 <?php
 
-namespace Addons\Security\Options;
+namespace Libs\Login_Security;
 
-class Login_Attempts {
+use Cores\Helper;
+
+final class Login_Attempts {
 
 	/**
 	 * The maximum allowed login attempts.
@@ -29,7 +31,7 @@ class Login_Attempts {
 	 * The constructor.
 	 */
 	public function __construct() {
-		$security_options           = get_option( 'security__options' );
+		$security_options           = Helper::getOption( 'login_security__options' );
 		$this->limit_login_attempts = $security_options['limit_login_attempts'] ?? 0;
 	}
 
@@ -43,10 +45,10 @@ class Login_Attempts {
 	public function maybe_block_login_access(): void {
 
 		// Get the user ip.
-		$user_ip = get_ip_address();
+		$user_ip = Helper::getIpAddress();
 
 		// Get login attempts data.
-		$login_attempts = get_option( 'hd_security_unsuccessful_login', [] );
+		$login_attempts = get_option( '_security_unsuccessful_login', [] );
 
 		// Bail if the user doesn't have attempts.
 		if ( empty( $login_attempts[ $user_ip ]['timestamp'] ) ) {
@@ -57,13 +59,13 @@ class Login_Attempts {
 		if ( $login_attempts[ $user_ip ]['timestamp'] > time() ) {
 
 			// Update the total blocked logins counter.
-			update_option( 'hd_security_total_blocked_logins', get_option( 'hd_security_total_blocked_logins', 0 ) + 1 );
+			update_option( '_security_total_blocked_logins', get_option( '_security_total_blocked_logins', 0 ) + 1 );
 
 			wp_die(
-				esc_html__( 'You don’t have access to this page. Please contact the administrator of this website for further assistance.', ADDONS_TEXT_DOMAIN ),
-				esc_html__( 'The access to that page has been restricted by the administrator of this website', ADDONS_TEXT_DOMAIN ),
+				esc_html__( 'You don’t have access to this page. Please contact the administrator of this website for further assistance.', TEXT_DOMAIN ),
+				esc_html__( 'The access to that page has been restricted by the administrator of this website', TEXT_DOMAIN ),
 				[
-					'hd_error' => true,
+					'error'    => true,
 					'response' => 403,
 				]
 			);
@@ -75,7 +77,7 @@ class Login_Attempts {
 			$login_attempts[ $user_ip ]['timestamp'] < time()
 		) {
 			unset( $login_attempts[ $user_ip ] );
-			update_option( 'hd_security_unsuccessful_login', $login_attempts );
+			update_option( '_security_unsuccessful_login', $login_attempts );
 		}
 	}
 
@@ -104,10 +106,10 @@ class Login_Attempts {
 		}
 
 		// Get the current user ip.
-		$user_ip = get_ip_address();
+		$user_ip = Helper::getIpAddress();
 
 		// Get the login attempts data.
-		$login_attempts = get_option( 'hd_security_unsuccessful_login', [] );
+		$login_attempts = get_option( '_security_unsuccessful_login', [] );
 
 		// Add the ip to the list if it does not exist.
 		if ( ! array_key_exists( $user_ip, $login_attempts ) ) {
@@ -120,7 +122,7 @@ class Login_Attempts {
 		// Increase the attempt count.
 		$login_attempts[ $user_ip ]['attempts'] ++;
 		if ( $login_attempts[ $user_ip ]['attempts'] > 0 ) {
-			$errors->add( 'login_attempts', __( sprintf( '<strong>Alert:</strong> You have entered the wrong credentials <strong>%s</strong> times.', $login_attempts[ $user_ip ]['attempts'] ), ADDONS_TEXT_DOMAIN ) );
+			$errors->add( 'login_attempts', __( sprintf( '<strong>Alert:</strong> You have entered the wrong credentials <strong>%s</strong> times.', $login_attempts[ $user_ip ]['attempts'] ), TEXT_DOMAIN ) );
 
 			if (
 				in_array( 'incorrect_password', $errors->get_error_codes(), false ) &&
@@ -132,17 +134,29 @@ class Login_Attempts {
 		}
 
 		// Check if we are reaching the limits.
-		$login_attempts[ $user_ip ]['timestamp'] = match ( $login_attempts[ $user_ip ]['attempts'] ) {
+		$attempts = (int) $login_attempts[ $user_ip ]['attempts'];
 
-			$login_attempts[ $user_ip ]['attempts'] === $this->limit_login_attempts => time() + 3600,
-			$login_attempts[ $user_ip ]['attempts'] === $this->limit_login_attempts * 2 => time() + 86400,
-			$login_attempts[ $user_ip ]['attempts'] > $this->limit_login_attempts * 3 => time() + 604800,
+		switch ( $attempts ) {
+			case $attempts === (int) $this->limit_login_attempts:
+				$login_attempts[ $user_ip ]['timestamp'] = time() + 3600; // Set 1-hour limit.
+				break;
 
-			default => '',
-		};
+			case $attempts === (int) $this->limit_login_attempts * 2:
+				$login_attempts[ $user_ip ]['timestamp'] = time() + 86400; // Set 24-hour limit.
+				break;
+
+			case $attempts > (int) $this->limit_login_attempts * 3:
+				$login_attempts[ $user_ip ]['timestamp'] = time() + 604800; // Set 7-day limit.
+				break;
+
+			// Do not set restriction if we do not reach any limits.
+			default:
+				$login_attempts[ $user_ip ]['timestamp'] = '';
+				break;
+		}
 
 		// Update the login attempts data.
-		update_option( 'hd_security_unsuccessful_login', $login_attempts );
+		update_option( '_security_unsuccessful_login', $login_attempts );
 
 		return $error;
 	}
@@ -155,8 +169,8 @@ class Login_Attempts {
 	 * @return void
 	 */
 	public function reset_login_attempts(): void {
-		$user_ip        = get_ip_address();
-		$login_attempts = get_option( 'hd_security_unsuccessful_login', [] );
+		$user_ip        = Helper::getIpAddress();
+		$login_attempts = get_option( '_security_unsuccessful_login', [] );
 
 		// Bail if the IP doesn't exist in the unsuccessful logins.
 		if ( ! array_key_exists( $user_ip, $login_attempts ) ) {
@@ -164,6 +178,6 @@ class Login_Attempts {
 		}
 
 		unset( $login_attempts[ $user_ip ] );
-		update_option( 'hd_security_unsuccessful_login', $login_attempts );
+		update_option( '_security_unsuccessful_login', $login_attempts );
 	}
 }

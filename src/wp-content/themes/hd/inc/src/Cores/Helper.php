@@ -231,7 +231,7 @@ final class Helper {
 	// --------------------------------------------------
 
 	/**
-	 * @param array|string $link
+	 * @param $link
 	 * @param string $class
 	 * @param string $label
 	 * @param string $extra_title
