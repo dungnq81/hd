@@ -97,7 +97,7 @@ final class ACF {
 		$classes = [];
 
 		// ACF attributes
-		$ACF = \get_fields( 'widget_' . $widget_id ) ?? [];
+		$ACF = Helper::get_fields( 'widget_' . $widget_id );
 		if ( ! empty( $ACF['css_class'] ) ) {
 			$classes = explode( ' ', (string) $ACF['css_class'] );
 		}
@@ -205,7 +205,7 @@ final class ACF {
 		foreach ( $items as &$item ) {
 
 			$title = $item->title;
-			$ACF   = \get_fields( $item ) ?? [];
+			$ACF   = Helper::get_fields( $item );
 
 			if ( $ACF ) {
 

@@ -25,14 +25,14 @@ final class Custom_Login {
 	 * @return true|void
 	 */
 	public function login_ips_access() {
-		$_login_security_options  = Helper::filter_setting_options( 'login_security', false );
+		$_login_security          = Helper::filter_setting_options( 'login_security', false );
 		$_custom_security_options = Helper::getOption( 'login_security__options', false );
 
 		$custom_restrict_ips = $_custom_security_options['login_ips_access'] ?? [];
 		$custom_blocked_ips  = $_custom_security_options['disable_ips_access'] ?? [];
 
-		$allowed_ips = array_filter( array_merge( $_login_security_options['allowlist_ips_login_access'], (array) $custom_restrict_ips ) );
-		$blocked_ips = array_filter( array_merge( $_login_security_options['blocked_ips_login_access'], (array) $custom_blocked_ips ) );
+		$allowed_ips = array_filter( array_merge( $_login_security['allowlist_ips_login_access'], (array) $custom_restrict_ips ) );
+		$blocked_ips = array_filter( array_merge( $_login_security['blocked_ips_login_access'], (array) $custom_blocked_ips ) );
 
 		unset( $custom_restrict_ips, $custom_blocked_ips );
 

@@ -34,7 +34,7 @@ if ( ! function_exists( '__hd_archive_header' ) ) {
 		$object = get_queried_object();
 
 		$desc = '';
-		if ( isset( $object->term_id ) ) {
+		if ( ! empty( $object->term_id ) ) {
 			$term_id = (int) $object->term_id;
 			$desc = Helper::termExcerpt( $term_id );
 		}

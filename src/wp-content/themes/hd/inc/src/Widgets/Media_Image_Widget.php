@@ -145,7 +145,7 @@ class Media_Image_Widget extends WP_Widget_Media_Image {
 			$image .= ' />';
 		} // End if().
 
-		$acf_att    = \get_fields( $attachment->ID ) ?? false;
+		$acf_att    = Helper::get_fields( $attachment->ID );
 		$src_mobile = $acf_att['mobile_thumbnail'] ?? '';
 
 		$picture = '';

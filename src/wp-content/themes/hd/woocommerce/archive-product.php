@@ -14,6 +14,8 @@
  * @package WooCommerce\Templates
  */
 
+use Cores\Helper;
+
 \defined( 'ABSPATH' ) || die;
 
 // header
@@ -38,7 +40,7 @@ do_action( 'woocommerce_before_main_content' );
         $page_title = woocommerce_page_title( false );
         if ( is_shop() ) {
 	        $shop_page_id = wc_get_page_id( 'shop' );
-	        $page_title = \get_field( 'alternative_title', $shop_page_id ) ?: $page_title;
+	        $page_title = Helper::get_field( 'alternative_title', $shop_page_id ) ?: $page_title;
         }
         ?>
         <h1 class="heading-title"><?= $page_title ?></h1>

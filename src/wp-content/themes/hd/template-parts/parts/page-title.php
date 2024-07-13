@@ -12,17 +12,17 @@ if ( $breadcrumb_bg ) {
 }
 
 $object = get_queried_object();
-if ( $object ) {
+if ( $object && ! empty( $object->ID ) ) {
 
     // breadcrumb of page
-	$image_for_banner = \get_field( 'image_for_banner', ( $object->ID ?? false ) ) ?? false;
+	$image_for_banner = Helper::get_field( 'image_for_banner', $object->ID );
 	if ( $image_for_banner ) {
 		$breadcrumb_class = ' has-background';
 		$breadcrumb_bg    = $image_for_banner;
 	}
 
     // title
-	$title = \get_field( 'alternative_title', ( $object->ID ?? false ) ) ?: ( $object->post_title ?? '' );
+	$title = Helper::get_field( 'alternative_title', $object->ID ) ?: ( $object->post_title ?? '' );
 }
 
 if ( is_search() ) {

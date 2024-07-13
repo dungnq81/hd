@@ -14,14 +14,14 @@ if ( $breadcrumb_bg ) {
 }
 
 // breadcrumb of page
-$image_for_banner = \get_field( 'image_for_banner', $object ) ?? false;
+$image_for_banner = Helper::get_field( 'image_for_banner', $object );
 
 // title
 $archive_title = '';
 if ( Helper::is_woocommerce_active() && is_shop() ) {
 	$shop_page_id     = wc_get_page_id( 'shop' );
-	$archive_title    = \get_field( 'alternative_title', $shop_page_id ) ?: get_the_title( $shop_page_id );
-	$image_for_banner = \get_field( 'image_for_banner', $shop_page_id ) ?? false;
+	$archive_title    = Helper::get_field( 'alternative_title', $shop_page_id ) ?: get_the_title( $shop_page_id );
+	$image_for_banner = Helper::get_field( 'image_for_banner', $shop_page_id );
 }
 
 if ( $image_for_banner ) {

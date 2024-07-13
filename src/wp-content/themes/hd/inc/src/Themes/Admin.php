@@ -702,7 +702,7 @@ final class Admin {
 
 //			case 'term_order':
 //				if ( class_exists( '\ACF' ) ) {
-//					$term_order = \get_field( 'term_order', get_term( $term_id ) );
+//					$term_order = Helper::get_field( 'term_order', get_term( $term_id ) );
 //
 //					return $out = $term_order ?: 0;
 //				}
@@ -761,7 +761,7 @@ final class Admin {
 				} else if ( 'video' === $post_type ) {
 					if ( has_post_thumbnail( $post_id ) ) {
 						echo get_the_post_thumbnail( $post_id, 'thumbnail' );
-					} else if ( function_exists( 'get_field' ) && $url = \get_field( 'url', $post_id ) ) {
+					} else if ( $url = Helper::get_field( 'url', $post_id ) ) {
 						$img_src = Helper::youtubeImage( esc_url( $url ), 3 );
 						echo "<img loading=\"lazy\" alt=\"video\" src=\"" . $img_src . "\" />";
 					}

@@ -55,7 +55,7 @@ if ( ! function_exists( '__hd_single_header' ) ) {
 
 	function __hd_single_header(): void {
 		global $post;
-		$alternative_title = \get_field( 'alternative_title', $post->ID ) ?? '';
+		$alternative_title = Helper::get_field( 'alternative_title', $post->ID );
 
 		?>
 		<header class="text-center">

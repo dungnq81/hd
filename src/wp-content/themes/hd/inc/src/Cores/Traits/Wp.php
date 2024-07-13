@@ -1173,7 +1173,7 @@ trait Wp {
 		}
 
 		if ( class_exists( \ACF::class ) ) {
-			$attach_id = \get_field( $acf_field_name, $term ) ?? false;
+			$attach_id = self::get_field( $acf_field_name, $term );
 			if ( $attach_id ) {
 				$img_src = wp_get_attachment_image_url( $attach_id, $size );
 				if ( $img_wrap ) {

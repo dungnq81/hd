@@ -318,24 +318,53 @@ final class Helper {
 		}
 	}
 
-	// -------------------------------------------------------------
+// -------------------------------------------------------------
 
 	/**
 	 * @param mixed $post_id
 	 * @param bool $format_value
 	 * @param bool $escape_html
 	 *
-	 * @return mixed|object
+	 * @return mixed
 	 * @throws \JsonException
 	 */
 	public static function acfFields( mixed $post_id = false, bool $format_value = true, bool $escape_html = false ): mixed {
+		return self::toObject( self::get_fields( $post_id, $format_value, $escape_html ) );
+	}
+
+	// -------------------------------------------------------------
+
+	/**
+	 * @param $post_id
+	 * @param $format_value
+	 * @param $escape_html
+	 *
+	 * @return array|false
+	 */
+	public static function get_fields( $post_id = false, $format_value = true, $escape_html = false ): false|array {
 		if ( ! self::is_acf_active() ) {
-			return (object) [];
+			return [];
 		}
 
-		$_fields = \get_fields( $post_id, $format_value, $escape_html ) ?? [];
+		return \function_exists( 'get_fields' ) ? \get_fields( $post_id, $format_value, $escape_html ) : [];
+	}
 
-		return self::toObject( $_fields );
+	// -------------------------------------------------------------
+
+	/**
+	 * @param $selector
+	 * @param $post_id
+	 * @param $format_value
+	 * @param $escape_html
+	 *
+	 * @return false|mixed
+	 */
+	public static function get_field( $selector, $post_id = false, $format_value = true, $escape_html = false ): mixed {
+		if ( ! self::is_acf_active() ) {
+			return false;
+		}
+
+		return \function_exists( 'get_field' ) ? \get_field( $selector, $post_id, $format_value, $escape_html ) : false;
 	}
 
 	// -------------------------------------------------------------

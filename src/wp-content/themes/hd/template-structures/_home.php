@@ -34,7 +34,7 @@ if ( ! function_exists( '__hd_home_header' ) ) {
 		$post_page_id = (int) get_option( 'page_for_posts' );
 		$post = get_post( $post_page_id );
 
-		$alternative_title = \get_field( 'alternative_title', $post_page_id ) ?? '';
+		$alternative_title = Helper::get_field( 'alternative_title', $post_page_id );
 		$desc              = Helper::postExcerpt( $post );
 
 		?>

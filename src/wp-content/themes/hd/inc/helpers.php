@@ -340,8 +340,8 @@ if ( ! function_exists( 'the_post_comment' ) ) {
 		$zalo_comment     = false;
 
 		if ( Helper::is_acf_active() ) {
-			$facebook_comment = \get_field( 'facebook_comment', $id ) ?? false;
-			$zalo_comment     = \get_field( 'zalo_comment', $id ) ?? false;
+			$facebook_comment = Helper::get_field( 'facebook_comment', $id );
+			$zalo_comment     = Helper::get_field( 'zalo_comment', $id );
 		}
 
 		if ( $facebook_comment || $zalo_comment || comments_open() ) {

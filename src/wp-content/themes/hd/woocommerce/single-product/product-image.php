@@ -14,6 +14,8 @@
  * @package WooCommerce\Templates
  */
 
+use Cores\Helper;
+
 defined( 'ABSPATH' ) || exit;
 
 if ( ! function_exists( '_wc_get_gallery_image_html' ) ) {
@@ -37,7 +39,7 @@ $wrapper_classes = apply_filters(
 	]
 );
 
-$outstanding_features = \get_field( 'outstanding_features', $product->get_id() ) ?? '';
+$outstanding_features = Helper::get_field( 'outstanding_features', $product->get_id() );
 
 ?>
 <div class="woocommerce-product-gallery-wrapper">

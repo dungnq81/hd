@@ -592,7 +592,7 @@ function __hd_theme_setting_options( array $arr ): array {
 			],
 
 			// Blocked IPs Access
-			'blocked_ips_login_access'          => [
+			'blocked_ips_login_access'    => [
 				//'127.0.0.1',
 			]
 		],
