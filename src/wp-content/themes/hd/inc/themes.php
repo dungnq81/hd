@@ -581,7 +581,7 @@ function __hd_theme_setting_options( array $arr ): array {
 		'login_security'                    => [
 
 			// Custom admin-login URL.
-			'custom_login_url'            => 'login_x',
+			'custom_login_url'            => '',
 
 			// Allows customization of the Login URL in the admin options.
 			'enable_custom_login_options' => true,
