@@ -3,7 +3,7 @@
         'name' => 'mu-plugins/mu-hd',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'd463f5b2b196767d02a69f4214e8edf53880b8c6',
+        'reference' => '7584b3a28e6bcf6908c354b6fdaadebf99932b7a',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'mu-plugins/mu-hd' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'd463f5b2b196767d02a69f4214e8edf53880b8c6',
+            'reference' => '7584b3a28e6bcf6908c354b6fdaadebf99932b7a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -22,7 +22,7 @@
         'roave/security-advisories' => array(
             'pretty_version' => 'dev-latest',
             'version' => 'dev-latest',
-            'reference' => '0ec6bad5f4523eda2514e89d5ea48cde6ebe7f99',
+            'reference' => 'c31e886d98723c528ab99e920e7903ccb7391bd0',
             'type' => 'metapackage',
             'install_path' => null,
             'aliases' => array(

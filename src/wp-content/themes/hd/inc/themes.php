@@ -587,10 +587,14 @@ function __hd_theme_setting_options( array $arr ): array {
 			'enable_custom_login_options' => true,
 
 			// Allowlist IPs Login Access
-			'allowlist_ips_login_access'  => [],
+			'allowlist_ips_login_access'  => [
+				//'127.0.0.1',
+			],
 
 			// Blocked IPs Access
-			'disable_ips_access'          => []
+			'blocked_ips_login_access'          => [
+				//'127.0.0.1',
+			]
 		],
 
 		// Links socials.

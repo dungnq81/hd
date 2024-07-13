@@ -49,7 +49,9 @@ register_uninstall_hook( __FILE__, [ \Addons\Activator\Activator::class, 'uninst
 add_action( 'admin_notices', 'addons_requirement_notice' );
 
 function addons_requirement_notice(): void {
-	if ( ! check_plugin_active( 'advanced-custom-fields-pro/acf.php' ) ) {
+	if ( ! check_plugin_active( 'advanced-custom-fields/acf.php' ) ||
+	     ! check_plugin_active( 'advanced-custom-fields-pro/acf.php' )
+	) {
 		printf(
 			'<div class="%1$s"><p>%2$s <a target="_blank" href="%3$s"><strong>%4$s</strong></a></p></div>',
 			'notice notice-error',

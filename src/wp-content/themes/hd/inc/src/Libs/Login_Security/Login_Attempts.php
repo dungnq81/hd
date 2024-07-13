@@ -63,10 +63,11 @@ final class Login_Attempts {
 
 			wp_die(
 				esc_html__( 'You don’t have access to this page. Please contact the administrator of this website for further assistance.', TEXT_DOMAIN ),
-				esc_html__( 'The access to that page has been restricted by the administrator of this website', TEXT_DOMAIN ),
+				esc_html__( 'Restricted access', TEXT_DOMAIN ),
 				[
-					'error'    => true,
-					'response' => 403,
+					'hd_error'      => true,
+					'response'      => 403,
+					'blocked_login' => true,
 				]
 			);
 		}

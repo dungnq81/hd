@@ -173,6 +173,43 @@ trait Url {
 	// --------------------------------------------------
 
 	/**
+	 * @return string
+	 */
+	public static function serverIpAddress(): string {
+
+		// Check common environment variables to get the IP address
+		if ( ! empty( $_SERVER['SERVER_ADDR'] ) ) {
+			return $_SERVER['SERVER_ADDR'];
+		}
+
+		// Get the hostname
+		$hostname = gethostname();
+
+		// Get the IPv4 address using gethostbyname
+		$ipv4 = gethostbyname( $hostname );
+
+		// Validate the IPv4 address
+		if ( filter_var( $ipv4, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 ) ) {
+			return $ipv4;
+		}
+
+		// Get the IPv6 address using dns_get_record
+		$dnsRecords = dns_get_record( $hostname, DNS_AAAA );
+		if ( ! empty( $dnsRecords ) ) {
+			foreach ( $dnsRecords as $record ) {
+				if ( isset( $record['ipv6'] ) && filter_var( $record['ipv6'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 ) ) {
+					return $record['ipv6'];
+				}
+			}
+		}
+
+		// Return a default IP address if none found
+		return '127.0.0.1';
+	}
+
+	// --------------------------------------------------
+
+	/**
 	 * Get the IP address from which the user is viewing the current page.
 	 *
 	 * @return string

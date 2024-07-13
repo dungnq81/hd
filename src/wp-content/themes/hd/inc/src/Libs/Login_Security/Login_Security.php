@@ -21,6 +21,8 @@ final class Login_Security {
 	private function init(): void {
 		$this->login_security_options = Helper::getOption( 'login_security__options', false );
 
+		( Custom_Login::get_instance() );
+
 		$this->_illegal_users();
 		$this->_login_attempts();
 	}
@@ -57,7 +59,7 @@ final class Login_Security {
 			return;
 		}
 
-		// Check the login attempts for an IP and block the access to the login page.
+		// Check the login attempts for an ip and block the access to the login page.
 		add_action( 'login_head', [ &$security_login, 'maybe_block_login_access' ], PHP_INT_MAX );
 
 		// Add login attempts for ip.
