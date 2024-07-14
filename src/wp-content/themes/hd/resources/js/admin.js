@@ -84,7 +84,6 @@ jQuery(function ($) {
 
             // Check if the name ends with []
             if (name.indexOf('[]') > -1) {
-                // Remove the trailing []
                 name = name.replace('[]', '');
 
                 // Ensure the object property is an array
@@ -117,7 +116,8 @@ jQuery(function ($) {
 
     // hide notice
     $(document).on('click', '.notice-dismiss', function (e) {
-        $(this).closest('.notice.is-dismissible').fadeOut();
+        //$(this).closest('.notice.is-dismissible').fadeOut();
+        $(this).closest('.notice.is-dismissible')?.fadeOutAndRemove(400);
     });
 
     // filter tabs
